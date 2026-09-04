@@ -15,12 +15,11 @@ export default defineConfig({
   sortImports: {
     newlinesBetween: true,
     sortSideEffects: false,
-    internalPattern: ["@/", "package.json"],
+    internalPattern: ["@bridge/ui", "package.json"],
     groups: ["builtin", "external", "internal", "parent", "sibling", "index", "style", "unknown"]
   },
   ignorePatterns: [
     ".*",
-    "app/config/start/route-tree.ts",
     "**/app/config/route-tree.ts",
     "**/worker-configuration.d.ts",
     "dist",

@@ -44,6 +44,9 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
+    "@effect/language-service": "^0.87.2",
+    "@effect/tsgo": "^0.41.0",
+    "@effect/vitest": "^0.30.0",
     "@types/bun": "latest",
     "@types/react": "^19",
     "@types/react-dom": "^19",
