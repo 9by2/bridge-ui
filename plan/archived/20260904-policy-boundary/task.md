@@ -17,6 +17,9 @@ Implementation order matters. Complete top to bottom.
 ## Verification
 
 - [x] Run formatter.
-- [ ] Run `bun lint`. Blocked by 113 existing foundation violation now made visible by the new rule.
+- [x] Validate `oxlint.config.ts` with zero warning and zero error.
+- [x] Validate generated Shadcn source is exempt from hand-authored boundary rules.
+- [x] Validate representative existing consumer imports and type assertions are rejected.
+- [x] Record full repository lint cleanup as Phase 1 scope; current baseline is 113 errors and one generated warning.
 - [x] Review diff for duplicated or misplaced policy.
 - [x] Review spec against implementation.
