@@ -115,19 +115,41 @@ export default defineConfig({
       }
     },
     {
-      files: ["app/**/*.{ts,tsx}"],
+      files: ["app/**/*.{ts,tsx}", "shared/**/*.{ts,tsx}", "internal/**/*.{ts,tsx}"],
+      excludeFiles: ["app/component/shadcn/**/*.{ts,tsx}"],
       rules: {
+        "typescript/consistent-type-assertions": [
+          "error",
+          {
+            assertionStyle: "never"
+          }
+        ],
         "no-restricted-imports": [
           "error",
           {
             patterns: [
               {
-                group: ["@bridge/ui/app/*", "@bridge/ui/cmd/**"],
-                message: "app must not import others"
+                group: ["@cue/web", "@cue/web/**", "@bridge/web", "@bridge/web/**"],
+                message: "Bridge UI must not import consumer application code."
+              },
+              {
+                group: ["@bridge/ui/app/**", "@bridge/ui/internal/**", "@bridge/ui/cmd/**"],
+                message: "Use a stable package export or local module path, not a Bridge UI deep import."
+              },
+              {
+                group: ["../../*", "../../**", "../../../*", "../../../**"],
+                message: "Import through the package alias when traversal exceeds one parent directory."
               }
             ]
           }
         ]
+      }
+    },
+    {
+      files: ["app/component/shadcn/**/*.{ts,tsx}"],
+      rules: {
+        "typescript/consistent-type-assertions": "off",
+        "no-restricted-imports": "off"
       }
     }
   ]
