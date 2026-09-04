@@ -1,5 +1,5 @@
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover"
-import { cn } from "cnfast"
+import { cn } from "cn"
 import * as React from "react"
 
 function Popover({ ...props }: PopoverPrimitive.Root.Props) {

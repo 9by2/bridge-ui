@@ -1,6 +1,6 @@
 import { ResponsiveImage } from "@bridge/ui/app/component/global/responsive-image.component"
 import { Body, Heading } from "@bridge/ui/app/component/global/typography.component"
-import { cn } from "cnfast"
+import { cn } from "cn"
 import { CalendarIcon, ClockIcon, MapPinIcon } from "lucide-react"
 
 export const TicketCoverMeta = {

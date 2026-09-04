@@ -1,5 +1,5 @@
 import { Heading } from "@bridge/ui/app/component/global/typography.component"
-import { cn } from "cnfast"
+import { cn } from "cn"
 import type { ComponentPropsWithoutRef, ReactNode } from "react"
 
 export interface PageHeaderProps extends Omit<ComponentPropsWithoutRef<"header">, "title"> {

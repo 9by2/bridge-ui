@@ -1,6 +1,6 @@
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog"
 import { Button } from "@bridge/ui/app/component/shadcn/button"
-import { cn } from "cnfast"
+import { cn } from "cn"
 import { XIcon } from "lucide-react"
 import * as React from "react"
 

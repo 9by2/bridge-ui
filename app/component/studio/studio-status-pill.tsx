@@ -1,4 +1,4 @@
-import { cn } from "cnfast"
+import { cn } from "cn"
 import type { ComponentPropsWithoutRef } from "react"
 
 export type StudioStatusTone = "success" | "pending" | "destructive" | "neutral"

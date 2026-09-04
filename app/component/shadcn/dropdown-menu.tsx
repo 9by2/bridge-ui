@@ -1,5 +1,5 @@
 import { Menu as MenuPrimitive } from "@base-ui/react/menu"
-import { cn } from "cnfast"
+import { cn } from "cn"
 
 function DropdownMenu({ ...props }: MenuPrimitive.Root.Props) {
   return <MenuPrimitive.Root data-slot="dropdown-menu" {...props} />

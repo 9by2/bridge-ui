@@ -1,6 +1,6 @@
-import { cn } from "cnfast"
 import { m } from "@cue/web/shared/i18n/runtime/messages"
 import { generatePromptPayQrPayload } from "@cue/web/shared/lib/promptpay"
+import { cn } from "cn"
 import { memo, useMemo, type ComponentPropsWithoutRef } from "react"
 import QRCode, { type QRCodeProps } from "react-qr-code"
 

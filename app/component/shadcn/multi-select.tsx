@@ -2,7 +2,7 @@
 
 import { Badge } from "@bridge/ui/app/component/shadcn/badge"
 import { Button } from "@bridge/ui/app/component/shadcn/button"
-import { cn } from "cnfast"
+import { cn } from "cn"
 import { ChevronsUpDownIcon, CheckIcon, XIcon } from "lucide-react"
 import {
   type ComponentPropsWithoutRef,

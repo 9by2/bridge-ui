@@ -1,4 +1,4 @@
-import { cn } from "cnfast"
+import { cn } from "cn"
 
 const TIME_STEP_MINUTES = 15
 const MINUTES_PER_DAY = 24 * 60

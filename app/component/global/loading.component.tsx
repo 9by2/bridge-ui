@@ -1,4 +1,4 @@
-import cn from "cnfast"
+import { cn } from "cn"
 import { LoaderCircleIcon } from "lucide-react"
 import type { ComponentPropsWithRef } from "react"
 

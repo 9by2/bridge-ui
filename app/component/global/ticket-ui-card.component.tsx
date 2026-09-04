@@ -1,5 +1,5 @@
-import { cn } from "cnfast"
 import { m } from "@cue/web/shared/i18n/runtime/messages"
+import { cn } from "cn"
 import { QrCodeIcon } from "lucide-react"
 import type { HTMLAttributes } from "react"
 import QRCode from "react-qr-code"

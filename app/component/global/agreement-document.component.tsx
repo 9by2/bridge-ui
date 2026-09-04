@@ -2,8 +2,8 @@ import { MarkdownPreviewComponent } from "@bridge/ui/app/component/global/markdo
 import { Badge } from "@bridge/ui/app/component/shadcn/badge"
 import { Field, FieldDescription, FieldLabel } from "@bridge/ui/app/component/shadcn/field"
 import { Switch } from "@bridge/ui/app/component/shadcn/switch"
-import { cn } from "cnfast"
 import { m } from "@cue/web/shared/i18n/runtime/messages"
+import { cn } from "cn"
 import { CheckCircle2Icon, ChevronDownIcon } from "lucide-react"
 
 export interface AgreementDocumentComponentProps {

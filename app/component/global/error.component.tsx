@@ -2,7 +2,7 @@ import { Button } from "@bridge/ui/app/component/shadcn/button"
 import { m } from "@cue/web/shared/i18n/runtime/messages"
 import { Link } from "@tanstack/react-router"
 import type { ErrorRouteComponent } from "@tanstack/react-router"
-import cn from "cnfast"
+import { cn } from "cn"
 import { ArrowLeftIcon, LockIcon } from "lucide-react"
 import { type ReactNode } from "react"
 

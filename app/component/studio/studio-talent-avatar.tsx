@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback } from "@bridge/ui/app/component/shadcn/avatar"
-import { cn } from "cnfast"
+import { cn } from "cn"
 
 function CreateTalentInitials(displayName: string): string {
   return (

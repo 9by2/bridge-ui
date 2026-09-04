@@ -1,4 +1,4 @@
-import cn from "cnfast"
+import { cn } from "cn"
 import { useMemo, useState, type ImgHTMLAttributes, type SyntheticEvent } from "react"
 
 export const responsiveImagePresentationConfig = {

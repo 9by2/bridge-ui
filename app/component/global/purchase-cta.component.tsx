@@ -1,6 +1,6 @@
 import { Button } from "@bridge/ui/app/component/shadcn/button"
-import { cn } from "cnfast"
 import { useWindowSize } from "@uidotdev/usehooks"
+import { cn } from "cn"
 import { useMemo, useRef, type ComponentPropsWithoutRef } from "react"
 
 import { Heading } from "./typography.component"

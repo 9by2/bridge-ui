@@ -14,7 +14,7 @@
   "rtl": false,
   "aliases": {
     "components": "@bridge/ui/app/component",
-    "utils": "cnfast",
+    "utils": "cn",
     "ui": "@bridge/ui/app/component/shadcn",
     "lib": "@bridge/ui/app/lib",
     "hooks": "@bridge/ui/app/hook"

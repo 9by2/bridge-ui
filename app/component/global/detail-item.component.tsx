@@ -1,4 +1,4 @@
-import { cn } from "cnfast"
+import { cn } from "cn"
 import type { ComponentPropsWithoutRef, ComponentType, HTMLAttributes, SVGProps } from "react"
 
 import { Label } from "./typography.component"

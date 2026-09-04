@@ -1,7 +1,7 @@
 import { Label } from "@bridge/ui/app/component/shadcn/label"
 import { Separator } from "@bridge/ui/app/component/shadcn/separator"
-import { cn } from "cnfast"
 import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "cn"
 import { useMemo } from "react"
 
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {

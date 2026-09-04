@@ -1,4 +1,4 @@
-import { cn } from "cnfast"
+import { cn } from "cn"
 import { Share2Icon } from "lucide-react"
 import type { ButtonHTMLAttributes } from "react"
 

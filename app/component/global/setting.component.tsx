@@ -1,4 +1,4 @@
-import { cn } from "cnfast"
+import { cn } from "cn"
 import { ChevronRightIcon } from "lucide-react"
 import type { ButtonHTMLAttributes, ComponentType, HTMLAttributes, SVGProps } from "react"
 

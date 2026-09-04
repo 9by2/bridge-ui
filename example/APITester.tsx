@@ -1,13 +1,7 @@
 import { Button } from "@bridge/ui/app/component/shadcn/button"
 import { Input } from "@bridge/ui/app/component/shadcn/input"
 import { Label } from "@bridge/ui/app/component/shadcn/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@bridge/ui/app/component/shadcn/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@bridge/ui/app/component/shadcn/select"
 import { Textarea } from "@bridge/ui/app/component/shadcn/textarea"
 import { useRef, type FormEvent } from "react"
 

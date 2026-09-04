@@ -1,8 +1,8 @@
 import { Button } from "@bridge/ui/app/component/shadcn/button"
 import { Input } from "@bridge/ui/app/component/shadcn/input"
 import { Textarea } from "@bridge/ui/app/component/shadcn/textarea"
-import { cn } from "cnfast"
 import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "cn"
 import * as React from "react"
 
 function InputGroup({ className, ...props }: React.ComponentProps<"div">) {

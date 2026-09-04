@@ -1,7 +1,7 @@
 import { ResponsiveImage } from "@bridge/ui/app/component/global/responsive-image.component"
 import { Heading } from "@bridge/ui/app/component/global/typography.component"
 import { Button } from "@bridge/ui/app/component/shadcn/button"
-import { cn } from "cnfast"
+import { cn } from "cn"
 import { TicketIcon } from "lucide-react"
 import type { ComponentPropsWithoutRef } from "react"
 

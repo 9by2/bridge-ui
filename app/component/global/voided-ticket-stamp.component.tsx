@@ -1,5 +1,5 @@
 import { m } from "@cue/web/shared/i18n/runtime/messages"
-import cn from "cnfast"
+import { cn } from "cn"
 
 export const RedactedTicketCode = "••••••••"
 

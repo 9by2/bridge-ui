@@ -6,8 +6,8 @@ import {
   DialogTitle
 } from "@bridge/ui/app/component/shadcn/dialog"
 import { InputGroup, InputGroupAddon } from "@bridge/ui/app/component/shadcn/input-group"
-import { cn } from "cnfast"
 import { Command as CommandPrimitive } from "cmdk"
+import { cn } from "cn"
 import { SearchIcon, CheckIcon } from "lucide-react"
 import * as React from "react"
 
