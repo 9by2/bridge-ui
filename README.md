@@ -21,6 +21,8 @@ Read [ADHD.md](./ADHD.md) for the north star, architecture boundary, foundation 
 - `app/component/shadcn/`: generated Shadcn source; never manually edit.
 - `app/hook/use-mobile.ts`: generated Shadcn support.
 - `app/style/global.css`: canonical primitive theme source during the Tailwind-to-StyleX transition.
+- `storybook/shadcn/`: one browser-tested story for every generated Shadcn module.
+- `.storybook/`: React-Vite, theme, locale, motion, accessibility, and browser-test configuration.
 - `internal/script/`: private repository verification tool.
 - `test/`: repository verification test.
 - `plan/`: active proposal and accepted spec.
@@ -37,10 +39,13 @@ bun lint
 bun fmt
 bun test
 bun typecheck
+bun storybook
+bun storybook:build
+bun storybook:test
 bun verify:package
 ```
 
-Coverage, Storybook, and publish commands are added in later foundation phases.
+Coverage, StyleX, and publish commands are added in later foundation phases.
 
 ## Policy
 

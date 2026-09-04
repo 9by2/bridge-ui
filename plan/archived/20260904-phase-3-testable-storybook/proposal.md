@@ -1,7 +1,7 @@
 # Phase 3: Testable Storybook
 
 **Proposal:** `phase-3-testable-storybook`
-**Status:** draft
+**Status:** done
 **Phase:** [ADHD Build Order 3](../../ADHD.md#build-order)
 
 ## Problem
@@ -28,14 +28,14 @@ The package is importable but has no visual catalog or browser-executed componen
 
 ## Success Criteria
 
-- [ ] Every generated Shadcn module has a matching story file.
-- [ ] Story inventory test fails on a missing module story.
-- [ ] Storybook development server starts.
-- [ ] Static Storybook build passes.
-- [ ] Browser story tests execute in headless Chromium.
-- [ ] Button, input, checkbox, dialog, select, tabs, accordion, popover, tooltip, and toast families have interaction coverage.
-- [ ] Accessibility checks run through Storybook.
-- [ ] Light, dark, mobile, reduced-motion, English, and Thai fixtures are available.
+- [x] Every generated Shadcn module has a matching story file and real composition.
+- [x] Story inventory test fails on a missing module story or fixture composition.
+- [x] Storybook development server smoke test passes.
+- [x] Static Storybook build passes.
+- [x] Browser story tests execute in headless Chromium.
+- [x] Button, input, checkbox, dialog, select, tabs, accordion, popover, tooltip, and toast families have interaction coverage.
+- [x] Accessibility checks run through Storybook with zero blocking failure.
+- [x] Light, dark, mobile, reduced-motion, English, and Thai fixtures are available.
 
 ## Specs
 

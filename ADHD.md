@@ -133,8 +133,10 @@ Foundation is not ready.
 At this document revision:
 
 - 63 generated Shadcn component file;
-- zero story;
-- zero component test;
+- 63 real Shadcn stories with exact inventory coverage;
+- all 63 stories pass headless Chromium and accessibility checks;
+- required button, input, checkbox, select, dialog, popover, tabs, accordion, tooltip, and toast interactions pass;
+- Storybook development smoke test and static build pass;
 - zero StyleX integration;
 - ESM package, declaration, source map, CSS export, tarball, client fixture, and SSR fixture pass;
 - copied application component and consumer import removed;
