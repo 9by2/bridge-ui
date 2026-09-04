@@ -19,24 +19,26 @@ Read [ADHD.md](./ADHD.md) for the north star, architecture boundary, foundation 
 ## Current Source
 
 - `app/component/shadcn/`: generated Shadcn source; never manually edit.
-- `app/component/global/`: copied presentation/domain source under cleanup.
-- `app/style/`: current Cue-derived theme source.
-- `cmd/`: current preview/build command.
+- `app/hook/use-mobile.ts`: generated Shadcn support.
+- `app/style/global.css`: canonical primitive theme source during the Tailwind-to-StyleX transition.
+- `internal/script/`: private repository verification tool.
+- `test/`: repository verification test.
 - `plan/`: active proposal and accepted spec.
 
-Current build is a preview application, not an importable package. Consumer migration is blocked by the foundation gate in [ADHD.md](./ADHD.md).
+Phase 1 removed copied application source and obsolete preview commands. The repository still has no importable package build. Consumer migration remains blocked by the foundation gate in [ADHD.md](./ADHD.md).
 
 ## Command
 
 ```bash
 bun install
-bun run dev
-bun run build
+bun boundary
 bun lint
 bun fmt
+bun test
+bun typecheck
 ```
 
-Additional typecheck, test, coverage, Storybook, package verification, and publish command must be added by the foundation implementation.
+Build, coverage, Storybook, package verification, and publish commands are added in later foundation phases.
 
 ## Policy
 

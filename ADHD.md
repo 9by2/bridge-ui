@@ -132,13 +132,14 @@ Foundation is not ready.
 
 At this document revision:
 
-- 64 Shadcn component file;
+- 63 generated Shadcn component file;
 - zero story;
 - zero component test;
 - zero StyleX integration;
-- current build produce preview HTML, not a library;
-- copied source still depend on Cue application code;
-- new Oxlint boundary expose 113 existing violation.
+- zero package build;
+- copied application component and consumer import removed;
+- source-boundary check, lint, Phase 1 typecheck, and boundary test pass;
+- generated Shadcn source still has recorded compatibility type debt for a later CLI refresh or package-foundation phase.
 
 Do not weaken the gate to make the current snapshot pass. Fix the foundation.
 
