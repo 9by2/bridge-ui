@@ -2,8 +2,8 @@ import * as React from "react"
 
 const MOBILE_BREAKPOINT = 768
 
-export function useIsMobile(defaultValue?: boolean) {
-  const [isMobile, setIsMobile] = React.useState<boolean | undefined>(defaultValue)
+export function useIsMobile() {
+  const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
 
   React.useEffect(() => {
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
@@ -16,16 +16,4 @@ export function useIsMobile(defaultValue?: boolean) {
   }, [])
 
   return !!isMobile
-}
-
-export function MobileOnly({ children }: { children: React.ReactNode }) {
-  const isMobile = useIsMobile()
-  if (!isMobile) return
-  return children
-}
-
-export function NonMobileOnly({ children }: { children: React.ReactNode }) {
-  const isMobile = useIsMobile()
-  if (isMobile) return
-  return children
 }

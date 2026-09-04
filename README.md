@@ -25,20 +25,22 @@ Read [ADHD.md](./ADHD.md) for the north star, architecture boundary, foundation 
 - `test/`: repository verification test.
 - `plan/`: active proposal and accepted spec.
 
-Phase 1 removed copied application source and obsolete preview commands. The repository still has no importable package build. Consumer migration remains blocked by the foundation gate in [ADHD.md](./ADHD.md).
+The repository builds an importable ESM package with declarations and a stable CSS export. Consumer migration remains blocked by Storybook, StyleX, private registry, and complete quality gates in [ADHD.md](./ADHD.md).
 
 ## Command
 
 ```bash
 bun install
 bun boundary
+bun run build
 bun lint
 bun fmt
 bun test
 bun typecheck
+bun verify:package
 ```
 
-Build, coverage, Storybook, package verification, and publish commands are added in later foundation phases.
+Coverage, Storybook, and publish commands are added in later foundation phases.
 
 ## Policy
 

@@ -9,19 +9,20 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
-        secondary: "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
+        secondary:
+          "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
         destructive:
-          "bg-destructive/10 text-destructive-text focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:focus-visible:ring-destructive/40 [a]:hover:bg-destructive/20",
-        warning:
-          "bg-warning text-warning-foreground focus-visible:ring-warning/20 dark:focus-visible:ring-warning/40 [a]:hover:bg-warning/90",
-        outline: "border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground",
-        ghost: "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
-        link: "text-primary underline-offset-4 hover:underline"
-      }
+          "bg-destructive/10 text-destructive focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:focus-visible:ring-destructive/40 [a]:hover:bg-destructive/20",
+        outline:
+          "border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground",
+        ghost:
+          "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
     },
     defaultVariants: {
-      variant: "default"
-    }
+      variant: "default",
+    },
   }
 )
 
@@ -35,15 +36,15 @@ function Badge({
     defaultTagName: "span",
     props: mergeProps<"span">(
       {
-        className: cn(badgeVariants({ variant }), className)
+        className: cn(badgeVariants({ variant }), className),
       },
       props
     ),
     render,
     state: {
       slot: "badge",
-      variant
-    }
+      variant,
+    },
   })
 }
 

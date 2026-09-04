@@ -1,11 +1,17 @@
+import * as React from "react"
 import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
-import * as React from "react"
 
 function BubbleGroup({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="bubble-group" className={cn("flex min-w-0 flex-col gap-2", className)} {...props} />
+  return (
+    <div
+      data-slot="bubble-group"
+      className={cn("flex min-w-0 flex-col gap-2", className)}
+      {...props}
+    />
+  )
 }
 
 const bubbleVariants = cva(
@@ -26,12 +32,12 @@ const bubbleVariants = cva(
         ghost:
           "border-none *:data-[slot=bubble-content]:rounded-none *:data-[slot=bubble-content]:bg-transparent *:data-[slot=bubble-content]:p-0 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:text-foreground dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted/50",
         destructive:
-          "*:data-[slot=bubble-content]:bg-destructive/10 *:data-[slot=bubble-content]:text-destructive dark:*:data-[slot=bubble-content]:bg-destructive/20 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/20 dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/30"
-      }
+          "*:data-[slot=bubble-content]:bg-destructive/10 *:data-[slot=bubble-content]:text-destructive dark:*:data-[slot=bubble-content]:bg-destructive/20 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/20 dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/30",
+      },
     },
     defaultVariants: {
-      variant: "default"
-    }
+      variant: "default",
+    },
   }
 )
 
@@ -55,7 +61,11 @@ function Bubble({
   )
 }
 
-function BubbleContent({ className, render, ...props }: useRender.ComponentProps<"div">) {
+function BubbleContent({
+  className,
+  render,
+  ...props
+}: useRender.ComponentProps<"div">) {
   return useRender({
     defaultTagName: "div",
     props: mergeProps<"div">(
@@ -63,14 +73,14 @@ function BubbleContent({ className, render, ...props }: useRender.ComponentProps
         className: cn(
           "w-fit max-w-full min-w-0 overflow-hidden rounded-xl border border-transparent px-3 py-2 text-sm leading-relaxed wrap-break-word group-data-[align=end]/bubble:self-end [button]:text-left [button,a]:transition-colors [button,a]:outline-none [button,a]:focus-visible:border-ring [button,a]:focus-visible:ring-3 [button,a]:focus-visible:ring-ring/50",
           className
-        )
+        ),
       },
       props
     ),
     render,
     state: {
-      slot: "bubble-content"
-    }
+      slot: "bubble-content",
+    },
   })
 }
 
@@ -80,17 +90,17 @@ const bubbleReactionsVariants = cva(
     variants: {
       side: {
         top: "top-0 -translate-y-3/4",
-        bottom: "bottom-0 translate-y-3/4"
+        bottom: "bottom-0 translate-y-3/4",
       },
       align: {
         start: "left-3",
-        end: "right-3"
-      }
+        end: "right-3",
+      },
     },
     defaultVariants: {
       side: "bottom",
-      align: "end"
-    }
+      align: "end",
+    },
   }
 )
 

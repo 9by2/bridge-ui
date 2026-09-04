@@ -39,7 +39,10 @@ flowchart LR
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./style.css": "./dist/style.css"
+    "./style.css": {
+      "types": "./dist/style.css.d.ts",
+      "default": "./dist/style.css"
+    }
   }
 }
 ```

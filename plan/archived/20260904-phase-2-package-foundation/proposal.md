@@ -1,7 +1,7 @@
 # Phase 2: Package Foundation
 
 **Proposal:** `phase-2-package-foundation`
-**Status:** draft
+**Status:** done
 **Phase:** [ADHD Build Order 2](../../ADHD.md#build-order)
 
 ## Problem
@@ -33,17 +33,17 @@ Storybook must consume the same package-ready source contract that applications 
 
 ## Success Criteria
 
-- [ ] Generated source is refreshed only through the Shadcn CLI.
-- [ ] Full package typecheck passes.
-- [ ] Every generated Shadcn module is reachable from `@bridge/ui`.
-- [ ] `bun build` emits ESM JavaScript and source maps.
-- [ ] TypeScript emits declarations for every public export.
-- [ ] `@bridge/ui/style.css` resolves from the package export map.
-- [ ] React and React DOM are peer dependencies and not bundled.
-- [ ] `bun pm pack` contains only publishable package files.
-- [ ] Clean client and SSR fixtures install the tarball without repository alias.
-- [ ] Fixture typecheck and builds pass.
-- [ ] Phase 3 Storybook can import components from the root package contract.
+- [x] Generated source is refreshed only through the Shadcn CLI.
+- [x] Full package typecheck passes.
+- [x] Every generated Shadcn module is reachable from `@bridge/ui`.
+- [x] `bun run build` emits ESM JavaScript and source maps.
+- [x] TypeScript emits declarations for every public export.
+- [x] `@bridge/ui/style.css` resolves from the package export map.
+- [x] React and React DOM are peer dependencies and not bundled.
+- [x] `bun pm pack` contains only publishable package files.
+- [x] Clean client and SSR fixtures install the tarball without repository alias.
+- [x] Fixture typecheck and builds pass.
+- [x] Phase 3 Storybook can import components from the root package contract.
 
 ## Specs
 

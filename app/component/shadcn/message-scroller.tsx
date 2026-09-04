@@ -1,23 +1,34 @@
-import { Button } from "@bridge/ui/app/component/shadcn/button"
+"use client"
+
+import * as React from "react"
 import {
   MessageScroller as MessageScrollerPrimitive,
   useMessageScroller,
   useMessageScrollerScrollable,
-  useMessageScrollerVisibility
+  useMessageScrollerVisibility,
 } from "@shadcn/react/message-scroller"
 import { cn } from "cn"
-import { ArrowDownIcon } from "lucide-react"
-import * as React from "react"
 
-function MessageScrollerProvider(props: React.ComponentProps<typeof MessageScrollerPrimitive.Provider>) {
+import { Button } from "@bridge/ui/app/component/shadcn/button"
+import { ArrowDownIcon } from "lucide-react"
+
+function MessageScrollerProvider(
+  props: React.ComponentProps<typeof MessageScrollerPrimitive.Provider>
+) {
   return <MessageScrollerPrimitive.Provider {...props} />
 }
 
-function MessageScroller({ className, ...props }: React.ComponentProps<typeof MessageScrollerPrimitive.Root>) {
+function MessageScroller({
+  className,
+  ...props
+}: React.ComponentProps<typeof MessageScrollerPrimitive.Root>) {
   return (
     <MessageScrollerPrimitive.Root
       data-slot="message-scroller"
-      className={cn("group/message-scroller relative flex size-full min-h-0 flex-col overflow-hidden", className)}
+      className={cn(
+        "group/message-scroller relative flex size-full min-h-0 flex-col overflow-hidden",
+        className
+      )}
       {...props}
     />
   )
@@ -61,7 +72,10 @@ function MessageScrollerItem({
     <MessageScrollerPrimitive.Item
       data-slot="message-scroller-item"
       scrollAnchor={scrollAnchor}
-      className={cn("min-w-0 shrink-0 [contain-intrinsic-size:auto_10rem] [content-visibility:auto]", className)}
+      className={cn(
+        "min-w-0 shrink-0 [contain-intrinsic-size:auto_10rem] [content-visibility:auto]",
+        className
+      )}
       {...props}
     />
   )
@@ -89,11 +103,15 @@ function MessageScrollerButton({
         className
       )}
       render={render ?? <Button variant={variant} size={size} />}
-      {...props}>
+      {...props}
+    >
       {children ?? (
         <>
-          <ArrowDownIcon />
-          <span className="sr-only">{direction === "end" ? "Scroll to end" : "Scroll to start"}</span>
+          <ArrowDownIcon
+          />
+          <span className="sr-only">
+            {direction === "end" ? "Scroll to end" : "Scroll to start"}
+          </span>
         </>
       )}
     </MessageScrollerPrimitive.Button>
@@ -109,5 +127,5 @@ export {
   MessageScrollerButton,
   useMessageScroller,
   useMessageScrollerScrollable,
-  useMessageScrollerVisibility
+  useMessageScrollerVisibility,
 }

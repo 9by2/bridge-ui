@@ -136,10 +136,11 @@ At this document revision:
 - zero story;
 - zero component test;
 - zero StyleX integration;
-- zero package build;
+- ESM package, declaration, source map, CSS export, tarball, client fixture, and SSR fixture pass;
 - copied application component and consumer import removed;
-- source-boundary check, lint, Phase 1 typecheck, and boundary test pass;
-- generated Shadcn source still has recorded compatibility type debt for a later CLI refresh or package-foundation phase.
+- source-boundary check, package build, full typecheck, and test pass;
+- Shadcn source refreshed through CLI 4.21.0; `multi-select` is preserved because it is unavailable in the current registry;
+- generated source has 10 lint warnings and zero lint errors.
 
 Do not weaken the gate to make the current snapshot pass. Fix the foundation.
 
