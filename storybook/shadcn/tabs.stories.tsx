@@ -4,6 +4,7 @@ import { expect } from "storybook/test"
 import { Tabs } from "@bridge/ui"
 
 import { StoryFixture } from "./story-fixture"
+import { VariantFixture } from "./variant-fixture"
 
 const meta = {
   component: Tabs,
@@ -20,4 +21,8 @@ export const Default: Story = {
     await userEvent.click(canvas.getByRole("tab", { name: "Two" }))
     await expect(canvas.getByText("Second panel")).toBeVisible()
   }
+}
+
+export const Variants: Story = {
+  render: () => <VariantFixture name="tabs" />
 }

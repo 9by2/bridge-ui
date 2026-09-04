@@ -4,6 +4,7 @@ import { expect } from "storybook/test"
 import { Select } from "@bridge/ui"
 
 import { StoryFixture } from "./story-fixture"
+import { VariantFixture } from "./variant-fixture"
 
 const meta = {
   component: Select,
@@ -25,4 +26,8 @@ export const Default: Story = {
     await userEvent.click(option)
     await expect(trigger).toHaveTextContent("admin")
   }
+}
+
+export const Variants: Story = {
+  render: () => <VariantFixture name="select" />
 }

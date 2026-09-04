@@ -4,6 +4,7 @@ import { expect } from "storybook/test"
 import { Button } from "@bridge/ui"
 
 import { StoryFixture } from "./story-fixture"
+import { VariantFixture } from "./variant-fixture"
 
 const meta = {
   component: Button,
@@ -21,4 +22,8 @@ export const Default: Story = {
     await userEvent.click(button)
     await expect(button).toHaveFocus()
   }
+}
+
+export const Variants: Story = {
+  render: () => <VariantFixture name="button" />
 }

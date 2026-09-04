@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Item } from "@bridge/ui"
 
 import { StoryFixture } from "./story-fixture"
+import { VariantFixture } from "./variant-fixture"
 
 const meta = {
   component: Item,
@@ -15,4 +16,8 @@ type Story = StoryObj
 
 export const Default: Story = {
   render: () => <StoryFixture name="item" />
+}
+
+export const Variants: Story = {
+  render: () => <VariantFixture name="item" />
 }

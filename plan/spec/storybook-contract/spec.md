@@ -1,73 +1,60 @@
 # Spec: Storybook Contract
 
 **Spec ID:** `storybook-contract`
-**Proposal:** `phase-3-testable-storybook`
+**Proposal:** `storybook-variant-coverage`
 **Status:** accepted
 
 ## Summary
 
-This spec defines the complete, browser-testable Storybook catalog for generated `@bridge/ui` components.
+This amendment requires Storybook to expose every explicit finite visual and state value in generated `@bridge/ui` APIs, in addition to complete module and interaction coverage.
 
 ## Requirements
 
-### REQ-001: Complete inventory
+### REQ-001: Variant matrix
 
-Every generated component module must have Storybook coverage.
-
-**Acceptance:**
-
-- [x] Every `app/component/shadcn/<name>.tsx` has `storybook/shadcn/<name>.stories.tsx` and a real fixture composition.
-- [x] Inventory verification fails for missing or extra story basenames and missing fixture cases.
-- [x] Story source imports public components from `@bridge/ui`.
-
-### REQ-002: Catalog fixtures
-
-The catalog must support company UI review contexts.
+A canonical matrix must record every explicit finite generated axis.
 
 **Acceptance:**
 
-- [x] Light and dark themes are selectable.
-- [x] English and Thai copy fixtures are selectable without runtime product i18n.
-- [x] Normal and reduced motion are selectable.
-- [x] Mobile viewport is selectable.
-- [x] Public component stories enable autodocs.
+- [x] Matrix covers `variant`, `size`, `orientation`, `side`, `align`, `state`, and `collapsible` where explicitly supported.
+- [x] Every finite value appears at least once across 27 module galleries.
+- [x] Cross-product permutations are not required.
 
-### REQ-003: Interaction coverage
+### REQ-002: Discoverable stories
 
-Core interactive primitive families must have executable browser behavior.
+Every affected module must expose variant coverage in its own Storybook entry.
 
 **Acceptance:**
 
-- [x] Button/input interaction executes.
-- [x] Checkbox/select interaction executes.
-- [x] Dialog/popover interaction executes.
-- [x] Tabs/accordion interaction executes.
-- [x] Tooltip/toast interaction executes.
+- [x] Every matrix module exports a named `Variants` story.
+- [x] Every `Variants` story renders real package components.
+- [x] Galleries label each axis value visibly.
 
-### REQ-004: Accessibility
+### REQ-003: Semantic states
 
-Storybook must run accessibility checks.
+Common semantic states must be reviewable when supported.
 
 **Acceptance:**
 
-- [x] Accessibility addon is configured.
-- [x] Browser story tests include addon annotations.
-- [x] No blocking accessibility failure exists in any of the 63 stories.
+- [x] Disabled and invalid controls are visible.
+- [x] Checked or selected controls are visible.
+- [x] Open overlays are visible through stories or interactions.
+- [x] Loading and destructive states are visible where supported.
 
-### REQ-005: Executable output
+### REQ-004: Enforcement
 
-Storybook must compile and run independently.
+Variant completeness must be machine checked.
 
 **Acceptance:**
 
-- [x] Development server smoke test starts successfully.
-- [x] Static build completes.
-- [x] All 63 stories execute in headless Chromium.
-- [x] Storybook imports the public package root and canonical CSS.
+- [x] Test fails when a matrix module lacks `Variants`.
+- [x] Test fails when a matrix module lacks an explicit fixture case.
+- [x] Static Storybook build passes.
+- [x] All 90 default and variant stories pass Chromium and accessibility execution.
 
 ## Non-Goals
 
-- StyleX compilation.
-- Hosted visual regression.
-- GitLab publication.
-- Product-specific stories or containers.
+- Every combination of multiple variant axes.
+- Arbitrary continuous values.
+- Generated source edits.
+- StyleX implementation.

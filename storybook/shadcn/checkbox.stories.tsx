@@ -4,6 +4,7 @@ import { expect } from "storybook/test"
 import { Checkbox } from "@bridge/ui"
 
 import { StoryFixture } from "./story-fixture"
+import { VariantFixture } from "./variant-fixture"
 
 const meta = {
   component: Checkbox,
@@ -21,4 +22,8 @@ export const Default: Story = {
     await userEvent.click(checkbox)
     await expect(checkbox).toBeChecked()
   }
+}
+
+export const Variants: Story = {
+  render: () => <VariantFixture name="checkbox" />
 }

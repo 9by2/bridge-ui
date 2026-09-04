@@ -1,7 +1,7 @@
 # Storybook Variant Coverage
 
 **Proposal:** `storybook-variant-coverage`
-**Status:** draft
+**Status:** done
 **Phase:** Amendment to [Storybook contract](../spec/storybook-contract/spec.md)
 
 ## Problem
@@ -28,12 +28,12 @@ The Storybook catalog covers every generated module and executes every story, bu
 
 ## Success Criteria
 
-- [ ] A canonical matrix records every finite generated variant axis and value.
-- [ ] Every matrix value is rendered in Storybook.
-- [ ] Story inventory test fails when a required variant story is missing.
-- [ ] Core state stories include disabled, invalid, checked/selected, open, loading, and destructive examples where supported.
-- [ ] Static Storybook build passes.
-- [ ] Every default and variant story passes Chromium and accessibility execution.
+- [x] A canonical matrix records every finite generated variant axis and value.
+- [x] Every matrix value is rendered in Storybook across 27 named galleries.
+- [x] Story inventory test fails when a required variant story or fixture is missing.
+- [x] Core state stories include disabled, invalid, checked/selected, open, loading, and destructive examples where supported.
+- [x] Static Storybook build passes.
+- [x] All 90 default and variant stories pass Chromium and accessibility execution.
 
 ## Specs
 

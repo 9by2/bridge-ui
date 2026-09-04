@@ -134,7 +134,8 @@ At this document revision:
 
 - 63 generated Shadcn component file;
 - 63 real Shadcn stories with exact inventory coverage;
-- all 63 stories pass headless Chromium and accessibility checks;
+- 27 named variant galleries cover every explicit finite generated `variant`, `size`, `orientation`, `side`, `align`, `state`, and `collapsible` value at least once;
+- all 90 default and variant stories pass headless Chromium and accessibility checks;
 - required button, input, checkbox, select, dialog, popover, tabs, accordion, tooltip, and toast interactions pass;
 - Storybook development smoke test and static build pass;
 - zero StyleX integration;

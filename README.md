@@ -21,7 +21,7 @@ Read [ADHD.md](./ADHD.md) for the north star, architecture boundary, foundation 
 - `app/component/shadcn/`: generated Shadcn source; never manually edit.
 - `app/hook/use-mobile.ts`: generated Shadcn support.
 - `app/style/global.css`: canonical primitive theme source during the Tailwind-to-StyleX transition.
-- `storybook/shadcn/`: one browser-tested story for every generated Shadcn module.
+- `storybook/shadcn/`: default story for every generated module plus finite-axis variant galleries.
 - `.storybook/`: React-Vite, theme, locale, motion, accessibility, and browser-test configuration.
 - `internal/script/`: private repository verification tool.
 - `test/`: repository verification test.
@@ -44,6 +44,8 @@ bun storybook:build
 bun storybook:test
 bun verify:package
 ```
+
+Storybook currently executes 90 browser stories: 63 default module stories and 27 exhaustive finite-axis variant galleries.
 
 Coverage, StyleX, and publish commands are added in later foundation phases.
 

@@ -16,9 +16,9 @@ A canonical matrix must record every explicit finite generated axis.
 
 **Acceptance:**
 
-- [ ] Matrix covers `variant`, `size`, `orientation`, `side`, `align`, `state`, and `collapsible` where explicitly supported.
-- [ ] Every finite value appears at least once.
-- [ ] Cross-product permutations are not required.
+- [x] Matrix covers `variant`, `size`, `orientation`, `side`, `align`, `state`, and `collapsible` where explicitly supported.
+- [x] Every finite value appears at least once across 27 module galleries.
+- [x] Cross-product permutations are not required.
 
 ### REQ-002: Discoverable stories
 
@@ -26,9 +26,9 @@ Every affected module must expose variant coverage in its own Storybook entry.
 
 **Acceptance:**
 
-- [ ] Every matrix module exports a named `Variants` story.
-- [ ] Every `Variants` story renders real package components.
-- [ ] Galleries label each axis value visibly.
+- [x] Every matrix module exports a named `Variants` story.
+- [x] Every `Variants` story renders real package components.
+- [x] Galleries label each axis value visibly.
 
 ### REQ-003: Semantic states
 
@@ -36,10 +36,10 @@ Common semantic states must be reviewable when supported.
 
 **Acceptance:**
 
-- [ ] Disabled and invalid controls are visible.
-- [ ] Checked or selected controls are visible.
-- [ ] Open overlays are visible through stories or interactions.
-- [ ] Loading and destructive states are visible where supported.
+- [x] Disabled and invalid controls are visible.
+- [x] Checked or selected controls are visible.
+- [x] Open overlays are visible through stories or interactions.
+- [x] Loading and destructive states are visible where supported.
 
 ### REQ-004: Enforcement
 
@@ -47,10 +47,10 @@ Variant completeness must be machine checked.
 
 **Acceptance:**
 
-- [ ] Test fails when a matrix module lacks `Variants`.
-- [ ] Test fails when a matrix module lacks an explicit fixture case.
-- [ ] Static Storybook build passes.
-- [ ] All default and variant stories pass Chromium and accessibility execution.
+- [x] Test fails when a matrix module lacks `Variants`.
+- [x] Test fails when a matrix module lacks an explicit fixture case.
+- [x] Static Storybook build passes.
+- [x] All 90 default and variant stories pass Chromium and accessibility execution.
 
 ## Non-Goals
 
