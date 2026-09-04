@@ -1,5 +1,5 @@
-import { Button } from "@cue/web/app/component/shadcn/button"
-import { StudioStatusPill } from "@cue/web/app/component/studio/studio-status-pill"
+import { Button } from "@bridge/ui/app/component/shadcn/button"
+import { StudioStatusPill } from "@bridge/ui/app/component/studio/studio-status-pill"
 import type { StudioOrderRowView } from "@cue/web/app/mapper/studio-order.mapper"
 import { m } from "@cue/web/shared/i18n/runtime/messages"
 

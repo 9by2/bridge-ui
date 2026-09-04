@@ -1,4 +1,4 @@
-import { SocialEmbedComponent } from "@cue/web/app/component/global/social-embed.component"
+import { SocialEmbedComponent } from "@bridge/ui/app/component/global/social-embed.component"
 import { EmbedDirectiveName, ReadSocialEmbedDirective } from "@cue/web/shared/lib/social-embed"
 import type { DirectiveDescriptor } from "@mdxeditor/editor"
 

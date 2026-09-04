@@ -1,5 +1,5 @@
-import { Button } from "@cue/web/app/component/shadcn/button"
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@cue/web/app/component/shadcn/empty"
+import { Button } from "@bridge/ui/app/component/shadcn/button"
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@bridge/ui/app/component/shadcn/empty"
 import { Link } from "@tanstack/react-router"
 import type { ComponentProps } from "react"
 

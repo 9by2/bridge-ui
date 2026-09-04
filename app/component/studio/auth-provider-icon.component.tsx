@@ -3,7 +3,7 @@ import {
   GoogleColorIconComponent,
   LineColorIconComponent,
   XColorIconComponent
-} from "@cue/web/app/component/global/icon.component"
+} from "@bridge/ui/app/component/global/icon.component"
 import { AuthAuthenticationProviders } from "@cue/web/shared/config/auth"
 import { m } from "@cue/web/shared/i18n/runtime/messages"
 import type { ComponentType, SVGProps } from "react"

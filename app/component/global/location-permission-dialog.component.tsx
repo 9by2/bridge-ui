@@ -6,7 +6,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle
-} from "@cue/web/app/component/shadcn/dialog"
+} from "@bridge/ui/app/component/shadcn/dialog"
 import { m } from "@cue/web/shared/i18n/runtime/messages"
 import type { Locale } from "@cue/web/shared/i18n/runtime/runtime.js"
 import { LocateFixedIcon } from "lucide-react"

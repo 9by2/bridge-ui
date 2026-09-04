@@ -1,4 +1,4 @@
-import { Button } from "@cue/web/app/component/shadcn/button"
+import { Button } from "@bridge/ui/app/component/shadcn/button"
 
 export type StudioTablePageSize = 20 | 50 | 100 | 500
 

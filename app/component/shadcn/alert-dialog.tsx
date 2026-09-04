@@ -1,5 +1,5 @@
 import { AlertDialog as AlertDialogPrimitive } from "@base-ui/react/alert-dialog"
-import { Button } from "@cue/web/app/component/shadcn/button"
+import { Button } from "@bridge/ui/app/component/shadcn/button"
 import { cn } from "cnfast"
 import * as React from "react"
 

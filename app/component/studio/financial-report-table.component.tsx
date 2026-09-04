@@ -1,4 +1,4 @@
-import { StudioStatusPill, type StudioStatusTone } from "@cue/web/app/component/studio/studio-status-pill"
+import { StudioStatusPill, type StudioStatusTone } from "@bridge/ui/app/component/studio/studio-status-pill"
 import { FormatFinancialReportPaidAt } from "@cue/web/app/lib/financial-report-paid-at"
 import { TicketOrderStatus } from "@cue/web/shared/config/order"
 import { DefaultTimezone } from "@cue/web/shared/config/timezone"

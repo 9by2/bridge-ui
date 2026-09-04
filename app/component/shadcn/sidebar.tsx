@@ -2,9 +2,9 @@
 
 import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
-import { Button } from "@cue/web/app/component/shadcn/button"
-import { Input } from "@cue/web/app/component/shadcn/input"
-import { Separator } from "@cue/web/app/component/shadcn/separator"
+import { Button } from "@bridge/ui/app/component/shadcn/button"
+import { Input } from "@bridge/ui/app/component/shadcn/input"
+import { Separator } from "@bridge/ui/app/component/shadcn/separator"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@bridge/ui/app/component/shadcn/sheet"
 import { Skeleton } from "@bridge/ui/app/component/shadcn/skeleton"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@bridge/ui/app/component/shadcn/tooltip"

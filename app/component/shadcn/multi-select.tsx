@@ -1,7 +1,7 @@
 "use client"
 
-import { Badge } from "@cue/web/app/component/shadcn/badge"
-import { Button } from "@cue/web/app/component/shadcn/button"
+import { Badge } from "@bridge/ui/app/component/shadcn/badge"
+import { Button } from "@bridge/ui/app/component/shadcn/button"
 import { cn } from "cnfast"
 import { ChevronsUpDownIcon, CheckIcon, XIcon } from "lucide-react"
 import {

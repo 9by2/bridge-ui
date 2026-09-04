@@ -1,4 +1,4 @@
-import { ErrorComponent, ForbiddenError } from "@cue/web/app/component/global/error.component"
+import { ErrorComponent, ForbiddenError } from "@bridge/ui/app/component/global/error.component"
 import { getStudioDefaultPath, StudioRouteAccessDeniedError } from "@cue/web/app/config/studio/auth"
 import { m } from "@cue/web/shared/i18n/runtime/messages"
 import type { ErrorComponentProps } from "@tanstack/react-router"

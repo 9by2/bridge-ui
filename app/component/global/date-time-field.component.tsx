@@ -1,8 +1,8 @@
-import { Button } from "@cue/web/app/component/shadcn/button"
-import { Calendar } from "@cue/web/app/component/shadcn/calendar"
-import { Field, FieldLabel } from "@cue/web/app/component/shadcn/field"
-import { Input } from "@cue/web/app/component/shadcn/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@cue/web/app/component/shadcn/popover"
+import { Button } from "@bridge/ui/app/component/shadcn/button"
+import { Calendar } from "@bridge/ui/app/component/shadcn/calendar"
+import { Field, FieldLabel } from "@bridge/ui/app/component/shadcn/field"
+import { Input } from "@bridge/ui/app/component/shadcn/input"
+import { Popover, PopoverContent, PopoverTrigger } from "@bridge/ui/app/component/shadcn/popover"
 import {
   DateInputValueToDate,
   DateToDateInputValue,

@@ -1,9 +1,9 @@
-import { MarkdownEditorInsertEmbedButton } from "@cue/web/app/component/global/markdown-editor-embed-dialog"
-import { SocialEmbedDirectiveDescriptor } from "@cue/web/app/component/global/markdown-editor-embed-directive"
-import { CreateMarkdownEditorImageDialog } from "@cue/web/app/component/global/markdown-editor-image-dialog"
+import { MarkdownEditorInsertEmbedButton } from "@bridge/ui/app/component/global/markdown-editor-embed-dialog"
+import { SocialEmbedDirectiveDescriptor } from "@bridge/ui/app/component/global/markdown-editor-embed-directive"
+import { CreateMarkdownEditorImageDialog } from "@bridge/ui/app/component/global/markdown-editor-image-dialog"
 
 import "@mdxeditor/editor/style.css"
-import "@cue/web/app/component/global/markdown-editor.component.css"
+import "@bridge/ui/app/component/global/markdown-editor.component.css"
 
 import { m } from "@cue/web/shared/i18n/runtime/messages"
 import { SocialEmbedPasteMarkdown } from "@cue/web/shared/lib/social-embed"

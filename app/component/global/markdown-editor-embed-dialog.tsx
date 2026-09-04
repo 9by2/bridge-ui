@@ -1,4 +1,4 @@
-import { Button } from "@cue/web/app/component/shadcn/button"
+import { Button } from "@bridge/ui/app/component/shadcn/button"
 import {
   Dialog,
   DialogContent,
@@ -7,9 +7,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from "@cue/web/app/component/shadcn/dialog"
-import { Input } from "@cue/web/app/component/shadcn/input"
-import { Label } from "@cue/web/app/component/shadcn/label"
+} from "@bridge/ui/app/component/shadcn/dialog"
+import { Input } from "@bridge/ui/app/component/shadcn/input"
+import { Label } from "@bridge/ui/app/component/shadcn/label"
 import { m } from "@cue/web/shared/i18n/runtime/messages"
 import { SocialEmbedPasteMarkdown } from "@cue/web/shared/lib/social-embed"
 import type { MDXEditorMethods } from "@mdxeditor/editor"

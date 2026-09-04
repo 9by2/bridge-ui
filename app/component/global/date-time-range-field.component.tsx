@@ -1,7 +1,7 @@
-import { TimeSelectComponent } from "@cue/web/app/component/global/time-select.component"
-import { Calendar } from "@cue/web/app/component/shadcn/calendar"
-import { Field, FieldDescription, FieldLabel } from "@cue/web/app/component/shadcn/field"
-import { Input } from "@cue/web/app/component/shadcn/input"
+import { TimeSelectComponent } from "@bridge/ui/app/component/global/time-select.component"
+import { Calendar } from "@bridge/ui/app/component/shadcn/calendar"
+import { Field, FieldDescription, FieldLabel } from "@bridge/ui/app/component/shadcn/field"
+import { Input } from "@bridge/ui/app/component/shadcn/input"
 import {
   AddOneHourToDateTimeLocalValue,
   DateInputValueToDate,

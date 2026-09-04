@@ -1,5 +1,5 @@
-import { LogoComponent } from "@cue/web/app/component/global/logo.component"
-import { Button } from "@cue/web/app/component/shadcn/button"
+import { LogoComponent } from "@bridge/ui/app/component/global/logo.component"
+import { Button } from "@bridge/ui/app/component/shadcn/button"
 import { m } from "@cue/web/shared/i18n/runtime/messages"
 import { Link, useRouterState } from "@tanstack/react-router"
 

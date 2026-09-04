@@ -1,5 +1,5 @@
-import { ResponsiveImage } from "@cue/web/app/component/global/responsive-image.component"
-import { SocialEmbedComponent } from "@cue/web/app/component/global/social-embed.component"
+import { ResponsiveImage } from "@bridge/ui/app/component/global/responsive-image.component"
+import { SocialEmbedComponent } from "@bridge/ui/app/component/global/social-embed.component"
 import { UnknownTextDirectiveLiteral } from "@cue/web/shared/lib/markdown-directive"
 import { ReadSocialEmbedDirective } from "@cue/web/shared/lib/social-embed"
 import { slugify } from "@cue/web/shared/lib/string"

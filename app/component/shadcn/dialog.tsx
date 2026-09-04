@@ -1,5 +1,5 @@
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
-import { Button } from "@cue/web/app/component/shadcn/button"
+import { Button } from "@bridge/ui/app/component/shadcn/button"
 import { cn } from "cnfast"
 import { XIcon } from "lucide-react"
 import * as React from "react"
