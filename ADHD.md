@@ -20,7 +20,7 @@ Every company application should reuse the same accessible primitive, presentati
 - reusable presentation component;
 - canonical token and theme;
 - UI-only hook and utility;
-- Storybook catalog;
+- component catalog catalog;
 - component and package test;
 - versioned private GitLab package.
 
@@ -59,7 +59,7 @@ app/                # package source
   index.ts
 shared/             # reusable non-component code
 internal/           # non-exported tool and fixture
-.storybook/
+internal/catalog/
 test/
 ```
 
@@ -83,16 +83,16 @@ Do not implement any consumer migration until all foundation gate pass.
 - zero container source;
 - every public module satisfy package ownership.
 
-### 2. Shadcn Storybook
+### 2. Shadcn component catalog
 
 - every generated Shadcn component has a story;
 - every interactive component has an interaction story;
 - relevant disabled, invalid, loading, open, empty, long-copy, Thai-copy, dark, mobile, and reduced-motion state exist;
-- accessibility, visual, inventory, and static Storybook check pass.
+- accessibility, visual, inventory, and static component catalog check pass.
 
 ### 3. StyleX Bundle
 
-- Storybook and Bun build compile through StyleX;
+- component catalog and Bun build compile through StyleX;
 - production CSS extract statically;
 - canonical token support light and dark mode;
 - clean Vite client and SSR fixture build pass;
@@ -111,13 +111,13 @@ Do not implement any consumer migration until all foundation gate pass.
 
 - repository coverage is at least 90%;
 - every non-Shadcn component has 100% statement, branch, function, and line coverage;
-- lint, typecheck, test, Storybook, visual, package, client, and SSR build pass.
+- lint, typecheck, test, component catalog, visual, package, client, and SSR build pass.
 
 ## Build Order
 
 1. Delete copied container, domain component, Cue i18n, and consumer import.
 2. Build stable package export, declaration, CSS, and fixture.
-3. Add Storybook for every Shadcn component.
+3. Add component catalog for every Shadcn component.
 4. Integrate StyleX and prove static package output.
 5. Publish and install a private GitLab prerelease.
 6. Pass every foundation gate.
@@ -133,11 +133,11 @@ Foundation is not ready.
 At this document revision:
 
 - 63 generated Shadcn component file;
-- 63 real Shadcn stories with exact inventory coverage;
-- 27 named variant galleries cover every explicit finite generated `variant`, `size`, `orientation`, `side`, `align`, `state`, and `collapsible` value at least once;
-- all 90 default and variant stories pass headless Chromium and accessibility checks;
+- 63 component entries and 105 isolated catalog examples;
+- browser suite covers every example and core interaction;
+- one open-menu accessibility failure is explicitly tracked; full state and visual coverage remains incomplete;
 - required button, input, checkbox, select, dialog, popover, tabs, accordion, tooltip, and toast interactions pass;
-- Storybook development smoke test and static build pass;
+- component catalog development smoke test and static build pass;
 - zero StyleX integration;
 - ESM package, declaration, source map, CSS export, tarball, client fixture, and SSR fixture pass;
 - copied application component and consumer import removed;
@@ -159,6 +159,6 @@ Do not weaken the gate to make the current snapshot pass. Fix the foundation.
 
 - [Consolidation decision](https://artifact.9by2.workers.dev/artifact/01a06bd6-c1ff-7dae-97c1-c143fd598b8e/)
 - [StyleX](https://stylexjs.com/)
-- [Storybook](https://storybook.js.org/docs)
+- [component catalog](https://catalog.js.org/docs)
 - [GitLab npm registry](https://docs.gitlab.com/user/packages/npm_registry/)
 - [Bun package manager](https://bun.com/docs/pm)

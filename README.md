@@ -13,7 +13,7 @@ Read [ADHD.md](./ADHD.md) for the north star, architecture boundary, foundation 
 - TypeScript
 - Tailwind 4 during current transition
 - Planned StyleX package build
-- Planned Storybook catalog
+- Vite component catalog with Playwright verification
 - Planned private GitLab npm registry publication
 
 ## Current Source
@@ -21,13 +21,13 @@ Read [ADHD.md](./ADHD.md) for the north star, architecture boundary, foundation 
 - `app/component/shadcn/`: generated Shadcn source; never manually edit.
 - `app/hook/use-mobile.ts`: generated Shadcn support.
 - `app/style/global.css`: canonical primitive theme source during the Tailwind-to-StyleX transition.
-- `storybook/shadcn/`: default story for every generated module plus finite-axis variant galleries.
-- `.storybook/`: React-Vite, theme, locale, motion, accessibility, and browser-test configuration.
+- `internal/catalog/example/`: real package example and exact copyable source.
+- `vite.config.ts` and `playwright.config.ts`: catalog and browser verification.
 - `internal/script/`: private repository verification tool.
 - `test/`: repository verification test.
 - `plan/`: active proposal and accepted spec.
 
-The repository builds an importable ESM package with declarations and a stable CSS export. Consumer migration remains blocked by Storybook, StyleX, private registry, and complete quality gates in [ADHD.md](./ADHD.md).
+The repository builds an importable ESM package with declarations and a stable CSS export. Consumer migration remains blocked by component catalog, StyleX, private registry, and complete quality gates in [ADHD.md](./ADHD.md).
 
 ## Command
 
@@ -39,15 +39,15 @@ bun lint
 bun fmt
 bun test
 bun typecheck
-bun storybook
-bun storybook:build
-bun storybook:test
+bun dev
+bun catalog:build
+bun catalog:test
 bun verify:package
 ```
 
-Storybook currently executes 90 browser stories: 63 default module stories and 27 exhaustive finite-axis variant galleries.
+Run `bun dev` to open the entire catalog at http://127.0.0.1:6006. It includes 63 component entries and 105 selectable examples, isolated preview, comparison, code copying, theme and mobile controls.
 
-Coverage, StyleX, and publish commands are added in later foundation phases.
+Known foundation gap: the open dropdown-menu example has a tracked expected accessibility failure for Base UI focus guards and portal landmarks. Earlier fixture contrast overrides remain visible in example source; the browser result is not proof of unmodified package accessibility. Exhaustive state, visual and numerical coverage, StyleX and registry publication remain unfinished.
 
 ## Policy
 

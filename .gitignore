@@ -5,6 +5,9 @@ node_modules
 out
 dist
 storybook-static
+catalog-dist
+test-results
+playwright-report
 *.tgz
 
 # code coverage
@@ -17,8 +20,6 @@ _.log
 report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 .*
-!.storybook/
-!.storybook/**
 
 # caches
 .eslintcache

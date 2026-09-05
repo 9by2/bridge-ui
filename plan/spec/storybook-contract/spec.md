@@ -2,7 +2,7 @@
 
 **Spec ID:** `storybook-contract`
 **Proposal:** `storybook-variant-coverage`
-**Status:** accepted
+**Status:** superseded by [catalog-contract](../catalog-contract/spec.md). Storybook tooling is replaced; the component, interaction, state, accessibility and visual intent remains required.
 
 ## Summary
 
