@@ -45,7 +45,7 @@ bun catalog:test
 bun verify:package
 ```
 
-Run `bun dev` to open the entire catalog at http://127.0.0.1:6006. It includes 63 component entries and 105 selectable examples, isolated preview, comparison, code copying, theme and mobile controls.
+Run `bun dev` to open the entire catalog at http://127.0.0.1:6006. Each of the 63 component pages displays every available example inline, with a heading, description, isolated preview and exact-source code disclosure. The 105 examples require no variant dropdown. Theme and mobile controls remain available.
 
 Known foundation gap: the open dropdown-menu example has a tracked expected accessibility failure for Base UI focus guards and portal landmarks. Earlier fixture contrast overrides remain visible in example source; the browser result is not proof of unmodified package accessibility. Exhaustive state, visual and numerical coverage, StyleX and registry publication remain unfinished.
 

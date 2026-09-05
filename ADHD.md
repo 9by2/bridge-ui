@@ -20,7 +20,7 @@ Every company application should reuse the same accessible primitive, presentati
 - reusable presentation component;
 - canonical token and theme;
 - UI-only hook and utility;
-- component catalog catalog;
+- component catalog;
 - component and package test;
 - versioned private GitLab package.
 
@@ -159,6 +159,6 @@ Do not weaken the gate to make the current snapshot pass. Fix the foundation.
 
 - [Consolidation decision](https://artifact.9by2.workers.dev/artifact/01a06bd6-c1ff-7dae-97c1-c143fd598b8e/)
 - [StyleX](https://stylexjs.com/)
-- [component catalog](https://catalog.js.org/docs)
+- [Component catalog contract](plan/spec/catalog-contract/spec.md)
 - [GitLab npm registry](https://docs.gitlab.com/user/packages/npm_registry/)
 - [Bun package manager](https://bun.com/docs/pm)

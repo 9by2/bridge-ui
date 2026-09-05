@@ -30,18 +30,19 @@ for (const name of readdirSync(root)) {
   }
 }
 
-test("browse, source, comparison, theme and mobile", async ({ page, context }) => {
+test("browse inline example, source, theme and mobile", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"])
   await page.goto("/#button/default")
   await expect(page.getByRole("heading", { name: "Button", exact: true })).toBeVisible()
-  await page.getByRole("button", { name: "Code", exact: true }).click()
-  await expect(page.locator(".code-panel code")).toContainText("export default function Example")
-  await page.getByRole("button", { name: "Copy code" }).click()
+  await expect(page.getByLabel("Example", { exact: true })).toHaveCount(0)
+  await expect(page.locator("iframe")).toHaveCount(4)
+  for (const heading of ["Default", "Semantic", "Size", "Variant"]) {
+    await expect(page.getByRole("heading", { name: heading, exact: true })).toBeVisible()
+  }
+  await page.getByText("View code", { exact: true }).first().click()
+  await expect(page.locator(".code-panel code").first()).toContainText("export default function Example")
+  await page.getByRole("button", { name: "Copy code" }).first().click()
   await expect(page.getByRole("button", { name: "Copied", exact: true })).toBeVisible()
-  await page.getByLabel("Example", { exact: true }).selectOption("variant")
-  await expect(page).toHaveURL(/button\/variant/)
-  await page.getByRole("button", { name: "Compare", exact: true }).click()
-  await expect(page.locator("iframe")).toHaveCount(2)
   await page.getByLabel("Toggle theme").click()
   await expect(page.locator("html")).toHaveClass("dark")
   await page.getByLabel("Find a component").fill("dialog")

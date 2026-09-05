@@ -19,6 +19,28 @@ const title = (value: string) =>
     .map((word) => word[0]?.toUpperCase() + word.slice(1))
     .join(" ")
 const components = Object.fromEntries(Object.entries(modules).map(([path, load]) => [path, lazy(load)]))
+const description: Record<string, string> = {
+  default: "The standard composition and starting point for this component.",
+  variant: "Compare the appearance of each demonstrated style, from subtle to emphasized.",
+  size: "Compare the demonstrated dimensions, spacing and text scale.",
+  semantic: "Review the demonstrated enabled, disabled, selected or invalid state.",
+  state: "Review the demonstrated lifecycle state, including progress and error feedback.",
+  orientation: "Compare the horizontal and vertical layout where supported.",
+  side: "Open each trigger to review its placement at the corresponding edge.",
+  "item-variant": "Open the menu to compare its default and destructive action styling.",
+  "addon-align": "Compare content placed before, after, above or below the input.",
+  "button-size": "Compare the compact text and icon button dimensions.",
+  media: "Compare the demonstrated text, icon and image treatment.",
+  align: "Compare content aligned to the start and end of the layout.",
+  legend: "Compare the field legend and compact label treatment.",
+  "orientation-and-media": "Compare horizontal icon and vertical image compositions.",
+  "align-and-reactions": "Compare message alignment and reaction placement.",
+  "orientation-and-variant": "Compare tab styling in horizontal and vertical compositions.",
+  "side-and-variant": "Review the demonstrated sidebar side and surface configuration.",
+  "menu-button": "Compare sidebar menu button styling and size.",
+  collapsible:
+    "The documented collapse modes. This existing example labels the modes rather than demonstrating their behavior."
+}
 
 class PreviewBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   override state = { failed: false }
@@ -39,9 +61,7 @@ function App() {
   const [query, setQuery] = useState("")
   const [dark, setDark] = useState(new URLSearchParams(location.search).get("theme") === "dark")
   const [mobile, setMobile] = useState(false)
-  const [compare, setCompare] = useState(false)
-  const [code, setCode] = useState(false)
-  const [copy, setCopy] = useState("Copy code")
+  const [copy, setCopy] = useState<{ path: string; label: string } | null>(null)
   const [locale, setLocale] = useState("en")
   const [motion, setMotion] = useState(false)
   const [menu, setMenu] = useState(false)
@@ -52,11 +72,10 @@ function App() {
   const choices = entries
     .filter((item) => item.name === name)
     .sort((a, b) => (a.example === "default" ? -1 : b.example === "default" ? 1 : a.example.localeCompare(b.example)))
-  const source = entry ? (sources[entry.path] ?? "") : ""
   useEffect(() => {
     const update = () => {
       setRoute(location.hash.slice(1) || "button/default")
-      setCopy("Copy code")
+      setCopy(null)
       setMenu(false)
     }
     window.addEventListener("hashchange", update)
@@ -149,7 +168,7 @@ function App() {
               <div>
                 <div className="eyebrow">BUILD WITH BRIDGE</div>
                 <h1>{title(name)}</h1>
-                <p>Explore the component. Choose an example. Make it yours.</p>
+                <p>Every available example, described and displayed below. No switching required.</p>
               </div>
               <a
                 className="upstream"
@@ -160,50 +179,14 @@ function App() {
               </a>
             </div>
             <div className="workspace-toolbar">
-              <label>
-                Example{" "}
-                <select
-                  aria-label="Example"
-                  value={example}
-                  onChange={(event) => {
-                    location.hash = `${name}/${event.target.value}`
-                  }}>
-                  {choices.map((item) => (
-                    <option key={item.example} value={item.example}>
-                      {title(item.example)}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <span>
+                {choices.length} example{choices.length === 1 ? "" : "s"} on this page
+              </span>
               <div className="toolbar-action">
                 <button aria-pressed={mobile} onClick={() => setMobile(!mobile)}>
                   {mobile ? "Mobile" : "Desktop"}
                 </button>
-                <button aria-pressed={compare} onClick={() => setCompare(!compare)}>
-                  Compare
-                </button>
-                <button aria-pressed={code} onClick={() => setCode(!code)}>
-                  Code
-                </button>
               </div>
-            </div>
-            <div className={`preview-grid ${compare ? "comparison" : ""}`}>
-              <section className="preview-card">
-                <div className="preview-caption">
-                  <span>{title(example)}</span>
-                  <span>LIVE PREVIEW</span>
-                </div>
-                {preview(example, "Component preview")}
-              </section>
-              {compare && (
-                <section className="preview-card">
-                  <div className="preview-caption">
-                    <span>Default</span>
-                    <span>REFERENCE</span>
-                  </div>
-                  {preview("default", "Comparison preview")}
-                </section>
-              )}
             </div>
             <div className="preview-setting">
               <span>
@@ -220,29 +203,39 @@ function App() {
                 <option value="th">Thai</option>
               </select>
             </div>
-            {code && (
-              <section className="code-panel">
-                <div className="code-header">
-                  <span>
-                    example.tsx <span className="brand-muted">/ exact preview source</span>
-                  </span>
-                  <button
-                    onClick={async () => {
-                      try {
-                        await navigator.clipboard.writeText(source)
-                        setCopy("Copied")
-                      } catch {
-                        setCopy("Copy unavailable")
-                      }
-                    }}>
-                    {copy}
-                  </button>
-                </div>
-                <pre tabIndex={0}>
-                  <code>{source}</code>
-                </pre>
-              </section>
-            )}
+            <div className="inline-example-list">
+              {choices.map((item) => (
+                <section className="inline-example" key={item.path} aria-labelledby={`heading-${item.example}`}>
+                  <h2 id={`heading-${item.example}`}>{title(item.example)}</h2>
+                  <p>
+                    {description[item.example] ?? `Review the ${title(item.example).toLowerCase()} composition below.`}
+                  </p>
+                  <div className="preview-card">
+                    {preview(item.example, `${title(name)} ${title(item.example)} preview`)}
+                  </div>
+                  <details className="code-panel">
+                    <summary>View code</summary>
+                    <div className="code-header">
+                      <span>{item.example}.tsx / exact preview source</span>
+                      <button
+                        onClick={async () => {
+                          try {
+                            await navigator.clipboard.writeText(sources[item.path] ?? "")
+                            setCopy({ path: item.path, label: "Copied" })
+                          } catch {
+                            setCopy({ path: item.path, label: "Copy unavailable" })
+                          }
+                        }}>
+                        {copy?.path === item.path ? copy.label : "Copy code"}
+                      </button>
+                    </div>
+                    <pre tabIndex={0}>
+                      <code>{sources[item.path]}</code>
+                    </pre>
+                  </details>
+                </section>
+              ))}
+            </div>
             <section className="quick-start">
               <div>
                 <div className="eyebrow">USE IN YOUR APPLICATION</div>

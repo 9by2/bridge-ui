@@ -1,5 +1,7 @@
 # Catalog Contract
 
+Presentation amended by [inline-example](../inline-example/spec.md): all existing examples appear inline with descriptive copy and per-example code. Dropdown selection and comparison control are superseded.
+
 **Status:** accepted
 
 - `bun dev` opens the complete searchable component catalog.

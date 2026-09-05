@@ -1,4 +1,29 @@
 @import "@fontsource-variable/geist";
+
+.inline-example-list {
+  display: grid;
+  gap: 40px;
+}
+.inline-example h2 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+.inline-example > p {
+  color: var(--shell-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.inline-example .code-panel {
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+.inline-example summary {
+  cursor: pointer;
+  padding: 12px 16px;
+  font-size: 12px;
+}
 .preview-heading {
   position: absolute;
   width: 1px;
