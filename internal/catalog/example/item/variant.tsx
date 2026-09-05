@@ -1,26 +1,24 @@
-import type { ReactNode } from "react"
-
 import * as UI from "@bridge/ui"
-
-function Axis({ children, label }: { readonly children: ReactNode; readonly label: string }) {
-  return (
-    <section className="space-y-2">
-      <h3 className="text-sm font-semibold">{label}</h3>
-      <div className="flex flex-wrap items-start gap-3">{children}</div>
-    </section>
-  )
-}
 
 export default function Example() {
   return (
-    <Axis label="variant">
+    <div className="w-full max-w-lg space-y-6">
       {(["default", "outline", "muted"] as const).map((variant) => (
-        <UI.Item key={variant} variant={variant} className="w-56">
-          <UI.ItemContent>
-            <UI.ItemTitle>{variant}</UI.ItemTitle>
-          </UI.ItemContent>
-        </UI.Item>
+        <section key={variant} className="space-y-2">
+          <h3 className="text-sm font-semibold capitalize">{variant}</h3>
+          <UI.Item variant={variant}>
+            <UI.ItemContent>
+              <UI.ItemTitle>Design review</UI.ItemTitle>
+              <UI.ItemDescription>Review the latest draft and leave feedback.</UI.ItemDescription>
+            </UI.ItemContent>
+            <UI.ItemActions>
+              <UI.Button variant="outline" size="sm">
+                Open
+              </UI.Button>
+            </UI.ItemActions>
+          </UI.Item>
+        </section>
       ))}
-    </Axis>
+    </div>
   )
 }

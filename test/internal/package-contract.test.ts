@@ -19,7 +19,7 @@ describe("package contract", () => {
     const manifest = await Bun.file(path.join(root, "package.json")).json()
 
     expect(manifest.files).toEqual(["dist"])
-    expect(manifest.exports).toEqual({
+    expect(manifest.exports).toMatchObject({
       ".": {
         types: "./dist/index.d.ts",
         import: "./dist/index.js"

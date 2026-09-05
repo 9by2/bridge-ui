@@ -8,7 +8,7 @@ test("embedded chart geometry survives full catalog navigation", async ({ page }
   await page.goto("/#chart/default")
   for (const name of ["Treemap", "Scatter", "Sankey"]) {
     const frame = page.getByTitle(`Chart ${name} preview`)
-    await frame.scrollIntoViewIfNeeded()
+    await page.locator(`[data-preview="Chart ${name} preview"]`).scrollIntoViewIfNeeded()
     await expect(frame.contentFrame().locator("svg").first()).toBeVisible()
     expect(await frame.contentFrame().locator("svg path, svg rect").count()).toBeGreaterThan(1)
   }
@@ -55,6 +55,11 @@ for (const name of readdirSync(root)) {
       page.on("pageerror", (error) => errors.push(error.message))
       await page.goto(`/?preview&theme=light#${name}/${example}`)
       await expect(page.locator(".example-stage")).toBeVisible()
+      if (name === "ts-chart") {
+        await expect(page.locator("svg.ts-chart").first()).toBeVisible()
+        await expect(page.locator("svg.ts-chart [data-ts-key=marks] > g").first()).toBeAttached()
+        await expect(page.getByText("Loading preview...", { exact: true })).toHaveCount(0)
+      }
       await expect(page.getByText("Loading preview...")).toHaveCount(0)
       await expect(page.getByText("This example could not render.", { exact: false })).toHaveCount(0)
       await page.evaluate(() => document.fonts.ready)
@@ -75,7 +80,7 @@ test("browse inline example, source, theme and mobile", async ({ page, context }
   await expect(page.locator("html")).toHaveClass("dark")
   await expect(page.getByRole("heading", { name: "Button", exact: true })).toBeVisible()
   await expect(page.getByLabel("Example", { exact: true })).toHaveCount(0)
-  await expect(page.locator("iframe")).toHaveCount(4)
+  await expect(page.locator("[data-preview]")).toHaveCount(4)
   for (const heading of ["Default", "Semantic", "Size", "Variant"]) {
     await expect(page.getByRole("heading", { name: heading, exact: true })).toBeVisible()
   }

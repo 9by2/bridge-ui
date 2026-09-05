@@ -10,6 +10,7 @@ export default defineConfig({
     builtin: true
   },
   ignorePatterns: [
+    "internal/catalog/vendor/**",
     "**/.nx/**",
     "**/.svelte-kit/**",
     "**/build/**",

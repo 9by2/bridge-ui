@@ -4,9 +4,24 @@ import { createRoot } from "react-dom/client"
 
 import "./preview.css"
 import "./shell.css"
+import { Preview } from "./preview"
+import { Source } from "./source"
+import chartInventory from "./vendor/tanstack/catalog-index.json"
 
 const modules = import.meta.glob<{ default: ComponentType }>("./example/*/*.tsx")
-const sources = import.meta.glob<string>("./example/*/*.tsx", { query: "?raw", import: "default", eager: true })
+const sources = import.meta.glob<string>("./example/*/*.tsx", { query: "?raw", import: "default" })
+const chartSources = import.meta.glob<string>("./vendor/tanstack/cases/*/example.tsx", {
+  query: "?raw",
+  import: "default"
+})
+const chartSupport = import.meta.glob<string>(
+  ["./vendor/tanstack/cases/**/*.{ts,tsx,css}", "!./vendor/tanstack/cases/*/example.tsx"],
+  { query: "?raw", import: "default" }
+)
+for (const item of chartInventory.cases) {
+  const load = chartSources[`./vendor/tanstack/cases/${item.id}/example.tsx`]
+  if (load) sources[`./example/ts-chart/${item.id}.tsx`] = load
+}
 const entries = Object.keys(modules).map((path) => ({
   path,
   name: path.split("/")[2] ?? "",
@@ -16,12 +31,17 @@ const names = [...new Set(entries.map((entry) => entry.name))].sort()
 const title = (value: string) =>
   value === "ts-chart"
     ? "TsChart"
-    : value
+    : (chartInventory.cases.find((item) => item.id === value)?.title ??
+      value
         .split("-")
         .map((word) => word[0]?.toUpperCase() + word.slice(1))
-        .join(" ")
+        .join(" "))
 const components = Object.fromEntries(Object.entries(modules).map(([path, load]) => [path, lazy(load)]))
 const description: Record<string, string> = {
+  dot: "A dotted background with an icon and reset action.",
+  icon: "An icon-led empty state with a primary action.",
+  muted: "A quiet surface for an empty notification state.",
+  borderless: "Page selection without an active border; previous and next update the selection.",
   "range-2": "Select a start and end date across two visible months. Clear the selection to start a new range.",
   "range-4": "Select a date range across four visible months. The calendar wraps into a grid on smaller screens.",
   area: "Filled monotone area for volume over time. Hover to inspect each value.",
@@ -80,7 +100,6 @@ function App() {
   const [query, setQuery] = useState("")
   const [dark, setDark] = useState(new URLSearchParams(location.search).get("theme") !== "light")
   const [mobile, setMobile] = useState(false)
-  const [copy, setCopy] = useState<{ path: string; label: string } | null>(null)
   const [locale, setLocale] = useState("en")
   const [motion, setMotion] = useState(false)
   const [menu, setMenu] = useState(false)
@@ -94,7 +113,6 @@ function App() {
   useEffect(() => {
     const update = () => {
       setRoute(location.hash.slice(1) || "button/default")
-      setCopy(null)
       setMenu(false)
     }
     window.addEventListener("hashchange", update)
@@ -124,8 +142,7 @@ function App() {
   }
   const preview = (selected: string, label: string) => (
     <div className="preview-wrap" style={{ maxWidth: mobile ? 390 : undefined }}>
-      <iframe
-        loading="lazy"
+      <Preview
         title={label}
         src={`/?preview&theme=${dark ? "dark" : "light"}&lang=${locale}&motion=${motion ? "reduced" : "normal"}#${name}/${selected}`}
       />
@@ -281,32 +298,29 @@ function App() {
                   <p>
                     {name === "attachment" && item.example === "media"
                       ? "Distinct image, video and file icons identify the attachment type alongside its filename and size."
-                      : (description[item.example] ??
+                      : (chartInventory.cases.find((chart) => name === "ts-chart" && chart.id === item.example)
+                          ?.intent ??
+                        description[item.example] ??
                         `Review the ${title(item.example).toLowerCase()} composition below.`)}
                   </p>
                   <div className="preview-card">
                     {preview(item.example, `${title(name)} ${title(item.example)} preview`)}
                   </div>
-                  <details className="code-panel">
-                    <summary>View code</summary>
-                    <div className="code-header">
-                      <span>{item.example}.tsx / exact preview source</span>
-                      <button
-                        onClick={async () => {
-                          try {
-                            await navigator.clipboard.writeText(sources[item.path] ?? "")
-                            setCopy({ path: item.path, label: "Copied" })
-                          } catch {
-                            setCopy({ path: item.path, label: "Copy unavailable" })
-                          }
-                        }}>
-                        {copy?.path === item.path ? copy.label : "Copy code"}
-                      </button>
-                    </div>
-                    <pre tabIndex={0}>
-                      <code>{sources[item.path]}</code>
-                    </pre>
-                  </details>
+                  <Source load={sources[item.path] ?? (() => Promise.resolve("Source unavailable."))} />
+                  {name === "ts-chart" && chartInventory.cases.some((chart) => chart.id === item.example) && (
+                    <details className="code-panel">
+                      <summary>Supporting source</summary>
+                      <p className="p-4 text-sm">
+                        Vendored TanStack v0.16.0 example. Dataset source and attribution:
+                        internal/catalog/vendor/tanstack/data. Supporting module is shown below.
+                      </p>
+                      {Object.entries(chartSupport)
+                        .filter(([path]) => path.includes(`/cases/${item.example}/`))
+                        .map(([path, load]) => (
+                          <Source key={path} label={path.split("/").at(-1)} load={load} />
+                        ))}
+                    </details>
+                  )}
                 </section>
               ))}
             </div>

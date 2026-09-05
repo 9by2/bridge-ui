@@ -52,7 +52,7 @@ UI state may stay in a component. Business state must stay in an application con
 app/                # package source
   component/
     shadcn/         # generated; never manually edit
-    global/         # reusable presentation component
+    brand/          # custom reusable presentation component
   hook/
   lib/
   style/
@@ -133,7 +133,7 @@ Foundation is not ready.
 At this document revision:
 
 - 63 generated Shadcn component file;
-- 63 component entries and 105 isolated catalog examples;
+- generated and brand component catalog, including the 188-entry TanStack reference inventory;
 - browser suite covers every example and core interaction;
 - one open-menu accessibility failure is explicitly tracked; full state and visual coverage remains incomplete;
 - required button, input, checkbox, select, dialog, popover, tabs, accordion, tooltip, and toast interactions pass;

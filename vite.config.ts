@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [tailwindcss()],
   resolve: {
     alias: [
+      { find: "@catalog-vendor", replacement: path.resolve("internal/catalog/vendor/tanstack") },
       { find: "@bridge/ui/style.css", replacement: path.resolve("app/style/global.css") },
       { find: /^@bridge\/ui$/, replacement: path.resolve("app/index.ts") },
       { find: /^@bridge\/ui\/(.*)$/, replacement: path.resolve("$1") }

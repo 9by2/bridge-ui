@@ -6,11 +6,11 @@ export default defineConfig({
   fullyParallel: true,
   workers: 4,
   timeout: 30000,
-  use: { baseURL: "http://127.0.0.1:6006", headless: true, trace: "retain-on-failure" },
+  use: { baseURL: "http://127.0.0.1:6007", headless: true, trace: "retain-on-failure" },
   webServer: {
-    command: "bunx vite --config vite.config.ts --open false",
-    url: "http://127.0.0.1:6006",
-    reuseExistingServer: !process.env.CI,
-    timeout: 60000
+    command: "bun catalog:build && bunx vite preview --config vite.config.ts --port 6007 --strictPort --host 127.0.0.1",
+    url: "http://127.0.0.1:6007",
+    reuseExistingServer: false,
+    timeout: 120000
   }
 })

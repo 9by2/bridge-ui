@@ -2,7 +2,7 @@ import * as UI from "@bridge/ui"
 
 export default function Example() {
   return (
-    <UI.MultiSelect defaultValues={["design"]}>
+    <UI.MultiSelect defaultValues={["design", "engineering"]}>
       <UI.MultiSelectTrigger aria-label="Select teams">
         <UI.MultiSelectValue placeholder="Select teams" />
       </UI.MultiSelectTrigger>

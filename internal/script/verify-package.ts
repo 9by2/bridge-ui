@@ -48,10 +48,13 @@ createRoot(document.getElementById("root")!).render(
 async function verifySsr(fixture: string, packageTarball: string): Promise<void> {
   await writeFixture(fixture, packageTarball, {
     "src/entry-server.tsx": `
-import { Button } from "@bridge/ui"
+import { Button } from "@bridge/ui/button"
+import { TsChart } from "@bridge/ui/ts-chart"
+import { DropArea } from "@bridge/ui/drop-area"
 import { renderToString } from "react-dom/server"
 
 export const html = renderToString(<Button>Continue</Button>)
+export const component = { TsChart, DropArea }
 `
   })
 
