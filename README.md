@@ -53,6 +53,8 @@ Known foundation gap: the open dropdown-menu example has a tracked expected acce
 
 ## Policy
 
+`TsChart` is a separate public wrapper and catalog entry for TanStack Charts, with bar and line examples. Core `@tanstack/charts` and adapter `@tanstack/react-charts` are pinned to alpha `0.16.0`; review breaking changes before upgrading. Recharts remains under Chart. Preview iframe loads lazily to avoid blank charts on long catalog pages. Calendar includes two- and four-month range selection.
+
 - [ADHD.md](./ADHD.md): north star and ideal repository contract.
 - [AGENTS.md](./AGENTS.md): agent workflow.
 - [oxlint.config.ts](./oxlint.config.ts): enforceable source rule.

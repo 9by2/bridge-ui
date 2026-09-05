@@ -14,12 +14,16 @@ const entries = Object.keys(modules).map((path) => ({
 }))
 const names = [...new Set(entries.map((entry) => entry.name))].sort()
 const title = (value: string) =>
-  value
-    .split("-")
-    .map((word) => word[0]?.toUpperCase() + word.slice(1))
-    .join(" ")
+  value === "ts-chart"
+    ? "TsChart"
+    : value
+        .split("-")
+        .map((word) => word[0]?.toUpperCase() + word.slice(1))
+        .join(" ")
 const components = Object.fromEntries(Object.entries(modules).map(([path, load]) => [path, lazy(load)]))
 const description: Record<string, string> = {
+  "range-2": "Select a start and end date across two visible months. Clear the selection to start a new range.",
+  "range-4": "Select a date range across four visible months. The calendar wraps into a grid on smaller screens.",
   area: "Filled monotone area for volume over time. Hover to inspect each value.",
   line: "Multiple series with smooth and stepped interpolation, dots and dashed strokes.",
   "bar-stacked": "Stacked series with a shared stackId, rounded top and legend. Remove stackId for grouped bars.",
@@ -121,6 +125,7 @@ function App() {
   const preview = (selected: string, label: string) => (
     <div className="preview-wrap" style={{ maxWidth: mobile ? 390 : undefined }}>
       <iframe
+        loading="lazy"
         title={label}
         src={`/?preview&theme=${dark ? "dark" : "light"}&lang=${locale}&motion=${motion ? "reduced" : "normal"}#${name}/${selected}`}
       />
@@ -187,10 +192,14 @@ function App() {
               </div>
               <a
                 className="upstream"
-                href={`https://ui.shadcn.com/docs/components/${name}`}
+                href={
+                  name === "ts-chart"
+                    ? "https://tanstack.com/charts/latest"
+                    : `https://ui.shadcn.com/docs/components/${name}`
+                }
                 target="_blank"
                 rel="noreferrer">
-                Shadcn reference ↗
+                {name === "ts-chart" ? "TanStack reference ↗" : "Shadcn reference ↗"}
               </a>
             </div>
             <div className="workspace-toolbar">

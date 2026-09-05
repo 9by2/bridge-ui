@@ -4,6 +4,26 @@ import AxeBuilder from "@axe-core/playwright"
 import { test, expect } from "@playwright/test"
 
 const root = "internal/catalog/example"
+test("embedded chart geometry survives full catalog navigation", async ({ page }) => {
+  await page.goto("/#chart/default")
+  for (const name of ["Treemap", "Scatter", "Sankey"]) {
+    const frame = page.getByTitle(`Chart ${name} preview`)
+    await frame.scrollIntoViewIfNeeded()
+    await expect(frame.contentFrame().locator("svg").first()).toBeVisible()
+    expect(await frame.contentFrame().locator("svg path, svg rect").count()).toBeGreaterThan(1)
+  }
+})
+for (const count of [2, 4]) {
+  test(`calendar range with ${count} months`, async ({ page }) => {
+    await page.goto(`/?preview#calendar/range-${count}`)
+    await expect(page.getByRole("grid")).toHaveCount(count)
+    await page.getByRole("button", { name: "Clear range", exact: true }).click()
+    await page.locator('[data-day="9/10/2026"]').click()
+    await page.locator('[data-day="10/15/2026"]').click()
+    await expect(page.getByRole("status", { name: "Selected range" })).toContainText("Sep 10, 2026")
+    await expect(page.getByRole("status", { name: "Selected range" })).toContainText("Oct 15, 2026")
+  })
+}
 for (const file of readdirSync(`${root}/chart`)) {
   test(`chart dark ${file}`, async ({ page }) => {
     await page.goto(`/?preview#chart/${file.replace(".tsx", "")}`)
