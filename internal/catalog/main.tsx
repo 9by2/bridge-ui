@@ -20,6 +20,20 @@ const title = (value: string) =>
     .join(" ")
 const components = Object.fromEntries(Object.entries(modules).map(([path, load]) => [path, lazy(load)]))
 const description: Record<string, string> = {
+  area: "Filled monotone area for volume over time. Hover to inspect each value.",
+  line: "Multiple series with smooth and stepped interpolation, dots and dashed strokes.",
+  "bar-stacked": "Stacked series with a shared stackId, rounded top and legend. Remove stackId for grouped bars.",
+  "bar-horizontal": "Horizontal category bars with numeric axis and value labels.",
+  pie: "Part-to-whole sectors with per-category color, tooltip and legend.",
+  donut: "Inner and outer radius, sector spacing and a central total label.",
+  radar: "Compare a score across categories on a polar grid.",
+  radial: "Circular progress with an explicit domain, start/end angle and rounded background track.",
+  scatter: "Numeric X/Y correlation with a Z dimension controlling bubble size.",
+  composed: "Area, bar and line combined with a reference threshold and draggable range brush.",
+  treemap: "Nested rectangular area represents relative category size.",
+  funnel: "Conversion stages with decreasing width and explicit stage labels.",
+  sankey: "Weighted flow between named nodes, with configurable link and node spacing.",
+  tooltip: "All three indicator styles: dot, line and dashed. Tooltip is shown without requiring hover.",
   default: "The standard composition and starting point for this component.",
   variant: "Compare the appearance of each demonstrated style, from subtle to emphasized.",
   size: "Compare the demonstrated dimensions, spacing and text scale.",
@@ -32,7 +46,8 @@ const description: Record<string, string> = {
   "button-size": "Compare the compact text and icon button dimensions.",
   media: "Compare the demonstrated text, icon and image treatment.",
   align: "Compare content aligned to the start and end of the layout.",
-  legend: "Compare the field legend and compact label treatment.",
+  legend:
+    "Compare label treatment. Chart examples include custom icons, text-only legend, top/bottom placement and theme-specific color.",
   "orientation-and-media": "Compare horizontal icon and vertical image compositions.",
   "align-and-reactions": "Compare message alignment and reaction placement.",
   "orientation-and-variant": "Compare tab styling in horizontal and vertical compositions.",
@@ -59,7 +74,7 @@ class PreviewBoundary extends Component<{ children: ReactNode }, { failed: boole
 function App() {
   const [route, setRoute] = useState(location.hash.slice(1) || "button/default")
   const [query, setQuery] = useState("")
-  const [dark, setDark] = useState(new URLSearchParams(location.search).get("theme") === "dark")
+  const [dark, setDark] = useState(new URLSearchParams(location.search).get("theme") !== "light")
   const [mobile, setMobile] = useState(false)
   const [copy, setCopy] = useState<{ path: string; label: string } | null>(null)
   const [locale, setLocale] = useState("en")
@@ -204,11 +219,61 @@ function App() {
               </select>
             </div>
             <div className="inline-example-list">
+              {name === "chart" && (
+                <section className="inline-example">
+                  <h2>Chart option reference</h2>
+                  <p>
+                    Examples below cover chart families and common configurations, not every possible Recharts prop
+                    combination.
+                  </p>
+                  <dl className="chart-option-reference">
+                    <dt>Container</dt>
+                    <dd>
+                      config, id, className, initialDimension (width and height), and standard div props. Set an
+                      explicit height for responsive sizing.
+                    </dd>
+                    <dt>Series configuration</dt>
+                    <dd>
+                      Each data key supports label, icon, and either color or theme.light / theme.dark. Series use the
+                      generated --color-key CSS variable.
+                    </dd>
+                    <dt>Tooltip content</dt>
+                    <dd>
+                      indicator: dot, line, dashed; hideLabel; hideIndicator; nameKey; labelKey; labelFormatter;
+                      formatter; color; labelClassName; className. active, payload and label supply the displayed data.
+                    </dd>
+                    <dt>Tooltip behavior</dt>
+                    <dd>
+                      Recharts Tooltip controls active, defaultIndex, cursor, position, offset, trigger, shared,
+                      filterNull, itemSorter, animation and portal. ChartTooltip passes through the upstream API.
+                    </dd>
+                    <dt>Legend content</dt>
+                    <dd>
+                      hideIcon, nameKey, payload, verticalAlign and className. ChartLegend passes through Recharts
+                      layout, align, verticalAlign, iconType and formatter controls.
+                    </dd>
+                    <dt>Chart composition</dt>
+                    <dd>
+                      Data keys, axis type/domain/tick formatting, grid, reference line/area/dot, label, multiple
+                      series, stackId, normalization, interpolation, stroke/fill, radius, margin, brush,
+                      synchronization, events and animation are configured on Recharts primitives.
+                    </dd>
+                  </dl>
+                  <p>
+                    <a href="https://recharts.github.io/en-US/api/" target="_blank" rel="noreferrer">
+                      Full Recharts API reference ↗
+                    </a>
+                  </p>
+                </section>
+              )}
               {choices.map((item) => (
                 <section className="inline-example" key={item.path} aria-labelledby={`heading-${item.example}`}>
                   <h2 id={`heading-${item.example}`}>{title(item.example)}</h2>
                   <p>
-                    {description[item.example] ?? `Review the ${title(item.example).toLowerCase()} composition below.`}
+                    {name === "attachment" && item.example === "media"
+                      ? "Distinct image, video and file icons identify the attachment type alongside its filename and size."
+                      : (description[item.example] ??
+                        `Review the ${title(item.example).toLowerCase()} composition below.`)}
                   </p>
                   <div className="preview-card">
                     {preview(item.example, `${title(name)} ${title(item.example)} preview`)}

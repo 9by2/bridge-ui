@@ -47,6 +47,8 @@ bun verify:package
 
 Run `bun dev` to open the entire catalog at http://127.0.0.1:6006. Each of the 63 component pages displays every available example inline, with a heading, description, isolated preview and exact-source code disclosure. The 105 examples require no variant dropdown. Theme and mobile controls remain available.
 
+Dark is the default theme; the theme toggle and `?theme=light` support light mode. Chart includes 16 inline examples and a wrapper option reference with a link to the complete Recharts API. Attachment includes image, video and file icon examples. The catalog now contains 121 example modules.
+
 Known foundation gap: the open dropdown-menu example has a tracked expected accessibility failure for Base UI focus guards and portal landmarks. Earlier fixture contrast overrides remain visible in example source; the browser result is not proof of unmodified package accessibility. Exhaustive state, visual and numerical coverage, StyleX and registry publication remain unfinished.
 
 ## Policy
