@@ -24,7 +24,7 @@ Read [ADHD.md](./ADHD.md) for the north star, architecture boundary, foundation 
 - `app/style/global.css`: canonical primitive theme source during the Tailwind-to-StyleX transition.
 - `internal/catalog/example/`: real package example and exact copyable source.
 - `vite.config.ts` and `playwright.config.ts`: catalog and browser verification.
-- `internal/script/`: private repository verification tool.
+- `cmd/`: private repository build, verification and publication command.
 - `test/`: repository verification test.
 - `plan/`: active proposal and accepted spec.
 
@@ -33,6 +33,8 @@ The repository builds an importable ESM package with declarations and a stable C
 ## Command
 
 ## GitLab Deployment
+
+Both pipeline contexts include `deployment/concurrency.gitlab-ci.yml` to remove inherited stage resource locks. Validation remains a required stage dependency, and package publication retains its own release lock. Private command implementation lives in `cmd/`; public package output does not include it.
 
 Root CI retains the company runner template and triggers `deployment/.gitlab-ci.yml`. The full company Bun pipeline includes service Docker/Kubernetes jobs, so this package uses its runner-only template instead. The child validates formatting, lint, type, boundary, test, coverage, browser and packed build. Package deployment uses runner-provided `CI_JOB_TOKEN` against `${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/` (this project: 872); no personal token is needed.
 

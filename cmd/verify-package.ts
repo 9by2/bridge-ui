@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import path from "node:path"
 
-const root = path.resolve(import.meta.dir, "../..")
+const root = path.resolve(import.meta.dir, "..")
 const fixtureRoot = await mkdtemp(path.join(tmpdir(), "bridge-ui-package-"))
 
 try {

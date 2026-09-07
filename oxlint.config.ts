@@ -116,7 +116,7 @@ export default defineConfig({
       }
     },
     {
-      files: ["app/**/*.{ts,tsx}", "shared/**/*.{ts,tsx}", "internal/**/*.{ts,tsx}"],
+      files: ["app/**/*.{ts,tsx}", "shared/**/*.{ts,tsx}", "internal/**/*.{ts,tsx}", "cmd/**/*.{ts,tsx}"],
       excludeFiles: ["app/component/shadcn/**/*.{ts,tsx}"],
       rules: {
         "typescript/consistent-type-assertions": [

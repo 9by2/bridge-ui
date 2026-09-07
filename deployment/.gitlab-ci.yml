@@ -2,6 +2,7 @@ include:
   - project: "sellsuki/sre/deployment/pipeline-deployment"
     ref: "main"
     file: "templates/default.template.yml"
+  - local: "/deployment/concurrency.gitlab-ci.yml"
 
 default:
   tags: [docker, general, sellsuki, staging-th, amd]
@@ -59,4 +60,4 @@ publish:
       allow_failure: false
   script:
     - bun run build
-    - bun internal/script/publish-package.ts
+    - bun cmd/publish-package.ts

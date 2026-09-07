@@ -79,7 +79,7 @@ async function createFixture(fileByPath: Readonly<Record<string, string>>): Prom
 }
 
 async function runBoundaryCheck(fixtureRoot: string): Promise<{ exitCode: number; stderr: string }> {
-  const process = Bun.spawn(["bun", "internal/script/check-source-boundary.ts", fixtureRoot], {
+  const process = Bun.spawn(["bun", "cmd/check-source-boundary.ts", fixtureRoot], {
     cwd: path.resolve(import.meta.dir, "../.."),
     stderr: "pipe",
     stdout: "ignore"

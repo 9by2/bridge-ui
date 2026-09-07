@@ -2,6 +2,7 @@ include:
   - project: "sellsuki/sre/deployment/pipeline-deployment"
     ref: "main"
     file: "templates/default.template.yml"
+  - local: "/deployment/concurrency.gitlab-ci.yml"
 
 stages:
   - triggers
@@ -23,6 +24,7 @@ deploy:
         - "app/**/*"
         - "shared/**/*"
         - "internal/**/*"
+        - "cmd/**/*"
         - "test/**/*"
         - "*.ts"
         - "*.json"

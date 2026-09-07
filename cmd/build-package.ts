@@ -4,7 +4,7 @@ import path from "node:path"
 import { createStylexBunPlugin } from "@stylexjs/unplugin/bun"
 import tailwind from "bun-plugin-tailwind"
 
-const root = path.resolve(import.meta.dir, "../..")
+const root = path.resolve(import.meta.dir, "..")
 const outdir = path.join(root, "dist")
 await rm(outdir, { force: true, recursive: true })
 

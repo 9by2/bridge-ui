@@ -59,6 +59,7 @@ app/                # package source
   index.ts
 shared/             # reusable non-component code
 internal/           # non-exported tool and fixture
+cmd/                # private build, verification and publication command
 internal/catalog/
 test/
 ```

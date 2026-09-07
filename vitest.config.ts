@@ -14,7 +14,7 @@ export default defineConfig({
       provider: "v8",
       include:
         process.env.COVERAGE_SCOPE === "repository"
-          ? ["app/**/*.{ts,tsx}", "shared/**/*.{ts,tsx}", "internal/**/*.{ts,tsx}"]
+          ? ["app/**/*.{ts,tsx}", "shared/**/*.{ts,tsx}", "internal/**/*.{ts,tsx}", "cmd/**/*.{ts,tsx}"]
           : ["app/component/brand/**/*.tsx"],
       exclude: ["internal/catalog/vendor/**", "internal/catalog/example/**"],
       reporter: ["text", "json-summary"],
