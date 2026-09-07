@@ -16,7 +16,7 @@ export default defineConfig({
         process.env.COVERAGE_SCOPE === "repository"
           ? ["app/**/*.{ts,tsx}", "shared/**/*.{ts,tsx}", "internal/**/*.{ts,tsx}", "cmd/**/*.{ts,tsx}"]
           : ["app/component/brand/**/*.tsx"],
-      exclude: ["internal/catalog/vendor/**", "internal/catalog/example/**"],
+      exclude: ["app/component/shadcn/**", "internal/catalog/vendor/**", "internal/catalog/example/**"],
       reporter: ["text", "json-summary"],
       thresholds:
         process.env.COVERAGE_SCOPE === "repository"

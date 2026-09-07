@@ -110,7 +110,7 @@ Do not implement any consumer migration until all foundation gate pass.
 
 ### 5. Quality
 
-- repository coverage is at least 90%;
+- owned repository coverage is at least 90%; generated `app/component/shadcn/**` source is excluded from the percentage, not catalog, accessibility or integration verification;
 - every non-Shadcn component has 100% statement, branch, function, and line coverage;
 - lint, typecheck, test, component catalog, visual, package, client, and SSR build pass.
 

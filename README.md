@@ -88,6 +88,8 @@ The open dropdown-menu example passes the unfiltered accessibility scan. Package
 
 ## Policy
 
+`bun coverage:repository` excludes generated `app/component/shadcn/**` from the percentage, not catalog, accessibility or integration verification. The owned repository floor remains 90%, with brand coverage at 100%. Owned command and catalog source remain in scope; excluding generated source alone does not establish a passing gate.
+
 Upload composition is available from root import or `@bridge/ui/upload-viewer`, `@bridge/ui/upload-list` and `@bridge/ui/image-crop`:
 
 - `UploadViewer`: controlled dialog for image/video/audio/PDF, with metadata/download fallback, caller-owned URL and optional `finalFocus` target. PDF inline support depends on the browser; download remains available. Only HTTP(S), blob and root-relative URL are linked.

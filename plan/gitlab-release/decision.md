@@ -1,5 +1,9 @@
 # Decision
 
+**GIVEN** generated Shadcn source is not owned implementation and the user excludes it from unit coverage
+**WHEN** repository coverage runs
+**THEN** exclude app/component/shadcn/** from the percentage while retaining catalog, accessibility and integration verification. Keep the owned repository floor at 90% and brand coverage at 100%; do not exclude owned command or catalog source to hide a remaining gap.
+
 **GIVEN** Bun-only Linux image maps node to Bun fallback and V8 coverage crashes
 **WHEN** verifying in Docker
 **THEN** install checksum-verified Node 22.22.0 for Node-shebang tooling while retaining Bun for package management and command orchestration. Capture Linux screenshot baseline separately; do not weaken coverage threshold.
