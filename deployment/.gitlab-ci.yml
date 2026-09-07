@@ -6,8 +6,9 @@ include:
 
 default:
   tags: [docker, general, sellsuki, staging-th, amd]
-  image: registry.fountain.sellsuki.com/dockerhub/oven/bun:1.4.0
+  image: registry.fountain.sellsuki.com/dockerhub/oven/bun:1.4.1
   before_script:
+    - sh cmd/install-ci-node.sh
     - bun install --frozen-lockfile
 
 stages:

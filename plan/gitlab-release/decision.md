@@ -1,5 +1,9 @@
 # Decision
 
+**GIVEN** Bun-only Linux image maps node to Bun fallback and V8 coverage crashes
+**WHEN** verifying in Docker
+**THEN** install checksum-verified Node 22.22.0 for Node-shebang tooling while retaining Bun for package management and command orchestration. Capture Linux screenshot baseline separately; do not weaken coverage threshold.
+
 **GIVEN** clean CI cannot resolve tsgo and bunx tries a nonexistent npm package
 **WHEN** invoking the compiler
 **THEN** use the installed typescript/bin/tsc directly for typecheck and declaration emission. Regression test checks the installed executable contract.

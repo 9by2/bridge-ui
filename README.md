@@ -40,7 +40,9 @@ Root CI retains the company runner template and triggers `deployment/.gitlab-ci.
 
 Publication requires a protected prerelease tag matching package.json (for example version `0.1.1-rc.1` and tag `v0.1.1-rc.1`), passing validation and manual approval of `publish`. It publishes under `next`, then installs/imports the registry package in an isolated fixture. Configure protected `v*` tags in GitLab before release. No `latest` path exists. A failed post-publish install does not undo publication.
 
-Repository coverage currently blocks publication. Linux visual baseline and the mirrored Bun image must be verified on the company runner; the committed screenshot baseline is macOS-only. The pipeline has not run remotely yet.
+Repository coverage currently blocks publication. Linux amd64 Docker reproduction passes the source job and all 375 browser checks with the Linux screenshot baseline. V8 coverage requires real Node: `cmd/install-ci-node.sh` installs checksum-verified Node 22.22.0 before Bun dependency installation. The original Bun-only image falls back to Bun for Node tooling and crashes during coverage merging. Repository coverage now executes but remains below 90%. These fixes still need a remote rerun; private mirror access was unavailable locally, so Docker verification used upstream `oven/bun:1.4.0`.
+
+`deployment/Dockerfile.verify` provides Bun 1.4.1 plus Node 22.22.0 for local Linux verification. CI uses the same Bun version. Build with `docker build --platform linux/amd64 -f deployment/Dockerfile.verify -t bridge-ui-verify .`. Use an isolated source copy and fresh `bun install --frozen-lockfile`; never reuse macOS node_modules. Install Chromium with `bunx playwright install --with-deps chromium`, then run the command sequence in the child CI file. Normal CI never updates screenshot expectations.
 
 ## Package Command
 
