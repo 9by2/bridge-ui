@@ -1,6 +1,6 @@
 {
   "name": "@bridge/ui",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "type": "module",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -98,6 +98,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
+    "@changesets/cli": "^3.0.2",
     "@effect/language-service": "^0.87.2",
     "@effect/tsgo": "^0.41.0",
     "@effect/vitest": "^0.30.0",
