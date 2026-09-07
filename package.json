@@ -8,6 +8,22 @@
     "dist"
   ],
   "exports": {
+    "./upload-viewer": {
+      "types": "./dist/component/brand/upload-viewer.d.ts",
+      "import": "./dist/component/brand/upload-viewer.js"
+    },
+    "./upload-list": {
+      "types": "./dist/component/brand/upload-list.d.ts",
+      "import": "./dist/component/brand/upload-list.js"
+    },
+    "./image-crop": {
+      "types": "./dist/component/brand/image-crop.d.ts",
+      "import": "./dist/component/brand/image-crop.js"
+    },
+    "./upload-preview": {
+      "types": "./dist/component/brand/upload-preview.d.ts",
+      "import": "./dist/component/brand/upload-preview.js"
+    },
     "./button": {
       "types": "./dist/component/shadcn/button.d.ts",
       "import": "./dist/component/shadcn/button.js"
@@ -49,6 +65,8 @@
     "fmt": "oxfmt",
     "lint": "oxlint",
     "test": "bun test",
+    "coverage:brand": "vitest run --coverage",
+    "coverage:repository": "COVERAGE_SCOPE=repository vitest run --coverage",
     "typecheck": "bunx --bun tsgo --noEmit",
     "verify:package": "bun internal/script/verify-package.ts",
     "verify:tree-shaking": "bun internal/script/verify-tree-shaking.ts"
@@ -59,6 +77,7 @@
     "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "@fontsource/sarabun": "^5.3.0",
     "@shadcn/react": "^0.3.1",
+    "@stylexjs/stylex": "^0.19.0",
     "@tanstack/charts": "0.16.0",
     "@tanstack/react-charts": "0.16.0",
     "class-variance-authority": "^0.7.1",
@@ -83,8 +102,10 @@
     "@effect/tsgo": "^0.41.0",
     "@effect/vitest": "^0.30.0",
     "@playwright/test": "^1.63.0",
+    "@stylexjs/unplugin": "^0.19.0",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/charts-data": "./internal/catalog/vendor/tanstack/data",
+    "@testing-library/react": "^16.3.3",
     "@types/bun": "latest",
     "@types/d3-array": "^3.2.2",
     "@types/d3-format": "^3.0.4",
@@ -97,6 +118,7 @@
     "@types/react-dom": "^19",
     "@types/topojson-client": "^3.1.5",
     "@types/topojson-specification": "^1.0.5",
+    "@vitest/coverage-v8": "4.1.11",
     "bun-plugin-tailwind": "^0.1.2",
     "d3-array": "^3.2.4",
     "d3-format": "^3.1.2",
@@ -104,6 +126,7 @@
     "d3-scale": "^4.0.2",
     "d3-shape": "^3.2.0",
     "d3-time": "^3.1.0",
+    "jsdom": "^30.0.1",
     "oxfmt": "^0.66.0",
     "oxlint": "^1.81.0",
     "playwright": "^1.55.0",

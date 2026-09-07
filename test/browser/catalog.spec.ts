@@ -47,10 +47,6 @@ for (const name of readdirSync(root)) {
   for (const file of readdirSync(`${root}/${name}`)) {
     const example = file.replace(".tsx", "")
     test(`${name}/${example} renders accessibly`, async ({ page }) => {
-      test.fail(
-        name === "dropdown-menu" && example === "item-variant",
-        "Known Base UI open-menu focus-guard and portal landmark violation; retained as a regression check."
-      )
       const errors: string[] = []
       page.on("pageerror", (error) => errors.push(error.message))
       await page.goto(`/?preview&theme=light#${name}/${example}`)
@@ -68,6 +64,12 @@ for (const name of readdirSync(root)) {
         await page.getByRole("menuitem", { name: "Default", exact: true }).focus()
       }
       const result = await new AxeBuilder({ page }).analyze()
+      if (name === "dropdown-menu" && example === "item-variant") {
+        await test.info().attach("menu-accessibility-review", {
+          body: JSON.stringify(result.incomplete, null, 2),
+          contentType: "application/json"
+        })
+      }
       expect(result.violations).toEqual([])
       expect(errors).toEqual([])
     })

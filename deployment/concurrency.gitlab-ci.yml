@@ -1,0 +1,24 @@
+# Stage ordering already enforces test -> analyse -> build -> deploy.
+# These overrides remove project-wide stage mutexes inherited from the SRE
+# template while retaining a lock for each service/environment deployment.
+
+.test_unit:
+  resource_group: null
+
+.test_integration:
+  resource_group: null
+
+.test_e2e:
+  resource_group: null
+
+.code_analyse:
+  resource_group: null
+
+.build_docker:
+  resource_group: null
+
+.build_docker_without_push:
+  resource_group: null
+
+.deployment_kube:
+  resource_group: "deploy-${SERVICE_NAME}-${KUBE_NAMESPACE}"

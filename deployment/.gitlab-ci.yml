@@ -1,0 +1,62 @@
+include:
+  - project: "sellsuki/sre/deployment/pipeline-deployment"
+    ref: "main"
+    file: "templates/default.template.yml"
+
+default:
+  tags: [docker, general, sellsuki, staging-th, amd]
+  image: registry.fountain.sellsuki.com/dockerhub/oven/bun:1.4.0
+  before_script:
+    - bun install --frozen-lockfile
+
+stages:
+  - verify
+  - deploy
+
+source:
+  stage: verify
+  script:
+    - bun fmt --check
+    - bun lint
+    - bun typecheck
+    - bun boundary
+    - bun test
+    - bun coverage:brand
+    - bun verify:package
+    - bun verify:tree-shaking
+
+coverage:
+  stage: verify
+  script:
+    - bun coverage:repository
+  artifacts:
+    when: always
+    paths:
+      - coverage/
+    expire_in: 7 days
+
+catalog:
+  stage: verify
+  script:
+    - bunx playwright install --with-deps chromium
+    - bun catalog:test
+  artifacts:
+    when: always
+    paths:
+      - test-results/
+      - playwright-report/
+      - catalog-dist/
+    expire_in: 7 days
+
+publish:
+  stage: deploy
+  resource_group: npm-prerelease
+  environment:
+    name: package-prerelease
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$/ && $CI_COMMIT_REF_PROTECTED == "true"'
+      when: manual
+      allow_failure: false
+  script:
+    - bun run build
+    - bun internal/script/publish-package.ts

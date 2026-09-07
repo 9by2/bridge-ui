@@ -26,3 +26,5 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .cache
 *.tsbuildinfo
 !.gitignore
+!.gitlab-ci.yml
+!.agents

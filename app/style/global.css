@@ -10,6 +10,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Hidden focus sentinels redirect keyboard focus; they are not pointer targets. */
+[data-base-ui-focus-guard][aria-hidden="true"] {
+  width: 0 !important;
+  height: 0 !important;
+  pointer-events: none;
+}
+
 html[data-motion="reduced"] *,
 html[data-motion="reduced"] *::before,
 html[data-motion="reduced"] *::after {

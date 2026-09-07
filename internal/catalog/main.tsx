@@ -10,6 +10,14 @@ import chartInventory from "./vendor/tanstack/catalog-index.json"
 
 const modules = import.meta.glob<{ default: ComponentType }>("./example/*/*.tsx")
 const sources = import.meta.glob<string>("./example/*/*.tsx", { query: "?raw", import: "default" })
+const uploadSource = () => import("./upload.tsx?raw").then((module) => module.default)
+for (const mode of ["inline", "compact", "media", "avatar", "file-list", "document", "transfer", "crop"]) {
+  const key = `./example/drop-area/${mode}.tsx`
+  const entry = sources[key]
+  if (entry)
+    sources[key] = async () =>
+      `${await entry()}\n// Shared catalog composition (internal/catalog/upload.tsx)\n${await uploadSource()}`
+}
 const chartSources = import.meta.glob<string>("./vendor/tanstack/cases/*/example.tsx", {
   query: "?raw",
   import: "default"
@@ -38,6 +46,24 @@ const title = (value: string) =>
         .join(" "))
 const components = Object.fromEntries(Object.entries(modules).map(([path, load]) => [path, lazy(load)]))
 const description: Record<string, string> = {
+  "drop-area/default":
+    "Stacked file selection with a filename status. Accepts one file up to 5 MB; selection does not upload it.",
+  "drop-area/inline":
+    "Horizontal attachment layout with selected filename and removal. Your application owns the upload callback.",
+  "drop-area/compact":
+    "Compact attachment control for a form or composer, with selected filename and removal outside the trigger.",
+  "drop-area/media":
+    "Select a PNG or JPEG to preview it locally before upload. Selecting another image replaces the preview; Remove clears it. Preview URLs are released on replacement or unmount. No upload occurs.",
+  "drop-area/avatar":
+    "Preview a selected PNG or JPEG in a circular avatar frame. The circle is a visual mask, not a cropped file. Replace or remove the image before your application uploads it.",
+  "drop-area/file-list":
+    "Select multiple files and review their names before upload. Remove each file independently. This is a file list, not a document-content preview.",
+  "drop-area/document":
+    "PDF-only selection with filename review, a 5 MB limit and removal. This example does not render PDF pages or upload the document.",
+  "drop-area/transfer":
+    "Review the selected filename, then explicitly trigger a caller-owned upload callback. The demo reports the received file and size without sending a network request.",
+  "drop-area/crop":
+    "Preview a PNG or JPEG locally and adjust the center-square crop with zoom. Crop and upload creates a real 256x256 PNG File and passes it to the demo upload callback. No network request is made; preview resources are released on replacement or unmount.",
   dot: "A dotted background with an icon and reset action.",
   icon: "An icon-led empty state with a primary action.",
   muted: "A quiet surface for an empty notification state.",
@@ -300,6 +326,7 @@ function App() {
                       ? "Distinct image, video and file icons identify the attachment type alongside its filename and size."
                       : (chartInventory.cases.find((chart) => name === "ts-chart" && chart.id === item.example)
                           ?.intent ??
+                        description[`${name}/${item.example}`] ??
                         description[item.example] ??
                         `Review the ${title(item.example).toLowerCase()} composition below.`)}
                   </p>

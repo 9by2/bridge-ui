@@ -16,7 +16,12 @@ export default function Example() {
     <Axis label="item variant">
       <UI.DropdownMenu modal>
         <UI.DropdownMenuTrigger render={<UI.Button />}>Menu</UI.DropdownMenuTrigger>
-        <UI.DropdownMenuContent>
+        <UI.DropdownMenuContent
+          render={(props) => (
+            <section aria-label="Menu action">
+              <div {...props} />
+            </section>
+          )}>
           <UI.DropdownMenuItem variant="default">Default</UI.DropdownMenuItem>
           <UI.DropdownMenuItem variant="destructive">Destructive</UI.DropdownMenuItem>
         </UI.DropdownMenuContent>

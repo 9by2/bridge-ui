@@ -1,0 +1,31 @@
+include:
+  - project: "sellsuki/sre/deployment/pipeline-deployment"
+    ref: "main"
+    file: "templates/default.template.yml"
+
+stages:
+  - triggers
+
+deploy:
+  stage: triggers
+  trigger:
+    include: "deployment/.gitlab-ci.yml"
+    strategy: depend
+  rules:
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_BRANCH =~ /^(main|develop)$/ || $CI_PIPELINE_SOURCE =~ /^(merge_request_event|external_pull_request_event)$/'
+      changes:
+        - ".gitlab-ci.yml"
+        - "deployment/**/*"
+        - "package.json"
+        - "bun.lock"
+        - "CHANGELOG.md"
+        - "app/**/*"
+        - "shared/**/*"
+        - "internal/**/*"
+        - "test/**/*"
+        - "*.ts"
+        - "*.json"
+        - "*.toml"
+  variables:
+    IS_MERGE_REQUEST: $CI_PIPELINE_SOURCE

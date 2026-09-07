@@ -135,10 +135,11 @@ At this document revision:
 - 63 generated Shadcn component file;
 - generated and brand component catalog, including the 188-entry TanStack reference inventory;
 - browser suite covers every example and core interaction;
-- one open-menu accessibility failure is explicitly tracked; full state and visual coverage remains incomplete;
+- open-menu accessibility and keyboard regression pass; hidden focus sentinel still requires manual accessibility review; full state and visual coverage remains incomplete;
+- brand component reaches 100% statement, branch, function and line coverage; repository coverage gate remains unmet;
 - required button, input, checkbox, select, dialog, popover, tabs, accordion, tooltip, and toast interactions pass;
 - component catalog development smoke test and static build pass;
-- zero StyleX integration;
+- static StyleX extraction for owned upload layout; generated Tailwind styling remains during transition;
 - ESM package, declaration, source map, CSS export, tarball, client fixture, and SSR fixture pass;
 - copied application component and consumer import removed;
 - source-boundary check, package build, full typecheck, and test pass;

@@ -32,12 +32,23 @@ The repository builds an importable ESM package with declarations and a stable C
 
 ## Command
 
+## GitLab Deployment
+
+Root CI retains the company runner template and triggers `deployment/.gitlab-ci.yml`. The full company Bun pipeline includes service Docker/Kubernetes jobs, so this package uses its runner-only template instead. The child validates formatting, lint, type, boundary, test, coverage, browser and packed build. Package deployment uses runner-provided `CI_JOB_TOKEN` against `${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/` (this project: 872); no personal token is needed.
+
+Publication requires a protected prerelease tag matching package.json (for example version `0.1.1-rc.1` and tag `v0.1.1-rc.1`), passing validation and manual approval of `publish`. It publishes under `next`, then installs/imports the registry package in an isolated fixture. Configure protected `v*` tags in GitLab before release. No `latest` path exists. A failed post-publish install does not undo publication.
+
+Repository coverage currently blocks publication. Linux visual baseline and the mirrored Bun image must be verified on the company runner; the committed screenshot baseline is macOS-only. The pipeline has not run remotely yet.
+
+## Package Command
+
 Package output is split ESM with declarations. Root named import is tree-shakeable; direct entry avoids loading unrelated module for an unbundled consumer:
 
 ```tsx
 import { Button } from "@bridge/ui/button"
 import { TsChart } from "@bridge/ui/ts-chart"
 import { DropArea } from "@bridge/ui/drop-area"
+import { UploadPreview } from "@bridge/ui/upload-preview"
 import "@bridge/ui/style.css"
 ```
 
@@ -46,6 +57,8 @@ Other generated/brand entry is available as `@bridge/ui/component/shadcn/<name>`
 `bun catalog:test` builds and serves an isolated static catalog on port 6007. Long pages mount nearby preview only; leaving a preview resets its transient state. All example sections and source remain inline.
 
 Private `internal/catalog/preview.tsx` owns creation/destruction of nearby iframe; offscreen placeholder has no browsing context. Private `source.tsx` fetches raw source only on disclosure. This catalog lifecycle does not affect application-owned TsChart state or force viewport resets on package consumers.
+
+`bun verify:package` checks all 71 public entry paths from an isolated Bun-installed tarball with declaration checking enabled, then builds the Vite client and SSR fixture. Emitted declaration uses relative package-local import, not private source alias. The Chromium memory regression repeats chart navigation eight times without page reload and checks post-GC heap/DOM growth after warmup; it does not measure total browser process memory.
 
 ```bash
 bun install
@@ -65,9 +78,22 @@ Run `bun dev` to open the entire catalog at http://127.0.0.1:6006. Each componen
 
 Dark is the default theme; the theme toggle and `?theme=light` support light mode. Chart includes 16 inline examples. TsChart includes the 188-entry upstream v0.16.0 catalog plus two small Bridge compositions. Vendored source, supporting module, license and dataset attribution live under `internal/catalog/vendor/tanstack/`; this development-only source is not published with the package.
 
-Known foundation gap: the open dropdown-menu example has a tracked expected accessibility failure for Base UI focus guards and portal landmarks. Earlier fixture contrast overrides remain visible in example source; the browser result is not proof of unmodified package accessibility. Exhaustive state, visual and numerical coverage, StyleX and registry publication remain unfinished.
+The open dropdown-menu example passes the unfiltered accessibility scan. Package CSS makes aria-hidden Base UI focus guards zero-area and pointer-inert without removing their tab stop; the example places its portaled menu inside a named region using the supported render prop. Axe incomplete output is retained as review evidence, not claimed as a clean manual accessibility audit. A separate keyboard regression verifies arrow navigation, Escape focus restoration and modal Tab redirection without retained focus on a hidden guard. Earlier fixture contrast overrides remain visible in example source; exhaustive state, visual and repository coverage, StyleX and registry publication remain unfinished.
+
+`bun coverage:brand` enforces 100% statement, branch, function and line coverage per brand component using Vitest/V8. It includes upload acceptance, rejection, extraction error, drag, disabled and cleanup behavior plus chart renderer/height and selection badge behavior. This scoped gate is not repository-wide coverage. `bun verify:tree-shaking` inspects retained module contribution and enforces an 18,000-byte gzip budget; Button measures about 16,280 gzip bytes with no chart/upload dependency retained.
 
 ## Policy
+
+Upload composition is available from root import or `@bridge/ui/upload-viewer`, `@bridge/ui/upload-list` and `@bridge/ui/image-crop`:
+
+- `UploadViewer`: controlled dialog for image/video/audio/PDF, with metadata/download fallback, caller-owned URL and optional `finalFocus` target. PDF inline support depends on the browser; download remains available. Only HTTP(S), blob and root-relative URL are linked.
+- `UploadPreview`: caller-owned queued/uploading/success/error/cancelled state, actual progress and retry/cancel callback. No automatic transfer or fabricated progress.
+- `UploadList`: controlled local File or remote URL metadata, cumulative count/byte limit, per-file rejection callback and feedback announcement. Removal returns focus to the selection trigger. Caller supplies translated copy and size formatting.
+- `ImageCrop`: drag or keyboard position, zoom, 90-degree rotation and square/original/3:1 banner ratio. Apply emits a PNG with width 768px; upload remains a separate caller action. Bitmap cleanup occurs on replacement/unmount.
+
+The catalog demonstrates existing attachment, preview focus restoration, static transfer state and separate crop/apply/upload. Packed verification now resolves 79 public entry. These additions do not complete the repository-wide foundation gate.
+
+`UploadPreview` packages an Item row with MIME-specific image/video/audio/PDF/file icon, optional thumbnail, filename, caller-formatted size/status and accessible preview/remove callback buttons. Compose it beside DropArea; the caller owns file selection, preview URL and actual upload. The catalog uses this public component rather than a private filename row.
 
 `TsChart` is a separate public wrapper for TanStack SVG, tooltip and custom renderer support. Core and React adapter remain pinned to alpha `0.16.0`. `DropArea` adapts Bridge Web's Dropzone interaction through react-dropzone, with caller-owned copy, constraint and callback; no consumer migration was performed. Brand MultiSelectValue uses primary badge styling without modifying generated source. Calendar includes two- and four-month range selection. Empty, menu, navigation, conversation, pagination and Sonner have expanded demonstration.
 

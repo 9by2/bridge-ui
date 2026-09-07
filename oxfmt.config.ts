@@ -19,6 +19,8 @@ export default defineConfig({
     groups: ["builtin", "external", "internal", "parent", "sibling", "index", "style", "unknown"]
   },
   ignorePatterns: [
+    "app/component/shadcn/**",
+    "internal/catalog/vendor/**",
     ".*",
     "**/app/config/route-tree.ts",
     "**/worker-configuration.d.ts",

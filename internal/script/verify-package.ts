@@ -41,7 +41,34 @@ createRoot(document.getElementById("root")!).render(
   })
 
   run(["bun", "install", "--ignore-scripts"], fixture)
+  const installed = path.join(fixture, "node_modules/@bridge/ui")
+  const manifest = await Bun.file(path.join(installed, "package.json")).json()
+  const imports: string[] = []
+  for (const [key, value] of Object.entries(manifest.exports)) {
+    if (!value || typeof value !== "object" || !("types" in value) || typeof value.types !== "string")
+      throw new Error(`Missing declaration export: ${key}`)
+    const targets = [...new Bun.Glob(value.types).scanSync({ cwd: installed })]
+    if (!targets.length) throw new Error(`Missing declaration target: ${key}`)
+    for (const target of targets) {
+      const prefix = value.types.split("*")[0] ?? ""
+      const suffix = value.types.split("*")[1] ?? ""
+      const name = key.includes("*")
+        ? key.replace("*", target.slice(prefix.length, suffix ? -suffix.length : undefined))
+        : key
+      imports.push(name === "." ? "@bridge/ui" : `@bridge/ui/${name.slice(2)}`)
+    }
+  }
+  await writeFile(
+    path.join(fixture, "src/export.ts"),
+    imports
+      .map((name, index) => `import * as entry${index} from ${JSON.stringify(name)}; console.log(entry${index});`)
+      .join("\n")
+  )
   run(["bunx", "--bun", "tsc", "--noEmit"], fixture)
+  for (const name of imports.filter((entry) => !entry.endsWith(".css"))) {
+    run(["bun", "-e", `await import(${JSON.stringify(name)})`], fixture)
+  }
+  console.log(`Verified ${imports.length} installed public entry with declaration checking`)
   run(["bunx", "--bun", "vite", "build"], fixture)
 }
 
@@ -94,7 +121,7 @@ async function writeFixture(
           lib: ["ESNext", "DOM"],
           module: "ESNext",
           moduleResolution: "Bundler",
-          skipLibCheck: true,
+          skipLibCheck: false,
           strict: true,
           target: "ESNext"
         },

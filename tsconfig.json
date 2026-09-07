@@ -24,6 +24,7 @@
     "noImplicitOverride": true,
 
     "paths": {
+      "@catalog-upload": ["./internal/catalog/upload.tsx"],
       "@catalog-vendor/*": ["./internal/catalog/vendor/tanstack/*"],
       "@bridge/ui": ["./app/index.ts"],
       "@bridge/ui/*": ["./*"]

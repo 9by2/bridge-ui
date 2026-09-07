@@ -1,6 +1,7 @@
 import { cp, rm, writeFile } from "node:fs/promises"
 import path from "node:path"
 
+import { createStylexBunPlugin } from "@stylexjs/unplugin/bun"
 import tailwind from "bun-plugin-tailwind"
 
 const root = path.resolve(import.meta.dir, "../..")
@@ -26,7 +27,10 @@ const result = await Bun.build({
     entry: "[dir]/[name].[ext]"
   },
   outdir,
-  plugins: [tailwind],
+  plugins: [
+    createStylexBunPlugin({ dev: false, runtimeInjection: false, bunDevCssOutput: path.join(outdir, "stylex.css") }),
+    tailwind
+  ],
   sourcemap: "linked",
   target: "browser"
 })
@@ -37,6 +41,13 @@ if (!result.success) {
 }
 
 await cp(path.join(outdir, "style/global.css"), path.join(outdir, "style.css"))
+const extracted = await Bun.file(path.join(outdir, "stylex.css")).text()
+if (!/min-height:\s*10rem/.test(extracted)) throw new Error("Missing extracted StyleX presentation")
+await writeFile(
+  path.join(outdir, "style.css"),
+  `${await Bun.file(path.join(outdir, "style.css")).text()}\n${extracted}`
+)
+await rm(path.join(outdir, "stylex.css"))
 await rm(path.join(outdir, "style/global.css"))
 await writeFile(path.join(outdir, "style.css.d.ts"), "declare const stylesheet: string\nexport default stylesheet\n")
 
@@ -46,3 +57,16 @@ const declaration = Bun.spawnSync(["bunx", "--bun", "tsgo", "-p", "tsconfig.buil
   stdout: "inherit"
 })
 if (declaration.exitCode !== 0) process.exit(declaration.exitCode)
+
+// Declaration emission preserves source alias, which is not a public package export.
+for (const file of new Bun.Glob("**/*.d.ts").scanSync({ cwd: outdir })) {
+  const target = path.join(outdir, file)
+  const content = await Bun.file(target).text()
+  await writeFile(
+    target,
+    content.replaceAll(/(["'])@bridge\/ui\/app\/([^"']+)\1/g, (_, quote, modulePath) => {
+      const relative = path.relative(path.dirname(target), path.join(outdir, modulePath))
+      return `${quote}${relative.startsWith(".") ? relative : `./${relative}`}${quote}`
+    })
+  )
+}
