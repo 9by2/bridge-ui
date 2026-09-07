@@ -1,5 +1,9 @@
 # Decision
 
+**GIVEN** the user approved Changesets release MR automation
+**WHEN** replacing the earlier protected-tag manual release contract
+**THEN** follow plan/spec/changeset-release/spec.md: protected-main verification precedes automated release MR or publication, RC uses next and stable uses latest. Tag is an output. Earlier tag-only decision is superseded. Live bot/registry proof remains pending.
+
 **GIVEN** the user approved separate package runtime coverage and command/catalog verification
 **WHEN** replacing the repository-wide percentage policy
 **THEN** use coverage:runtime for app and shared source, excluding generated Shadcn component and the export-only app/index.ts barrel. Keep hook code in scope, the 90% runtime floor and 100% brand floor. Command, packed package and browser verification remain mandatory CI gate. This supersedes the earlier command/catalog percentage requirement, not its verification requirement.

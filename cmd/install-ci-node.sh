@@ -2,7 +2,7 @@
 set -eu
 
 apt-get update -qq
-apt-get install -y --no-install-recommends ca-certificates curl xz-utils
+apt-get install -y --no-install-recommends ca-certificates curl xz-utils git
 
 # Vitest V8 coverage must use Node, not the Bun image's node fallback.
 version=22.22.0

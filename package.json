@@ -57,6 +57,9 @@
     "**/*.css"
   ],
   "scripts": {
+    "changeset": "changeset",
+    "release:version": "bun changeset version && bun install --lockfile-only && bun fmt",
+    "release:publish": "bun run build && bun cmd/publish-package.ts",
     "dev": "vite --config vite.config.ts",
     "catalog:build": "vite build --config vite.config.ts",
     "catalog:test": "playwright test --config playwright.config.ts",
@@ -98,7 +101,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
-    "@changesets/cli": "^3.0.2",
+    "@changesets/cli": "2.29.8",
     "@effect/language-service": "^0.87.2",
     "@effect/tsgo": "^0.41.0",
     "@effect/vitest": "^0.30.0",
@@ -121,6 +124,7 @@
     "@types/topojson-specification": "^1.0.5",
     "@vitest/coverage-v8": "4.1.11",
     "bun-plugin-tailwind": "^0.1.2",
+    "changesets-gitlab": "0.14.0",
     "d3-array": "^3.2.4",
     "d3-format": "^3.1.2",
     "d3-geo": "^3.1.1",

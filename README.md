@@ -36,9 +36,52 @@ The repository builds an importable ESM package with declarations and a stable C
 
 Both pipeline contexts include `deployment/concurrency.gitlab-ci.yml` to remove inherited stage resource locks. Validation remains a required stage dependency, and package publication retains its own release lock. Private command implementation lives in `cmd/`; public package output does not include it.
 
-Root CI retains the company runner template and triggers `deployment/.gitlab-ci.yml`. The full company Bun pipeline includes service Docker/Kubernetes jobs, so this package uses its runner-only template instead. The child validates formatting, lint, type, boundary, test, coverage, browser and packed build. Package deployment uses runner-provided `CI_JOB_TOKEN` against `${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/` (this project: 872); no personal token is needed.
+Root CI retains the company runner template and triggers `deployment/.gitlab-ci.yml`. The parent job `verify-and-release` only starts the child; the child validates formatting, lint, type, boundary, test, coverage, browser and packed build. The serialized `release` job then runs only on protected default-branch CI. Package registry access uses `CI_JOB_TOKEN`; branch/MR/tag automation requires a separate protected `GITLAB_TOKEN`.
 
-Publication requires a protected prerelease tag matching package.json (for example version `0.1.1-rc.1` and tag `v0.1.1-rc.1`), passing validation and manual approval of `publish`. It publishes under `next`, then installs/imports the registry package in an isolated fixture. Configure protected `v*` tags in GitLab before release. No `latest` path exists. A failed post-publish install does not undo publication.
+Changesets maintains a release MR on `changeset-release/main`. Merging that MR approves publication after verification; do not manually bump package.json or create a release tag. RC version publishes under `next`, stable under `latest`. CI verifies an isolated registry install/import before creating and pushing `v<version>`. Tag pipelines validate only. Publication is irreversible; retry skips an existing package version and resumes verification/tag creation. An existing tag pointing elsewhere is never overwritten. Release automation still needs live bot/registry verification.
+
+## Release Process
+
+### Feature
+
+1. Implement and test on a feature branch.
+2. Run `bun changeset`, select `@bridge/ui`, choose patch/minor/major and describe the change.
+3. Commit the generated `.changeset/*.md` with the implementation and merge the feature MR into `main`.
+4. After verification, CI creates or updates one **Release @bridge/ui** MR containing the calculated version and changelog. More feature MR work updates that same release MR.
+5. Review and merge the release MR when ready. Its main pipeline verifies and publishes automatically. There is no separate Publish button.
+
+### Release Candidate
+
+Before merging the release MR, enter RC mode on a normal branch based on main:
+
+```sh
+bun changeset pre enter rc
+```
+
+Commit `.changeset/pre.json` and merge that MR into main. Include a pending Changeset for the release. CI updates the release MR to an RC version, for example `0.2.0-rc.0`. Merge the updated release MR to publish it under `next` and test it in an application with `bun add @bridge/ui@0.2.0-rc.0` using the private registry configuration.
+
+For a fix, add a new Changeset and merge it normally. While pre-mode is active, the next release MR produces `0.2.0-rc.1` (or the version calculated from the new change). Do not manually run `changeset version`; the bot owns that step. Do not delete retained Changeset or edit pre-state by hand.
+
+### Stable
+
+After testing and approving the RC, run on a normal branch based on main:
+
+```sh
+bun changeset pre exit
+```
+
+Commit the pre-state change and merge its MR. CI prepares the stable release MR, for example `0.2.0`. Review its diff, confirm RC integration proof required by ADHD, and merge it. CI publishes under `latest` and creates `v0.2.0`. Without pre-mode, a normal Changeset release MR is stable directly; use the RC path for the first integration proof. Never reuse a published version.
+
+### Administrator Setup
+
+- Protect main and require successful verification before merging a release MR; merging is release approval.
+- Add a masked, protected CI variable `GITLAB_TOKEN`: preferably a project access token for a bot with `api` and `write_repository`, role sufficient to maintain the release branch/MR and push `v*` tags. Set expiry/rotation. Never put the token in source or enable credential debugging.
+- Allow the bot to push the `changeset-release/main` branch and protected `v*` tags. The bot does not merge its own MR or push main.
+- Keep registry authentication on `CI_JOB_TOKEN`; no npmjs token is required. Registry endpoint is `${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/` (project 872).
+- Missing bot credentials fail the release job explicitly. A green verification job alone does not mean publication succeeded; inspect the child `release` log and Package Registry.
+- Existing `v0.1.0` published nothing. Leave it alone and release a new Changesets-calculated version; automation will not repoint it.
+
+Changesets CLI is pinned to 2.29.8 with changesets-gitlab 0.14.0: this integration reads the v2 prerelease state, not the v3 archived-note layout. Upgrade together only after the RC/exit regression passes.
 
 CI now gates package runtime coverage separately from command and catalog verification. Local runtime coverage reaches 100% in every metric; the revised gate still needs runner verification. V8 coverage requires real Node: `cmd/install-ci-node.sh` installs checksum-verified Node 22.22.0 before Bun dependency installation. Historical Linux amd64 Docker proof used upstream `oven/bun:1.4.0` and passed the source sequence and 375 browser check; private mirror access was unavailable locally. Private registry publication remains unproven.
 

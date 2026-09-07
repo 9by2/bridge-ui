@@ -7,7 +7,7 @@ include:
 stages:
   - triggers
 
-deploy:
+verify-and-release:
   stage: triggers
   trigger:
     include: "deployment/.gitlab-ci.yml"
@@ -16,6 +16,7 @@ deploy:
     - if: '$CI_COMMIT_TAG'
     - if: '$CI_COMMIT_BRANCH =~ /^(main|develop)$/ || $CI_PIPELINE_SOURCE =~ /^(merge_request_event|external_pull_request_event)$/'
       changes:
+        - ".changeset/**/*"
         - ".gitlab-ci.yml"
         - "deployment/**/*"
         - "package.json"

@@ -50,15 +50,21 @@ catalog:
       - catalog-dist/
     expire_in: 7 days
 
-publish:
+release:
   stage: deploy
-  resource_group: npm-prerelease
-  environment:
-    name: package-prerelease
+  resource_group: package-release
+  variables:
+    GIT_DEPTH: "0"
+    INPUT_VERSION: bun release:version
+    INPUT_PUBLISH: bun release:publish
+    INPUT_TITLE: "Release @bridge/ui"
+    INPUT_COMMIT: "chore: version package"
+    INPUT_REMOVE_SOURCE_BRANCH: "true"
+    INPUT_CREATE_GITLAB_RELEASES: "false"
   rules:
-    - if: '$CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+$/ && $CI_COMMIT_REF_PROTECTED == "true"'
-      when: manual
-      allow_failure: false
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true"'
   script:
-    - bun run build
-    - bun cmd/publish-package.ts
+    - test -n "$GITLAB_TOKEN"
+    - test "$(git ls-remote origin "refs/heads/$CI_DEFAULT_BRANCH" | cut -f1)" = "$CI_COMMIT_SHA" || { echo "Superseded pipeline; skip release"; exit 0; }
+    - export GITLAB_HOST="$CI_SERVER_URL"
+    - bunx changesets-gitlab
