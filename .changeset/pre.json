@@ -4,5 +4,7 @@
   "initialVersions": {
     "@bridge/ui": "0.1.0"
   },
-  "changesets": []
+  "changesets": [
+    "release-mr-flow"
+  ]
 }
