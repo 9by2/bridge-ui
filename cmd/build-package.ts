@@ -51,7 +51,7 @@ await rm(path.join(outdir, "stylex.css"))
 await rm(path.join(outdir, "style/global.css"))
 await writeFile(path.join(outdir, "style.css.d.ts"), "declare const stylesheet: string\nexport default stylesheet\n")
 
-const declaration = Bun.spawnSync(["bunx", "--bun", "tsgo", "-p", "tsconfig.build.json"], {
+const declaration = Bun.spawnSync(["bun", "node_modules/typescript/bin/tsc", "-p", "tsconfig.build.json"], {
   cwd: root,
   stderr: "inherit",
   stdout: "inherit"

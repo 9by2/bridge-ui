@@ -67,7 +67,7 @@
     "test": "bun test",
     "coverage:brand": "vitest run --coverage",
     "coverage:repository": "COVERAGE_SCOPE=repository vitest run --coverage",
-    "typecheck": "bunx --bun tsgo --noEmit",
+    "typecheck": "bun node_modules/typescript/bin/tsc --noEmit",
     "verify:package": "bun cmd/verify-package.ts",
     "verify:tree-shaking": "bun cmd/verify-tree-shaking.ts"
   },

@@ -1,5 +1,9 @@
 # Decision
 
+**GIVEN** clean CI cannot resolve tsgo and bunx tries a nonexistent npm package
+**WHEN** invoking the compiler
+**THEN** use the installed typescript/bin/tsc directly for typecheck and declaration emission. Regression test checks the installed executable contract.
+
 **GIVEN** explicit request for concurrency override and cmd ownership
 **WHEN** refining CI
 **THEN** load deployment/concurrency.gitlab-ci.yml in both pipeline contexts and relocate internal/script to cmd without dropping lint or coverage scope. Keep stage dependency and package publication lock; concurrency override removes inherited resource mutex, not correctness dependency.
