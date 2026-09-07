@@ -17,6 +17,8 @@ stages:
 
 source:
   stage: verify
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
   script:
     - bun fmt --check
     - bun lint
@@ -29,6 +31,8 @@ source:
 
 coverage:
   stage: verify
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
   script:
     - bun coverage:runtime
   artifacts:
@@ -39,6 +43,8 @@ coverage:
 
 catalog:
   stage: verify
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
   script:
     - bunx playwright install --with-deps chromium
     - bun catalog:test

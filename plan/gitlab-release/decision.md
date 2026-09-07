@@ -1,5 +1,9 @@
 # Decision
 
+**GIVEN** release MR !1 pipeline 57525 fails downstream creation before any job runs
+**WHEN** the parent is a merge request pipeline
+**THEN** explicitly allow parent_pipeline on each verification job. Keep release protected-default-branch-only. Main pipeline 57523 successfully created the RC MR; bot authentication is working.
+
 **GIVEN** the user approved Changesets release MR automation
 **WHEN** replacing the earlier protected-tag manual release contract
 **THEN** follow plan/spec/changeset-release/spec.md: protected-main verification precedes automated release MR or publication, RC uses next and stable uses latest. Tag is an output. Earlier tag-only decision is superseded. Live bot/registry proof remains pending.

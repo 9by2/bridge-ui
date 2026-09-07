@@ -1,5 +1,9 @@
 # Task
 
+- [x] Add regression and explicit parent-pipeline rule for source, coverage and catalog so the release MR can validate.
+
+MR child rule regression failed before the fix and passes after it. Formatting, typecheck and diff check pass. Actual MR child creation must be verified after this change reaches main and the bot refreshes the release MR; retrying the old commit cannot load this fix.
+
 - [x] Test package runtime scope, command/catalog CI retention and mobile hook behavior.
 - [x] Rename coverage command, update policy and verify the separate gate.
 
