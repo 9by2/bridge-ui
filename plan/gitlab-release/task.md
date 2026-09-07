@@ -1,5 +1,10 @@
 # Task
 
+- [x] Test package runtime scope, command/catalog CI retention and mobile hook behavior.
+- [x] Rename coverage command, update policy and verify the separate gate.
+
+Runtime gate verification: 21 component test pass, with 100% statement, branch, function and line coverage including the mobile hook. Bun test, typecheck, lint, boundary, catalog, packed client/SSR and tree-shaking verification pass. Minor Changeset `runtime-quality-gate` is pending for `@bridge/ui`, confirmed by `bunx changeset status`; no version application or publication performed. The non-fatal Vite shutdown warning remains. Remote verification is pending; earlier repository percentage below is historical and superseded by the approved runtime policy.
+
 - [x] Add a failing regression for generated Shadcn coverage exclusion.
 - [x] Exclude generated Shadcn source, align ownership policy and measure remaining owned coverage without lowering the gate.
 

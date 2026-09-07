@@ -1,5 +1,9 @@
 # Decision
 
+**GIVEN** the user approved separate package runtime coverage and command/catalog verification
+**WHEN** replacing the repository-wide percentage policy
+**THEN** use coverage:runtime for app and shared source, excluding generated Shadcn component and the export-only app/index.ts barrel. Keep hook code in scope, the 90% runtime floor and 100% brand floor. Command, packed package and browser verification remain mandatory CI gate. This supersedes the earlier command/catalog percentage requirement, not its verification requirement.
+
 **GIVEN** generated Shadcn source is not owned implementation and the user excludes it from unit coverage
 **WHEN** repository coverage runs
 **THEN** exclude app/component/shadcn/** from the percentage while retaining catalog, accessibility and integration verification. Keep the owned repository floor at 90% and brand coverage at 100%; do not exclude owned command or catalog source to hide a remaining gap.

@@ -30,7 +30,7 @@ source:
 coverage:
   stage: verify
   script:
-    - bun coverage:repository
+    - bun coverage:runtime
   artifacts:
     when: always
     paths:

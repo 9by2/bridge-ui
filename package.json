@@ -1,6 +1,6 @@
 {
   "name": "@bridge/ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -66,7 +66,7 @@
     "lint": "oxlint",
     "test": "bun test",
     "coverage:brand": "vitest run --coverage",
-    "coverage:repository": "COVERAGE_SCOPE=repository vitest run --coverage",
+    "coverage:runtime": "COVERAGE_SCOPE=runtime vitest run --coverage",
     "typecheck": "bun node_modules/typescript/bin/tsc --noEmit",
     "verify:package": "bun cmd/verify-package.ts",
     "verify:tree-shaking": "bun cmd/verify-tree-shaking.ts"

@@ -110,7 +110,8 @@ Do not implement any consumer migration until all foundation gate pass.
 
 ### 5. Quality
 
-- owned repository coverage is at least 90%; generated `app/component/shadcn/**` source is excluded from the percentage, not catalog, accessibility or integration verification;
+- package runtime coverage (`app/` and `shared/`) is at least 90%; generated `app/component/shadcn/**` and the export-only `app/index.ts` barrel are excluded from the percentage, not catalog, accessibility or package verification;
+- command and catalog verification remain separate required CI gate through Bun test, boundary, packed client/SSR, tree-shaking and Playwright; no repository-wide percentage is claimed;
 - every non-Shadcn component has 100% statement, branch, function, and line coverage;
 - lint, typecheck, test, component catalog, visual, package, client, and SSR build pass.
 
@@ -137,7 +138,7 @@ At this document revision:
 - generated and brand component catalog, including the 188-entry TanStack reference inventory;
 - browser suite covers every example and core interaction;
 - open-menu accessibility and keyboard regression pass; hidden focus sentinel still requires manual accessibility review; full state and visual coverage remains incomplete;
-- brand component reaches 100% statement, branch, function and line coverage; repository coverage gate remains unmet;
+- brand component reaches 100% statement, branch, function and line coverage; package runtime coverage replaces the former repository-wide percentage policy;
 - required button, input, checkbox, select, dialog, popover, tabs, accordion, tooltip, and toast interactions pass;
 - component catalog development smoke test and static build pass;
 - static StyleX extraction for owned upload layout; generated Tailwind styling remains during transition;

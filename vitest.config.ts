@@ -13,13 +13,13 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       include:
-        process.env.COVERAGE_SCOPE === "repository"
-          ? ["app/**/*.{ts,tsx}", "shared/**/*.{ts,tsx}", "internal/**/*.{ts,tsx}", "cmd/**/*.{ts,tsx}"]
+        process.env.COVERAGE_SCOPE === "runtime"
+          ? ["app/**/*.{ts,tsx}", "shared/**/*.{ts,tsx}"]
           : ["app/component/brand/**/*.tsx"],
-      exclude: ["app/component/shadcn/**", "internal/catalog/vendor/**", "internal/catalog/example/**"],
+      exclude: ["app/component/shadcn/**", "app/index.ts"],
       reporter: ["text", "json-summary"],
       thresholds:
-        process.env.COVERAGE_SCOPE === "repository"
+        process.env.COVERAGE_SCOPE === "runtime"
           ? {
               statements: 90,
               branches: 90,
