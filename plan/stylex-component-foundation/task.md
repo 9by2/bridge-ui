@@ -1,6 +1,6 @@
 # Ordered Implementation Handoff
 
-All implementation remains unchecked. This plan has not authorized a 70-module rewrite. Effort is relative: W1 medium/high; W3 and W5 high due context/engine boundary; no calendar estimate before pilot measurement.
+Execution authorized on 2026-09-08 with Effect limited to tooling/resource boundaries and React/Base UI retained. Follow `phase-detail.md` for every W0-W6 slice, one red-green loop at a time. Public breaking change, registry publication and consumer migration remain gated. Effort is relative: W1 medium/high; W3 and W5 high; no calendar estimate before pilot measurement.
 
 ## W0: Freeze And Approve
 

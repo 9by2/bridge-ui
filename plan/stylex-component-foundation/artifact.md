@@ -1,5 +1,7 @@
 # Published Plan
 
+Expanded execution revision (2026-09-08): https://artifact.9by2.workers.dev/artifact/01a08026-e6e1-7345-91fe-a231abb16963/revision/01a08032-830b-77d6-894e-daaa1eb5da08/ . Eight documents; adds complete W0-W6 Effect/TDD slice contract and approved React/Base UI boundary. Manifest validation passes. Original revision below remains the historical planning snapshot.
+
 - Public URL: https://artifact.9by2.workers.dev/artifact/01a08026-e6e1-7345-91fe-a231abb16963/
 - Immutable revision: https://artifact.9by2.workers.dev/artifact/01a08026-e6e1-7345-91fe-a231abb16963/revision/01a08026-e8c3-779a-9748-6ef1d4d81e63/
 - Artifact ID: `01a08026-e6e1-7345-91fe-a231abb16963`

@@ -1,5 +1,11 @@
 # Decision And Approval Record
 
+## DEC-008: Execution And Effect Boundary (Approved)
+
+**GIVEN** the user requested full-phase detail, TDD and persistent implementation, then confirmed "Sure, never replace React/Base UI".
+**WHEN** implementing the plan.
+**THEN** use the confirmed public/component, theme/context, packed-output, resource and RC seams; Effect belongs only at tooling/resource boundaries. React/Base UI retain state and interaction. Proceed through green slices; breaking API, release publication and consumer migration remain separately gated. See `phase-detail.md` for every wave's test-first handoff.
+
 ## DEC-001: Scope
 
 **GIVEN** the user requested a detailed artifact plan spanning every component.

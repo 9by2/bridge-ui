@@ -1,6 +1,6 @@
 # StyleX Component Foundation
 
-Status: Draft for approval. Planning only; no implementation or consumer migration authorized by this document.
+Status: Implementation authorized through test-first slices on 2026-09-08. Effect is limited to tooling/resource boundaries; never replace React/Base UI. Breaking API, publication and consumer migration remain separately gated. See `phase-detail.md` and `decision.md` for the approved execution boundary.
 
 ## Purpose
 
