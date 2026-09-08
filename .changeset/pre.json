@@ -5,6 +5,7 @@
     "@bridge/ui": "0.1.0"
   },
   "changesets": [
+    "production-jsx",
     "release-mr-flow"
   ]
 }
