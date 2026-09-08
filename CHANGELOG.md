@@ -1,5 +1,11 @@
 # @bridge/ui
 
+## 0.1.1-rc.1
+
+### Patch Changes
+
+- 7150c06: Emit production-compatible JSX so package component renders with production React. Execute packed SSR output during release verification instead of checking compilation alone.
+
 ## 0.1.1-rc.0
 
 ### Patch Changes
