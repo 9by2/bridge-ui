@@ -111,6 +111,10 @@ Own icon slot styling where possible. Button currently styles arbitrary SVG desc
 
 The existing build externalizes dependency and peer modules, scans both component directories, emits split ESM/declaration/map and appends StyleX CSS to Tailwind CSS. It verifies only one extracted `min-height: 10rem` sentinel today. Replace that weak proof with assertions for each pilot state, theme override, media rule and keyframe. Assert zero runtime injection and zero `stylex.create` in emitted JS; allowing compiled `stylex.props` runtime is correct.
 
+W0 probe (installed 0.19.0): an imported defineVars-only module did not contribute default CSS when only its TSX consumer was a Bun entry. Making the token module an explicit entry restored defaults. Collect `app/style/*.stylex.ts` explicitly when introducing production token, and retain the red/green fixture contract; do not assume transitive extraction. The fix is currently demonstrated only in the test build, not applied to production source.
+
+Subsequent repeated probe corrected that diagnosis: explicit entry alone was intermittent because the upstream Bun adapter writes the shared CSS file concurrently from onLoad. A private wrapper now serializes those callbacks while retaining the official compiler, and the package builder uses it. Ten consecutive extraction/SSR runs pass, including a Vite extraction comparison. Keep explicit token collection for the planned production token, but do not describe it as the race fix. No installed package source was edited.
+
 Align or explicitly prove Bun/Vite layer behavior. Preserve production JSX, React peer externalization, CSS side-effect metadata, packaged font resolution and declarations with no private alias. Build candidate fixture without Tailwind and without StyleX plugin on the consumer side. Run build-producing commands sequentially because they share `dist/`; do not compare a package generated concurrently by another test.
 
 ## Reference

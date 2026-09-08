@@ -13,3 +13,4 @@
 - Keep the active implementation spec under `plan/<proposal>/spec/`. Archive and sync it through [archive-plan](./.agents/skills/archive-plan/SKILL.md) after completion.
 - Do not implement Bridge Web or Cue migration until every foundation gate in ADHD pass.
 - Before commit, run the repository formatter, `bun lint`, typecheck, test, coverage, Storybook check, and package build required by ADHD.
+- Implementation may spawn subagents using `proxy/gpt-5.6-sol` with ultra thinking

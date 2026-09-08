@@ -6,7 +6,7 @@ Execution authorized on 2026-09-08 with Effect limited to tooling/resource bound
 
 - [ ] Fetch without overwriting unrelated work; identify RC.1 release source SHA, package integrity, lockfile and Bun/Node/browser version. Local `7150c06` is not assumed to equal RC.1.
 - [ ] Preserve Web report, source fixture and screenshot as immutable baseline; record current mixed-chart and overflow failure separately from the pilot pass.
-- [ ] Generate AST export and compound-slot inventory from all 70 module files; reconcile alias/helper/type/hook exports with packed entry enumeration.
+- [x] Generate AST named-export inventory from all 70 module files (388 value/type entries); verify built root/direct runtime identity with MultiSelectValue/Sonner exceptions. Packed entry verification separately passes; full declaration semantic resolution is not claimed.
 - [ ] Approve owned-port strategy, caller override/variant-helper contract, scoped theme/portal behavior, optional global/font CSS split and any public Theme/API addition.
 - [ ] Verify installed StyleX 0.19 support for defineVars, createTheme, state/marker selector and runtime variable; align Bun/Vite CSS layer option or document proven equivalence.
 - [ ] Reconcile parent foundation plan's stale coverage wording with current ADHD, without deleting open foundation work or claiming old unchecked work newly verified.

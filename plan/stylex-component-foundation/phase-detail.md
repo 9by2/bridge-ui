@@ -41,6 +41,10 @@ flowchart LR
 
 Finish one row before starting the next. W0.1 is the first tracer bullet. Do not write all component tests in W0. Dependency compatibility and package tests must pass before committing tooling implementation.
 
+W0.1 progress: verifier implemented with Effect v4 schema boundary and typed mismatch; command `bun cmd/verify-component-inventory.ts` verifies 70 module entries including formatter-padded Markdown. Unit/command regression is in `test/internal/component-inventory.test.ts`. AST symbol/slot enumeration remains W0.2, not claimed by this file-level check.
+
+W0.2 progress: command now also reports 388 named value/type exports from 70 module ASTs. Babel parser is explicitly pinned because installed TypeScript 7 has no createSourceFile API. Overload deduplication and local type alias export have dedicated regression. Packed export identity/root override resolution remains a separate pending check; this snapshot does not establish full semantic symbol resolution.
+
 ## W1: Pilot Detail
 
 | Slice               | Red behavior                                                     | Implementation and dependency                                 | Acceptance                                                                      |

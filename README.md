@@ -89,6 +89,8 @@ CI now gates package runtime coverage separately from command and catalog verifi
 
 ## Package Command
 
+`bun cmd/verify-component-inventory.ts` checks the StyleX migration matrix against the current component source and emits its named export inventory. It fails on missing, extra or duplicate entries, invalid TSX and unresolved wildcard/default export. Babel parses TypeScript/JSX because TypeScript 7 does not expose the former JavaScript compiler AST API. The private verifier uses Effect v4; no Effect runtime is added to React/Base UI or published component imports. The all-phase execution plan and continuation record live in `plan/stylex-component-foundation/`.
+
 Package build explicitly emits production JSX, independent of the build process environment. `bun test test/internal/production-jsx.test.ts` renders root/direct component output under production React and rejects development JSX runtime imports. `bun verify:package` also executes the installed tarball's Vite SSR bundle under production React. This fixes the `jsxDEV is not a function` failure found in `0.1.1-rc.0`; a new RC and consumer spike rerun are required before claiming integration success.
 
 Package output is split ESM with declarations. Root named import is tree-shakeable; direct entry avoids loading unrelated module for an unbundled consumer:
