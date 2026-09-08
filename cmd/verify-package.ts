@@ -88,6 +88,18 @@ export const component = { TsChart, DropArea }
   run(["bun", "install", "--ignore-scripts"], fixture)
   run(["bunx", "--bun", "tsc", "--noEmit"], fixture)
   run(["bunx", "--bun", "vite", "build", "--ssr", "src/entry-server.tsx"], fixture)
+  run(
+    [
+      "bun",
+      "-e",
+      `
+    process.env.NODE_ENV = "production";
+    const { html } = await import("./dist/entry-server.js");
+    if (!html.includes("Continue")) throw new Error("Production SSR markup missing");
+  `
+    ],
+    fixture
+  )
 }
 
 async function writeFixture(

@@ -21,6 +21,7 @@ const result = await Bun.build({
   splitting: true,
   external,
   format: "esm",
+  jsx: { development: false },
   naming: {
     asset: "[name].[ext]",
     chunk: "[name]-[hash].[ext]",
