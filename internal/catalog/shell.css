@@ -138,6 +138,7 @@
   display: none;
 }
 .catalog-sidebar {
+  box-sizing: border-box;
   position: fixed;
   top: 72px;
   bottom: 0;
@@ -408,6 +409,9 @@
   }
   .mobile-menu {
     display: block;
+  }
+  .header-action {
+    gap: 8px;
   }
   .catalog-sidebar {
     display: none;

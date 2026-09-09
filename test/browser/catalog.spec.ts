@@ -98,6 +98,11 @@ test("browse inline example, source, theme and mobile", async ({ page, context }
   await page.setViewportSize({ width: 390, height: 844 })
   await page.getByRole("button", { name: "Browse", exact: true }).click()
   await expect(page.getByLabel("Find a component")).toBeVisible()
+  const sidebar = page.locator(".catalog-sidebar")
+  expect(await sidebar.evaluate((node) => node.getBoundingClientRect().right)).toBeLessThanOrEqual(390)
+  expect(
+    await page.locator(".header-action").evaluate((node) => node.getBoundingClientRect().right)
+  ).toBeLessThanOrEqual(390)
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
 })
 

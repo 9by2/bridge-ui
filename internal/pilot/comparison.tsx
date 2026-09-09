@@ -1,10 +1,12 @@
 import type { ComponentProps } from "react"
 import { useState } from "react"
 
-import { Button as BaselineButton } from "@bridge/ui/button"
-import * as baselineDialog from "@bridge/ui/component/shadcn/dialog"
-import * as baselineField from "@bridge/ui/component/shadcn/field"
-import { Input as BaselineInput } from "@bridge/ui/component/shadcn/input"
+import {
+  Button as BaselineButton,
+  dialog as baselineDialog,
+  field as baselineField,
+  Input as BaselineInput
+} from "../comparison-baseline"
 
 import { Button as CandidateButton } from "./button"
 import * as candidateDialog from "./dialog"
