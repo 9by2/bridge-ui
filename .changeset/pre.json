@@ -6,6 +6,9 @@
   },
   "changesets": [
     "production-jsx",
-    "release-mr-flow"
+    "release-mr-flow",
+    "secondary-contrast",
+    "stylex-css-collection",
+    "stylex-private-candidate"
   ]
 }

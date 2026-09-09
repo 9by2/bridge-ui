@@ -1,5 +1,16 @@
 # @bridge/ui
 
+## 0.2.0-rc.2
+
+### Minor Changes
+
+- 5665ff9: Promote the complete StyleX component implementation to public root, direct, generated-compatible and brand-compatible package paths. Package precompiled component CSS and the scoped engine adapter without requiring consumer Tailwind or StyleX compilation.
+
+### Patch Changes
+
+- 5665ff9: Correct light-theme secondary foreground contrast against its dark background. Preserve dark-theme styling and generated component behavior.
+- 27de364: Serialize StyleX Bun transform callbacks so concurrent stylesheet writes cannot drop compiled token or component CSS. Preserve the official compiler and precompiled consumer contract.
+
 ## 0.1.1-rc.1
 
 ### Patch Changes
