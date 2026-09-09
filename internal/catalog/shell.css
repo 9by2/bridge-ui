@@ -316,6 +316,9 @@
 .example-stage > * {
   max-width: 100%;
 }
+.example-stage > [data-pilot-theme] > * {
+  max-width: 100%;
+}
 .preview-setting {
   display: flex;
   align-items: center;

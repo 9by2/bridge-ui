@@ -89,6 +89,14 @@ CI now gates package runtime coverage separately from command and catalog verifi
 
 ## Package Command
 
+`bun cmd/verify-pilot-budget.ts` records baseline/candidate Button JS and CSS measurements and enforces the existing 18,000-byte gzip JS gate. Candidate CSS is only extracted Button plus adapter, not the complete theme/font payload; do not compare it as a whole-library replacement.
+
+Pilot comparison intentionally permits only recorded accessibility deviations DEC-010/011/012 (dark error/destructive text and light secondary foreground). `PILOT_ICON=true` exercises the private SVG/data-icon adapter approved in DEC-013. `internal/pilot/adapter.css` is a scoped compatibility exception, not StyleX output; it is not added to public style.css.
+
+After package build, `bun cmd/build-pilot-catalog.ts` creates the isolated private A/B page at `.eval/0908-stylex-foundation/catalog/index.html`. `bun cmd/verify-pilot-catalog.ts` verifies both frame render through Bun.WebView and captures the comparison. Theme/width controls use identical copy; the candidate frame loads no baseline stylesheet. This review page is not published package source.
+
+Private StyleX pilot verification (no export promotion): `NODE_ENV=production bun cmd/verify-pilot-browser.ts` runs Bun.WebView production hydration, form/dialog, scroll cleanup and WCAG A/AA checks. `bun cmd/verify-stylex-browser.ts` verifies compiler computed-style output. After package build, `NODE_ENV=production bun cmd/verify-pilot-style.ts` compares Button against generated output; set `PILOT_COMPONENT=input|field|dialog`, `PILOT_STATE=hover|active|focus-visible`, or `PILOT_PSEUDO=::placeholder|::file-selector-button` for the targeted matrix. Chrome and Bun.WebView are required. Evidence is written under `.eval/0908-stylex-foundation/`. The self-contained browser fixture avoids the host loopback issue; HTTP/CSP integration and full compound-state parity remain separate work.
+
 `bun cmd/verify-component-inventory.ts` checks the StyleX migration matrix against the current component source and emits its named export inventory. It fails on missing, extra or duplicate entries, invalid TSX and unresolved wildcard/default export. Babel parses TypeScript/JSX because TypeScript 7 does not expose the former JavaScript compiler AST API. The private verifier uses Effect v4; no Effect runtime is added to React/Base UI or published component imports. The all-phase execution plan and continuation record live in `plan/stylex-component-foundation/`.
 
 Package build explicitly emits production JSX, independent of the build process environment. `bun test test/internal/production-jsx.test.ts` renders root/direct component output under production React and rejects development JSX runtime imports. `bun verify:package` also executes the installed tarball's Vite SSR bundle under production React. This fixes the `jsxDEV is not a function` failure found in `0.1.1-rc.0`; a new RC and consumer spike rerun are required before claiming integration success.
@@ -109,6 +117,8 @@ Other generated/brand entry is available as `@bridge/ui/component/shadcn/<name>`
 
 Private `internal/catalog/preview.tsx` owns creation/destruction of nearby iframe; offscreen placeholder has no browsing context. Private `source.tsx` fetches raw source only on disclosure. This catalog lifecycle does not affect application-owned TsChart state or force viewport resets on package consumers.
 
+The complete private candidate currently covers all 70 component modules and all 69 catalog families. Validation includes aggregate 100% per-file private coverage, default-slot parity across light/dark and 390/1280, interactive open/checked/focus parity, reduced motion, RTL inheritance, open-overlay Axe, adapter isolation and packed public-package regression. The public package still maps to existing source until the explicit promotion/CSS contract review; private candidate completion is not publication or consumer migration.
+
 `bun verify:package` checks all 71 public entry paths from an isolated Bun-installed tarball with declaration checking enabled, then builds the Vite client and SSR fixture. Emitted declaration uses relative package-local import, not private source alias. The Chromium memory regression repeats chart navigation eight times without page reload and checks post-GC heap/DOM growth after warmup; it does not measure total browser process memory.
 
 ```bash
@@ -126,6 +136,8 @@ bun verify:package
 ```
 
 Run `bun dev` to open the entire catalog at http://127.0.0.1:6006. Each component page displays every available example inline, with a heading, description, isolated preview and source disclosure. No variant dropdown is required. Theme and mobile controls remain available.
+
+Open http://127.0.0.1:6006/style-x for the full private candidate catalog. The header switches between regular and candidate preview. Candidate presentation uses StyleX plus the explicitly approved, theme-scoped descendant/engine adapter; TsChart and Direction retain unstyled implementation identity. Shared upload composition also uses the candidate barrel. The route labels parity review as open: source coverage and route rendering are not full visual or package acceptance. Example layout still uses utility CSS. `bun cmd/verify-stylex-route.ts` verifies the served route through Bun.WebView; set `CATALOG_URL` to the running preview origin. Evidence lives in `.eval/0908-stylex-route/`.
 
 Dark is the default theme; the theme toggle and `?theme=light` support light mode. Chart includes 16 inline examples. TsChart includes the 188-entry upstream v0.16.0 catalog plus two small Bridge compositions. Vendored source, supporting module, license and dataset attribution live under `internal/catalog/vendor/tanstack/`; this development-only source is not published with the package.
 
