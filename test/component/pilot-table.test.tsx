@@ -10,7 +10,7 @@ import {
   TableHead,
   TableCell,
   TableCaption
-} from "../../internal/pilot/table"
+} from "../../app/component/brand/stylex/table"
 
 afterEach(cleanup)
 test("table retains native semantic composition and caller override", () => {

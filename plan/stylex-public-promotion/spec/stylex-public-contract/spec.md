@@ -1,6 +1,6 @@
 # StyleX Public Contract
 
-**Status:** draft
+**Status:** implemented locally; registry RC and consumer proof pending
 
 1. Every supported package export resolves to the accepted owned implementation or a documented no-style identity exception.
 2. Consumer imports React component and documented CSS only; no Tailwind/StyleX transform or runtime injection is required.

@@ -2,7 +2,12 @@ import { renderToString } from "react-dom/server"
 import { BarChart, Bar } from "recharts"
 import { expect, test } from "vitest"
 
-import { ChartContainer, ChartTooltipContent, ChartLegendContent, ChartStyle } from "../../internal/pilot/chart"
+import {
+  ChartContainer,
+  ChartTooltipContent,
+  ChartLegendContent,
+  ChartStyle
+} from "../../app/component/brand/stylex/chart"
 
 test("chart retains engine composition and config style", () => {
   const html = renderToString(

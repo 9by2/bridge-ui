@@ -10,8 +10,8 @@ import {
   SheetFooter,
   SheetTitle,
   SheetDescription
-} from "../../internal/pilot/sheet"
-import { Theme } from "../../internal/pilot/theme"
+} from "../../app/component/brand/stylex/sheet"
+import { Theme } from "../../app/component/brand/stylex/theme"
 
 afterEach(cleanup)
 test("sheet caller style and optional close remain supported", () => {

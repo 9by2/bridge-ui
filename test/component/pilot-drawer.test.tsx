@@ -12,7 +12,7 @@ import {
   DrawerDescription,
   DrawerOverlay,
   DrawerPortal
-} from "../../internal/pilot/drawer"
+} from "../../app/component/brand/stylex/drawer"
 
 afterEach(cleanup)
 test("drawer empty snap and explicit overlay callback", () => {

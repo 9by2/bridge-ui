@@ -2,8 +2,8 @@ import { cleanup, render, screen } from "@testing-library/react"
 import { renderToString } from "react-dom/server"
 import { afterEach, expect, test } from "vitest"
 
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "../../internal/pilot/resizable"
-import { ScrollArea, ScrollBar } from "../../internal/pilot/scroll-area"
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "../../app/component/brand/stylex/resizable"
+import { ScrollArea, ScrollBar } from "../../app/component/brand/stylex/scroll-area"
 
 afterEach(cleanup)
 test("scroll callback style and handle option remain available", () => {

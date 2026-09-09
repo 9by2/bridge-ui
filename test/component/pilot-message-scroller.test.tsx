@@ -10,7 +10,7 @@ import {
   MessageScrollerItem,
   MessageScrollerButton,
   useMessageScroller
-} from "../../internal/pilot/message-scroller"
+} from "../../app/component/brand/stylex/message-scroller"
 
 test("message scroller retains engine hook identity and server composition", () => {
   expect(

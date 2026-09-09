@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react"
 import { afterEach, expect, test } from "vitest"
 
-import { BubbleGroup, Bubble, BubbleContent, BubbleReactions } from "../../internal/pilot/bubble"
+import { BubbleGroup, Bubble, BubbleContent, BubbleReactions } from "../../app/component/brand/stylex/bubble"
 import {
   Message,
   MessageGroup,
@@ -9,7 +9,7 @@ import {
   MessageContent,
   MessageHeader,
   MessageFooter
-} from "../../internal/pilot/message"
+} from "../../app/component/brand/stylex/message"
 
 afterEach(cleanup)
 test("message and bubble preserve composition and rendered link", () => {

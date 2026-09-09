@@ -2,7 +2,13 @@ import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { renderToString } from "react-dom/server"
 import { afterEach, expect, test, vi } from "vitest"
 
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "../../internal/pilot/carousel"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext
+} from "../../app/component/brand/stylex/carousel"
 
 const engine = vi.hoisted(() => ({
   api: {

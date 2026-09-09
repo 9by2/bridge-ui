@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { useState } from "react"
 import { afterEach, expect, test } from "vitest"
 
-import { Button } from "../../internal/pilot/button"
+import { Button } from "../../app/component/brand/stylex/button"
 import {
   Dialog,
   DialogTrigger,
@@ -12,8 +12,8 @@ import {
   DialogHeader,
   DialogFooter,
   DialogOverlay
-} from "../../internal/pilot/dialog"
-import { Theme } from "../../internal/pilot/theme"
+} from "../../app/component/brand/stylex/dialog"
+import { Theme } from "../../app/component/brand/stylex/theme"
 
 afterEach(cleanup)
 

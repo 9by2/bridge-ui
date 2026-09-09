@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { createRef } from "react"
 import { afterEach, expect, test, vi } from "vitest"
 
-import { Button, buttonVariants } from "../../internal/pilot/button"
+import { Button, buttonVariants } from "../../app/component/brand/stylex/button"
 
 afterEach(cleanup)
 

@@ -13,8 +13,8 @@ import {
   SidebarMenuButton,
   SidebarTrigger,
   useSidebar
-} from "../../internal/pilot/sidebar"
-import * as UI from "../../internal/pilot/sidebar"
+} from "../../app/component/brand/stylex/sidebar"
+import * as UI from "../../app/component/brand/stylex/sidebar"
 
 afterEach(() => {
   cleanup()

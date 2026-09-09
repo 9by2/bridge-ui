@@ -14,8 +14,8 @@ import {
   AlertDialogCancel,
   AlertDialogPortal,
   AlertDialogOverlay
-} from "../../internal/pilot/alert-dialog"
-import { Theme } from "../../internal/pilot/theme"
+} from "../../app/component/brand/stylex/alert-dialog"
+import { Theme } from "../../app/component/brand/stylex/theme"
 
 afterEach(cleanup)
 test("alert dialog small and callback styling", () => {

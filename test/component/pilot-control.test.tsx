@@ -1,11 +1,11 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, expect, test, vi } from "vitest"
 
-import { Checkbox } from "../../internal/pilot/checkbox"
-import { RadioGroup, RadioGroupItem } from "../../internal/pilot/radio-group"
-import { Slider } from "../../internal/pilot/slider"
-import { Switch } from "../../internal/pilot/switch"
-import { Toggle, toggleVariants } from "../../internal/pilot/toggle"
+import { Checkbox } from "../../app/component/brand/stylex/checkbox"
+import { RadioGroup, RadioGroupItem } from "../../app/component/brand/stylex/radio-group"
+import { Slider } from "../../app/component/brand/stylex/slider"
+import { Switch } from "../../app/component/brand/stylex/switch"
+import { Toggle, toggleVariants } from "../../app/component/brand/stylex/toggle"
 
 afterEach(cleanup)
 

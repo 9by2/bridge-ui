@@ -1,7 +1,12 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, expect, test } from "vitest"
 
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "../../internal/pilot/accordion"
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent
+} from "../../app/component/brand/stylex/accordion"
 
 afterEach(cleanup)
 test("accordion callback styling remains supported", () => {

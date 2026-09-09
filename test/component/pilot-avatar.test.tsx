@@ -8,7 +8,7 @@ import {
   AvatarBadge,
   AvatarGroup,
   AvatarGroupCount
-} from "../../internal/pilot/avatar"
+} from "../../app/component/brand/stylex/avatar"
 
 afterEach(cleanup)
 test("avatar image load, error and replacement retain fallback and callback", async () => {

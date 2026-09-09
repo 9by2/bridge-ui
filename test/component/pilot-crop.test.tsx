@@ -1,7 +1,7 @@
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { afterEach, expect, test, vi } from "vitest"
 
-import { ImageCrop } from "../../internal/pilot/image-crop"
+import { ImageCrop } from "../../app/component/brand/stylex/image-crop"
 
 afterEach(() => {
   cleanup()

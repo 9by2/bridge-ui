@@ -1,7 +1,6 @@
 import { cleanup, render, screen } from "@testing-library/react"
 import { afterEach, expect, test } from "vitest"
 
-import { PaginationLink as BaselineLink } from "../../app/component/shadcn/pagination"
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -10,7 +9,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
   BreadcrumbEllipsis
-} from "../../internal/pilot/breadcrumb"
+} from "../../app/component/brand/stylex/breadcrumb"
 import {
   Pagination,
   PaginationContent,
@@ -19,7 +18,8 @@ import {
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis
-} from "../../internal/pilot/pagination"
+} from "../../app/component/brand/stylex/pagination"
+import { PaginationLink as BaselineLink } from "../../app/component/shadcn/pagination"
 
 afterEach(cleanup)
 test("breadcrumb retains navigation semantics and caller separator", () => {

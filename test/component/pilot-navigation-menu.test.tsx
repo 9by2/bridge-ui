@@ -11,7 +11,7 @@ import {
   navigationMenuTriggerStyle,
   NavigationMenuIndicator,
   NavigationMenuPositioner
-} from "../../internal/pilot/navigation-menu"
+} from "../../app/component/brand/stylex/navigation-menu"
 
 afterEach(cleanup)
 test("navigation callback and indicator contract", async () => {

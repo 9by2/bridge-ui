@@ -3,7 +3,7 @@ import { ThemeProvider } from "next-themes"
 import { renderToString } from "react-dom/server"
 import { afterEach, expect, test } from "vitest"
 
-import { Toaster } from "../../internal/pilot/sonner"
+import { Toaster } from "../../app/component/brand/stylex/sonner"
 
 afterEach(cleanup)
 test("sonner follows supported provider theme", () => {

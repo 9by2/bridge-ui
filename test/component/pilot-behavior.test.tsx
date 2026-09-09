@@ -5,8 +5,8 @@ import {
 import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, expect, test } from "vitest"
 
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "../../internal/pilot/collapsible"
-import { DirectionProvider, useDirection } from "../../internal/pilot/direction"
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "../../app/component/brand/stylex/collapsible"
+import { DirectionProvider, useDirection } from "../../app/component/brand/stylex/direction"
 
 afterEach(cleanup)
 test("behavior-only direction retains provider identity", () => {

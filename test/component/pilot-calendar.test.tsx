@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { CalendarDay } from "react-day-picker"
 import { afterEach, expect, test, vi } from "vitest"
 
-import { Calendar, CalendarDayButton } from "../../internal/pilot/calendar"
+import { Calendar, CalendarDayButton } from "../../app/component/brand/stylex/calendar"
 
 afterEach(cleanup)
 test("calendar range dropdown and week number retain engine slot", () => {

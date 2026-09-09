@@ -1,15 +1,15 @@
+import { Theme } from "@bridge-owned/theme"
 import { Component, Suspense, lazy, useEffect, useState } from "react"
 import type { ComponentType, ReactNode } from "react"
-import { createRoot } from "react-dom/client"
 
 import "./preview.css"
 import "./shell.css"
-import { Theme } from "../pilot/theme"
+import { createRoot } from "react-dom/client"
 
 import { Preview } from "./preview"
 import { Source } from "./source"
 
-import "../pilot/adapter.css"
+import "./pilot.css"
 import chartInventory from "./vendor/tanstack/catalog-index.json"
 
 const modules = import.meta.glob<{ default: ComponentType }>("./example/*/*.tsx")
@@ -178,13 +178,9 @@ function App() {
         <PreviewBoundary key={route}>
           <Suspense fallback={<p>Loading preview...</p>}>
             {Example ? (
-              pilot ? (
-                <Theme mode={dark ? "dark" : "light"} style={{ display: "contents" }}>
-                  <Example />
-                </Theme>
-              ) : (
+              <Theme mode={dark ? "dark" : "light"} style={{ display: "contents" }}>
                 <Example />
-              )
+              </Theme>
             ) : (
               <p role="alert">Example not found.</p>
             )}

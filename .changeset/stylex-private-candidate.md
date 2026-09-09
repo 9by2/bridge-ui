@@ -2,4 +2,4 @@
 "@bridge/ui": minor
 ---
 
-Add the complete private StyleX component candidate and catalog verification foundation. Public component exports remain unchanged until the candidate promotion review.
+Promote the complete StyleX component implementation to public root, direct, generated-compatible and brand-compatible package paths. Package precompiled component CSS and the scoped engine adapter without requiring consumer Tailwind or StyleX compilation.

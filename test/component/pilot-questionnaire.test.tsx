@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, expect, test, vi } from "vitest"
 
-import * as UI from "../../internal/pilot/questionnaire"
+import * as UI from "../../app/component/brand/stylex/questionnaire"
 import {
   Questionnaire,
   QuestionnaireItem,
@@ -11,7 +11,7 @@ import {
   QuestionnaireChoice,
   QuestionnaireActions,
   QuestionnaireSubmit
-} from "../../internal/pilot/questionnaire"
+} from "../../app/component/brand/stylex/questionnaire"
 
 afterEach(cleanup)
 test("questionnaire invalid input composes error ring", () => {

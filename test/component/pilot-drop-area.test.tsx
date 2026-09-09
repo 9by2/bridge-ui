@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react"
 import { afterEach, expect, test } from "vitest"
 
-import { DropArea } from "../../internal/pilot/drop-area"
+import { DropArea } from "../../app/component/brand/stylex/drop-area"
 
 afterEach(cleanup)
 test("drop area preserves caller label and disabled layout", () => {

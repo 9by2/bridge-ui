@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, expect, test } from "vitest"
 
-import { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants } from "../../internal/pilot/tabs"
+import { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants } from "../../app/component/brand/stylex/tabs"
 
 afterEach(cleanup)
 test("tabs support variant helper and callback style", () => {

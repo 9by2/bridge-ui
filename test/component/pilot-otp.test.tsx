@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { OTPInputContext } from "input-otp"
 import { afterEach, expect, test, vi } from "vitest"
 
-import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "../../internal/pilot/input-otp"
+import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "../../app/component/brand/stylex/input-otp"
 
 afterEach(cleanup)
 test("otp retains engine input and controlled callback", () => {

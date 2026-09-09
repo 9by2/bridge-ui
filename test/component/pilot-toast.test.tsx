@@ -1,9 +1,9 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, expect, test } from "vitest"
 
-import { Theme } from "../../internal/pilot/theme"
-import { Toaster, createToastManager } from "../../internal/pilot/toast"
-import * as UI from "../../internal/pilot/toast"
+import { Theme } from "../../app/component/brand/stylex/theme"
+import { Toaster, createToastManager } from "../../app/component/brand/stylex/toast"
+import * as UI from "../../app/component/brand/stylex/toast"
 
 afterEach(cleanup)
 test("toast icon and slot callback contract", async () => {

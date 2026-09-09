@@ -1,9 +1,9 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, expect, test, vi } from "vitest"
 
-import { UploadList } from "../../internal/pilot/upload-list"
-import { UploadPreview } from "../../internal/pilot/upload-preview"
-import { UploadViewer } from "../../internal/pilot/upload-viewer"
+import { UploadList } from "../../app/component/brand/stylex/upload-list"
+import { UploadPreview } from "../../app/component/brand/stylex/upload-preview"
+import { UploadViewer } from "../../app/component/brand/stylex/upload-viewer"
 
 afterEach(cleanup)
 test("upload list forwards per-item action and accepts unrestricted file", async () => {

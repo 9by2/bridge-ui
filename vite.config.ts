@@ -10,13 +10,14 @@ export default defineConfig({
   root: "internal/catalog",
   plugins: [
     { name: "catalog-pilot", enforce: "pre", transform: transformPilotExample },
-    stylex.vite({ dev: false, runtimeInjection: false, useCSSLayers: true }),
+    stylex.vite({ dev: false, enableMediaQueryOrder: false, runtimeInjection: false, useCSSLayers: true }),
     tailwindcss()
   ],
   resolve: {
     alias: [
       { find: "@catalog-upload?pilot", replacement: `${path.resolve("internal/catalog/upload.tsx")}?pilot` },
       { find: "@catalog-pilot", replacement: path.resolve("internal/catalog/pilot.ts") },
+      { find: /^@bridge-owned\/(.*)$/, replacement: path.resolve("app/component/brand/stylex/$1") },
       { find: "@catalog-upload", replacement: path.resolve("internal/catalog/upload.tsx") },
       { find: "@catalog-vendor", replacement: path.resolve("internal/catalog/vendor/tanstack") },
       { find: "@bridge/ui/style.css", replacement: path.resolve("app/style/global.css") },

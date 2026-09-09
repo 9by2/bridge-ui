@@ -13,8 +13,8 @@ import {
   SelectSeparator,
   SelectScrollUpButton,
   SelectScrollDownButton
-} from "../../internal/pilot/select"
-import { Theme } from "../../internal/pilot/theme"
+} from "../../app/component/brand/stylex/select"
+import { Theme } from "../../app/component/brand/stylex/theme"
 
 afterEach(cleanup)
 test("select supports callback style, invalid state and alternate placement", async () => {

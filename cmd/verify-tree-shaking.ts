@@ -4,7 +4,7 @@ import { gzipSync } from "node:zlib"
 
 const directory = await mkdtemp(path.resolve(".tree-shaking-"))
 try {
-  for (const entry of ["dist/index.js", "dist/component/shadcn/button.js"]) {
+  for (const entry of ["dist/index.js", "dist/component/brand/stylex/button.js"]) {
     const file = path.join(directory, "consumer.ts")
     await writeFile(file, `import { Button } from ${JSON.stringify(path.resolve(entry))}; console.log(Button);`)
     const result = await Bun.build({

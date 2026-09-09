@@ -12,7 +12,7 @@ import {
   CommandShortcut,
   CommandSeparator,
   CommandDialog
-} from "../../internal/pilot/command"
+} from "../../app/component/brand/stylex/command"
 
 afterEach(cleanup)
 test("command preserves engine server composition", () => {

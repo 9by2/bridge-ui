@@ -13,8 +13,8 @@ import {
   FieldSet,
   FieldLegend,
   FieldSeparator
-} from "../../internal/pilot/field"
-import { Input } from "../../internal/pilot/input"
+} from "../../app/component/brand/stylex/field"
+import { Input } from "../../app/component/brand/stylex/input"
 
 afterEach(cleanup)
 

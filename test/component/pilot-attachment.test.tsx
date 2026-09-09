@@ -11,7 +11,7 @@ import {
   AttachmentActions,
   AttachmentAction,
   AttachmentTrigger
-} from "../../internal/pilot/attachment"
+} from "../../app/component/brand/stylex/attachment"
 
 afterEach(cleanup)
 test("attachment trigger accepts caller rendered anchor", () => {

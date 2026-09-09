@@ -6,7 +6,7 @@ import {
   ButtonGroupText,
   ButtonGroupSeparator,
   buttonGroupVariants
-} from "../../internal/pilot/button-group"
+} from "../../app/component/brand/stylex/button-group"
 import {
   InputGroup,
   InputGroupAddon,
@@ -14,7 +14,7 @@ import {
   InputGroupText,
   InputGroupInput,
   InputGroupTextarea
-} from "../../internal/pilot/input-group"
+} from "../../app/component/brand/stylex/input-group"
 import {
   Item,
   ItemGroup,
@@ -26,9 +26,9 @@ import {
   ItemActions,
   ItemHeader,
   ItemFooter
-} from "../../internal/pilot/item"
-import { Label } from "../../internal/pilot/label"
-import { ToggleGroup, ToggleGroupItem } from "../../internal/pilot/toggle-group"
+} from "../../app/component/brand/stylex/item"
+import { Label } from "../../app/component/brand/stylex/label"
+import { ToggleGroup, ToggleGroupItem } from "../../app/component/brand/stylex/toggle-group"
 
 afterEach(cleanup)
 

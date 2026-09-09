@@ -2,9 +2,9 @@ import { cleanup, render, screen } from "@testing-library/react"
 import { createRef } from "react"
 import { afterEach, expect, test } from "vitest"
 
-import { Alert, AlertTitle, AlertDescription, AlertAction } from "../../internal/pilot/alert"
-import { AspectRatio } from "../../internal/pilot/aspect-ratio"
-import { Badge, badgeVariants } from "../../internal/pilot/badge"
+import { Alert, AlertTitle, AlertDescription, AlertAction } from "../../app/component/brand/stylex/alert"
+import { AspectRatio } from "../../app/component/brand/stylex/aspect-ratio"
+import { Badge, badgeVariants } from "../../app/component/brand/stylex/badge"
 import {
   Card,
   CardHeader,
@@ -13,16 +13,29 @@ import {
   CardAction,
   CardContent,
   CardFooter
-} from "../../internal/pilot/card"
-import { Empty, EmptyHeader, EmptyTitle, EmptyDescription, EmptyContent, EmptyMedia } from "../../internal/pilot/empty"
-import { Kbd, KbdGroup } from "../../internal/pilot/kbd"
-import { Marker, MarkerIcon, MarkerContent, markerVariants } from "../../internal/pilot/marker"
-import { NativeSelect, NativeSelectOption, NativeSelectOptGroup } from "../../internal/pilot/native-select"
-import { Progress, ProgressLabel, ProgressValue, ProgressTrack, ProgressIndicator } from "../../internal/pilot/progress"
-import { Separator } from "../../internal/pilot/separator"
-import { Skeleton } from "../../internal/pilot/skeleton"
-import { Spinner } from "../../internal/pilot/spinner"
-import { Textarea } from "../../internal/pilot/textarea"
+} from "../../app/component/brand/stylex/card"
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyContent,
+  EmptyMedia
+} from "../../app/component/brand/stylex/empty"
+import { Kbd, KbdGroup } from "../../app/component/brand/stylex/kbd"
+import { Marker, MarkerIcon, MarkerContent, markerVariants } from "../../app/component/brand/stylex/marker"
+import { NativeSelect, NativeSelectOption, NativeSelectOptGroup } from "../../app/component/brand/stylex/native-select"
+import {
+  Progress,
+  ProgressLabel,
+  ProgressValue,
+  ProgressTrack,
+  ProgressIndicator
+} from "../../app/component/brand/stylex/progress"
+import { Separator } from "../../app/component/brand/stylex/separator"
+import { Skeleton } from "../../app/component/brand/stylex/skeleton"
+import { Spinner } from "../../app/component/brand/stylex/spinner"
+import { Textarea } from "../../app/component/brand/stylex/textarea"
 
 afterEach(cleanup)
 

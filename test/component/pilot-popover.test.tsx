@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { afterEach, expect, test } from "vitest"
 
-import { HoverCard, HoverCardTrigger, HoverCardContent } from "../../internal/pilot/hover-card"
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "../../app/component/brand/stylex/hover-card"
 import {
   Popover,
   PopoverTrigger,
@@ -9,9 +9,9 @@ import {
   PopoverHeader,
   PopoverTitle,
   PopoverDescription
-} from "../../internal/pilot/popover"
-import { Theme } from "../../internal/pilot/theme"
-import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "../../internal/pilot/tooltip"
+} from "../../app/component/brand/stylex/popover"
+import { Theme } from "../../app/component/brand/stylex/theme"
+import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "../../app/component/brand/stylex/tooltip"
 
 afterEach(cleanup)
 

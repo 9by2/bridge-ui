@@ -16,7 +16,7 @@ const program = Effect.gen(function* () {
     catch: (error) => new InventoryReadError({ message: String(error) })
   })
   const matrix = yield* Effect.tryPromise({
-    try: () => Bun.file("plan/stylex-component-foundation/component-matrix.md").text(),
+    try: () => Bun.file("plan/archived/20260909-stylex-component-foundation/component-matrix.md").text(),
     catch: (error) => new InventoryReadError({ message: String(error) })
   })
   const report = yield* verifyComponentInventory(source, matrix)

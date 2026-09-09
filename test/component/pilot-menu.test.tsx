@@ -1,8 +1,13 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, expect, test, vi } from "vitest"
 
-import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from "../../internal/pilot/context-menu"
-import * as Context from "../../internal/pilot/context-menu"
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem
+} from "../../app/component/brand/stylex/context-menu"
+import * as Context from "../../app/component/brand/stylex/context-menu"
 import {
   DropdownMenu,
   DropdownMenuPortal,
@@ -19,10 +24,16 @@ import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent
-} from "../../internal/pilot/dropdown-menu"
-import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem } from "../../internal/pilot/menubar"
-import * as Bar from "../../internal/pilot/menubar"
-import { Theme } from "../../internal/pilot/theme"
+} from "../../app/component/brand/stylex/dropdown-menu"
+import {
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem
+} from "../../app/component/brand/stylex/menubar"
+import * as Bar from "../../app/component/brand/stylex/menubar"
+import { Theme } from "../../app/component/brand/stylex/theme"
 
 afterEach(cleanup)
 test("menu popup ending state remains rendered until exit", () => {

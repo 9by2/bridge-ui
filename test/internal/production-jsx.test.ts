@@ -11,7 +11,7 @@ test("package output renders with production React", async () => {
     import { createElement as h } from "react";
     import { renderToString } from "react-dom/server";
     import { Button, Input, Dialog, DialogTrigger } from "./dist/index.js";
-    import { Button as DirectButton } from "./dist/component/shadcn/button.js";
+    import { Button as DirectButton } from "./dist/component/brand/stylex/button.js";
     const html = renderToString(h("main", null,
       h(Button, { disabled: true }, "Disabled"), h(DirectButton, null, "Direct"),
       h(Input, { "aria-label": "Name" }),

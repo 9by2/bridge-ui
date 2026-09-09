@@ -2,8 +2,14 @@ import { Combobox as Primitive } from "@base-ui/react/combobox"
 import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, expect, test, vi } from "vitest"
 
-import { Combobox, ComboboxInput, ComboboxContent, ComboboxList, ComboboxItem } from "../../internal/pilot/combobox"
-import * as UI from "../../internal/pilot/combobox"
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem
+} from "../../app/component/brand/stylex/combobox"
+import * as UI from "../../app/component/brand/stylex/combobox"
 
 afterEach(cleanup)
 test("combobox chip anchor and callback composition", async () => {

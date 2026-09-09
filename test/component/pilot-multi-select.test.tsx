@@ -9,8 +9,8 @@ import {
   MultiSelectContent,
   MultiSelectItem,
   MultiSelectGroup
-} from "../../internal/pilot/multi-select"
-import { MultiSelectValue as BrandValue } from "../../internal/pilot/multi-select-value"
+} from "../../app/component/brand/stylex/multi-select"
+import { MultiSelectValue as BrandValue } from "../../app/component/brand/stylex/multi-select-value"
 
 afterEach(() => {
   cleanup()
