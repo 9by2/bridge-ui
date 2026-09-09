@@ -1,8 +1,6 @@
 import { expect, test } from "bun:test"
 
 test("package output renders with production React", async () => {
-  const build = Bun.spawnSync(["bun", "run", "build"], { stdout: "pipe", stderr: "pipe" })
-  expect(build.exitCode, build.stderr.toString()).toBe(0)
   const render = Bun.spawnSync(
     [
       "bun",

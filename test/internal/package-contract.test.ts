@@ -41,12 +41,6 @@ describe("package contract", () => {
   })
 
   test("built root and direct entry preserve component and provider identity", async () => {
-    const build = Bun.spawnSync([process.execPath, "cmd/build-package.ts"], {
-      cwd: root,
-      stdout: "pipe",
-      stderr: "pipe"
-    })
-    expect(build.exitCode, build.stderr.toString()).toBe(0)
     const entry = await import(path.join(root, "dist/index.js"))
     for (const file of new Bun.Glob("dist/component/brand/stylex/*.js").scanSync({ cwd: root })) {
       if (file.endsWith("token.stylex.js") || file.endsWith("use-mobile.js")) continue

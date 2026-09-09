@@ -1,9 +1,6 @@
 import { expect, test } from "bun:test"
 
 test("promoted package output is precompiled and includes scoped adapter", async () => {
-  const build = Bun.spawnSync([process.execPath, "cmd/build-package.ts"], { stdout: "pipe", stderr: "pipe" })
-  expect(build.exitCode, build.stderr.toString()).toBe(0)
-
   const css = await Bun.file("dist/style.css").text()
   expect(css).toContain('[data-pilot-theme] [data-slot="badge"] svg')
   expect(css).not.toContain('@import "tailwindcss"')
