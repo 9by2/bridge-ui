@@ -1,6 +1,6 @@
 # StyleX Contract And Acceptance
 
-Status: Draft. This is the active implementation spec, not a declaration that current RC meets the target.
+**Status:** accepted for the complete private candidate. Public export/CSS/registry/consumer clauses continue in `plan/stylex-public-promotion/`.
 
 ## Contract
 
@@ -34,8 +34,8 @@ Status: Draft. This is the active implementation spec, not a declaration that cu
 | Bundle          | Existing tree-shaking command plus CSS/font report                 | Button <=18,000 gzip bytes and <=150,000 raw bytes; no chart/upload retained; report full/shared CSS separately |
 | Coverage        | Runtime and per-owned-component V8 report                          | Runtime >=90% each metric; every owned component 100% statement/branch/function/line                            |
 | Package         | Tarball install, export/type/font/CSS/ESM/map client check         | Every supported entry resolves without repository alias; React peer not duplicated; no undocumented transform   |
-| Registry        | Exact RC install from private registry                             | New reviewed version and integrity, production import succeeds; no local node_modules patch                     |
-| Consumer        | Same Web fixture + accepted delta                                  | Existing failure remains visible or fixed with separate proof; no claim of full TanStack app/CI compatibility   |
+| Registry        | Successor public-promotion proposal                                | Deferred from private candidate; no publication claim                                                           |
+| Consumer        | Successor public-promotion proposal                                | Deferred from private candidate; no consumer-migration claim                                                    |
 
 ## Test-First Protocol
 

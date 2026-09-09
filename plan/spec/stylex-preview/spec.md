@@ -1,5 +1,7 @@
 # StyleX Preview
 
+**Status:** accepted
+
 The /style-x route reuses the regular catalog inventory and example composition. Every package example import resolves to the complete private candidate through a catalog-only module transform, including shared upload composition. Candidate presentation uses statically compiled StyleX plus the approved `[data-pilot-theme]` descendant/engine adapter. Direction and TsChart retain implementation identity because they own no presentation. The catalog retains layout utility CSS; this preview is not promoted package proof.
 
 Hash navigation, theme, locale, reduced-motion control, mobile frame, lazy preview disposal and source disclosure remain available. Embedded candidate URL retains /style-x. A link switches implementation without losing hash or query. Public export and regular preview implementation stay unchanged. Source disclosure identifies private import rather than presenting candidate as a shipped API. The route states that parity review remains open until promotion/release gates complete.
