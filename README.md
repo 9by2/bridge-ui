@@ -21,7 +21,8 @@ Read [ADHD.md](./ADHD.md) for the north star, architecture boundary, foundation 
 - `app/component/shadcn/`: generated Shadcn source; never manually edit.
 - `app/component/brand/`: custom TsChart, DropArea and multiselect badge treatment.
 - `app/hook/use-mobile.ts`: generated Shadcn support.
-- `app/style/global.css`: canonical primitive theme source during the Tailwind-to-StyleX transition.
+- `app/style/component.css`: published font and narrow engine normalization entry.
+- `app/style/global.css`: legacy generated/catalog baseline retained during review; no longer packaged as `style.css`.
 - `internal/catalog/example/`: real package example and exact copyable source.
 - `vite.config.ts` and `playwright.config.ts`: catalog and browser verification.
 - `cmd/`: private repository build, verification and publication command.
@@ -89,6 +90,16 @@ CI now gates package runtime coverage separately from command and catalog verifi
 
 ## Package Command
 
+`bun cmd/verify-pilot-budget.ts` records historical baseline/candidate Button measurements. The promoted package tree-shaking gate now measures root and direct StyleX Button at about 6.1 KB gzip with no chart/upload retention. Published `style.css` is about 77 KB raw / 16 KB gzip and contains fonts, narrow focus-guard normalization, extracted StyleX and the scoped engine adapter.
+
+Promotion preserves recorded accessibility deviations DEC-010/011/012/018 and the scoped descendant adapter approved in DEC-013/017. `app/component/brand/stylex/adapter.css` is included in public `style.css` and applies only under `[data-pilot-theme]` or the documented Button compatibility class.
+
+After package build, `bun cmd/build-pilot-catalog.ts` creates the isolated private A/B page at `.eval/0908-stylex-foundation/catalog/index.html`. `bun cmd/verify-pilot-catalog.ts` verifies both frame render through Bun.WebView and captures the comparison. Theme/width controls use identical copy; the candidate frame loads no baseline stylesheet. This review page is not published package source.
+
+Private StyleX pilot verification (no export promotion): `NODE_ENV=production bun cmd/verify-pilot-browser.ts` runs Bun.WebView production hydration, form/dialog, scroll cleanup and WCAG A/AA checks. `bun cmd/verify-stylex-browser.ts` verifies compiler computed-style output. After package build, `NODE_ENV=production bun cmd/verify-pilot-style.ts` compares Button against generated output; set `PILOT_COMPONENT=input|field|dialog`, `PILOT_STATE=hover|active|focus-visible`, or `PILOT_PSEUDO=::placeholder|::file-selector-button` for the targeted matrix. Chrome and Bun.WebView are required. Evidence is written under `.eval/0908-stylex-foundation/`. The self-contained browser fixture avoids the host loopback issue; HTTP/CSP integration and full compound-state parity remain separate work.
+
+`bun cmd/verify-component-inventory.ts` checks the StyleX migration matrix against the current component source and emits its named export inventory. It fails on missing, extra or duplicate entries, invalid TSX and unresolved wildcard/default export. Babel parses TypeScript/JSX because TypeScript 7 does not expose the former JavaScript compiler AST API. The private verifier uses Effect v4; no Effect runtime is added to React/Base UI or published component imports. The completed private candidate record lives in `plan/archived/20260909-stylex-component-foundation/`; public promotion continues in `plan/stylex-public-promotion/`.
+
 Package build explicitly emits production JSX, independent of the build process environment. `bun test test/internal/production-jsx.test.ts` renders root/direct component output under production React and rejects development JSX runtime imports. `bun verify:package` also executes the installed tarball's Vite SSR bundle under production React. This fixes the `jsxDEV is not a function` failure found in `0.1.1-rc.0`; a new RC and consumer spike rerun are required before claiming integration success.
 
 Package output is split ESM with declarations. Root named import is tree-shakeable; direct entry avoids loading unrelated module for an unbundled consumer:
@@ -101,11 +112,13 @@ import { UploadPreview } from "@bridge/ui/upload-preview"
 import "@bridge/ui/style.css"
 ```
 
-Other generated/brand entry is available as `@bridge/ui/component/shadcn/<name>` or `@bridge/ui/component/brand/<name>`. CSS is a shared stylesheet, not per-component tree-shaken CSS. `bun verify:tree-shaking` checks a Button-only root and direct-entry bundle. Private registry publication remains a separate unfinished foundation gate.
+Other generated-compatible and brand entry remains available as `@bridge/ui/component/shadcn/<name>` or `@bridge/ui/component/brand/<name>`, but resolves to owned StyleX source where presentation was promoted. `@bridge/ui/theme` exposes the scoped `Theme`. CSS is shared, not per-component tree-shaken. Private registry publication remains unfinished.
 
 `bun catalog:test` builds and serves an isolated static catalog on port 6007. Long pages mount nearby preview only; leaving a preview resets its transient state. All example sections and source remain inline.
 
 Private `internal/catalog/preview.tsx` owns creation/destruction of nearby iframe; offscreen placeholder has no browsing context. Private `source.tsx` fetches raw source only on disclosure. This catalog lifecycle does not affect application-owned TsChart state or force viewport resets on package consumers.
+
+The complete StyleX implementation covers all 70 component modules and all 69 catalog families. Public root/direct/generated-compatible paths now resolve owned StyleX source, with Direction and TsChart retaining documented identity. Validation includes 100% owned runtime coverage, slot/state/geometry parity, reduced motion, RTL, open-overlay Axe, adapter isolation, packed package and 206 chart cases. Publication and consumer migration remain separate gates.
 
 `bun verify:package` checks all 71 public entry paths from an isolated Bun-installed tarball with declaration checking enabled, then builds the Vite client and SSR fixture. Emitted declaration uses relative package-local import, not private source alias. The Chromium memory regression repeats chart navigation eight times without page reload and checks post-GC heap/DOM growth after warmup; it does not measure total browser process memory.
 
@@ -125,9 +138,11 @@ bun verify:package
 
 Run `bun dev` to open the entire catalog at http://127.0.0.1:6006. Each component page displays every available example inline, with a heading, description, isolated preview and source disclosure. No variant dropdown is required. Theme and mobile controls remain available.
 
+Open http://127.0.0.1:6006/style-x for the retained comparison route. Both regular and StyleX routes now exercise the promoted owned source; `/style-x` keeps historical source disclosure and parity evidence. Example layout still uses utility CSS, but published component runtime does not.
+
 Dark is the default theme; the theme toggle and `?theme=light` support light mode. Chart includes 16 inline examples. TsChart includes the 188-entry upstream v0.16.0 catalog plus two small Bridge compositions. Vendored source, supporting module, license and dataset attribution live under `internal/catalog/vendor/tanstack/`; this development-only source is not published with the package.
 
-The open dropdown-menu example passes the unfiltered accessibility scan. Package CSS makes aria-hidden Base UI focus guards zero-area and pointer-inert without removing their tab stop; the example places its portaled menu inside a named region using the supported render prop. Axe incomplete output is retained as review evidence, not claimed as a clean manual accessibility audit. A separate keyboard regression verifies arrow navigation, Escape focus restoration and modal Tab redirection without retained focus on a hidden guard. Earlier fixture contrast overrides remain visible in example source; exhaustive state and visual verification, StyleX and registry publication remain unfinished.
+The open dropdown-menu example passes the unfiltered accessibility scan. Package CSS makes aria-hidden Base UI focus guards zero-area and pointer-inert without removing their tab stop. Keyboard regression verifies arrow navigation, Escape focus restoration and modal Tab redirection without retained focus on a hidden guard. Registry publication remains unfinished.
 
 `bun coverage:brand` enforces 100% statement, branch, function and line coverage per brand component using Vitest/V8. It includes upload acceptance, rejection, extraction error, drag, disabled and cleanup behavior plus chart renderer/height and selection badge behavior. This scoped gate is not repository-wide coverage. `bun verify:tree-shaking` inspects retained module contribution and enforces an 18,000-byte gzip budget; Button measures about 16,280 gzip bytes with no chart/upload dependency retained.
 

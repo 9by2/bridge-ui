@@ -9,36 +9,36 @@
   ],
   "exports": {
     "./upload-viewer": {
-      "types": "./dist/component/brand/upload-viewer.d.ts",
-      "import": "./dist/component/brand/upload-viewer.js"
+      "types": "./dist/component/brand/stylex/upload-viewer.d.ts",
+      "import": "./dist/component/brand/stylex/upload-viewer.js"
     },
     "./upload-list": {
-      "types": "./dist/component/brand/upload-list.d.ts",
-      "import": "./dist/component/brand/upload-list.js"
+      "types": "./dist/component/brand/stylex/upload-list.d.ts",
+      "import": "./dist/component/brand/stylex/upload-list.js"
     },
     "./image-crop": {
-      "types": "./dist/component/brand/image-crop.d.ts",
-      "import": "./dist/component/brand/image-crop.js"
+      "types": "./dist/component/brand/stylex/image-crop.d.ts",
+      "import": "./dist/component/brand/stylex/image-crop.js"
     },
     "./upload-preview": {
-      "types": "./dist/component/brand/upload-preview.d.ts",
-      "import": "./dist/component/brand/upload-preview.js"
+      "types": "./dist/component/brand/stylex/upload-preview.d.ts",
+      "import": "./dist/component/brand/stylex/upload-preview.js"
     },
     "./button": {
-      "types": "./dist/component/shadcn/button.d.ts",
-      "import": "./dist/component/shadcn/button.js"
+      "types": "./dist/component/brand/stylex/button.d.ts",
+      "import": "./dist/component/brand/stylex/button.js"
     },
     "./ts-chart": {
       "types": "./dist/component/brand/ts-chart.d.ts",
       "import": "./dist/component/brand/ts-chart.js"
     },
     "./drop-area": {
-      "types": "./dist/component/brand/drop-area.d.ts",
-      "import": "./dist/component/brand/drop-area.js"
+      "types": "./dist/component/brand/stylex/drop-area.d.ts",
+      "import": "./dist/component/brand/stylex/drop-area.js"
     },
     "./component/shadcn/*": {
-      "types": "./dist/component/shadcn/*.d.ts",
-      "import": "./dist/component/shadcn/*.js"
+      "types": "./dist/component/brand/stylex/*.d.ts",
+      "import": "./dist/component/brand/stylex/*.js"
     },
     "./component/brand/*": {
       "types": "./dist/component/brand/*.d.ts",
@@ -51,6 +51,10 @@
     "./style.css": {
       "types": "./dist/style.css.d.ts",
       "default": "./dist/style.css"
+    },
+    "./theme": {
+      "types": "./dist/component/brand/stylex/theme.d.ts",
+      "import": "./dist/component/brand/stylex/theme.js"
     }
   },
   "sideEffects": [
@@ -87,6 +91,7 @@
     "cmdk": "^1.1.1",
     "cn": "^0.2.5",
     "date-fns": "^4.4.0",
+    "effect": "4.0.0-rc.112",
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.5.0",
     "lucide-react": "^1",
@@ -101,10 +106,11 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
+    "@babel/parser": "7.29.8",
     "@changesets/cli": "2.29.8",
     "@effect/language-service": "^0.87.2",
     "@effect/tsgo": "^0.41.0",
-    "@effect/vitest": "^0.30.0",
+    "@effect/vitest": "4.0.0-rc.112",
     "@playwright/test": "^1.63.0",
     "@stylexjs/unplugin": "^0.19.0",
     "@tailwindcss/vite": "^4.3.3",

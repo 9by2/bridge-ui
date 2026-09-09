@@ -8,13 +8,13 @@ import { afterEach, expect, test, vi } from "vitest"
 
 import { DropArea } from "../../app/component/brand/drop-area"
 import { MultiSelectValue } from "../../app/component/brand/multi-select-value"
-import { TsChart } from "../../app/component/brand/ts-chart"
 import {
   MultiSelect,
   MultiSelectTrigger,
   MultiSelectContent,
   MultiSelectItem
-} from "../../app/component/shadcn/multi-select"
+} from "../../app/component/brand/stylex/multi-select"
+import { TsChart } from "../../app/component/brand/ts-chart"
 
 afterEach(() => {
   cleanup()
@@ -72,7 +72,8 @@ test("selection badge forwards class and removes selected value", async () => {
   )
   await waitFor(() => expect(view.container.querySelector("[data-selected-item]")).not.toBeNull())
   const badge = view.container.querySelector("[data-selected-item]")!
-  expect(badge.closest(".custom-value")?.className).toContain("bg-primary")
+  expect(badge.closest(".custom-value")).not.toBeNull()
+  expect(badge.getAttribute("data-selected-item")).not.toBeNull()
   fireEvent.click(badge)
   expect(change).toHaveBeenCalledWith([])
   view.unmount()

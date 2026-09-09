@@ -1,0 +1,130 @@
+{
+  "version": "0.1.1-rc.1",
+  "scenarios": [
+    {
+      "dark": false,
+      "width": 1280,
+      "before": {
+        "color": "oklch(0.985 0 0)",
+        "background": "oklch(0.205 0 0)",
+        "radius": "0px",
+        "font": "abacaxi-latin-variable, Inter, aktiv-grotesk, \"Sukhumvit Set\", \"Noto Sans Thai\"",
+        "height": "32px"
+      },
+      "after": {
+        "color": "oklch(0.985 0 0)",
+        "background": "oklch(0.205 0 0)",
+        "radius": "0px",
+        "font": "\"Geist Variable\", aktiv-grotesk, Sarabun, sans-serif",
+        "height": "32px"
+      },
+      "cssChanged": true,
+      "errors": [],
+      "network": [],
+      "overflow": {
+        "documentWidth": 1280,
+        "viewportWidth": 1280
+      },
+      "mixedBarCount": 0
+    },
+    {
+      "dark": false,
+      "width": 390,
+      "before": {
+        "color": "oklch(0.985 0 0)",
+        "background": "oklch(0.205 0 0)",
+        "radius": "0px",
+        "font": "abacaxi-latin-variable, Inter, aktiv-grotesk, \"Sukhumvit Set\", \"Noto Sans Thai\"",
+        "height": "32px"
+      },
+      "after": {
+        "color": "oklch(0.985 0 0)",
+        "background": "oklch(0.205 0 0)",
+        "radius": "0px",
+        "font": "\"Geist Variable\", aktiv-grotesk, Sarabun, sans-serif",
+        "height": "32px"
+      },
+      "cssChanged": true,
+      "errors": [],
+      "network": [],
+      "overflow": {
+        "documentWidth": 451,
+        "viewportWidth": 390
+      },
+      "mixedBarCount": 0
+    },
+    {
+      "dark": true,
+      "width": 1280,
+      "before": {
+        "color": "oklch(0.173 0 0)",
+        "background": "oklch(0.8799 0.2193 152.659)",
+        "radius": "0px",
+        "font": "abacaxi-latin-variable, Inter, aktiv-grotesk, \"Sukhumvit Set\", \"Noto Sans Thai\"",
+        "height": "32px"
+      },
+      "after": {
+        "color": "oklab(0.173 0 0)",
+        "background": "oklab(0.8799 -0.194802 0.100721)",
+        "radius": "0px",
+        "font": "\"Geist Variable\", aktiv-grotesk, Sarabun, sans-serif",
+        "height": "32px"
+      },
+      "cssChanged": true,
+      "errors": [],
+      "network": [],
+      "overflow": {
+        "documentWidth": 1280,
+        "viewportWidth": 1280
+      },
+      "mixedBarCount": 0
+    },
+    {
+      "dark": true,
+      "width": 390,
+      "before": {
+        "color": "oklch(0.173 0 0)",
+        "background": "oklch(0.8799 0.2193 152.659)",
+        "radius": "0px",
+        "font": "abacaxi-latin-variable, Inter, aktiv-grotesk, \"Sukhumvit Set\", \"Noto Sans Thai\"",
+        "height": "32px"
+      },
+      "after": {
+        "color": "oklab(0.173152 0 0)",
+        "background": "oklab(0.883868 -0.188363 0.0973937)",
+        "radius": "0px",
+        "font": "\"Geist Variable\", aktiv-grotesk, Sarabun, sans-serif",
+        "height": "32px"
+      },
+      "cssChanged": true,
+      "errors": [],
+      "network": [],
+      "overflow": {
+        "documentWidth": 451,
+        "viewportWidth": 390
+      },
+      "mixedBarCount": 0
+    }
+  ],
+  "limitations": [
+    "Standalone Vite production fixture, not full TanStack Start build or real-route hydration",
+    "No CI registry verification",
+    "No manual assistive-technology audit"
+  ],
+  "productionSsr": {
+    "exitCode": 0,
+    "error": ""
+  },
+  "bytes": {
+    "client": 1038593,
+    "webCss": 243819,
+    "packageCss": 913190
+  },
+  "mixedRecharts": {
+    "errorBoundary": false,
+    "barCount": 0,
+    "webVersion": "2.15.4"
+  },
+  "status": "failed",
+  "error": "Error: Hydration/runtime error captured; see scenario evidence"
+}

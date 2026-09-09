@@ -13,3 +13,8 @@
 - Keep the active implementation spec under `plan/<proposal>/spec/`. Archive and sync it through [archive-plan](./.agents/skills/archive-plan/SKILL.md) after completion.
 - Do not implement Bridge Web or Cue migration until every foundation gate in ADHD pass.
 - Before commit, run the repository formatter, `bun lint`, typecheck, test, coverage, Storybook check, and package build required by ADHD.
+- Implementation may spawn subagents using `proxy/gpt-5.6-sol` with ultra thinking
+- Commit title pattern: `{{chore|feat|fix|release|...}}({{detail}}): {{short-commit-message}}` short up to 50 characters, additional detail in comment message.
+- When user ask for implementation or approve plan. Must relentlessly implement it. Never stop until fully finished. If decision needed, just ask right away.
+- When asking question, must provide full context with recommendation
+- Use Bun.WebView to inspect and verify UX before handoff to user. Evaluation evidence must store in `.eval/{{MMDD}}-{{task}}/` including screen capture, video recording, reproducing step, runner script and etc as needed.

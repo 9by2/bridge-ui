@@ -138,6 +138,7 @@
   display: none;
 }
 .catalog-sidebar {
+  box-sizing: border-box;
   position: fixed;
   top: 72px;
   bottom: 0;
@@ -316,6 +317,9 @@
 .example-stage > * {
   max-width: 100%;
 }
+.example-stage > [data-pilot-theme] > * {
+  max-width: 100%;
+}
 .preview-setting {
   display: flex;
   align-items: center;
@@ -405,6 +409,9 @@
   }
   .mobile-menu {
     display: block;
+  }
+  .header-action {
+    gap: 8px;
   }
   .catalog-sidebar {
     display: none;

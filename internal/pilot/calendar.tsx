@@ -1,0 +1,263 @@
+import * as stylex from "@stylexjs/stylex"
+import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from "lucide-react"
+import { useEffect, useRef, type ComponentProps } from "react"
+import { DayPicker, getDefaultClassNames, type DayButton, type Locale } from "react-day-picker"
+
+import { type Button, buttonVariants } from "./button"
+import { token } from "./token.stylex"
+
+const style = stylex.create({
+  root: {
+    width: "fit-content",
+    backgroundColor: {
+      default: token.background,
+      ':is([data-slot="card-content"] *, [data-slot="popover-content"] *)': "transparent"
+    },
+    padding: 8
+  },
+  months: {
+    position: "relative",
+    display: "flex",
+    flexDirection: { default: "column", "@media (min-width: 768px)": "row" },
+    gap: 16
+  },
+  month: { display: "flex", width: "100%", flexDirection: "column", gap: 16 },
+  nav: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    display: "flex",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 4
+  },
+  navButton: {
+    width: 28,
+    height: 28,
+    padding: 0,
+    userSelect: "none",
+    opacity: { default: 1, ':is([aria-disabled="true"])': 0.5 }
+  },
+  caption: {
+    display: "flex",
+    height: 28,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingInline: 28,
+    boxSizing: "border-box"
+  },
+  dropdowns: {
+    display: "flex",
+    height: 28,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+    fontSize: 14,
+    lineHeight: "20px",
+    fontWeight: 500
+  },
+  dropdownRoot: { position: "relative", borderRadius: 8 },
+  dropdown: { position: "absolute", inset: 0, backgroundColor: token.background, opacity: 0 },
+  captionLabel: { fontWeight: 500, userSelect: "none", fontSize: 14, lineHeight: "20px" },
+  captionDropdown: { display: "flex", alignItems: "center", gap: 4, borderRadius: 8 },
+  grid: { width: "100%", borderCollapse: "collapse" },
+  weekdays: { display: "flex" },
+  weekday: {
+    flex: 1,
+    borderRadius: 8,
+    fontSize: "0.8rem",
+    fontWeight: 400,
+    color: token.mutedForeground,
+    userSelect: "none"
+  },
+  week: { marginTop: 8, display: "flex", width: "100%" },
+  weekHeader: { width: 28, userSelect: "none" },
+  weekNumber: { fontSize: "0.8rem", color: token.mutedForeground, userSelect: "none" },
+  day: {
+    position: "relative",
+    aspectRatio: "1",
+    height: "100%",
+    width: "100%",
+    borderRadius: 8,
+    padding: 0,
+    textAlign: "center",
+    userSelect: "none"
+  },
+  rangeStart: {
+    position: "relative",
+    isolation: "isolate",
+    zIndex: 0,
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+    backgroundColor: token.muted
+  },
+  rangeEnd: {
+    position: "relative",
+    isolation: "isolate",
+    zIndex: 0,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
+    backgroundColor: token.muted
+  },
+  middle: { borderRadius: 0 },
+  today: {
+    borderRadius: { default: 8, ':is([data-selected="true"])': 0 },
+    backgroundColor: token.muted,
+    color: token.foreground
+  },
+  outside: { color: token.mutedForeground },
+  disabled: { color: token.mutedForeground, opacity: 0.5 },
+  hidden: { visibility: "hidden" },
+  icon: { width: 16, height: 16 },
+  rtl: { rotate: { default: "0deg", ":dir(rtl)": "180deg" } },
+  weekCell: {
+    display: "flex",
+    width: 28,
+    height: 28,
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center"
+  },
+  dayButton: {
+    position: "relative",
+    isolation: "isolate",
+    zIndex: 10,
+    display: "flex",
+    boxSizing: "border-box",
+    aspectRatio: "1",
+    height: "auto",
+    width: "100%",
+    minWidth: 28,
+    flexDirection: "column",
+    gap: 4,
+    borderWidth: 0,
+    borderRadius: 8,
+    padding: 0,
+    lineHeight: 1,
+    fontFamily: "inherit",
+    fontSize: 14,
+    fontWeight: 400,
+    color: token.foreground,
+    backgroundColor: { default: "transparent", ":hover": token.ghostHover },
+    outline: "none",
+    boxShadow: { default: "none", ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.ring}, transparent 50%)` }
+  },
+  selected: { backgroundColor: token.primary, color: token.primaryForeground },
+  rangeMiddle: { borderRadius: 0, backgroundColor: token.muted, color: token.foreground }
+})
+export function Calendar({
+  className,
+  classNames,
+  showOutsideDays = true,
+  captionLayout = "label",
+  buttonVariant = "ghost",
+  locale,
+  formatters,
+  components,
+  ...props
+}: ComponentProps<typeof DayPicker> & { buttonVariant?: ComponentProps<typeof Button>["variant"] }) {
+  const defaults = getDefaultClassNames()
+  return (
+    <DayPicker
+      showOutsideDays={showOutsideDays}
+      captionLayout={captionLayout}
+      locale={locale}
+      className={[stylex.props(style.root).className, className].filter(Boolean).join(" ")}
+      formatters={{
+        formatMonthDropdown: (date) => date.toLocaleString(locale?.code, { month: "short" }),
+        ...formatters
+      }}
+      classNames={{
+        root: defaults.root,
+        months: `${defaults.months} ${stylex.props(style.months).className}`,
+        month: `${defaults.month} ${stylex.props(style.month).className}`,
+        nav: `${defaults.nav} ${stylex.props(style.nav).className}`,
+        button_previous: `${defaults.button_previous} ${buttonVariants({ variant: buttonVariant })} ${stylex.props(style.navButton).className}`,
+        button_next: `${defaults.button_next} ${buttonVariants({ variant: buttonVariant })} ${stylex.props(style.navButton).className}`,
+        month_caption: `${defaults.month_caption} ${stylex.props(style.caption).className}`,
+        dropdowns: `${defaults.dropdowns} ${stylex.props(style.dropdowns).className}`,
+        dropdown_root: `${defaults.dropdown_root} ${stylex.props(style.dropdownRoot).className}`,
+        dropdown: `${defaults.dropdown} ${stylex.props(style.dropdown).className}`,
+        caption_label: `${defaults.caption_label} ${stylex.props(style.captionLabel, captionLayout !== "label" && style.captionDropdown).className}`,
+        month_grid: `${defaults.month_grid} ${stylex.props(style.grid).className}`,
+        weekdays: `${defaults.weekdays} ${stylex.props(style.weekdays).className}`,
+        weekday: `${defaults.weekday} ${stylex.props(style.weekday).className}`,
+        week: `${defaults.week} ${stylex.props(style.week).className}`,
+        week_number_header: `${defaults.week_number_header} ${stylex.props(style.weekHeader).className}`,
+        week_number: `${defaults.week_number} ${stylex.props(style.weekNumber).className}`,
+        day: `${defaults.day} ${stylex.props(style.day).className}`,
+        range_start: `${defaults.range_start} ${stylex.props(style.rangeStart).className}`,
+        range_middle: `${defaults.range_middle} ${stylex.props(style.middle).className}`,
+        range_end: `${defaults.range_end} ${stylex.props(style.rangeEnd).className}`,
+        today: `${defaults.today} ${stylex.props(style.today).className}`,
+        outside: `${defaults.outside} ${stylex.props(style.outside).className}`,
+        disabled: `${defaults.disabled} ${stylex.props(style.disabled).className}`,
+        hidden: `${defaults.hidden} ${stylex.props(style.hidden).className}`,
+        ...classNames
+      }}
+      components={{
+        Root: ({ rootRef, ...rootProps }) => <div data-slot="calendar" ref={rootRef} {...rootProps} />,
+        Chevron: ({ className: iconClass, orientation, ...iconProps }) => {
+          const classes = [
+            stylex.props(style.icon, orientation !== "down" && orientation !== "up" && style.rtl).className,
+            iconClass
+          ]
+            .filter(Boolean)
+            .join(" ")
+          return orientation === "left" ? (
+            <ChevronLeftIcon className={classes} {...iconProps} />
+          ) : orientation === "right" ? (
+            <ChevronRightIcon className={classes} {...iconProps} />
+          ) : (
+            <ChevronDownIcon className={classes} {...iconProps} />
+          )
+        },
+        DayButton: (dayProps) => <CalendarDayButton locale={locale} {...dayProps} />,
+        WeekNumber: ({ children, ...cellProps }) => (
+          <td {...cellProps}>
+            <div {...stylex.props(style.weekCell)}>{children}</div>
+          </td>
+        ),
+        ...components
+      }}
+      {...props}
+    />
+  )
+}
+export function CalendarDayButton({
+  className,
+  day,
+  modifiers,
+  locale,
+  ...props
+}: ComponentProps<typeof DayButton> & { locale?: Partial<Locale> }) {
+  const ref = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    if (modifiers.focused) ref.current?.focus()
+  }, [modifiers.focused])
+  return (
+    <button
+      ref={ref}
+      data-day={day.date.toLocaleDateString(locale?.code)}
+      data-selected-single={
+        modifiers.selected && !modifiers.range_start && !modifiers.range_end && !modifiers.range_middle
+      }
+      data-range-start={modifiers.range_start}
+      data-range-end={modifiers.range_end}
+      data-range-middle={modifiers.range_middle}
+      {...props}
+      className={[
+        getDefaultClassNames().day,
+        stylex.props(style.dayButton, modifiers.selected && style.selected, modifiers.range_middle && style.rangeMiddle)
+          .className,
+        className
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    />
+  )
+}

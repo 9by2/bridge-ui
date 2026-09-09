@@ -1,0 +1,499 @@
+{
+  "count": 70,
+  "modules": {
+    "brand/drop-area": [{ "name": "DropArea", "kind": "value" }],
+    "brand/image-crop": [{ "name": "ImageCrop", "kind": "value" }],
+    "brand/multi-select-value": [{ "name": "MultiSelectValue", "kind": "value" }],
+    "brand/ts-chart": [{ "name": "TsChart", "kind": "value" }],
+    "brand/upload-list": [
+      { "name": "UploadAttachment", "kind": "type" },
+      { "name": "UploadList", "kind": "value" },
+      { "name": "UploadRejection", "kind": "type" }
+    ],
+    "brand/upload-preview": [{ "name": "UploadPreview", "kind": "value" }],
+    "brand/upload-viewer": [{ "name": "UploadViewer", "kind": "value" }],
+    "shadcn/accordion": [
+      { "name": "Accordion", "kind": "value" },
+      { "name": "AccordionContent", "kind": "value" },
+      { "name": "AccordionItem", "kind": "value" },
+      { "name": "AccordionTrigger", "kind": "value" }
+    ],
+    "shadcn/alert": [
+      { "name": "Alert", "kind": "value" },
+      { "name": "AlertAction", "kind": "value" },
+      { "name": "AlertDescription", "kind": "value" },
+      { "name": "AlertTitle", "kind": "value" }
+    ],
+    "shadcn/alert-dialog": [
+      { "name": "AlertDialog", "kind": "value" },
+      { "name": "AlertDialogAction", "kind": "value" },
+      { "name": "AlertDialogCancel", "kind": "value" },
+      { "name": "AlertDialogContent", "kind": "value" },
+      { "name": "AlertDialogDescription", "kind": "value" },
+      { "name": "AlertDialogFooter", "kind": "value" },
+      { "name": "AlertDialogHeader", "kind": "value" },
+      { "name": "AlertDialogMedia", "kind": "value" },
+      { "name": "AlertDialogOverlay", "kind": "value" },
+      { "name": "AlertDialogPortal", "kind": "value" },
+      { "name": "AlertDialogTitle", "kind": "value" },
+      { "name": "AlertDialogTrigger", "kind": "value" }
+    ],
+    "shadcn/aspect-ratio": [{ "name": "AspectRatio", "kind": "value" }],
+    "shadcn/attachment": [
+      { "name": "Attachment", "kind": "value" },
+      { "name": "AttachmentAction", "kind": "value" },
+      { "name": "AttachmentActions", "kind": "value" },
+      { "name": "AttachmentContent", "kind": "value" },
+      { "name": "AttachmentDescription", "kind": "value" },
+      { "name": "AttachmentGroup", "kind": "value" },
+      { "name": "AttachmentMedia", "kind": "value" },
+      { "name": "AttachmentTitle", "kind": "value" },
+      { "name": "AttachmentTrigger", "kind": "value" }
+    ],
+    "shadcn/avatar": [
+      { "name": "Avatar", "kind": "value" },
+      { "name": "AvatarBadge", "kind": "value" },
+      { "name": "AvatarFallback", "kind": "value" },
+      { "name": "AvatarGroup", "kind": "value" },
+      { "name": "AvatarGroupCount", "kind": "value" },
+      { "name": "AvatarImage", "kind": "value" }
+    ],
+    "shadcn/badge": [
+      { "name": "Badge", "kind": "value" },
+      { "name": "badgeVariants", "kind": "value" }
+    ],
+    "shadcn/breadcrumb": [
+      { "name": "Breadcrumb", "kind": "value" },
+      { "name": "BreadcrumbEllipsis", "kind": "value" },
+      { "name": "BreadcrumbItem", "kind": "value" },
+      { "name": "BreadcrumbLink", "kind": "value" },
+      { "name": "BreadcrumbList", "kind": "value" },
+      { "name": "BreadcrumbPage", "kind": "value" },
+      { "name": "BreadcrumbSeparator", "kind": "value" }
+    ],
+    "shadcn/bubble": [
+      { "name": "Bubble", "kind": "value" },
+      { "name": "BubbleContent", "kind": "value" },
+      { "name": "BubbleGroup", "kind": "value" },
+      { "name": "BubbleReactions", "kind": "value" }
+    ],
+    "shadcn/button": [
+      { "name": "Button", "kind": "value" },
+      { "name": "buttonVariants", "kind": "value" }
+    ],
+    "shadcn/button-group": [
+      { "name": "ButtonGroup", "kind": "value" },
+      { "name": "ButtonGroupSeparator", "kind": "value" },
+      { "name": "ButtonGroupText", "kind": "value" },
+      { "name": "buttonGroupVariants", "kind": "value" }
+    ],
+    "shadcn/calendar": [
+      { "name": "Calendar", "kind": "value" },
+      { "name": "CalendarDayButton", "kind": "value" }
+    ],
+    "shadcn/card": [
+      { "name": "Card", "kind": "value" },
+      { "name": "CardAction", "kind": "value" },
+      { "name": "CardContent", "kind": "value" },
+      { "name": "CardDescription", "kind": "value" },
+      { "name": "CardFooter", "kind": "value" },
+      { "name": "CardHeader", "kind": "value" },
+      { "name": "CardTitle", "kind": "value" }
+    ],
+    "shadcn/carousel": [
+      { "name": "Carousel", "kind": "value" },
+      { "name": "CarouselApi", "kind": "type" },
+      { "name": "CarouselContent", "kind": "value" },
+      { "name": "CarouselItem", "kind": "value" },
+      { "name": "CarouselNext", "kind": "value" },
+      { "name": "CarouselPrevious", "kind": "value" },
+      { "name": "useCarousel", "kind": "value" }
+    ],
+    "shadcn/chart": [
+      { "name": "ChartConfig", "kind": "type" },
+      { "name": "ChartContainer", "kind": "value" },
+      { "name": "ChartLegend", "kind": "value" },
+      { "name": "ChartLegendContent", "kind": "value" },
+      { "name": "ChartStyle", "kind": "value" },
+      { "name": "ChartTooltip", "kind": "value" },
+      { "name": "ChartTooltipContent", "kind": "value" }
+    ],
+    "shadcn/checkbox": [{ "name": "Checkbox", "kind": "value" }],
+    "shadcn/collapsible": [
+      { "name": "Collapsible", "kind": "value" },
+      { "name": "CollapsibleContent", "kind": "value" },
+      { "name": "CollapsibleTrigger", "kind": "value" }
+    ],
+    "shadcn/combobox": [
+      { "name": "Combobox", "kind": "value" },
+      { "name": "ComboboxChip", "kind": "value" },
+      { "name": "ComboboxChips", "kind": "value" },
+      { "name": "ComboboxChipsInput", "kind": "value" },
+      { "name": "ComboboxCollection", "kind": "value" },
+      { "name": "ComboboxContent", "kind": "value" },
+      { "name": "ComboboxEmpty", "kind": "value" },
+      { "name": "ComboboxGroup", "kind": "value" },
+      { "name": "ComboboxInput", "kind": "value" },
+      { "name": "ComboboxItem", "kind": "value" },
+      { "name": "ComboboxLabel", "kind": "value" },
+      { "name": "ComboboxList", "kind": "value" },
+      { "name": "ComboboxSeparator", "kind": "value" },
+      { "name": "ComboboxTrigger", "kind": "value" },
+      { "name": "ComboboxValue", "kind": "value" },
+      { "name": "useComboboxAnchor", "kind": "value" }
+    ],
+    "shadcn/command": [
+      { "name": "Command", "kind": "value" },
+      { "name": "CommandDialog", "kind": "value" },
+      { "name": "CommandEmpty", "kind": "value" },
+      { "name": "CommandGroup", "kind": "value" },
+      { "name": "CommandInput", "kind": "value" },
+      { "name": "CommandItem", "kind": "value" },
+      { "name": "CommandList", "kind": "value" },
+      { "name": "CommandSeparator", "kind": "value" },
+      { "name": "CommandShortcut", "kind": "value" }
+    ],
+    "shadcn/context-menu": [
+      { "name": "ContextMenu", "kind": "value" },
+      { "name": "ContextMenuCheckboxItem", "kind": "value" },
+      { "name": "ContextMenuContent", "kind": "value" },
+      { "name": "ContextMenuGroup", "kind": "value" },
+      { "name": "ContextMenuItem", "kind": "value" },
+      { "name": "ContextMenuLabel", "kind": "value" },
+      { "name": "ContextMenuPortal", "kind": "value" },
+      { "name": "ContextMenuRadioGroup", "kind": "value" },
+      { "name": "ContextMenuRadioItem", "kind": "value" },
+      { "name": "ContextMenuSeparator", "kind": "value" },
+      { "name": "ContextMenuShortcut", "kind": "value" },
+      { "name": "ContextMenuSub", "kind": "value" },
+      { "name": "ContextMenuSubContent", "kind": "value" },
+      { "name": "ContextMenuSubTrigger", "kind": "value" },
+      { "name": "ContextMenuTrigger", "kind": "value" }
+    ],
+    "shadcn/dialog": [
+      { "name": "Dialog", "kind": "value" },
+      { "name": "DialogClose", "kind": "value" },
+      { "name": "DialogContent", "kind": "value" },
+      { "name": "DialogDescription", "kind": "value" },
+      { "name": "DialogFooter", "kind": "value" },
+      { "name": "DialogHeader", "kind": "value" },
+      { "name": "DialogOverlay", "kind": "value" },
+      { "name": "DialogPortal", "kind": "value" },
+      { "name": "DialogTitle", "kind": "value" },
+      { "name": "DialogTrigger", "kind": "value" }
+    ],
+    "shadcn/direction": [
+      { "name": "DirectionProvider", "kind": "value" },
+      { "name": "useDirection", "kind": "value" }
+    ],
+    "shadcn/drawer": [
+      { "name": "Drawer", "kind": "value" },
+      { "name": "DrawerClose", "kind": "value" },
+      { "name": "DrawerContent", "kind": "value" },
+      { "name": "DrawerDescription", "kind": "value" },
+      { "name": "DrawerFooter", "kind": "value" },
+      { "name": "DrawerHeader", "kind": "value" },
+      { "name": "DrawerOverlay", "kind": "value" },
+      { "name": "DrawerPortal", "kind": "value" },
+      { "name": "DrawerSwipeHandle", "kind": "value" },
+      { "name": "DrawerTitle", "kind": "value" },
+      { "name": "DrawerTrigger", "kind": "value" }
+    ],
+    "shadcn/dropdown-menu": [
+      { "name": "DropdownMenu", "kind": "value" },
+      { "name": "DropdownMenuCheckboxItem", "kind": "value" },
+      { "name": "DropdownMenuContent", "kind": "value" },
+      { "name": "DropdownMenuGroup", "kind": "value" },
+      { "name": "DropdownMenuItem", "kind": "value" },
+      { "name": "DropdownMenuLabel", "kind": "value" },
+      { "name": "DropdownMenuPortal", "kind": "value" },
+      { "name": "DropdownMenuRadioGroup", "kind": "value" },
+      { "name": "DropdownMenuRadioItem", "kind": "value" },
+      { "name": "DropdownMenuSeparator", "kind": "value" },
+      { "name": "DropdownMenuShortcut", "kind": "value" },
+      { "name": "DropdownMenuSub", "kind": "value" },
+      { "name": "DropdownMenuSubContent", "kind": "value" },
+      { "name": "DropdownMenuSubTrigger", "kind": "value" },
+      { "name": "DropdownMenuTrigger", "kind": "value" }
+    ],
+    "shadcn/empty": [
+      { "name": "Empty", "kind": "value" },
+      { "name": "EmptyContent", "kind": "value" },
+      { "name": "EmptyDescription", "kind": "value" },
+      { "name": "EmptyHeader", "kind": "value" },
+      { "name": "EmptyMedia", "kind": "value" },
+      { "name": "EmptyTitle", "kind": "value" }
+    ],
+    "shadcn/field": [
+      { "name": "Field", "kind": "value" },
+      { "name": "FieldContent", "kind": "value" },
+      { "name": "FieldDescription", "kind": "value" },
+      { "name": "FieldError", "kind": "value" },
+      { "name": "FieldGroup", "kind": "value" },
+      { "name": "FieldLabel", "kind": "value" },
+      { "name": "FieldLegend", "kind": "value" },
+      { "name": "FieldSeparator", "kind": "value" },
+      { "name": "FieldSet", "kind": "value" },
+      { "name": "FieldTitle", "kind": "value" }
+    ],
+    "shadcn/hover-card": [
+      { "name": "HoverCard", "kind": "value" },
+      { "name": "HoverCardContent", "kind": "value" },
+      { "name": "HoverCardTrigger", "kind": "value" }
+    ],
+    "shadcn/input": [{ "name": "Input", "kind": "value" }],
+    "shadcn/input-group": [
+      { "name": "InputGroup", "kind": "value" },
+      { "name": "InputGroupAddon", "kind": "value" },
+      { "name": "InputGroupButton", "kind": "value" },
+      { "name": "InputGroupInput", "kind": "value" },
+      { "name": "InputGroupText", "kind": "value" },
+      { "name": "InputGroupTextarea", "kind": "value" }
+    ],
+    "shadcn/input-otp": [
+      { "name": "InputOTP", "kind": "value" },
+      { "name": "InputOTPGroup", "kind": "value" },
+      { "name": "InputOTPSeparator", "kind": "value" },
+      { "name": "InputOTPSlot", "kind": "value" }
+    ],
+    "shadcn/item": [
+      { "name": "Item", "kind": "value" },
+      { "name": "ItemActions", "kind": "value" },
+      { "name": "ItemContent", "kind": "value" },
+      { "name": "ItemDescription", "kind": "value" },
+      { "name": "ItemFooter", "kind": "value" },
+      { "name": "ItemGroup", "kind": "value" },
+      { "name": "ItemHeader", "kind": "value" },
+      { "name": "ItemMedia", "kind": "value" },
+      { "name": "ItemSeparator", "kind": "value" },
+      { "name": "ItemTitle", "kind": "value" }
+    ],
+    "shadcn/kbd": [
+      { "name": "Kbd", "kind": "value" },
+      { "name": "KbdGroup", "kind": "value" }
+    ],
+    "shadcn/label": [{ "name": "Label", "kind": "value" }],
+    "shadcn/marker": [
+      { "name": "Marker", "kind": "value" },
+      { "name": "MarkerContent", "kind": "value" },
+      { "name": "MarkerIcon", "kind": "value" },
+      { "name": "markerVariants", "kind": "value" }
+    ],
+    "shadcn/menubar": [
+      { "name": "Menubar", "kind": "value" },
+      { "name": "MenubarCheckboxItem", "kind": "value" },
+      { "name": "MenubarContent", "kind": "value" },
+      { "name": "MenubarGroup", "kind": "value" },
+      { "name": "MenubarItem", "kind": "value" },
+      { "name": "MenubarLabel", "kind": "value" },
+      { "name": "MenubarMenu", "kind": "value" },
+      { "name": "MenubarPortal", "kind": "value" },
+      { "name": "MenubarRadioGroup", "kind": "value" },
+      { "name": "MenubarRadioItem", "kind": "value" },
+      { "name": "MenubarSeparator", "kind": "value" },
+      { "name": "MenubarShortcut", "kind": "value" },
+      { "name": "MenubarSub", "kind": "value" },
+      { "name": "MenubarSubContent", "kind": "value" },
+      { "name": "MenubarSubTrigger", "kind": "value" },
+      { "name": "MenubarTrigger", "kind": "value" }
+    ],
+    "shadcn/message": [
+      { "name": "Message", "kind": "value" },
+      { "name": "MessageAvatar", "kind": "value" },
+      { "name": "MessageContent", "kind": "value" },
+      { "name": "MessageFooter", "kind": "value" },
+      { "name": "MessageGroup", "kind": "value" },
+      { "name": "MessageHeader", "kind": "value" }
+    ],
+    "shadcn/message-scroller": [
+      { "name": "MessageScroller", "kind": "value" },
+      { "name": "MessageScrollerButton", "kind": "value" },
+      { "name": "MessageScrollerContent", "kind": "value" },
+      { "name": "MessageScrollerItem", "kind": "value" },
+      { "name": "MessageScrollerProvider", "kind": "value" },
+      { "name": "MessageScrollerViewport", "kind": "value" },
+      { "name": "useMessageScroller", "kind": "value" },
+      { "name": "useMessageScrollerScrollable", "kind": "value" },
+      { "name": "useMessageScrollerVisibility", "kind": "value" }
+    ],
+    "shadcn/multi-select": [
+      { "name": "MultiSelect", "kind": "value" },
+      { "name": "MultiSelectContent", "kind": "value" },
+      { "name": "MultiSelectGroup", "kind": "value" },
+      { "name": "MultiSelectItem", "kind": "value" },
+      { "name": "MultiSelectTrigger", "kind": "value" },
+      { "name": "MultiSelectValue", "kind": "value" }
+    ],
+    "shadcn/native-select": [
+      { "name": "NativeSelect", "kind": "value" },
+      { "name": "NativeSelectOptGroup", "kind": "value" },
+      { "name": "NativeSelectOption", "kind": "value" }
+    ],
+    "shadcn/navigation-menu": [
+      { "name": "NavigationMenu", "kind": "value" },
+      { "name": "NavigationMenuContent", "kind": "value" },
+      { "name": "NavigationMenuIndicator", "kind": "value" },
+      { "name": "NavigationMenuItem", "kind": "value" },
+      { "name": "NavigationMenuLink", "kind": "value" },
+      { "name": "NavigationMenuList", "kind": "value" },
+      { "name": "NavigationMenuPositioner", "kind": "value" },
+      { "name": "NavigationMenuTrigger", "kind": "value" },
+      { "name": "navigationMenuTriggerStyle", "kind": "value" }
+    ],
+    "shadcn/pagination": [
+      { "name": "Pagination", "kind": "value" },
+      { "name": "PaginationContent", "kind": "value" },
+      { "name": "PaginationEllipsis", "kind": "value" },
+      { "name": "PaginationItem", "kind": "value" },
+      { "name": "PaginationLink", "kind": "value" },
+      { "name": "PaginationNext", "kind": "value" },
+      { "name": "PaginationPrevious", "kind": "value" }
+    ],
+    "shadcn/popover": [
+      { "name": "Popover", "kind": "value" },
+      { "name": "PopoverContent", "kind": "value" },
+      { "name": "PopoverDescription", "kind": "value" },
+      { "name": "PopoverHeader", "kind": "value" },
+      { "name": "PopoverTitle", "kind": "value" },
+      { "name": "PopoverTrigger", "kind": "value" }
+    ],
+    "shadcn/progress": [
+      { "name": "Progress", "kind": "value" },
+      { "name": "ProgressIndicator", "kind": "value" },
+      { "name": "ProgressLabel", "kind": "value" },
+      { "name": "ProgressTrack", "kind": "value" },
+      { "name": "ProgressValue", "kind": "value" }
+    ],
+    "shadcn/questionnaire": [
+      { "name": "Questionnaire", "kind": "value" },
+      { "name": "QuestionnaireActions", "kind": "value" },
+      { "name": "QuestionnaireChoice", "kind": "value" },
+      { "name": "QuestionnaireChoiceDescription", "kind": "value" },
+      { "name": "QuestionnaireChoices", "kind": "value" },
+      { "name": "QuestionnaireDescription", "kind": "value" },
+      { "name": "QuestionnaireError", "kind": "value" },
+      { "name": "QuestionnaireInput", "kind": "value" },
+      { "name": "QuestionnaireItem", "kind": "value" },
+      { "name": "QuestionnaireNext", "kind": "value" },
+      { "name": "QuestionnairePrevious", "kind": "value" },
+      { "name": "QuestionnaireProgress", "kind": "value" },
+      { "name": "QuestionnaireSkip", "kind": "value" },
+      { "name": "QuestionnaireSubmit", "kind": "value" },
+      { "name": "QuestionnaireTitle", "kind": "value" }
+    ],
+    "shadcn/radio-group": [
+      { "name": "RadioGroup", "kind": "value" },
+      { "name": "RadioGroupItem", "kind": "value" }
+    ],
+    "shadcn/resizable": [
+      { "name": "ResizableHandle", "kind": "value" },
+      { "name": "ResizablePanel", "kind": "value" },
+      { "name": "ResizablePanelGroup", "kind": "value" }
+    ],
+    "shadcn/scroll-area": [
+      { "name": "ScrollArea", "kind": "value" },
+      { "name": "ScrollBar", "kind": "value" }
+    ],
+    "shadcn/select": [
+      { "name": "Select", "kind": "value" },
+      { "name": "SelectContent", "kind": "value" },
+      { "name": "SelectGroup", "kind": "value" },
+      { "name": "SelectItem", "kind": "value" },
+      { "name": "SelectLabel", "kind": "value" },
+      { "name": "SelectScrollDownButton", "kind": "value" },
+      { "name": "SelectScrollUpButton", "kind": "value" },
+      { "name": "SelectSeparator", "kind": "value" },
+      { "name": "SelectTrigger", "kind": "value" },
+      { "name": "SelectValue", "kind": "value" }
+    ],
+    "shadcn/separator": [{ "name": "Separator", "kind": "value" }],
+    "shadcn/sheet": [
+      { "name": "Sheet", "kind": "value" },
+      { "name": "SheetClose", "kind": "value" },
+      { "name": "SheetContent", "kind": "value" },
+      { "name": "SheetDescription", "kind": "value" },
+      { "name": "SheetFooter", "kind": "value" },
+      { "name": "SheetHeader", "kind": "value" },
+      { "name": "SheetTitle", "kind": "value" },
+      { "name": "SheetTrigger", "kind": "value" }
+    ],
+    "shadcn/sidebar": [
+      { "name": "Sidebar", "kind": "value" },
+      { "name": "SidebarContent", "kind": "value" },
+      { "name": "SidebarFooter", "kind": "value" },
+      { "name": "SidebarGroup", "kind": "value" },
+      { "name": "SidebarGroupAction", "kind": "value" },
+      { "name": "SidebarGroupContent", "kind": "value" },
+      { "name": "SidebarGroupLabel", "kind": "value" },
+      { "name": "SidebarHeader", "kind": "value" },
+      { "name": "SidebarInput", "kind": "value" },
+      { "name": "SidebarInset", "kind": "value" },
+      { "name": "SidebarMenu", "kind": "value" },
+      { "name": "SidebarMenuAction", "kind": "value" },
+      { "name": "SidebarMenuBadge", "kind": "value" },
+      { "name": "SidebarMenuButton", "kind": "value" },
+      { "name": "SidebarMenuItem", "kind": "value" },
+      { "name": "SidebarMenuSkeleton", "kind": "value" },
+      { "name": "SidebarMenuSub", "kind": "value" },
+      { "name": "SidebarMenuSubButton", "kind": "value" },
+      { "name": "SidebarMenuSubItem", "kind": "value" },
+      { "name": "SidebarProvider", "kind": "value" },
+      { "name": "SidebarRail", "kind": "value" },
+      { "name": "SidebarSeparator", "kind": "value" },
+      { "name": "SidebarTrigger", "kind": "value" },
+      { "name": "useSidebar", "kind": "value" }
+    ],
+    "shadcn/skeleton": [{ "name": "Skeleton", "kind": "value" }],
+    "shadcn/slider": [{ "name": "Slider", "kind": "value" }],
+    "shadcn/sonner": [{ "name": "Toaster", "kind": "value" }],
+    "shadcn/spinner": [{ "name": "Spinner", "kind": "value" }],
+    "shadcn/switch": [{ "name": "Switch", "kind": "value" }],
+    "shadcn/table": [
+      { "name": "Table", "kind": "value" },
+      { "name": "TableBody", "kind": "value" },
+      { "name": "TableCaption", "kind": "value" },
+      { "name": "TableCell", "kind": "value" },
+      { "name": "TableFooter", "kind": "value" },
+      { "name": "TableHead", "kind": "value" },
+      { "name": "TableHeader", "kind": "value" },
+      { "name": "TableRow", "kind": "value" }
+    ],
+    "shadcn/tabs": [
+      { "name": "Tabs", "kind": "value" },
+      { "name": "TabsContent", "kind": "value" },
+      { "name": "TabsList", "kind": "value" },
+      { "name": "TabsTrigger", "kind": "value" },
+      { "name": "tabsListVariants", "kind": "value" }
+    ],
+    "shadcn/textarea": [{ "name": "Textarea", "kind": "value" }],
+    "shadcn/toast": [
+      { "name": "Toast", "kind": "value" },
+      { "name": "ToastAction", "kind": "value" },
+      { "name": "ToastClose", "kind": "value" },
+      { "name": "ToastContent", "kind": "value" },
+      { "name": "ToastDescription", "kind": "value" },
+      { "name": "ToastPortal", "kind": "value" },
+      { "name": "ToastProvider", "kind": "value" },
+      { "name": "ToastTitle", "kind": "value" },
+      { "name": "ToastViewport", "kind": "value" },
+      { "name": "Toaster", "kind": "value" },
+      { "name": "createToastManager", "kind": "value" },
+      { "name": "toast", "kind": "value" },
+      { "name": "useToastManager", "kind": "value" }
+    ],
+    "shadcn/toggle": [
+      { "name": "Toggle", "kind": "value" },
+      { "name": "toggleVariants", "kind": "value" }
+    ],
+    "shadcn/toggle-group": [
+      { "name": "ToggleGroup", "kind": "value" },
+      { "name": "ToggleGroupItem", "kind": "value" }
+    ],
+    "shadcn/tooltip": [
+      { "name": "Tooltip", "kind": "value" },
+      { "name": "TooltipContent", "kind": "value" },
+      { "name": "TooltipProvider", "kind": "value" },
+      { "name": "TooltipTrigger", "kind": "value" }
+    ]
+  }
+}

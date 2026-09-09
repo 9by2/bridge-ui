@@ -1,0 +1,13 @@
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource/sarabun/400.css";
+@import "@fontsource/sarabun/500.css";
+@import "@fontsource/sarabun/600.css";
+@import "@fontsource/sarabun/700.css";
+
+/* Base UI focus guards redirect keyboard focus and are never pointer targets. */
+[data-base-ui-focus-guard][aria-hidden="true"] {
+  width: 0 !important;
+  height: 0 !important;
+  pointer-events: none;
+}
