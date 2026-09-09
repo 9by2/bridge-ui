@@ -50,7 +50,7 @@ test("long TsChart page renders a distant preview", async ({ page }) => {
   expect(await page.locator("iframe").count()).toBeLessThan(8)
   const frame = page.getByTitle("TsChart Basic Sankey preview", { exact: true })
   await page.locator('[data-preview="TsChart Basic Sankey preview"]').scrollIntoViewIfNeeded()
-  await expect(frame.contentFrame().locator("svg.ts-chart").first()).toBeVisible()
+  await expect(frame.contentFrame().locator("svg.ts-chart").first()).toBeVisible({ timeout: 15_000 })
   expect(await page.locator("iframe[src]").count()).toBeLessThan(12)
   await expect(page.locator(".code-panel pre")).toHaveCount(0)
   await page.goto("/#button/default")

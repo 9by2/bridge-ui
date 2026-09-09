@@ -24,3 +24,10 @@
 ## External Gate
 
 Push is blocked by the current shell permission layer. Remote remains at `6416f52`; local CI/spec commits and promotion changes cannot trigger GitLab until pushed. Merge, bot versioning, registry RC install and Bridge Web proof cannot be completed before that remote state exists.
+
+## MR Follow-Up
+
+- MR !4 merged at `313295fd8c5c4c3e4bd3f94c073c4fa22ec0c8f9`; main source/coverage/catalog passed and opened release MR !5 for `0.2.0-rc.2`.
+- Font bundling fix `a0a29af` is in MR !6. Its first source job failed because four tests independently built the package in parallel and exceeded Bun's default 5s timeout. CI now builds once before `bun test`; build-inspection tests consume `dist`. Exact clean source sequence completes in 2.02s.
+- MR !5 catalog had one distant TsChart lazy-preview timeout after 428 passes. The existing visibility assertion now allows 15s for the distant iframe; full promoted catalog passes locally.
+- Do not merge release MR !5 until !6 and this CI follow-up merge and the bot refreshes the release branch.

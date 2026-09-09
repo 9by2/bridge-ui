@@ -10,7 +10,9 @@ const outdir = path.join(root, "dist")
 await rm(outdir, { force: true, recursive: true })
 
 const manifest = await Bun.file(path.join(root, "package.json")).json()
-const external = [...Object.keys(manifest.dependencies ?? {}), ...Object.keys(manifest.peerDependencies ?? {})]
+const external = [...Object.keys(manifest.dependencies ?? {}), ...Object.keys(manifest.peerDependencies ?? {})].filter(
+  (name) => !name.startsWith("@fontsource")
+)
 const componentPaths = [...new Bun.Glob("app/component/brand/*.tsx").scanSync({ cwd: root })]
 const stylexPaths = [...new Bun.Glob("app/component/brand/stylex/*.{ts,tsx}").scanSync({ cwd: root })].filter(
   (file) => !file.endsWith("/use-mobile.ts")

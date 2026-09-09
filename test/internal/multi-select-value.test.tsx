@@ -4,8 +4,6 @@ import path from "node:path"
 import { renderToStaticMarkup } from "react-dom/server"
 
 test("brand multiselect value retains placeholder and badge styling", async () => {
-  const build = Bun.spawnSync([process.execPath, "cmd/build-package.ts"], { stdout: "pipe", stderr: "pipe" })
-  expect(build.exitCode, build.stderr.toString()).toBe(0)
   const { MultiSelect, MultiSelectValue } = await import(path.resolve("dist/index.js"))
   const placeholder = renderToStaticMarkup(
     <MultiSelect>

@@ -24,6 +24,7 @@ source:
     - bun lint
     - bun typecheck
     - bun boundary
+    - bun run build
     - bun test
     - bun coverage:brand
     - bun verify:package
