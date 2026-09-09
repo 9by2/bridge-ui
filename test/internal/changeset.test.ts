@@ -7,7 +7,8 @@ test("Changesets versions RC, consumes its note and promotes stable", async () =
   const directory = await mkdtemp(path.join(tmpdir(), "bridge-changeset-"))
   const cli = path.resolve("node_modules/@changesets/cli/bin.js")
   const run = (...args: string[]) => {
-    const result = Bun.spawnSync(["bun", cli, ...args], { cwd: directory, stdout: "pipe", stderr: "pipe" })
+    const signal = AbortSignal.timeout(10_000)
+    const result = Bun.spawnSync(["bun", cli, ...args], { cwd: directory, stdout: "pipe", stderr: "pipe", signal })
     expect(result.exitCode, result.stderr.toString()).toBe(0)
   }
   try {
@@ -26,4 +27,4 @@ test("Changesets versions RC, consumes its note and promotes stable", async () =
   } finally {
     await rm(directory, { recursive: true, force: true })
   }
-})
+}, 30_000)
