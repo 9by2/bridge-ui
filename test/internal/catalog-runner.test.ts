@@ -1,5 +1,7 @@
 import { expect, test } from "bun:test"
 
+const catalogImage = "$CI_REGISTRY_IMAGE/ci/catalog:playwright-1.63.0-bun-1.4.1-node-22.22.0"
+
 for (const ci of ["true", ""]) {
   test(`catalog runner preserves the gate with CI=${ci || "unset"}`, () => {
     const result = Bun.spawnSync(
@@ -20,3 +22,23 @@ for (const ci of ["true", ""]) {
     })
   })
 }
+
+test("catalog CI uses a prebuilt version-pinned browser runtime", async () => {
+  const root = await Bun.file(".gitlab-ci.yml").text()
+  const child = await Bun.file("deployment/.gitlab-ci.yml").text()
+  const dockerfile = await Bun.file("deployment/Dockerfile.catalog").text()
+
+  expect(root).toContain("catalog-runtime-image:")
+  expect(root).toContain("deployment/Dockerfile.catalog")
+  expect(root).toContain("--custom-platform=linux/arm64")
+  expect(root).toContain(`--destination "${catalogImage}"`)
+  expect(child).toContain(`CATALOG_IMAGE: "${catalogImage}"`)
+  expect(child).toContain("image: $CATALOG_IMAGE")
+  expect(child).not.toContain("cmd/install-ci-node.sh")
+  expect(child).not.toContain("playwright install")
+  expect(child).toContain("- bun catalog:test")
+  expect(child).toContain("- playwright-report/")
+  expect(dockerfile).toContain("bunx playwright@1.63.0 install --with-deps chromium")
+  expect(dockerfile).toContain("FROM oven/bun:1.4.1")
+  expect(dockerfile).toContain("FROM node:22.22.0-bookworm-slim")
+})

@@ -84,9 +84,9 @@ Commit the pre-state change and push `main`. CI prepares the stable release MR, 
 
 Changesets CLI is pinned to 2.29.8 with changesets-gitlab 0.14.0: this integration reads the v2 prerelease state, not the v3 archived-note layout. Upgrade together only after the RC/exit regression passes.
 
-CI now gates package runtime coverage separately from command and catalog verification. Local runtime coverage reaches 100% in every metric; the revised gate still needs runner verification. V8 coverage requires real Node: `cmd/install-ci-node.sh` installs checksum-verified Node 22.22.0 before Bun dependency installation. Historical Linux amd64 Docker proof used upstream `oven/bun:1.4.0` and passed the source sequence and 375 browser check; private mirror access was unavailable locally. Private registry publication remains unproven.
+CI gates package runtime coverage separately from command and catalog verification. Local runtime coverage reaches 100% in every metric. V8 coverage uses real Node 22.22.0 from the prebuilt catalog runtime rather than Bun's Node fallback. Historical Linux amd64 Docker proof used upstream `oven/bun:1.4.0` and passed the source sequence and 375 browser check; current Linux arm64 proof passes all 431 browser checks in the prebuilt runtime. Private registry publication remains unproven.
 
-`deployment/Dockerfile.verify` provides Bun 1.4.1 plus Node 22.22.0 for local Linux verification. CI uses the same Bun version. Build with `docker build --platform linux/amd64 -f deployment/Dockerfile.verify -t bridge-ui-verify .`. Use an isolated source copy and fresh `bun install --frozen-lockfile`; never reuse macOS node_modules. Install Chromium with `bunx playwright install --with-deps chromium`, then run the command sequence in the child CI file. Normal CI never updates screenshot expectations.
+`deployment/Dockerfile.catalog` provides Bun 1.4.1, Node 22.22.0 and the Chromium revision for Playwright 1.63.0. CI publishes the Linux arm64 image to the project registry when this Dockerfile changes, then every child verification job uses that immutable runtime. Build locally with `docker build --platform linux/arm64 -f deployment/Dockerfile.catalog -t bridge-ui-catalog .`. Use an isolated source copy and fresh `bun install --frozen-lockfile`; never reuse macOS `node_modules`. Browser binary and system dependency are prebuilt, so do not run `playwright install` in normal verification. Normal CI never updates screenshot expectations.
 
 ## Package Command
 
@@ -116,7 +116,7 @@ Other generated-compatible and brand entry remains available as `@bridge/ui/comp
 
 `bun catalog:test` builds and serves an isolated static catalog on port 6007. Long pages mount nearby preview only; leaving a preview resets its transient state. All example sections and source remain inline.
 
-Catalog verification uses one browser worker when `CI` is set and four locally. Shared runner execution must not multiply Chromium load against an unknown CPU budget. The assertion deadline remains five seconds with no retry; use `CI=true bun catalog:test` to reproduce the CI schedule locally. List output and `playwright-report/` retain the case duration and review index alongside failure traces.
+Catalog verification uses one Playwright browser worker when `CI` is set and four locally. Shared runner execution must not multiply Chromium load against an unknown CPU budget. The assertion deadline remains five seconds with no retry; use `CI=true bun catalog:test` to reproduce the CI schedule locally. List output and `playwright-report/` retain the case duration and review index alongside failure traces. Bun.WebView remains useful for targeted render, computed-style and injected Axe proof, but does not replace the required Playwright gate covering screenshot, upload, permission, focus, keyboard, memory and replayable trace contracts.
 
 Private `internal/catalog/preview.tsx` owns creation/destruction of nearby iframe; offscreen placeholder has no browsing context. Private `source.tsx` fetches raw source only on disclosure. This catalog lifecycle does not affect application-owned TsChart state or force viewport resets on package consumers.
 

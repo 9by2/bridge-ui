@@ -5,7 +5,29 @@ include:
   - local: "/deployment/concurrency.gitlab-ci.yml"
 
 stages:
+  - prepare
   - triggers
+
+catalog-runtime-image:
+  stage: prepare
+  tags: [docker, general, sellsuki, staging-th, amd]
+  image:
+    name: "${BACKEND_BUILD_IMAGE}"
+    entrypoint: [""]
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"username\":\"${CI_REGISTRY_USER}\",\"password\":\"${CI_REGISTRY_PASSWORD}\"}}}" > /kaniko/.docker/config.json
+  script:
+    - >-
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --custom-platform=linux/arm64
+      --dockerfile "${CI_PROJECT_DIR}/deployment/Dockerfile.catalog"
+      --destination "$CI_REGISTRY_IMAGE/ci/catalog:playwright-1.63.0-bun-1.4.1-node-22.22.0"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      changes:
+        - deployment/Dockerfile.catalog
 
 verify-and-release:
   stage: triggers
