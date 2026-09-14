@@ -4,6 +4,7 @@
 - Read [README.md](./README.md) for current project fact and command.
 - Read [oxlint.config.ts](./oxlint.config.ts) before changing TypeScript. Do not duplicate lint-enforced rule here.
 - Use native `git`. Never use GitButler unless the active branch is already `gitbutler/workspace`.
+- Work directly on `main`; do not create a development branch. The automated release branch remains automation-owned.
 - Always use Bun as package manager and script runner.
 - Never use plural except variable name.
 - Use `ValueOf<typeof ...>` when a type derive from a constant object.

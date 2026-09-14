@@ -45,33 +45,33 @@ Changesets maintains a release MR on `changeset-release/main`. Merging that MR a
 
 ### Feature
 
-1. Implement and test on a feature branch.
+1. Sync `main`, then implement and test directly on `main`. Do not create a development branch.
 2. Run `bun changeset`, select `@bridge/ui`, choose patch/minor/major and describe the change.
-3. Commit the generated `.changeset/*.md` with the implementation and merge the feature MR into `main`.
-4. After verification, CI creates or updates one **Release @bridge/ui** MR containing the calculated version and changelog. More feature MR work updates that same release MR.
+3. Commit the generated `.changeset/*.md` with the implementation and push `main`.
+4. After verification, CI creates or updates one **Release @bridge/ui** MR containing the calculated version and changelog. Further implementation on `main` updates that same release MR.
 5. Review and merge the release MR when ready. Its main pipeline verifies and publishes automatically. There is no separate Publish button.
 
 ### Release Candidate
 
-Before merging the release MR, enter RC mode on a normal branch based on main:
+Before merging the release MR, enter RC mode directly on synced `main`:
 
 ```sh
 bun changeset pre enter rc
 ```
 
-Commit `.changeset/pre.json` and merge that MR into main. Include a pending Changeset for the release. CI updates the release MR to an RC version, for example `0.2.0-rc.0`. Merge the updated release MR to publish it under `next` and test it in an application with `bun add @bridge/ui@0.2.0-rc.0` using the private registry configuration.
+Commit `.changeset/pre.json` and push `main`. Include a pending Changeset for the release. CI updates the release MR to an RC version, for example `0.2.0-rc.0`. Merge the updated release MR to publish it under `next` and test it in an application with `bun add @bridge/ui@0.2.0-rc.0` using the private registry configuration.
 
 For a fix, add a new Changeset and merge it normally. While pre-mode is active, the next release MR produces `0.2.0-rc.1` (or the version calculated from the new change). Do not manually run `changeset version`; the bot owns that step. Do not delete retained Changeset or edit pre-state by hand.
 
 ### Stable
 
-After testing and approving the RC, run on a normal branch based on main:
+After testing and approving the RC, run directly on synced `main`:
 
 ```sh
 bun changeset pre exit
 ```
 
-Commit the pre-state change and merge its MR. CI prepares the stable release MR, for example `0.2.0`. Review its diff, confirm RC integration proof required by ADHD, and merge it. CI publishes under `latest` and creates `v0.2.0`. Without pre-mode, a normal Changeset release MR is stable directly; use the RC path for the first integration proof. Never reuse a published version.
+Commit the pre-state change and push `main`. CI prepares the stable release MR, for example `0.2.0`. Review its diff, confirm RC integration proof required by ADHD, and merge it. CI publishes under `latest` and creates `v0.2.0`. Without pre-mode, a normal Changeset release MR is stable directly; use the RC path for the first integration proof. Never reuse a published version.
 
 ### Administrator Setup
 
