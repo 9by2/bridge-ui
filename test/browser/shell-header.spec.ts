@@ -35,6 +35,38 @@ test("shell header remains at the viewport top while route content scrolls", asy
   await expect.poll(() => header.evaluate((node) => node.getBoundingClientRect().top)).toBe(0)
 })
 
+test("default shell header keeps the route title centered between independent controls", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 })
+  await page.goto(preview("default"))
+
+  const header = page.locator('[data-slot="shell-header"]')
+  const title = page.locator('[data-slot="shell-header-title"]')
+  await expect(page.getByRole("button", { name: "Select project" })).toContainText("All Projects")
+  await expect(page.getByRole("button", { name: "Open agent" })).toContainText("Agent")
+  await expect
+    .poll(async () => {
+      const headerBox = await header.boundingBox()
+      const titleBox = await title.boundingBox()
+      if (!headerBox || !titleBox) return Number.POSITIVE_INFINITY
+      return Math.abs(titleBox.x + titleBox.width / 2 - (headerBox.x + headerBox.width / 2))
+    })
+    .toBeLessThanOrEqual(1)
+
+  await page.setViewportSize({ width: 390, height: 700 })
+  await page.reload()
+  await expect(page.getByRole("button", { name: "Select project" })).toBeHidden()
+  await expect(page.getByRole("button", { name: "Open agent" }).getByText("Agent", { exact: true })).toBeHidden()
+  const mobileTitleBox = await title.boundingBox()
+  const mobileTriggerBox = await page.getByRole("button", { name: "Toggle navigation" }).boundingBox()
+  const mobileAgentBox = await page.getByRole("button", { name: "Open agent" }).boundingBox()
+  expect(mobileTitleBox && mobileTriggerBox && mobileTitleBox.x).toBeGreaterThan(
+    mobileTriggerBox ? mobileTriggerBox.x + mobileTriggerBox.width : Number.POSITIVE_INFINITY
+  )
+  expect(mobileTitleBox && mobileAgentBox && mobileTitleBox.x + mobileTitleBox.width).toBeLessThan(
+    mobileAgentBox?.x ?? Number.NEGATIVE_INFINITY
+  )
+})
+
 test("shell header supports title-only, long title, mobile and token theme", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 700 })
   await page.goto(preview("collapsed", "light"))

@@ -43,6 +43,7 @@ try {
           headerPosition: getComputedStyle(header).position
         }
       })()`)
+      await Bun.write(path.join(output, `shell-${theme}-${width}.png`), await view.screenshot())
       await view.evaluate("scrollTo(0, 500)")
       const headerTop = await view.evaluate<number>(
         "document.querySelector('[data-slot=\"shell-header\"]').getBoundingClientRect().top"
@@ -68,7 +69,7 @@ try {
       assert.equal(headerTop, 0)
       assert.equal(actual.documentOverflow, false)
       if (width === 1280) assert.ok(actual.collapsedInsetWidth > initial.insetWidth)
-      await Bun.write(path.join(output, `shell-${theme}-${width}.png`), await view.screenshot())
+      await Bun.write(path.join(output, `shell-${theme}-${width}-toggled.png`), await view.screenshot())
       reports.push({
         width,
         theme,
