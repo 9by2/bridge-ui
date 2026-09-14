@@ -170,7 +170,19 @@ test("alert and empty retain slot and content contract", () => {
 })
 
 test("badge preserves link render, helper string and variant state", () => {
-  for (const variant of [undefined, null, "default", "secondary", "destructive", "outline", "ghost", "link"] as const) {
+  for (const variant of [
+    undefined,
+    null,
+    "default",
+    "secondary",
+    "destructive",
+    "warning",
+    "success",
+    "partial-success",
+    "outline",
+    "ghost",
+    "link"
+  ] as const) {
     const { unmount } = render(
       <Badge variant={variant} render={<a href="#target" />} className="caller">
         Badge

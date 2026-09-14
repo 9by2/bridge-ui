@@ -66,7 +66,7 @@ const style = stylex.create({
     backgroundColor: `color-mix(in oklch, ${token.muted}, transparent 50%)`,
     padding: 16
   },
-  title: { fontFamily: "inherit", fontSize: 16, lineHeight: 1, fontWeight: 500, margin: 0 },
+  title: { fontFamily: token.fontHeading, fontSize: 16, lineHeight: 1, fontWeight: 500, margin: 0 },
   description: { color: token.mutedForeground, fontSize: 14, lineHeight: "20px", margin: 0 }
 })
 export function Dialog(props: Primitive.Root.Props) {

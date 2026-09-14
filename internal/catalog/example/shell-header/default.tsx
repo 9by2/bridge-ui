@@ -16,7 +16,7 @@ function Navigation() {
 export default function Example() {
   return (
     <UI.SidebarProvider defaultOpen>
-      <UI.Sidebar>
+      <UI.Sidebar role="navigation" aria-label="User navigation">
         <Navigation />
       </UI.Sidebar>
       <UI.SidebarInset>
@@ -31,7 +31,7 @@ export default function Example() {
         </UI.ShellHeader>
         <UI.Page>
           <UI.PageContent>
-            <UI.Table>
+            <UI.Table tabIndex={0} aria-label="User account">
               <UI.TableHeader>
                 <UI.TableRow>
                   {Array.from({ length: 8 }, (_, index) => (
@@ -47,7 +47,7 @@ export default function Example() {
                 </UI.TableRow>
               </UI.TableBody>
             </UI.Table>
-            <div aria-label="Scrollable route content" style={{ height: 1200 }} />
+            <div style={{ height: 1200 }} />
           </UI.PageContent>
         </UI.Page>
       </UI.SidebarInset>

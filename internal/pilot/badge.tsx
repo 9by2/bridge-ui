@@ -54,6 +54,9 @@ const style = stylex.create({
       ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.destructive} ${token.errorRingOpacity}, transparent)`
     }
   },
+  warning: { backgroundColor: token.warning, color: token.warningForeground },
+  success: { backgroundColor: token.brand, color: token.brandForeground },
+  partialSuccess: { backgroundColor: token.brandAccent, color: token.brandAccentForeground },
   outline: {
     borderColor: token.border,
     color: { default: token.foreground, ":is(a):hover": token.mutedForeground },
@@ -69,13 +72,35 @@ const style = stylex.create({
     boxShadow: `0 0 0 3px color-mix(in oklch, ${token.destructive} ${token.errorRingOpacity}, transparent)`
   }
 })
-type Variant = "default" | "secondary" | "destructive" | "outline" | "ghost" | "link"
+type Variant =
+  | "default"
+  | "secondary"
+  | "destructive"
+  | "warning"
+  | "success"
+  | "partial-success"
+  | "outline"
+  | "ghost"
+  | "link"
+const variantStyle = {
+  default: style.default,
+  secondary: style.secondary,
+  destructive: style.destructive,
+  warning: style.warning,
+  success: style.success,
+  "partial-success": style.partialSuccess,
+  outline: style.outline,
+  ghost: style.ghost,
+  link: style.link
+} as const
 export function badgeVariants({
   variant = "default",
   className,
   class: extra
 }: { variant?: Variant | null; className?: string; class?: string } = {}) {
-  return [stylex.props(style.root, variant && style[variant]).className, className, extra].filter(Boolean).join(" ")
+  return [stylex.props(style.root, variant && variantStyle[variant]).className, className, extra]
+    .filter(Boolean)
+    .join(" ")
 }
 export function Badge({
   className,
@@ -90,7 +115,7 @@ export function Badge({
         className: [
           stylex.props(
             style.root,
-            variant && style[variant],
+            variant && variantStyle[variant],
             (props["aria-invalid"] === true || props["aria-invalid"] === "true") && style.invalid
           ).className,
           className

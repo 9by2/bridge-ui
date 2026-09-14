@@ -11,3 +11,33 @@
   height: 0 !important;
   pointer-events: none;
 }
+
+[data-pilot-theme="cue"] {
+  color-scheme: dark;
+  scrollbar-color: oklch(0.4 0 0) transparent;
+  scrollbar-width: thin;
+}
+
+[data-pilot-theme="cue"]::-webkit-scrollbar,
+[data-pilot-theme="cue"] *::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+[data-pilot-theme="cue"]::-webkit-scrollbar-track,
+[data-pilot-theme="cue"] *::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-pilot-theme="cue"]::-webkit-scrollbar-thumb,
+[data-pilot-theme="cue"] *::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 4px;
+  background-color: oklch(0.4 0 0);
+  background-clip: padding-box;
+}
+
+[data-pilot-theme="cue"]::-webkit-scrollbar-thumb:hover,
+[data-pilot-theme="cue"] *::-webkit-scrollbar-thumb:hover {
+  background-color: oklch(0.5 0 0);
+}

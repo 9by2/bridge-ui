@@ -11,9 +11,9 @@ const style = stylex.create({
     gap: 16,
     overflow: "hidden",
     borderRadius: 14,
-    backgroundColor: token.background,
+    backgroundColor: token.card,
     paddingBlock: { default: 16, ':has([data-slot="card-footer"])': 0 },
-    color: token.foreground,
+    color: token.cardForeground,
     fontSize: 14,
     lineHeight: "20px",
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%)`
@@ -37,7 +37,7 @@ const style = stylex.create({
   },
   spacing: { paddingInline: { default: 16, [stylex.when.ancestor('[data-size="sm"]')]: 12 } },
   title: {
-    fontFamily: "inherit",
+    fontFamily: token.fontHeading,
     fontSize: { default: 16, [stylex.when.ancestor('[data-size="sm"]')]: 14 },
     lineHeight: 1.375,
     fontWeight: 500

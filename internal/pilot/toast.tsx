@@ -88,6 +88,8 @@ const style = stylex.create({
     content: { "::after": '""' }
   },
   icon: { width: 16, height: 16, pointerEvents: "none", flexShrink: 0 },
+  success: { color: token.brand },
+  warning: { color: token.warning },
   error: { color: token.errorText },
   loading: {
     animationName: spin,
@@ -220,9 +222,13 @@ function ToastList() {
   return toasts.map((item) => (
     <Toast key={item.id} toast={item}>
       <ToastContent>
-        {item.type === "success" && <CircleCheckIcon data-slot="toast-icon" {...stylex.props(style.icon)} />}
+        {item.type === "success" && (
+          <CircleCheckIcon data-slot="toast-icon" {...stylex.props(style.icon, style.success)} />
+        )}
         {item.type === "info" && <InfoIcon data-slot="toast-icon" {...stylex.props(style.icon)} />}
-        {item.type === "warning" && <TriangleAlertIcon data-slot="toast-icon" {...stylex.props(style.icon)} />}
+        {item.type === "warning" && (
+          <TriangleAlertIcon data-slot="toast-icon" {...stylex.props(style.icon, style.warning)} />
+        )}
         {item.type === "error" && <OctagonXIcon data-slot="toast-icon" {...stylex.props(style.icon, style.error)} />}
         {item.type === "loading" && <Loader2Icon data-slot="toast-icon" {...stylex.props(style.icon, style.loading)} />}
         <div {...stylex.props(style.copy)}>

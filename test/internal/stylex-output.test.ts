@@ -10,7 +10,7 @@ test("promoted package output is precompiled and includes scoped adapter", async
   expect(css).toContain("@font-face")
   expect(css).not.toContain("--tw-")
   expect(css).toContain(":root, .xu2yawi")
-  expect(css).toContain(".xbpea0i.xbpea0i")
+  expect(css).toContain("--pilot-background")
 
   for (const file of new Bun.Glob("dist/component/brand/stylex/*.js").scanSync()) {
     const output = await Bun.file(file).text()

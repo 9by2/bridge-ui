@@ -55,7 +55,16 @@ test("pilot button preserves render composition, disabled behavior and string he
     </Button>
   )
   expect(screen.getByRole("button").getAttribute("href")).toBe("/destination")
-  for (const variant of ["default", "outline", "secondary", "ghost", "destructive", "link"] as const) {
+  for (const variant of [
+    "default",
+    "outline",
+    "secondary",
+    "ghost",
+    "destructive",
+    "warning",
+    "cta",
+    "link"
+  ] as const) {
     for (const size of ["default", "xs", "sm", "lg", "icon", "icon-xs", "icon-sm", "icon-lg"] as const) {
       expect(typeof buttonVariants({ variant, size })).toBe("string")
       expect(buttonVariants({ variant, size, className: "caller" })).toContain("caller")

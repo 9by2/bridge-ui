@@ -1,0 +1,8 @@
+{
+  "mode": "pre",
+  "tag": "rc",
+  "initialVersions": {
+    "@bridge/ui": "0.2.0"
+  },
+  "changesets": []
+}

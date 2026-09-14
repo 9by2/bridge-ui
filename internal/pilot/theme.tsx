@@ -3,7 +3,36 @@ import { createContext, useContext, type ComponentProps } from "react"
 
 import { token } from "./token.stylex"
 
+export const themeMode = { light: "light", dark: "dark", cue: "cue" } as const
+export type ThemeMode = ValueOf<typeof themeMode>
+
+type ValueOf<T> = T[keyof T]
+
 const light = stylex.createTheme(token, {
+  colorScheme: "light",
+  fontBody: "'Geist Variable', aktiv-grotesk, Sarabun, sans-serif",
+  fontHeading: "'Plus Jakarta Sans Variable', aktiv-grotesk, Sarabun, sans-serif",
+  fontNumber: "InterVariable, Inter, sans-serif",
+  highlight: "oklch(0.145 0 0)",
+  highlightForeground: "oklch(1 0 0)",
+  brand: "oklch(0.8874 0.182 166.87)",
+  brandForeground: "oklch(0.145 0 0)",
+  brandAccent: "oklch(0.500137 0.29406 284.0716)",
+  brandAccentForeground: "oklch(1 0 0)",
+  warning: "oklch(0.58 0.1793 34.97)",
+  warningForeground: "oklch(1 0 0)",
+  card: "oklch(1 0 0)",
+  cardForeground: "oklch(0.145 0 0)",
+  popover: "oklch(1 0 0)",
+  popoverForeground: "oklch(0.145 0 0)",
+  sidebar: "oklch(0.985 0 0)",
+  sidebarForeground: "oklch(0.145 0 0)",
+  sidebarPrimary: "oklch(0.205 0 0)",
+  sidebarPrimaryForeground: "oklch(0.985 0 0)",
+  sidebarAccent: "oklch(0.97 0 0)",
+  sidebarAccentForeground: "oklch(0.205 0 0)",
+  sidebarBorder: "oklch(0.922 0 0)",
+  sidebarRing: "oklch(0.708 0 0)",
   accent: "oklch(0.97 0 0)",
   accentForeground: "oklch(0.205 0 0)",
   tabInactive: "oklch(0.145 0 0 / 60%)",
@@ -38,9 +67,34 @@ const light = stylex.createTheme(token, {
   border: "oklch(0.922 0 0)",
   input: "oklch(0.922 0 0)",
   ring: "oklch(0.708 0 0)",
-  destructive: "oklch(0.5489 0.1841 25.69)"
+  destructive: "oklch(0.5489 0.1841 25.69)",
+  destructiveForeground: "oklch(1 0 0)"
 })
 const dark = stylex.createTheme(token, {
+  colorScheme: "dark",
+  fontBody: "'Geist Variable', aktiv-grotesk, Sarabun, sans-serif",
+  fontHeading: "'Plus Jakarta Sans Variable', aktiv-grotesk, Sarabun, sans-serif",
+  fontNumber: "InterVariable, Inter, sans-serif",
+  highlight: "oklch(1 0 0)",
+  highlightForeground: "oklch(0.1776 0 0)",
+  brand: "oklch(0.8874 0.182 166.87)",
+  brandForeground: "oklch(0.1776 0 0)",
+  brandAccent: "oklch(0.500137 0.29406 284.0716)",
+  brandAccentForeground: "oklch(1 0 0)",
+  warning: "oklch(0.58 0.1793 34.97)",
+  warningForeground: "oklch(1 0 0)",
+  card: "oklch(0.1776 0 0)",
+  cardForeground: "oklch(0.683 0 0)",
+  popover: "oklch(0.1776 0 0)",
+  popoverForeground: "oklch(0.683 0 0)",
+  sidebar: "oklch(0.1776 0 0)",
+  sidebarForeground: "oklch(0.683 0 0)",
+  sidebarPrimary: "white",
+  sidebarPrimaryForeground: "oklch(0.1776 0 0)",
+  sidebarAccent: "oklch(0.269 0 0)",
+  sidebarAccentForeground: "oklch(0.985 0 0)",
+  sidebarBorder: "oklch(0.32 0 0)",
+  sidebarRing: "oklch(0.556 0 0)",
   accent: "oklch(0.269 0 0)",
   accentForeground: "oklch(0.985 0 0)",
   tabInactive: "oklch(0.708 0 0)",
@@ -75,9 +129,73 @@ const dark = stylex.createTheme(token, {
   border: "oklch(0.32 0 0)",
   input: "oklch(1 0 0 / 36%)",
   ring: "oklch(0.556 0 0)",
-  destructive: "oklch(0.5489 0.1841 25.69)"
+  destructive: "oklch(0.5489 0.1841 25.69)",
+  destructiveForeground: "oklch(1 0 0)"
 })
-const ThemeContext = createContext<"light" | "dark">("light")
+const cue = stylex.createTheme(token, {
+  colorScheme: "dark",
+  fontBody: "'Geist Variable', aktiv-grotesk, Sarabun, sans-serif",
+  fontHeading: "'Plus Jakarta Sans Variable', aktiv-grotesk, Sarabun, sans-serif",
+  fontNumber: "InterVariable, Inter, sans-serif",
+  highlight: "oklch(1 0 0)",
+  highlightForeground: "oklch(0.1776 0 0)",
+  brand: "oklch(0.8874 0.182 166.87)",
+  brandForeground: "oklch(0.1776 0 0)",
+  brandAccent: "oklch(0.500137 0.29406 284.0716)",
+  brandAccentForeground: "oklch(1 0 0)",
+  warning: "oklch(0.58 0.1793 34.97)",
+  warningForeground: "oklch(1 0 0)",
+  card: "oklch(0.1776 0 0)",
+  cardForeground: "oklch(0.683 0 0)",
+  popover: "oklch(0.1776 0 0)",
+  popoverForeground: "oklch(0.683 0 0)",
+  sidebar: "oklch(0.205 0 0)",
+  sidebarForeground: "oklch(0.985 0 0)",
+  sidebarPrimary: "oklch(0.488 0.243 264.376)",
+  sidebarPrimaryForeground: "oklch(0.985 0 0)",
+  sidebarAccent: "oklch(0.269 0 0)",
+  sidebarAccentForeground: "oklch(0.985 0 0)",
+  sidebarBorder: "oklch(1 0 0 / 10%)",
+  sidebarRing: "oklch(0.556 0 0)",
+  accent: "oklch(0.269 0 0)",
+  accentForeground: "oklch(0.985 0 0)",
+  tabInactive: "oklch(0.708 0 0)",
+  tabActiveBackground: "oklch(1 0 0 / 10.8%)",
+  tabActiveBorder: "oklch(1 0 0 / 36%)",
+  footerBorder: "oklch(0.32 0 0)",
+  switchOff: "oklch(1 0 0 / 28.8%)",
+  switchThumb: "oklch(0.683 0 0)",
+  switchThumbOn: "oklch(0.1776 0 0)",
+  errorRingOpacity: "40%",
+  outlineExpanded: "oklch(1 0 0 / 10.8%)",
+  errorText: "oklch(0.66 0.19 25.69)",
+  destructiveText: "oklch(0.66 0.19 25.69)",
+  inputBackground: "oklch(1 0 0 / 10.8%)",
+  inputDisabled: "oklch(1 0 0 / 28.8%)",
+  invalidBorder: "oklch(0.5489 0.1841 25.69 / 50%)",
+  outlineFocus: "oklch(1 0 0 / 36%)",
+  outlineHover: "oklch(1 0 0 / 18%)",
+  ghostHover: "oklch(0.269 0 0 / 50%)",
+  destructiveHoverOpacity: "30%",
+  outlineBackground: "oklch(1 0 0 / 10.8%)",
+  outlineBorder: "oklch(1 0 0 / 36%)",
+  destructiveOpacity: "20%",
+  background: "oklch(0.1776 0 0)",
+  foreground: "oklch(0.683 0 0)",
+  primary: "white",
+  primaryForeground: "oklch(0.1776 0 0)",
+  secondary: "oklch(0.2178 0 0)",
+  secondaryForeground: "white",
+  muted: "oklch(0.269 0 0)",
+  mutedForeground: "oklch(0.708 0 0)",
+  border: "oklch(0.32 0 0)",
+  input: "oklch(1 0 0 / 36%)",
+  ring: "oklch(0.556 0 0)",
+  destructive: "oklch(0.5489 0.1841 25.69)",
+  destructiveForeground: "oklch(1 0 0)"
+})
+const modeTheme = { light, dark, cue } as const
+const ThemeContext = createContext<ThemeMode>(themeMode.light)
 const style = stylex.create({
   root: {
     "--pilot-background": token.background,
@@ -87,14 +205,21 @@ const style = stylex.create({
     "--pilot-border": token.border,
     "--pilot-primary": token.primary,
     "--pilot-accent-foreground": token.accentForeground,
-    fontFamily: "'Geist Variable', aktiv-grotesk, Sarabun, sans-serif",
+    colorScheme: token.colorScheme,
+    fontFamily: token.fontBody,
     fontSize: 16,
     lineHeight: 1.5,
     color: token.foreground
+  },
+  number: {
+    fontFamily: token.fontNumber,
+    fontFeatureSettings: '"liga" 1, "calt" 1, "ss01" 1'
   }
 })
 
-export function Theme({ mode, className, ...props }: ComponentProps<"div"> & { mode?: "light" | "dark" }) {
+export const numberTextClassName = String(stylex.props(style.number).className)
+
+export function Theme({ mode, className, ...props }: ComponentProps<"div"> & { mode?: ThemeMode }) {
   const inherited = useContext(ThemeContext)
   const current = mode ?? inherited
   return (
@@ -102,9 +227,7 @@ export function Theme({ mode, className, ...props }: ComponentProps<"div"> & { m
       <div
         data-pilot-theme={current}
         {...props}
-        className={[stylex.props(style.root, current === "dark" ? dark : light).className, className]
-          .filter(Boolean)
-          .join(" ")}
+        className={[stylex.props(style.root, modeTheme[current]).className, className].join(" ")}
       />
     </ThemeContext>
   )

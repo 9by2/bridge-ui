@@ -13,9 +13,14 @@ import {
   DialogFooter,
   DialogOverlay
 } from "../../app/component/brand/stylex/dialog"
-import { Theme } from "../../app/component/brand/stylex/theme"
+import { numberTextClassName, Theme } from "../../app/component/brand/stylex/theme"
 
 afterEach(cleanup)
+
+test("theme exports number font presentation", () => {
+  expect(numberTextClassName).toBeTypeOf("string")
+  expect(numberTextClassName.length).toBeGreaterThan(0)
+})
 
 test("pilot dialog retains class callback on primitive slot", async () => {
   render(
@@ -60,6 +65,37 @@ test("pilot dialog preserves controlled state, portaled theme and Escape focus r
   fireEvent.keyDown(popup, { key: "Escape" })
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull())
   await waitFor(() => expect(document.activeElement).toBe(trigger))
+})
+
+test("pilot dialog preserves Cue theme through portal", async () => {
+  render(
+    <Theme mode="cue">
+      <Dialog defaultOpen>
+        <DialogContent>
+          <DialogTitle>Cue settings</DialogTitle>
+          <DialogDescription>Exact product theme</DialogDescription>
+        </DialogContent>
+      </Dialog>
+    </Theme>
+  )
+  const popup = await screen.findByRole("dialog")
+  expect(popup.closest("[data-pilot-theme]")?.getAttribute("data-pilot-theme")).toBe("cue")
+})
+
+test("theme accepts every explicit public mode", () => {
+  for (const mode of ["light", "dark", "cue"] as const) {
+    const { unmount } = render(
+      <Theme mode={mode} className="caller-theme">
+        Theme
+      </Theme>
+    )
+    expect(screen.getByText("Theme").getAttribute("data-pilot-theme")).toBe(mode)
+    expect(screen.getByText("Theme").className).toContain("caller-theme")
+    unmount()
+  }
+  const { unmount } = render(<Theme>Inherited default</Theme>)
+  expect(screen.getByText("Inherited default").getAttribute("data-pilot-theme")).toBe("light")
+  unmount()
 })
 
 test("pilot dialog retains hidden close option, footer action and unmount cleanup", async () => {

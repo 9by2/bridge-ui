@@ -18,11 +18,11 @@ const style = stylex.create({
     flexDirection: "column",
     gap: 10,
     borderRadius: 10,
-    backgroundColor: token.background,
+    backgroundColor: token.popover,
     padding: 10,
     fontSize: 14,
     lineHeight: "20px",
-    color: token.foreground,
+    color: token.popoverForeground,
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%), 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%)`,
     outline: "none",
     animationName: enter,
@@ -30,7 +30,7 @@ const style = stylex.create({
   },
   closed: { animationName: exit },
   header: { display: "flex", flexDirection: "column", gap: 2, fontSize: 14, lineHeight: "20px" },
-  title: { fontWeight: 500, margin: 0 },
+  title: { fontFamily: token.fontHeading, fontWeight: 500, margin: 0 },
   description: { color: token.mutedForeground, margin: 0 }
 })
 export function Popover(props: Primitive.Root.Props) {

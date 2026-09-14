@@ -3,7 +3,7 @@ import * as UI from "@bridge/ui"
 export default function Example() {
   return (
     <UI.SidebarProvider defaultOpen={false}>
-      <UI.Sidebar>
+      <UI.Sidebar role="navigation" aria-label="User navigation">
         <UI.SidebarContent>User navigation</UI.SidebarContent>
       </UI.Sidebar>
       <UI.SidebarInset>

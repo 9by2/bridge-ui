@@ -16,7 +16,7 @@ Defines a compact, token-aware, sticky application shell header and the SidebarI
 
 **Acceptance:**
 
-- [ ] Public component and computed-style tests verify the contract.
+- [x] Public component and computed-style tests verify the contract.
 
 ### REQ-002 Title and action
 
@@ -24,7 +24,7 @@ Defines a compact, token-aware, sticky application shell header and the SidebarI
 
 **Acceptance:**
 
-- [ ] Title-only, optional action, long-title, and narrow viewport compositions pass.
+- [x] Title-only, optional action, long-title, and narrow viewport compositions pass.
 
 ### REQ-003 SidebarInset sizing
 
@@ -32,8 +32,8 @@ Defines a compact, token-aware, sticky application shell header and the SidebarI
 
 **Acceptance:**
 
-- [ ] Expanded and collapsed widths track sidebar gap state.
-- [ ] Wide descendants do not cause document-level horizontal overflow.
+- [x] Expanded and collapsed widths track sidebar gap state.
+- [x] Wide descendants do not cause document-level horizontal overflow.
 
 ### REQ-004 Sticky and theme behavior
 
@@ -41,7 +41,7 @@ The header remains at viewport top while inset content scrolls and uses package 
 
 **Acceptance:**
 
-- [ ] Browser verification passes for sticky position and both themes.
+- [x] Browser verification passes for sticky position and both themes.
 
 ### REQ-005 Public package path
 
@@ -49,7 +49,7 @@ The package exports the primitive at `@bridge/ui/component/brand/stylex/shell-he
 
 **Acceptance:**
 
-- [ ] Packed install, declaration, dynamic import, client build, and SSR build pass.
+- [x] Packed install, declaration, dynamic import, client build, and SSR build pass.
 
 ### REQ-006 Avatar invariant
 
@@ -57,7 +57,7 @@ Avatar root, image, fallback, and root `::after` border remain fully circular at
 
 **Acceptance:**
 
-- [ ] Browser computed style reports a full radius for small, default, and large Avatar.
+- [x] Browser computed style reports a full radius for small, default, and large Avatar.
 
 ## Schema / API
 

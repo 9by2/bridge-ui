@@ -14,11 +14,13 @@ function Axis({ children, label }: { readonly children: ReactNode; readonly labe
 export default function Example() {
   return (
     <Axis label="variant">
-      {(["default", "outline", "secondary", "ghost", "destructive", "link"] as const).map((variant) => (
-        <UI.Button key={variant} variant={variant} className={variant === "secondary" ? "text-white" : undefined}>
-          {variant}
-        </UI.Button>
-      ))}
+      {(["default", "outline", "secondary", "ghost", "destructive", "warning", "cta", "link"] as const).map(
+        (variant) => (
+          <UI.Button key={variant} variant={variant} className={variant === "secondary" ? "text-white" : undefined}>
+            {variant}
+          </UI.Button>
+        )
+      )}
     </Axis>
   )
 }

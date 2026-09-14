@@ -274,6 +274,11 @@
   width: 14px;
   height: 14px;
 }
+[data-pilot-theme] [data-slot="tabs-trigger"] > svg:not([class*="size-"]) {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
 .pilot-button-default:has([data-icon="inline-start"]),
 .pilot-button-lg:has([data-icon="inline-start"]) {
   padding-left: 8px;
@@ -301,4 +306,16 @@
 [data-pilot-theme] :is([data-slot="avatar"], [data-slot="avatar-image"], [data-slot="avatar-fallback"]),
 [data-pilot-theme] [data-slot="avatar"]::after {
   border-radius: 9999px !important;
+}
+
+[data-pilot-theme] [data-variant="capsule"] > [data-slot="tabs-trigger"] {
+  border-radius: 999px !important;
+}
+
+@media (min-width: 768px) {
+  [data-pilot-theme] [data-slot="sidebar-wrapper"]:has([data-variant="inset"]) > [data-slot="sidebar-inset"] {
+    margin: 12px;
+    border: 1px solid var(--pilot-border);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+  }
 }

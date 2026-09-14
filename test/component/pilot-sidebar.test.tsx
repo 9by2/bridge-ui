@@ -43,7 +43,7 @@ test("sidebar structural slot and collapsed variant matrix", () => {
                       <UI.SidebarMenuBadge>1</UI.SidebarMenuBadge>
                       <UI.SidebarMenuSub>
                         <UI.SidebarMenuSubItem>
-                          <UI.SidebarMenuSubButton href="#child" size="sm">
+                          <UI.SidebarMenuSubButton href="#child" size="sm" isActive>
                             Child
                           </UI.SidebarMenuSubButton>
                         </UI.SidebarMenuSubItem>
@@ -59,7 +59,8 @@ test("sidebar structural slot and collapsed variant matrix", () => {
             <UI.SidebarInset>Content</UI.SidebarInset>
           </UI.SidebarProvider>
         )
-        expect(screen.getByRole("link", { name: "Child" })).toBeTruthy()
+        const child = screen.getByRole("link", { name: "Child" })
+        expect(child.hasAttribute("data-active")).toBe(true)
         fireEvent.click(screen.getByRole("button", { name: "Toggle Sidebar" }))
         unmount()
       }

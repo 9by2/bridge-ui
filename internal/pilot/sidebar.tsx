@@ -25,7 +25,15 @@ type SidebarContext = {
 }
 const Context = createContext<SidebarContext | null>(null)
 const style = stylex.create({
-  wrapper: { display: "flex", minHeight: "100svh", width: "100%" },
+  wrapper: {
+    display: "flex",
+    minHeight: "100svh",
+    width: "100%",
+    backgroundColor: {
+      default: "transparent",
+      ':has([data-variant="inset"])': token.background
+    }
+  },
   root: { display: { default: "none", "@media (min-width: 768px)": "block" }, color: token.foreground },
   static: {
     display: "flex",
@@ -68,7 +76,7 @@ const style = stylex.create({
   floating: { padding: 8, borderWidth: 0 },
   iconFloating: { width: "calc(var(--sidebar-width-icon) + 18px)" },
   inner: { display: "flex", width: "100%", height: "100%", flexDirection: "column", backgroundColor: token.background },
-  floatingInner: { borderRadius: 10, boxShadow: `0 0 0 1px ${token.border}, 0 1px 2px rgb(0 0 0 / 5%)` },
+  floatingInner: { borderRadius: 10, boxShadow: `0 0 0 1px ${token.border}, 0 8px 24px rgb(0 0 0 / 12%)` },
   mobile: { width: 288, padding: 0 },
   hidden: {
     position: "absolute",
@@ -161,9 +169,9 @@ const style = stylex.create({
       default: "transparent",
       ":hover": token.accent,
       ":active": token.accent,
-      ':is([data-active="true"])': token.accent
+      ":is([data-active])": token.accent
     },
-    fontWeight: { default: 400, ':is([data-active="true"])': 500 },
+    fontWeight: { default: 400, ":is([data-active])": 500 },
     pointerEvents: { default: "auto", ':is(:disabled, [aria-disabled="true"])': "none" },
     opacity: { default: 1, ':is(:disabled, [aria-disabled="true"])': 0.5 },
     boxShadow: { default: "none", ":focus-visible": `0 0 0 2px ${token.ring}` }
@@ -233,6 +241,7 @@ const style = stylex.create({
   },
   subButton: {
     height: 28,
+    width: "100%",
     minWidth: 0,
     translate: "-1px 0",
     textDecorationLine: "none",
@@ -359,7 +368,7 @@ export function Sidebar({
       </Sheet>
     )
   const collapsed = state === "collapsed"
-  const floating = variant !== "sidebar"
+  const floating = variant === "floating"
   return (
     <div
       data-slot="sidebar"

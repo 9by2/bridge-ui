@@ -21,7 +21,7 @@ Implementation order matters - complete top to bottom.
 
 ## Verification
 
-- [ ] Run formatter, lint, typecheck, test, coverage, catalog, browser, package, tree-shaking, and build gate.
-- [ ] Store Bun.WebView UX evidence under `.eval/0914-shell-header/`.
-- [ ] Review all specs in `spec/` against implementation.
-- [ ] Archive proposal per create-plan workflow.
+- [x] Run formatter, lint, typecheck, test, coverage, catalog, browser, package, tree-shaking, and build gate.
+- [x] Store Bun.WebView UX evidence under `.eval/0914-shell-header/`.
+- [x] Review all specs in `spec/` against implementation.
+- [x] Archive proposal per create-plan workflow.

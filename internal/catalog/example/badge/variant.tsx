@@ -14,7 +14,19 @@ function Axis({ children, label }: { readonly children: ReactNode; readonly labe
 export default function Example() {
   return (
     <Axis label="variant">
-      {(["default", "secondary", "destructive", "outline", "ghost", "link"] as const).map((variant) => (
+      {(
+        [
+          "default",
+          "secondary",
+          "destructive",
+          "warning",
+          "success",
+          "partial-success",
+          "outline",
+          "ghost",
+          "link"
+        ] as const
+      ).map((variant) => (
         <UI.Badge key={variant} variant={variant} className={variant === "secondary" ? "text-white" : undefined}>
           {variant}
         </UI.Badge>

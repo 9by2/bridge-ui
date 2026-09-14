@@ -1,7 +1,7 @@
 # Shell Header
 
 **Proposal:** `shell-header`
-**Status:** in-progress
+**Status:** completed
 **Phase:** [ADHD StyleX Bundle and Private Package](../../ADHD.md#3-stylex-bundle)
 
 ## Problem
@@ -24,9 +24,9 @@ Application shell routes need a compact sticky header inside `SidebarInset`. `Pa
 
 ## Success Criteria
 
-- [ ] Acceptance composition renders through the public package API and direct StyleX path.
-- [ ] Expanded, collapsed, wide-content, sticky, mobile, long-title, action, light, and dark behavior pass browser verification.
-- [ ] Repository quality gate passes and a Changeset prepares the next release candidate.
+- [x] Acceptance composition renders through the public package API and direct StyleX path.
+- [x] Expanded, collapsed, wide-content, sticky, mobile, long-title, action, light, and dark behavior pass browser verification.
+- [x] Repository quality gate passes and a Changeset prepares the next release candidate.
 
 ## Specs
 

@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants } from "../.
 
 afterEach(cleanup)
 test("tabs support variant helper and callback style", () => {
-  for (const variant of [null, "default", "line"] as const) {
+  for (const variant of [null, "default", "line", "capsule"] as const) {
     const { unmount } = render(
       <Tabs orientation="vertical" defaultValue="a" className={() => "root"}>
         <TabsList variant={variant} className={() => "list"}>
@@ -19,6 +19,7 @@ test("tabs support variant helper and callback style", () => {
       </Tabs>
     )
     expect(screen.getByRole("tab").className).toContain("trigger")
+    expect(screen.getByRole("tablist").getAttribute("data-variant")).toBe(variant === null ? null : variant)
     expect(tabsListVariants({ variant })).toBeTypeOf("string")
     unmount()
   }
@@ -38,4 +39,10 @@ test("tabs preserve selection and panel relationship", () => {
   expect(screen.getByRole("tab", { name: "B" }).getAttribute("aria-selected")).toBe("true")
   expect(screen.getByRole("tabpanel").textContent).toBe("Second")
   expect(tabsListVariants()).toBeTypeOf("string")
+})
+test("line tabs use a distinct list treatment", () => {
+  expect(tabsListVariants({ variant: "line" })).not.toBe(tabsListVariants({ variant: null }))
+})
+test("capsule tabs use a distinct list treatment", () => {
+  expect(tabsListVariants({ variant: "capsule" })).not.toBe(tabsListVariants({ variant: null }))
 })

@@ -117,12 +117,18 @@ const description: Record<string, string> = {
   "orientation-and-media": "Compare horizontal icon and vertical image compositions.",
   "align-and-reactions": "Compare message alignment and reaction placement.",
   "orientation-and-variant": "Compare tab styling in horizontal and vertical compositions.",
-  "side-and-variant": "Review the demonstrated sidebar side and surface configuration.",
+  "left-sidebar": "Full shell with flush navigation on the left edge.",
+  "left-floating": "Full shell with a separated floating sidebar on the left.",
+  "left-inset": "Full shell with left navigation and an inset content surface.",
+  "right-sidebar": "Full shell with flush navigation on the right edge.",
+  "right-floating": "Full shell with a separated floating sidebar on the right.",
+  "right-inset": "Full shell with right navigation and an inset content surface.",
   collapsed: "Compact title-only shell header with the desktop sidebar collapsed.",
   "long-title": "Long route title truncation with a trailing shell action.",
   "menu-button": "Compare sidebar menu button styling and size.",
-  collapsible:
-    "The documented collapse modes. This existing example labels the modes rather than demonstrating their behavior."
+  "collapsible-offcanvas": "Toggle a full shell to move its sidebar outside the viewport.",
+  "collapsible-icon": "Toggle a full shell to retain a compact icon rail.",
+  "collapsible-none": "Full shell with persistent navigation and no collapse control."
 }
 
 class PreviewBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
@@ -142,7 +148,8 @@ class PreviewBoundary extends Component<{ children: ReactNode }, { failed: boole
 function App() {
   const [route, setRoute] = useState(location.hash.slice(1) || "button/default")
   const [query, setQuery] = useState("")
-  const [dark, setDark] = useState(new URLSearchParams(location.search).get("theme") !== "light")
+  const selectedTheme = new URLSearchParams(location.search).get("theme")
+  const [dark, setDark] = useState(selectedTheme !== "light")
   const [mobile, setMobile] = useState(false)
   const [locale, setLocale] = useState("en")
   const [motion, setMotion] = useState(false)
@@ -173,14 +180,25 @@ function App() {
   }, [dark, motion, locale, name])
   if (embedded) {
     const Example = entry ? components[entry.path] : undefined
+    const fullPage = name === "shell-header" || (name === "sidebar" && example !== "menu-button")
+    const Stage = fullPage ? "div" : "main"
     return (
-      <main className={`example-stage ${name === "shell-header" ? "shell-example-stage" : ""}`}>
-        <h1 className="preview-heading">{title(name)}</h1>
-        <h2 className="preview-heading">{title(example)} example</h2>
+      <Stage className={`example-stage ${name === "shell-header" ? "shell-example-stage" : ""}`}>
+        {fullPage ? (
+          <header>
+            <h1 className="preview-heading">{title(name)}</h1>
+            <h2 className="preview-heading">{title(example)} example</h2>
+          </header>
+        ) : (
+          <>
+            <h1 className="preview-heading">{title(name)}</h1>
+            <h2 className="preview-heading">{title(example)} example</h2>
+          </>
+        )}
         <PreviewBoundary key={route}>
           <Suspense fallback={<p>Loading preview...</p>}>
             {Example ? (
-              <Theme mode={dark ? "dark" : "light"} style={{ display: "contents" }}>
+              <Theme mode={selectedTheme === "cue" ? "cue" : dark ? "dark" : "light"} style={{ display: "contents" }}>
                 <Example />
               </Theme>
             ) : (
@@ -188,7 +206,7 @@ function App() {
             )}
           </Suspense>
         </PreviewBoundary>
-      </main>
+      </Stage>
     )
   }
   const preview = (selected: string, label: string) => (

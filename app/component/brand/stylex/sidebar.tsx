@@ -25,15 +25,23 @@ type SidebarContext = {
 }
 const Context = createContext<SidebarContext | null>(null)
 const style = stylex.create({
-  wrapper: { display: "flex", minHeight: "100svh", width: "100%" },
-  root: { display: { default: "none", "@media (min-width: 768px)": "block" }, color: token.foreground },
+  wrapper: {
+    display: "flex",
+    minHeight: "100svh",
+    width: "100%",
+    backgroundColor: {
+      default: "transparent",
+      ':has([data-variant="inset"])': token.sidebar
+    }
+  },
+  root: { display: { default: "none", "@media (min-width: 768px)": "block" }, color: token.sidebarForeground },
   static: {
     display: "flex",
     height: "100%",
     width: "var(--sidebar-width)",
     flexDirection: "column",
-    backgroundColor: token.background,
-    color: token.foreground
+    backgroundColor: token.sidebar,
+    color: token.sidebarForeground
   },
   gap: {
     position: "relative",
@@ -57,7 +65,7 @@ const style = stylex.create({
     transitionProperty: "left, right, width",
     transitionDuration: "200ms",
     transitionTimingFunction: "linear",
-    borderColor: token.border,
+    borderColor: token.sidebarBorder,
     borderStyle: "solid",
     borderWidth: 0
   },
@@ -67,8 +75,11 @@ const style = stylex.create({
   rightOff: { right: "calc(var(--sidebar-width) * -1)" },
   floating: { padding: 8, borderWidth: 0 },
   iconFloating: { width: "calc(var(--sidebar-width-icon) + 18px)" },
-  inner: { display: "flex", width: "100%", height: "100%", flexDirection: "column", backgroundColor: token.background },
-  floatingInner: { borderRadius: 10, boxShadow: `0 0 0 1px ${token.border}, 0 1px 2px rgb(0 0 0 / 5%)` },
+  inner: { display: "flex", width: "100%", height: "100%", flexDirection: "column", backgroundColor: token.sidebar },
+  floatingInner: {
+    borderRadius: 10,
+    boxShadow: `0 0 0 1px ${token.sidebarBorder}, 0 8px 24px rgb(0 0 0 / 12%)`
+  },
   mobile: { width: 288, padding: 0 },
   hidden: {
     position: "absolute",
@@ -92,8 +103,8 @@ const style = stylex.create({
     backgroundColor: token.background
   },
   edge: { display: "flex", flexDirection: "column", gap: 8, padding: 8 },
-  input: { height: 32, width: "100%", backgroundColor: token.background, boxShadow: "none" },
-  separator: { marginInline: 8, width: "auto", backgroundColor: token.border },
+  input: { height: 32, width: "100%", backgroundColor: token.sidebar, boxShadow: "none" },
+  separator: { marginInline: 8, width: "auto", backgroundColor: token.sidebarBorder },
   content: {
     display: "flex",
     minHeight: 0,
@@ -123,7 +134,7 @@ const style = stylex.create({
     fontSize: 12,
     lineHeight: "16px",
     fontWeight: 500,
-    color: token.mutedForeground,
+    color: token.sidebarForeground,
     outline: "none",
     marginTop: { default: 0, [stylex.when.ancestor('[data-collapsible="icon"]')]: -32 },
     opacity: { default: 1, [stylex.when.ancestor('[data-collapsible="icon"]')]: 0 },
@@ -155,21 +166,21 @@ const style = stylex.create({
     fontFamily: "inherit",
     fontSize: 14,
     lineHeight: "20px",
-    color: token.foreground,
+    color: token.sidebarForeground,
     borderWidth: 0,
     outline: "none",
     backgroundColor: {
       default: "transparent",
-      ":hover": token.accent,
-      ":active": token.accent,
-      ':is([data-active="true"])': token.accent
+      ":hover": token.sidebarAccent,
+      ":active": token.sidebarAccent,
+      ":is([data-active])": token.sidebarAccent
     },
-    fontWeight: { default: 400, ':is([data-active="true"])': 500 },
+    fontWeight: { default: 400, ":is([data-active])": 500 },
     pointerEvents: { default: "auto", ':is(:disabled, [aria-disabled="true"])': "none" },
     opacity: { default: 1, ':is(:disabled, [aria-disabled="true"])': 0.5 },
-    boxShadow: { default: "none", ":focus-visible": `0 0 0 2px ${token.ring}` }
+    boxShadow: { default: "none", ":focus-visible": `0 0 0 2px ${token.sidebarRing}` }
   },
-  outline: { backgroundColor: token.background, boxShadow: `0 0 0 1px ${token.border}` },
+  outline: { backgroundColor: token.sidebar, boxShadow: `0 0 0 1px ${token.sidebarBorder}` },
   sm: { height: 28, fontSize: 12 },
   lg: { height: { default: 48, [stylex.when.ancestor('[data-collapsible="icon"]')]: 32 } },
   action: {
@@ -183,9 +194,9 @@ const style = stylex.create({
     justifyContent: "center",
     borderRadius: 8,
     padding: 0,
-    color: token.foreground,
+    color: token.sidebarForeground,
     borderWidth: 0,
-    backgroundColor: { default: "transparent", ":hover": token.accent },
+    backgroundColor: { default: "transparent", ":hover": token.sidebarAccent },
     outline: "none"
   },
   groupAction: { top: 14, right: 12 },
@@ -227,13 +238,14 @@ const style = stylex.create({
     gap: 4,
     borderLeftWidth: 1,
     borderLeftStyle: "solid",
-    borderLeftColor: token.border,
+    borderLeftColor: token.sidebarBorder,
     paddingInline: 10,
     paddingBlock: 2,
     listStyleType: "none"
   },
   subButton: {
     height: 28,
+    width: "100%",
     minWidth: 0,
     translate: "-1px 0",
     textDecorationLine: "none",
@@ -360,7 +372,7 @@ export function Sidebar({
       </Sheet>
     )
   const collapsed = state === "collapsed"
-  const floating = variant !== "sidebar"
+  const floating = variant === "floating"
   return (
     <div
       data-slot="sidebar"

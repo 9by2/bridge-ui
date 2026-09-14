@@ -1,6 +1,30 @@
 import * as stylex from "@stylexjs/stylex"
 
 export const token = stylex.defineVars({
+  colorScheme: "light",
+  fontBody: "'Geist Variable', aktiv-grotesk, Sarabun, sans-serif",
+  fontHeading: "'Plus Jakarta Sans Variable', aktiv-grotesk, Sarabun, sans-serif",
+  fontNumber: "InterVariable, Inter, sans-serif",
+  highlight: "oklch(0.145 0 0)",
+  highlightForeground: "oklch(1 0 0)",
+  brand: "oklch(0.8874 0.182 166.87)",
+  brandForeground: "oklch(0.145 0 0)",
+  brandAccent: "oklch(0.500137 0.29406 284.0716)",
+  brandAccentForeground: "oklch(1 0 0)",
+  warning: "oklch(0.58 0.1793 34.97)",
+  warningForeground: "oklch(1 0 0)",
+  card: "oklch(1 0 0)",
+  cardForeground: "oklch(0.145 0 0)",
+  popover: "oklch(1 0 0)",
+  popoverForeground: "oklch(0.145 0 0)",
+  sidebar: "oklch(0.985 0 0)",
+  sidebarForeground: "oklch(0.145 0 0)",
+  sidebarPrimary: "oklch(0.205 0 0)",
+  sidebarPrimaryForeground: "oklch(0.985 0 0)",
+  sidebarAccent: "oklch(0.97 0 0)",
+  sidebarAccentForeground: "oklch(0.205 0 0)",
+  sidebarBorder: "oklch(0.922 0 0)",
+  sidebarRing: "oklch(0.708 0 0)",
   accent: "oklch(0.97 0 0)",
   accentForeground: "oklch(0.205 0 0)",
   tabInactive: "oklch(0.145 0 0 / 60%)",
@@ -35,5 +59,6 @@ export const token = stylex.defineVars({
   border: "oklch(0.922 0 0)",
   input: "oklch(0.922 0 0)",
   ring: "oklch(0.708 0 0)",
-  destructive: "oklch(0.5489 0.1841 25.69)"
+  destructive: "oklch(0.5489 0.1841 25.69)",
+  destructiveForeground: "oklch(1 0 0)"
 })

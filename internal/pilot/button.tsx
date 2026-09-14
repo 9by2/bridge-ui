@@ -63,10 +63,25 @@ const style = stylex.create({
       ":focus-visible": `color-mix(in oklch, ${token.destructive}, transparent 60%)`
     },
     backgroundColor: {
-      default: `color-mix(in oklch, ${token.destructive} ${token.destructiveOpacity}, transparent)`,
-      ":hover": `color-mix(in oklch, ${token.destructive} ${token.destructiveHoverOpacity}, transparent)`
+      default: token.destructive,
+      ":hover": `color-mix(in oklch, ${token.destructive}, transparent 10%)`
     },
-    color: token.errorText
+    color: token.destructiveForeground
+  },
+  warning: {
+    boxShadow: {
+      default: "none",
+      ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.warning}, transparent 80%)`
+    },
+    borderColor: { default: "transparent", ":focus-visible": `color-mix(in oklch, ${token.warning}, transparent 60%)` },
+    backgroundColor: { default: token.warning, ":hover": `color-mix(in oklch, ${token.warning}, transparent 10%)` },
+    color: token.warningForeground
+  },
+  cta: {
+    borderRadius: 0,
+    backgroundImage: `linear-gradient(to right, ${token.brand}, ${token.brandAccent})`,
+    color: token.highlight,
+    fontFamily: token.fontHeading
   },
   link: {
     backgroundColor: "transparent",
@@ -104,7 +119,7 @@ const multiSelectStyle = stylex.create({
     paddingBlock: 6
   }
 })
-type Variant = "default" | "outline" | "secondary" | "ghost" | "destructive" | "link"
+type Variant = "default" | "outline" | "secondary" | "ghost" | "destructive" | "warning" | "cta" | "link"
 type Size = keyof typeof sizeStyle
 
 export function buttonVariants({
