@@ -58,9 +58,9 @@ const style = stylex.create({
   content: { minWidth: 0 }
 })
 
-export function Page({ className, ...props }: ComponentProps<"main">) {
+export function Page({ className, ...props }: ComponentProps<"div">) {
   return (
-    <main
+    <div
       data-slot="page"
       {...props}
       className={[stylex.props(stylex.defaultMarker(), style.root).className, className].filter(Boolean).join(" ")}

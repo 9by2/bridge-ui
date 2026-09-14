@@ -5,6 +5,7 @@
 Purpose: define the reusable page presentation contract.
 
 - Export `Page`, `PageBreadcrumb`, `PageHeader`, `PageHeading`, `PageTitle`, `PageDescription`, `PageAction`, and `PageContent`.
+- `Page` is a neutral `div` layout root; the consumer route owns the document's single top-level `main` landmark.
 - Every slot forwards native element props and React ref.
 - Breadcrumb, description, and action are optional without reserved empty space.
 - Header aligns heading left and action right on wide viewport.

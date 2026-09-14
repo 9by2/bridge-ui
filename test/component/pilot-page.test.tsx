@@ -16,7 +16,7 @@ import {
 afterEach(cleanup)
 
 test("page retains semantic slot, native prop, ref and optional composition", () => {
-  const ref = createRef<HTMLElement>()
+  const ref = createRef<HTMLDivElement>()
   const { rerender } = render(
     <Page ref={ref} aria-label="Account page" className="caller">
       <PageHeader>
@@ -28,7 +28,9 @@ test("page retains semantic slot, native prop, ref and optional composition", ()
     </Page>
   )
 
-  expect(ref.current).toBe(screen.getByRole("main", { name: "Account page" }))
+  expect(ref.current).toBe(document.querySelector('[data-slot="page"]'))
+  expect(ref.current?.tagName).toBe("DIV")
+  expect(screen.queryByRole("main")).toBeNull()
   expect(ref.current?.className).toContain("caller")
   expect(screen.getByRole("heading", { level: 1 }).getAttribute("data-slot")).toBe("page-title")
   expect(screen.queryByText("Breadcrumb")).toBeNull()
