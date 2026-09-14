@@ -119,12 +119,12 @@ export default function Example() {
             </UI.Button>
           </UI.ShellHeaderAction>
         </UI.ShellHeader>
-        <main {...stylex.props(style.content)}>
+        <div {...stylex.props(style.content)}>
           <section {...stylex.props(style.card)}>
             <h2>Project overview</h2>
             <p>The shell header remains visible while this route content scrolls.</p>
           </section>
-        </main>
+        </div>
       </UI.SidebarInset>
     </UI.SidebarProvider>
   )
