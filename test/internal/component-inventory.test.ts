@@ -64,12 +64,22 @@ test("inventory command verifies the checked-in component matrix", () => {
   })
   expect(result.exitCode).toBe(0)
   const report = JSON.parse(result.stdout.toString())
-  expect(report.count).toBe(70)
+  expect(report.count).toBe(71)
   expect(report.modules["shadcn/button"]).toEqual([
     { name: "Button", kind: "value" },
     { name: "buttonVariants", kind: "value" }
   ])
   expect(report.modules["brand/ts-chart"]).toEqual([{ name: "TsChart", kind: "value" }])
+  expect(report.modules["brand/page"]).toEqual([
+    { name: "Page", kind: "value" },
+    { name: "PageAction", kind: "value" },
+    { name: "PageBreadcrumb", kind: "value" },
+    { name: "PageContent", kind: "value" },
+    { name: "PageDescription", kind: "value" },
+    { name: "PageHeader", kind: "value" },
+    { name: "PageHeading", kind: "value" },
+    { name: "PageTitle", kind: "value" }
+  ])
   expect(report.modules["shadcn/direction"]).toEqual([
     { name: "DirectionProvider", kind: "value" },
     { name: "useDirection", kind: "value" }
