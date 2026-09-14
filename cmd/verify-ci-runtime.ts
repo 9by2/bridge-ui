@@ -8,7 +8,7 @@ const commandVersion = (command: string[]) => {
 
 assert.equal(Bun.version, "1.4.1")
 assert.equal(commandVersion(["node", "--version"]), "v22.22.0")
-assert.equal(process.arch, "arm64")
+assert.equal(["arm64", "x64"].includes(process.arch), true)
 assert.equal(process.env.PLAYWRIGHT_BROWSERS_PATH, "/ms-playwright")
 assert.equal(await Bun.file("/ms-playwright/chromium-1243/INSTALLATION_COMPLETE").exists(), true)
 assert.equal(await Bun.file("/ms-playwright/chromium_headless_shell-1243/INSTALLATION_COMPLETE").exists(), true)

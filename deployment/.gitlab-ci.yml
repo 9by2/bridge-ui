@@ -12,7 +12,7 @@ default:
     - bun cmd/verify-ci-runtime.ts
 
 variables:
-  CATALOG_IMAGE: "$CI_REGISTRY_IMAGE/ci/catalog:playwright-1.63.0-bun-1.4.1-node-22.22.0"
+  CATALOG_IMAGE: "registry.fountain.sellsuki.com/service/bridge-ui-catalog-runner@sha256:887a2a4f53dd81fb6cada6384e5075e18a938ff07999d65a5115378e1a74ef8c"
 
 stages:
   - verify
