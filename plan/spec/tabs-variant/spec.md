@@ -15,6 +15,7 @@ Tabs exposes `default`, `line`, and `capsule` list presentation without changing
 - Line list has a neutral full-width baseline and primary active underline.
 - Capsule list is transparent and content-width.
 - Capsule trigger is borderless and fully rounded with balanced padding.
+- Badge directly inside a capsule trigger is fully rounded.
 - Only the active capsule trigger has a background.
 - Direct trigger icon is 16px independent of label text size.
 - Every variant catalog page demonstrates plain, count Badge, and icon/status label composition.

@@ -308,7 +308,8 @@
   border-radius: 9999px !important;
 }
 
-[data-pilot-theme] [data-variant="capsule"] > [data-slot="tabs-trigger"] {
+[data-pilot-theme] [data-variant="capsule"] > [data-slot="tabs-trigger"],
+[data-pilot-theme] [data-variant="capsule"] > [data-slot="tabs-trigger"] > [data-slot="badge"] {
   border-radius: 999px !important;
 }
 

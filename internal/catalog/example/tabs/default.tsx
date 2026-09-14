@@ -12,6 +12,7 @@ export default function Example() {
           <UI.TabsTrigger value="media">Media</UI.TabsTrigger>
         </UI.TabsList>
         <UI.TabsContent value="assets">Asset content</UI.TabsContent>
+        <UI.TabsContent value="layout">Layout pack content</UI.TabsContent>
       </UI.Tabs>
 
       <UI.Tabs defaultValue="colors">
