@@ -29,3 +29,9 @@
 **GIVEN** StyleX 0.19 media-query ordering fails on the complete multi-entry graph
 **WHEN** Bun or Vite compiles promoted source
 **THEN** set `enableMediaQueryOrder: false` consistently and rely on deterministic CSS layer/source order already verified by computed-style tests.
+
+### DEC-006: Square Corner Invariant
+
+**GIVEN** every Bridge UI component must use `rounded-none`
+**WHEN** a package component or its pseudo-element renders a `data-slot`
+**THEN** public component CSS forces `border-radius: 0` for the slot, every descendant and their `::before`/`::after` inside the package Theme boundary, including portaled content. Component-specific radius variants remain API-compatible but have no visual effect.

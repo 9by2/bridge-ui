@@ -290,3 +290,10 @@
 .pilot-button-sm:has([data-icon="inline-end"]) {
   padding-right: 6px;
 }
+
+/* DEC-019: Bridge UI uses square corners across every rendered component slot. */
+:where([data-pilot-theme] [data-slot], [data-pilot-theme] [data-slot] *),
+:where([data-pilot-theme] [data-slot], [data-pilot-theme] [data-slot] *)::before,
+:where([data-pilot-theme] [data-slot], [data-pilot-theme] [data-slot] *)::after {
+  border-radius: 0 !important;
+}
