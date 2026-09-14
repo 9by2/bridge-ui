@@ -1,5 +1,15 @@
 # @bridge/ui
 
+## 0.2.0-rc.3
+
+### Minor Changes
+
+- 2ecbbae: Add responsive StyleX Page layout slot for breadcrumb, heading, description, action, and content composition.
+
+### Patch Changes
+
+- 5adb4e7: Use square corners for every component slot and component pseudo-element.
+
 ## 0.2.0-rc.2
 
 ### Minor Changes
