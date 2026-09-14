@@ -1,5 +1,20 @@
 # @bridge/ui
 
+## 0.2.0
+
+### Minor Changes
+
+- 2ecbbae: Add responsive StyleX Page layout slot for breadcrumb, heading, description, action, and content composition.
+- 5665ff9: Promote the complete StyleX component implementation to public root, direct, generated-compatible and brand-compatible package paths. Package precompiled component CSS and the scoped engine adapter without requiring consumer Tailwind or StyleX compilation.
+
+### Patch Changes
+
+- 7150c06: Emit production-compatible JSX so package component renders with production React. Execute packed SSR output during release verification instead of checking compilation alone.
+- b1c984e: Automate reviewed Changesets release MR publication for RC and stable version on protected main, with isolated registry verification and post-publication Git tag creation.
+- 5665ff9: Correct light-theme secondary foreground contrast against its dark background. Preserve dark-theme styling and generated component behavior.
+- 5adb4e7: Use square corners for every component slot and component pseudo-element.
+- 27de364: Serialize StyleX Bun transform callbacks so concurrent stylesheet writes cannot drop compiled token or component CSS. Preserve the official compiler and precompiled consumer contract.
+
 ## 0.2.0-rc.3
 
 ### Minor Changes
