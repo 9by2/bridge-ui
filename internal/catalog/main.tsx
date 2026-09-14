@@ -118,6 +118,8 @@ const description: Record<string, string> = {
   "align-and-reactions": "Compare message alignment and reaction placement.",
   "orientation-and-variant": "Compare tab styling in horizontal and vertical compositions.",
   "side-and-variant": "Review the demonstrated sidebar side and surface configuration.",
+  collapsed: "Compact title-only shell header with the desktop sidebar collapsed.",
+  "long-title": "Long route title truncation with a trailing shell action.",
   "menu-button": "Compare sidebar menu button styling and size.",
   collapsible:
     "The documented collapse modes. This existing example labels the modes rather than demonstrating their behavior."
@@ -172,7 +174,7 @@ function App() {
   if (embedded) {
     const Example = entry ? components[entry.path] : undefined
     return (
-      <main className="example-stage">
+      <main className={`example-stage ${name === "shell-header" ? "shell-example-stage" : ""}`}>
         <h1 className="preview-heading">{title(name)}</h1>
         <h2 className="preview-heading">{title(example)} example</h2>
         <PreviewBoundary key={route}>

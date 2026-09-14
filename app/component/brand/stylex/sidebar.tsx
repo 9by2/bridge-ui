@@ -86,6 +86,7 @@ const style = stylex.create({
     position: "relative",
     display: "flex",
     width: "100%",
+    minWidth: 0,
     flex: 1,
     flexDirection: "column",
     backgroundColor: token.background

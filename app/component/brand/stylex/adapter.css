@@ -297,3 +297,8 @@
 :where([data-pilot-theme] [data-slot], [data-pilot-theme] [data-slot] *)::after {
   border-radius: 0 !important;
 }
+
+[data-pilot-theme] :is([data-slot="avatar"], [data-slot="avatar-image"], [data-slot="avatar-fallback"]),
+[data-pilot-theme] [data-slot="avatar"]::after {
+  border-radius: 9999px !important;
+}

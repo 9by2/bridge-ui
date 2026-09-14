@@ -7,7 +7,17 @@ test("catalog exposes a real example for every package module", async () => {
     .sort()
   const examples = [...new Bun.Glob("internal/catalog/example/*/default.tsx").scanSync()]
   expect(examples.map((file) => path.basename(path.dirname(file))).sort()).toEqual(
-    [...names, "ts-chart", "drop-area", "upload-preview", "upload-viewer", "upload-list", "image-crop", "page"].sort()
+    [
+      ...names,
+      "ts-chart",
+      "drop-area",
+      "upload-preview",
+      "upload-viewer",
+      "upload-list",
+      "image-crop",
+      "page",
+      "shell-header"
+    ].sort()
   )
   for (const file of examples) {
     const source = await Bun.file(file).text()

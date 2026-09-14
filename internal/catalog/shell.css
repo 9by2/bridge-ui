@@ -320,6 +320,10 @@
 .example-stage > [data-pilot-theme] > * {
   max-width: 100%;
 }
+.shell-example-stage {
+  display: block;
+  padding: 0;
+}
 .preview-setting {
   display: flex;
   align-items: center;
