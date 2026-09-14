@@ -3,6 +3,8 @@ import { expect, test } from "bun:test"
 test("promoted package output is precompiled and includes scoped adapter", async () => {
   const css = await Bun.file("dist/style.css").text()
   expect(css).toContain('[data-pilot-theme] [data-slot="badge"] svg')
+  expect(css).toContain("[data-pilot-theme] [data-slot] *)::after")
+  expect(css).toContain("border-radius: 0 !important")
   expect(css).not.toContain('@import "tailwindcss"')
   expect(css).not.toMatch(/@import\s+["']@fontsource/)
   expect(css).toContain("@font-face")

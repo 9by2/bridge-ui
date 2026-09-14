@@ -116,6 +116,8 @@ Other generated-compatible and brand entry remains available as `@bridge/ui/comp
 
 `bun catalog:test` builds and serves an isolated static catalog on port 6007. Long pages mount nearby preview only; leaving a preview resets its transient state. All example sections and source remain inline.
 
+Catalog verification uses one browser worker when `CI` is set and four locally. Shared runner execution must not multiply Chromium load against an unknown CPU budget. The assertion deadline remains five seconds with no retry; use `CI=true bun catalog:test` to reproduce the CI schedule locally. List output and `playwright-report/` retain the case duration and review index alongside failure traces.
+
 Private `internal/catalog/preview.tsx` owns creation/destruction of nearby iframe; offscreen placeholder has no browsing context. Private `source.tsx` fetches raw source only on disclosure. This catalog lifecycle does not affect application-owned TsChart state or force viewport resets on package consumers.
 
 The complete StyleX implementation covers all 70 component modules and all 69 catalog families. Public root/direct/generated-compatible paths now resolve owned StyleX source, with Direction and TsChart retaining documented identity. Validation includes 100% owned runtime coverage, slot/state/geometry parity, reduced motion, RTL, open-overlay Axe, adapter isolation, packed package and 206 chart cases. Publication and consumer migration remain separate gates.

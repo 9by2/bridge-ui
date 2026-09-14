@@ -9,6 +9,7 @@
 - [x] Run full local validation sequence: source, runtime/owned coverage, catalog, visual, package, client/SSR, tree-shaking and build.
 - [x] Verify all 16 Recharts and 190 TsChart catalog cases; real mark attachment, tooltip/legend and resize evidence pass where applicable; mixed-v2 negative fixture remains preserved.
 - [x] Complete hidden focus-sentinel keyboard/manual DOM review through `menu-focus.spec.ts` and open Axe sweep.
+- [x] Enforce and verify square corners for every rendered component slot and pseudo-element in light/dark direct and portal usage.
 - [ ] Merge feature through reviewed MR; let release automation calculate the minor RC.
 - [ ] Install exact registry RC in Bridge Web and rerun unchanged bounded fixture plus positive matching-chart probe.
 - [ ] Review every ADHD foundation gate before approving Bridge Web migration or stable publication.
