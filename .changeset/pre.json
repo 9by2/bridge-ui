@@ -5,9 +5,11 @@
     "@bridge/ui": "0.1.0"
   },
   "changesets": [
+    "friendly-pages-flow",
     "production-jsx",
     "release-mr-flow",
     "secondary-contrast",
+    "square-component-corners",
     "stylex-css-collection",
     "stylex-private-candidate"
   ]
