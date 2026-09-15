@@ -1,5 +1,13 @@
 # @bridge/ui
 
+## 0.3.0-rc.0
+
+### Minor Changes
+
+- e04b32a: Add an explicit Cue theme with branded, warning, destructive, status, typography, surface, and native browser style alignment.
+- e04b32a: Refine Tabs with borderless default trigger, primary line navigation, and active-only capsule option.
+- 697b9bb: Add compact sticky shell header primitives, correct SidebarInset shrinking beside a collapsible sidebar, and keep Avatar surfaces circular.
+
 ## 0.2.0
 
 ### Minor Changes
