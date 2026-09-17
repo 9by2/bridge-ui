@@ -1,5 +1,11 @@
 # @bridge/ui
 
+## 0.4.0
+
+### Minor Changes
+
+- 4310bd0: Add reusable StyleX data state, table frame, timeline step, and page toolbar presentation contracts.
+
 ## 0.3.0
 
 ### Minor Changes
