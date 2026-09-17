@@ -25,6 +25,10 @@ export default function Example() {
           <UI.Button variant="outline">Back to account</UI.Button>
         </UI.PageAction>
       </UI.PageHeader>
+      <UI.PageToolbar aria-label="Account filter">
+        <UI.Button variant="outline">All activity</UI.Button>
+        <UI.Button variant="ghost">Open access</UI.Button>
+      </UI.PageToolbar>
       <UI.PageContent>
         <UI.Card>
           <UI.CardHeader>

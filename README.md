@@ -114,6 +114,15 @@ import "@bridge/ui/style.css"
 
 Other generated-compatible and brand entry remains available as `@bridge/ui/component/shadcn/<name>` or `@bridge/ui/component/brand/<name>`, but resolves to owned StyleX source where presentation was promoted. `@bridge/ui/theme` exposes the scoped `Theme`. CSS is shared, not per-component tree-shaken. Private registry publication remains unfinished.
 
+Reusable application-neutral presentation is available from the root or stable direct entry:
+
+- `@bridge/ui/page` provides page breadcrumb, heading, action, toolbar, and content slot.
+- `@bridge/ui/data-state` provides caller-controlled neutral, loading, error, permission, and disabled state presentation. Applications own copy, icon, retry callback, and side effect.
+- `@bridge/ui/table-frame` contains a caller-owned semantic table and optional mobile hint without owning column or row behavior.
+- `@bridge/ui/timeline-step` provides vertical and horizontal progress presentation with caller-owned icon and copy.
+
+Bridge Web density policy, route integration, authorization, query state, translated default copy, and workflow action remain consumer responsibilities.
+
 `bun catalog:test` builds and serves an isolated static catalog on port 6007. Long pages mount nearby preview only; leaving a preview resets its transient state. All example sections and source remain inline.
 
 Catalog verification uses one Playwright browser worker when `CI` is set and four locally. Shared runner execution must not multiply Chromium load against an unknown CPU budget. The assertion deadline remains five seconds with no retry; use `CI=true bun catalog:test` to reproduce the CI schedule locally. List output and `playwright-report/` retain the case duration and review index alongside failure traces. Bun.WebView remains useful for targeted render, computed-style and injected Axe proof, but does not replace the required Playwright gate covering screenshot, upload, permission, focus, keyboard, memory and replayable trace contracts.

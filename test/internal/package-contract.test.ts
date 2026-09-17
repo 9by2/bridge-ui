@@ -53,6 +53,24 @@ describe("package contract", () => {
     })
   })
 
+  test("reusable presentation is available from root and stable direct paths", async () => {
+    const entry = await Bun.file(path.join(root, "app/index.ts")).text()
+    const manifest = await Bun.file(path.join(root, "package.json")).json()
+
+    for (const name of ["data-state", "table-frame", "timeline-step"]) {
+      expect(entry).toContain(`export * from "./component/brand/stylex/${name}"`)
+      expect(manifest.exports[`./${name}`]).toEqual({
+        types: `./dist/component/brand/stylex/${name}.d.ts`,
+        import: `./dist/component/brand/stylex/${name}.js`
+      })
+    }
+    expect(entry).toContain('export * from "./component/brand/stylex/page"')
+    expect(manifest.exports["./page"]).toEqual({
+      types: "./dist/component/brand/stylex/page.d.ts",
+      import: "./dist/component/brand/stylex/page.js"
+    })
+  })
+
   test("built root and direct entry preserve component and provider identity", async () => {
     const entry = await import(path.join(root, "dist/index.js"))
     for (const file of new Bun.Glob("dist/component/brand/stylex/*.js").scanSync({ cwd: root })) {

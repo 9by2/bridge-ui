@@ -64,7 +64,7 @@ test("inventory command verifies the checked-in component matrix", () => {
   })
   expect(result.exitCode).toBe(0)
   const report = JSON.parse(result.stdout.toString())
-  expect(report.count).toBe(71)
+  expect(report.count).toBe(74)
   expect(report.modules["shadcn/button"]).toEqual([
     { name: "Button", kind: "value" },
     { name: "buttonVariants", kind: "value" }
@@ -78,7 +78,8 @@ test("inventory command verifies the checked-in component matrix", () => {
     { name: "PageDescription", kind: "value" },
     { name: "PageHeader", kind: "value" },
     { name: "PageHeading", kind: "value" },
-    { name: "PageTitle", kind: "value" }
+    { name: "PageTitle", kind: "value" },
+    { name: "PageToolbar", kind: "value" }
   ])
   expect(report.modules["shadcn/direction"]).toEqual([
     { name: "DirectionProvider", kind: "value" },

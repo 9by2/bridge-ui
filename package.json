@@ -28,6 +28,22 @@
       "types": "./dist/component/brand/stylex/button.d.ts",
       "import": "./dist/component/brand/stylex/button.js"
     },
+    "./data-state": {
+      "types": "./dist/component/brand/stylex/data-state.d.ts",
+      "import": "./dist/component/brand/stylex/data-state.js"
+    },
+    "./page": {
+      "types": "./dist/component/brand/stylex/page.d.ts",
+      "import": "./dist/component/brand/stylex/page.js"
+    },
+    "./table-frame": {
+      "types": "./dist/component/brand/stylex/table-frame.d.ts",
+      "import": "./dist/component/brand/stylex/table-frame.js"
+    },
+    "./timeline-step": {
+      "types": "./dist/component/brand/stylex/timeline-step.d.ts",
+      "import": "./dist/component/brand/stylex/timeline-step.js"
+    },
     "./ts-chart": {
       "types": "./dist/component/brand/ts-chart.d.ts",
       "import": "./dist/component/brand/ts-chart.js"

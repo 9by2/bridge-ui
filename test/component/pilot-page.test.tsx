@@ -10,6 +10,7 @@ import {
   PageDescription,
   PageHeader,
   PageHeading,
+  PageToolbar,
   PageTitle
 } from "../../app/component/brand/stylex/page"
 
@@ -48,6 +49,7 @@ test("page retains semantic slot, native prop, ref and optional composition", ()
           <button>Action</button>
         </PageAction>
       </PageHeader>
+      <PageToolbar aria-label="Filter">Toolbar</PageToolbar>
       <PageContent>Body</PageContent>
     </Page>
   )
@@ -60,6 +62,7 @@ test("page retains semantic slot, native prop, ref and optional composition", ()
     "page-title",
     "page-description",
     "page-action",
+    "page-toolbar",
     "page-content"
   ])
     expect(document.querySelector(`[data-slot="${slot}"]`)).not.toBeNull()

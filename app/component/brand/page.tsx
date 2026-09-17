@@ -6,5 +6,6 @@ export {
   PageDescription,
   PageHeader,
   PageHeading,
+  PageToolbar,
   PageTitle
 } from "./stylex/page"

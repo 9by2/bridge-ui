@@ -55,6 +55,20 @@ const style = stylex.create({
     width: { default: "auto", "@media (max-width: 640px)": "100%" },
     alignItems: "center"
   },
+  toolbar: {
+    boxSizing: "border-box",
+    display: "flex",
+    width: "100%",
+    minWidth: 0,
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: 8,
+    borderBottomWidth: 1,
+    borderBottomStyle: "solid",
+    borderBottomColor: token.border,
+    paddingBlock: 8,
+    paddingInline: { default: 24, "@media (max-width: 640px)": 16 }
+  },
   content: { minWidth: 0 }
 })
 
@@ -124,6 +138,16 @@ export function PageAction({ className, ...props }: ComponentProps<"div">) {
       data-slot="page-action"
       {...props}
       className={[stylex.props(style.action).className, className].filter(Boolean).join(" ")}
+    />
+  )
+}
+
+export function PageToolbar({ className, ...props }: ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="page-toolbar"
+      {...props}
+      className={[stylex.props(style.toolbar).className, className].filter(Boolean).join(" ")}
     />
   )
 }

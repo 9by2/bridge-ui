@@ -16,6 +16,9 @@ test("catalog exposes a real example for every package module", async () => {
       "upload-list",
       "image-crop",
       "page",
+      "data-state",
+      "table-frame",
+      "timeline-step",
       "shell-header"
     ].sort()
   )
