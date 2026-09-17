@@ -46,3 +46,20 @@ test("line tabs use a distinct list treatment", () => {
 test("capsule tabs use a distinct list treatment", () => {
   expect(tabsListVariants({ variant: "capsule" })).not.toBe(tabsListVariants({ variant: null }))
 })
+
+test("link tabs derive their active presentation from the list", () => {
+  render(
+    <Tabs defaultValue="one">
+      <TabsList variant="link" aria-label="Section">
+        <TabsTrigger value="one">Overview</TabsTrigger>
+        <TabsTrigger value="two">Activity</TabsTrigger>
+      </TabsList>
+      <TabsContent value="one">Overview panel</TabsContent>
+      <TabsContent value="two">Activity panel</TabsContent>
+    </Tabs>
+  )
+  expect(screen.getByRole("tablist").dataset.variant).toBe("link")
+  expect(tabsListVariants({ variant: "link" })).not.toBe(tabsListVariants({ variant: "default" }))
+  fireEvent.click(screen.getByRole("tab", { name: "Activity" }))
+  expect(screen.getByRole("tab", { name: "Activity" }).getAttribute("aria-selected")).toBe("true")
+})

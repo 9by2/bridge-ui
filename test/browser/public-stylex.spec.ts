@@ -11,23 +11,20 @@ test("regular catalog uses promoted public StyleX source", async ({ page }) => {
   await expect(trigger).toBeFocused()
 })
 
-test("every public component slot uses square corners", async ({ page }) => {
+test("component slots use Cue's own recipe radius, not a forced global reset (DEC-006, DEC-008)", async ({ page }) => {
   for (const theme of ["light", "dark"]) {
+    // Rounded-by-default Cue recipe: Button default, Card, Input all carry a real radius.
     await page.goto(`/?preview&theme=${theme}#button/default`)
-    const failures = await page
-      .locator("[data-pilot-theme] [data-slot], [data-pilot-theme] [data-slot] *")
-      .evaluateAll((nodes) =>
-        nodes.flatMap((node) => {
-          const radius = getComputedStyle(node).borderRadius
-          const before = getComputedStyle(node, "::before").borderRadius
-          const after = getComputedStyle(node, "::after").borderRadius
-          return radius === "0px" && before === "0px" && after === "0px"
-            ? []
-            : [{ slot: (node as HTMLElement).dataset.slot, radius, before, after }]
-        })
-      )
-    expect(failures).toEqual([])
+    const defaultButton = page.locator('[data-slot="button"]').first()
+    await expect(defaultButton).toBeVisible()
+    expect(await defaultButton.evaluate((node) => getComputedStyle(node).borderRadius)).not.toBe("0px")
 
+    await page.goto(`/?preview&theme=${theme}#card/default`)
+    const card = page.locator('[data-slot="card"]').first()
+    await expect(card).toBeVisible()
+    expect(await card.evaluate((node) => getComputedStyle(node).borderRadius)).not.toBe("0px")
+
+    // A package consumer's own host content must never be forcibly squared by package CSS.
     await page.evaluate(() => {
       const host = document.createElement("div")
       host.dataset.slot = "host-app"
@@ -35,18 +32,16 @@ test("every public component slot uses square corners", async ({ page }) => {
       document.body.append(host)
     })
     await expect(page.locator('[data-slot="host-app"]')).toHaveCSS("border-radius", "12px")
+    await page.evaluate(() => document.querySelector('[data-slot="host-app"]')?.remove())
 
-    await page.goto(`/?preview&theme=${theme}#dialog/default`)
-    await page.getByRole("button", { name: "Open dialog", exact: true }).click()
-    await expect(page.getByRole("dialog")).toBeVisible()
-    expect(
-      await page
-        .locator("[data-pilot-theme] [data-slot], [data-pilot-theme] [data-slot] *")
-        .evaluateAll((nodes) =>
-          nodes
-            .filter((node) => getComputedStyle(node).borderRadius !== "0px")
-            .map((node) => (node as HTMLElement).dataset.slot)
-        )
-    ).toEqual([])
+    // Explicit Cue exceptions remain square/pill via their own component declaration.
+    await page.goto(`/?preview&theme=${theme}#button/variant`)
+    const cta = page.getByRole("button", { name: "cta" })
+    await expect(cta).toHaveCSS("border-radius", "0px")
+
+    await page.goto(`/?preview&theme=${theme}#avatar/default`)
+    const avatar = page.locator('[data-slot="avatar"]').first()
+    await expect(avatar).toBeVisible()
+    await expect(avatar).toHaveCSS("border-radius", "9999px")
   }
 })

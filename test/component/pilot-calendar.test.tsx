@@ -37,3 +37,27 @@ test("calendar retains engine date selection and navigation", () => {
   fireEvent.click(screen.getByRole("button", { name: /next month/i }))
   expect(screen.getByText("October 2026")).toBeTruthy()
 })
+
+test("calendar uses stable ISO day and avoids stealing unrelated focus", () => {
+  const day = new CalendarDay(new Date(2026, 8, 15), new Date(2026, 8, 1))
+  const { rerender } = render(
+    <>
+      <button type="button">Unrelated control</button>
+      <CalendarDayButton day={day} modifiers={{ focused: false }} aria-label="September day">
+        15
+      </CalendarDayButton>
+    </>
+  )
+  const unrelated = screen.getByRole("button", { name: "Unrelated control" })
+  unrelated.focus()
+  rerender(
+    <>
+      <button type="button">Unrelated control</button>
+      <CalendarDayButton day={day} modifiers={{ focused: true }} aria-label="September day">
+        15
+      </CalendarDayButton>
+    </>
+  )
+  expect(screen.getByRole("button", { name: "September day" }).dataset.day).toBe("2026-09-15")
+  expect(document.activeElement).toBe(unrelated)
+})

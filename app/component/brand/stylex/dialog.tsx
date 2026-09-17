@@ -30,16 +30,17 @@ const style = stylex.create({
     animationDuration: { default: "100ms", "@media (prefers-reduced-motion: reduce)": "0s" },
     animationTimingFunction: "ease",
     position: "fixed",
-    top: "50%",
+    bottom: 16,
     left: "50%",
-    transform: "translate(-50%, -50%)",
+    transform: "translateX(-50%)",
+    "@media (min-width: 640px)": { top: "50%", bottom: "auto", transform: "translate(-50%, -50%)" },
     zIndex: 50,
     display: "grid",
     boxSizing: "border-box",
     width: "100%",
     maxWidth: { default: "calc(100% - 2rem)", "@media (min-width: 640px)": "24rem" },
     gap: 16,
-    borderRadius: 14,
+    borderRadius: token.shapeSurface,
     backgroundColor: token.background,
     color: token.foreground,
     padding: 16,
@@ -48,7 +49,23 @@ const style = stylex.create({
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%)`,
     outline: "none"
   },
-  close: { position: "absolute", top: 8, right: 8 },
+  close: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: token.border,
+    borderRadius: token.shapePill
+  },
+  icon: {
+    display: "flex",
+    width: 40,
+    aspectRatio: "1",
+    alignItems: "center",
+    justifyContent: "center",
+    color: token.highlight
+  },
   header: { display: "flex", flexDirection: "column", gap: 8 },
   footer: {
     boxSizing: "border-box",
@@ -58,8 +75,8 @@ const style = stylex.create({
     gap: 8,
     marginInline: -16,
     marginBottom: -16,
-    borderBottomLeftRadius: 14,
-    borderBottomRightRadius: 14,
+    borderBottomLeftRadius: token.shapeSurface,
+    borderBottomRightRadius: token.shapeSurface,
     borderTopWidth: 1,
     borderTopStyle: "solid",
     borderTopColor: token.border,
@@ -105,8 +122,9 @@ export function DialogContent({
   className,
   children,
   showCloseButton = true,
+  closeLabel,
   ...props
-}: Primitive.Popup.Props & { showCloseButton?: boolean }) {
+}: Primitive.Popup.Props & { showCloseButton?: boolean; closeLabel?: string }) {
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -126,7 +144,7 @@ export function DialogContent({
           <Primitive.Close
             data-slot="dialog-close"
             render={<Button variant="ghost" size="icon-sm" className={stylex.props(style.close).className} />}
-            aria-label="Close">
+            aria-label={closeLabel ?? "dialog-close"}>
             <svg
               width="16"
               height="16"
@@ -156,15 +174,18 @@ export function DialogFooter({
   className,
   children,
   showCloseButton = false,
+  closeLabel,
   ...props
-}: ComponentProps<"div"> & { showCloseButton?: boolean }) {
+}: ComponentProps<"div"> & { showCloseButton?: boolean; closeLabel?: string }) {
   return (
     <div
       data-slot="dialog-footer"
       {...props}
       className={[stylex.props(style.footer).className, className].filter(Boolean).join(" ")}>
       {children}
-      {showCloseButton && <DialogClose render={<Button variant="outline" />}>Close</DialogClose>}
+      {showCloseButton && (
+        <DialogClose render={<Button variant="outline" />}>{closeLabel ?? "dialog-close"}</DialogClose>
+      )}
     </div>
   )
 }
@@ -190,5 +211,16 @@ export function DialogDescription({ className, ...props }: Primitive.Description
         typeof className === "function" ? (state) => `${base} ${className(state)}` : `${base} ${className ?? ""}`
       }
     />
+  )
+}
+
+export function DialogIcon({ className, children, ...props }: ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="dialog-icon"
+      {...props}
+      className={[stylex.props(style.icon).className, className].filter(Boolean).join(" ")}>
+      {children}
+    </div>
   )
 }

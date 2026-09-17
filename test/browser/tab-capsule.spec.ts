@@ -14,5 +14,7 @@ test("capsule tab fills only the active trigger", async ({ page }) => {
   await expect(active).not.toHaveCSS("background-color", "rgba(0, 0, 0, 0)")
   await expect(inactive).toHaveCSS("background-color", "rgba(0, 0, 0, 0)")
   await expect(inactive).toHaveCSS("border-width", "0px")
-  await expect(badge).toHaveCSS("border-radius", "999px")
+  // Badge self-declares its own pill radius (26px); at its 20px height that already
+  // clips to a fully rounded pill, so no capsule-context override is required.
+  await expect(badge).toHaveCSS("border-radius", "26px")
 })

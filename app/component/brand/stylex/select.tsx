@@ -49,6 +49,16 @@ const style = stylex.create({
     height: 32
   },
   small: { height: 28, borderRadius: 8 },
+  unstyled: {
+    width: "fit-content",
+    height: "auto",
+    gap: 6,
+    borderWidth: 0,
+    borderRadius: 0,
+    backgroundColor: "transparent",
+    padding: 0,
+    boxShadow: "none"
+  },
   invalid: {
     borderColor: token.invalidBorder,
     boxShadow: `0 0 0 3px color-mix(in oklch, ${token.destructive} ${token.errorRingOpacity}, transparent)`
@@ -153,19 +163,21 @@ export function SelectValue({ className, ...props }: Primitive.Value.Props) {
 export function SelectTrigger({
   className,
   size = "default",
+  appearance = "default",
   children,
   ...props
-}: Primitive.Trigger.Props & { size?: "default" | "sm" }) {
+}: Primitive.Trigger.Props & { size?: "default" | "sm"; appearance?: "default" | "unstyled" }) {
   return (
     <Primitive.Trigger
       data-slot="select-trigger"
       data-size={size}
+      data-appearance={appearance}
       {...props}
       className={(state) =>
         [
           stylex.props(
-            style.trigger,
-            size === "sm" && style.small,
+            appearance === "unstyled" ? style.unstyled : style.trigger,
+            appearance === "default" && size === "sm" && style.small,
             (props["aria-invalid"] === true || props["aria-invalid"] === "true") && style.invalid
           ).className,
           typeof className === "function" ? className(state) : className

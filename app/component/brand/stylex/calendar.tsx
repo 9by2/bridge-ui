@@ -237,12 +237,13 @@ export function CalendarDayButton({
 }: ComponentProps<typeof DayButton> & { locale?: Partial<Locale> }) {
   const ref = useRef<HTMLButtonElement>(null)
   useEffect(() => {
-    if (modifiers.focused) ref.current?.focus()
+    if (modifiers.focused && (document.activeElement === document.body || document.activeElement === ref.current))
+      ref.current?.focus()
   }, [modifiers.focused])
   return (
     <button
       ref={ref}
-      data-day={day.date.toLocaleDateString(locale?.code)}
+      data-day={`${day.date.getFullYear()}-${String(day.date.getMonth() + 1).padStart(2, "0")}-${String(day.date.getDate()).padStart(2, "0")}`}
       data-selected-single={
         modifiers.selected && !modifiers.range_start && !modifiers.range_end && !modifiers.range_middle
       }

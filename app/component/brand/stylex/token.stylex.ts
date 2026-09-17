@@ -2,6 +2,8 @@ import * as stylex from "@stylexjs/stylex"
 
 export const token = stylex.defineVars({
   colorScheme: "light",
+  shapeSurface: "14px",
+  shapePill: "9999px",
   fontBody: "'Geist Variable', aktiv-grotesk, Sarabun, sans-serif",
   fontHeading: "'Plus Jakarta Sans Variable', aktiv-grotesk, Sarabun, sans-serif",
   fontNumber: "InterVariable, Inter, sans-serif",
@@ -9,6 +11,7 @@ export const token = stylex.defineVars({
   highlightForeground: "oklch(1 0 0)",
   brand: "oklch(0.8874 0.182 166.87)",
   brandForeground: "oklch(0.145 0 0)",
+  brandText: "oklch(0.45 0.14 166.87)",
   brandAccent: "oklch(0.500137 0.29406 284.0716)",
   brandAccentForeground: "oklch(1 0 0)",
   warning: "oklch(0.58 0.1793 34.97)",

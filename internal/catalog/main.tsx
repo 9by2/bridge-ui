@@ -198,7 +198,9 @@ function App() {
         <PreviewBoundary key={route}>
           <Suspense fallback={<p>Loading preview...</p>}>
             {Example ? (
-              <Theme mode={selectedTheme === "cue" ? "cue" : dark ? "dark" : "light"} style={{ display: "contents" }}>
+              <Theme
+                mode={selectedTheme === "cue" || selectedTheme === "future" ? selectedTheme : dark ? "dark" : "light"}
+                style={{ display: "contents" }}>
                 <Example />
               </Theme>
             ) : (

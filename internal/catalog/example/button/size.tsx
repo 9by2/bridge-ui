@@ -14,7 +14,7 @@ function Axis({ children, label }: { readonly children: ReactNode; readonly labe
 export default function Example() {
   return (
     <Axis label="size">
-      {(["default", "xs", "sm", "lg", "icon", "icon-xs", "icon-sm", "icon-lg"] as const).map((size) => (
+      {(["default", "xs", "sm", "lg", "xl", "icon", "icon-xs", "icon-sm", "icon-lg"] as const).map((size) => (
         <UI.Button key={size} size={size} aria-label={size}>
           {size.startsWith("icon") ? "+" : size}
         </UI.Button>

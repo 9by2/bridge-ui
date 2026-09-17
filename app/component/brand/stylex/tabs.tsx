@@ -8,7 +8,8 @@ const style = stylex.create({
     flex: {
       default: 1,
       [stylex.when.ancestor('[data-variant="line"]')]: "0 0 auto",
-      [stylex.when.ancestor('[data-variant="capsule"]')]: "0 0 auto"
+      [stylex.when.ancestor('[data-variant="capsule"]')]: "0 0 auto",
+      [stylex.when.ancestor('[data-variant="link"]')]: "0 0 auto"
     },
     width: { default: null, [stylex.when.ancestor('[data-orientation="vertical"]')]: "100%" },
     justifyContent: { default: "center", [stylex.when.ancestor('[data-orientation="vertical"]')]: "start" },
@@ -17,12 +18,25 @@ const style = stylex.create({
       ":is([data-active])": {
         default: token.tabActiveBackground,
         [stylex.when.ancestor('[data-variant="line"]')]: "transparent",
-        [stylex.when.ancestor('[data-variant="capsule"]')]: token.tabActiveBackground
+        [stylex.when.ancestor('[data-variant="capsule"]')]: token.tabActiveBackground,
+        [stylex.when.ancestor('[data-variant="link"]')]: "transparent"
       }
     },
-    borderRadius: { default: 8, [stylex.when.ancestor('[data-variant="capsule"]')]: 999 },
-    paddingInline: { default: 6, [stylex.when.ancestor('[data-variant="capsule"]')]: 10 },
-    paddingBlock: { default: 2, [stylex.when.ancestor('[data-variant="capsule"]')]: 4 },
+    borderRadius: {
+      default: 8,
+      [stylex.when.ancestor('[data-variant="capsule"]')]: 999,
+      [stylex.when.ancestor('[data-variant="link"]')]: 0
+    },
+    paddingInline: {
+      default: 6,
+      [stylex.when.ancestor('[data-variant="capsule"]')]: 10,
+      [stylex.when.ancestor('[data-variant="link"]')]: 0
+    },
+    paddingBlock: {
+      default: 2,
+      [stylex.when.ancestor('[data-variant="capsule"]')]: 4,
+      [stylex.when.ancestor('[data-variant="link"]')]: 0
+    },
     borderBottomWidth: { default: 0, [stylex.when.ancestor('[data-variant="line"]')]: 1 },
     borderBottomColor: {
       default: "transparent",
@@ -62,6 +76,17 @@ const style = stylex.create({
     padding: 0
   },
   capsule: { gap: 4, backgroundColor: "transparent", padding: 0 },
+  link: {
+    gap: 16,
+    width: "100%",
+    height: 56,
+    justifyContent: "start",
+    overflowX: "auto",
+    overflowY: "hidden",
+    backgroundColor: "transparent",
+    borderRadius: 0,
+    padding: 0
+  },
   trigger: {
     position: "relative",
     boxSizing: "border-box",
@@ -72,9 +97,9 @@ const style = stylex.create({
     gap: 6,
     borderWidth: 0,
     borderStyle: "solid",
-    fontFamily: "inherit",
-    fontSize: 14,
-    lineHeight: "20px",
+    fontFamily: { default: "inherit", [stylex.when.ancestor('[data-variant="link"]')]: token.fontHeading },
+    fontSize: { default: 14, [stylex.when.ancestor('[data-variant="link"]')]: 16 },
+    lineHeight: { default: "20px", [stylex.when.ancestor('[data-variant="link"]')]: "24px" },
     fontWeight: 500,
     whiteSpace: "nowrap",
     color: {
@@ -82,7 +107,8 @@ const style = stylex.create({
       ":hover": token.foreground,
       ":is([data-active])": {
         default: token.foreground,
-        [stylex.when.ancestor('[data-variant="line"]')]: token.primary
+        [stylex.when.ancestor('[data-variant="line"]')]: token.primary,
+        [stylex.when.ancestor('[data-variant="link"]')]: token.brandText
       }
     },
     transitionProperty: "all",
@@ -118,7 +144,7 @@ export function tabsListVariants({
   variant = "default",
   className,
   class: extra
-}: { variant?: "default" | "line" | "capsule" | null; className?: string; class?: string } = {}) {
+}: { variant?: "default" | "line" | "link" | "capsule" | null; className?: string; class?: string } = {}) {
   return [stylex.props(stylex.defaultMarker(), style.list, variant && style[variant]).className, className, extra]
     .filter(Boolean)
     .join(" ")
@@ -127,7 +153,7 @@ export function TabsList({
   className,
   variant = "default",
   ...props
-}: Primitive.List.Props & { variant?: "default" | "line" | "capsule" | null }) {
+}: Primitive.List.Props & { variant?: "default" | "line" | "link" | "capsule" | null }) {
   return (
     <Primitive.List
       data-slot="tabs-list"

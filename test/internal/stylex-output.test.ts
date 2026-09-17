@@ -3,8 +3,11 @@ import { expect, test } from "bun:test"
 test("promoted package output is precompiled and includes scoped adapter", async () => {
   const css = await Bun.file("dist/style.css").text()
   expect(css).toContain('[data-pilot-theme] [data-slot="badge"] svg')
-  expect(css).toContain("[data-pilot-theme] [data-slot] *)::after")
-  expect(css).toContain("border-radius: 0 !important")
+  // DEC-013: the former DEC-019 global `border-radius: 0 !important` reset is removed.
+  // Components self-declare their own Cue-recipe radius; the scoped adapter still
+  // carries legitimate narrow rules such as the avatar status-ring pseudo-element.
+  expect(css).toContain('[data-pilot-theme] [data-slot="avatar"]::after')
+  expect(css).not.toContain("border-radius: 0 !important")
   expect(css).not.toContain('@import "tailwindcss"')
   expect(css).not.toMatch(/@import\s+["']@fontsource/)
   expect(css).toContain("@font-face")

@@ -71,6 +71,46 @@
     "./theme": {
       "types": "./dist/component/brand/stylex/theme.d.ts",
       "import": "./dist/component/brand/stylex/theme.js"
+    },
+    "./receipt": {
+      "types": "./dist/component/brand/stylex/receipt.d.ts",
+      "import": "./dist/component/brand/stylex/receipt.js"
+    },
+    "./status-stamp": {
+      "types": "./dist/component/brand/stylex/status-stamp.d.ts",
+      "import": "./dist/component/brand/stylex/status-stamp.js"
+    },
+    "./detail-item": {
+      "types": "./dist/component/brand/stylex/detail-item.d.ts",
+      "import": "./dist/component/brand/stylex/detail-item.js"
+    },
+    "./setting-item": {
+      "types": "./dist/component/brand/stylex/setting-item.d.ts",
+      "import": "./dist/component/brand/stylex/setting-item.js"
+    },
+    "./sticky-alert": {
+      "types": "./dist/component/brand/stylex/sticky-alert.d.ts",
+      "import": "./dist/component/brand/stylex/sticky-alert.js"
+    },
+    "./success-burst": {
+      "types": "./dist/component/brand/stylex/success-burst.d.ts",
+      "import": "./dist/component/brand/stylex/success-burst.js"
+    },
+    "./responsive-image": {
+      "types": "./dist/component/brand/stylex/responsive-image.d.ts",
+      "import": "./dist/component/brand/stylex/responsive-image.js"
+    },
+    "./product-item": {
+      "types": "./dist/component/brand/stylex/product-item.d.ts",
+      "import": "./dist/component/brand/stylex/product-item.js"
+    },
+    "./ticket-cover": {
+      "types": "./dist/component/brand/stylex/ticket-cover.d.ts",
+      "import": "./dist/component/brand/stylex/ticket-cover.js"
+    },
+    "./ticket-card": {
+      "types": "./dist/component/brand/stylex/ticket-card.d.ts",
+      "import": "./dist/component/brand/stylex/ticket-card.js"
     }
   },
   "sideEffects": [

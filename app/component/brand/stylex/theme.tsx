@@ -3,7 +3,7 @@ import { createContext, useContext, type ComponentProps } from "react"
 
 import { token } from "./token.stylex"
 
-export const themeMode = { light: "light", dark: "dark", cue: "cue" } as const
+export const themeMode = { light: "light", dark: "dark", cue: "cue", future: "future" } as const
 export type ThemeMode = ValueOf<typeof themeMode>
 
 type ValueOf<T> = T[keyof T]
@@ -17,6 +17,7 @@ const light = stylex.createTheme(token, {
   highlightForeground: "oklch(1 0 0)",
   brand: "oklch(0.8874 0.182 166.87)",
   brandForeground: "oklch(0.145 0 0)",
+  brandText: "oklch(0.45 0.14 166.87)",
   brandAccent: "oklch(0.500137 0.29406 284.0716)",
   brandAccentForeground: "oklch(1 0 0)",
   warning: "oklch(0.58 0.1793 34.97)",
@@ -79,6 +80,7 @@ const dark = stylex.createTheme(token, {
   highlightForeground: "oklch(0.1776 0 0)",
   brand: "oklch(0.8874 0.182 166.87)",
   brandForeground: "oklch(0.1776 0 0)",
+  brandText: "oklch(0.8874 0.182 166.87)",
   brandAccent: "oklch(0.500137 0.29406 284.0716)",
   brandAccentForeground: "oklch(1 0 0)",
   warning: "oklch(0.58 0.1793 34.97)",
@@ -141,6 +143,7 @@ const cue = stylex.createTheme(token, {
   highlightForeground: "oklch(0.1776 0 0)",
   brand: "oklch(0.8874 0.182 166.87)",
   brandForeground: "oklch(0.1776 0 0)",
+  brandText: "oklch(0.8874 0.182 166.87)",
   brandAccent: "oklch(0.500137 0.29406 284.0716)",
   brandAccentForeground: "oklch(1 0 0)",
   warning: "oklch(0.58 0.1793 34.97)",
@@ -194,7 +197,74 @@ const cue = stylex.createTheme(token, {
   destructive: "oklch(0.5489 0.1841 25.69)",
   destructiveForeground: "oklch(1 0 0)"
 })
-const modeTheme = { light, dark, cue } as const
+// Proves DEC-003/DEC-009: a fourth theme swaps only semantic color values. It reuses
+// the same component recipe (DOM, geometry, spacing, typography, motion) as light/dark/cue
+// while carrying a distinct violet-forward palette so token/geometry parity tests can
+// assert real cross-theme equivalence instead of aliasing an existing mode.
+const future = stylex.createTheme(token, {
+  colorScheme: "dark",
+  fontBody: "'Geist Variable', aktiv-grotesk, Sarabun, sans-serif",
+  fontHeading: "'Plus Jakarta Sans Variable', aktiv-grotesk, Sarabun, sans-serif",
+  fontNumber: "InterVariable, Inter, sans-serif",
+  highlight: "oklch(1 0 0)",
+  highlightForeground: "oklch(0.16 0.03 284.37)",
+  brand: "oklch(0.7 0.19 284.37)",
+  brandForeground: "oklch(1 0 0)",
+  brandText: "oklch(0.78 0.16 284.37)",
+  brandAccent: "oklch(0.8874 0.182 166.87)",
+  brandAccentForeground: "oklch(0.145 0 0)",
+  warning: "oklch(0.58 0.1793 34.97)",
+  warningForeground: "oklch(1 0 0)",
+  card: "oklch(0.18 0.02 284.37)",
+  cardForeground: "oklch(0.75 0.01 284.37)",
+  popover: "oklch(0.18 0.02 284.37)",
+  popoverForeground: "oklch(0.75 0.01 284.37)",
+  sidebar: "oklch(0.21 0.02 284.37)",
+  sidebarForeground: "oklch(0.98 0 0)",
+  sidebarPrimary: "oklch(0.7 0.19 284.37)",
+  sidebarPrimaryForeground: "oklch(1 0 0)",
+  sidebarAccent: "oklch(0.27 0.02 284.37)",
+  sidebarAccentForeground: "oklch(0.98 0 0)",
+  sidebarBorder: "oklch(1 0 0 / 10%)",
+  sidebarRing: "oklch(0.56 0 0)",
+  accent: "oklch(0.27 0.02 284.37)",
+  accentForeground: "oklch(0.98 0 0)",
+  tabInactive: "oklch(0.71 0 0)",
+  tabActiveBackground: "oklch(1 0 0 / 10.8%)",
+  tabActiveBorder: "oklch(1 0 0 / 36%)",
+  footerBorder: "oklch(0.32 0 0)",
+  switchOff: "oklch(1 0 0 / 28.8%)",
+  switchThumb: "oklch(0.75 0.01 284.37)",
+  switchThumbOn: "oklch(0.18 0.02 284.37)",
+  errorRingOpacity: "40%",
+  outlineExpanded: "oklch(1 0 0 / 10.8%)",
+  errorText: "oklch(0.66 0.19 25.69)",
+  destructiveText: "oklch(0.66 0.19 25.69)",
+  inputBackground: "oklch(1 0 0 / 10.8%)",
+  inputDisabled: "oklch(1 0 0 / 28.8%)",
+  invalidBorder: "oklch(0.5489 0.1841 25.69 / 50%)",
+  outlineFocus: "oklch(1 0 0 / 36%)",
+  outlineHover: "oklch(1 0 0 / 18%)",
+  ghostHover: "oklch(0.27 0.02 284.37 / 50%)",
+  destructiveHoverOpacity: "30%",
+  outlineBackground: "oklch(1 0 0 / 10.8%)",
+  outlineBorder: "oklch(1 0 0 / 36%)",
+  destructiveOpacity: "20%",
+  background: "oklch(0.16 0.03 284.37)",
+  foreground: "oklch(0.75 0.01 284.37)",
+  primary: "white",
+  primaryForeground: "oklch(0.16 0.03 284.37)",
+  secondary: "oklch(0.24 0.02 284.37)",
+  secondaryForeground: "white",
+  muted: "oklch(0.27 0.02 284.37)",
+  mutedForeground: "oklch(0.71 0 0)",
+  border: "oklch(0.32 0.02 284.37)",
+  input: "oklch(1 0 0 / 36%)",
+  ring: "oklch(0.56 0 0)",
+  destructive: "oklch(0.5489 0.1841 25.69)",
+  destructiveForeground: "oklch(1 0 0)"
+})
+const modeTheme = { light, dark, cue, future } as const
 const ThemeContext = createContext<ThemeMode>(themeMode.light)
 const style = stylex.create({
   root: {

@@ -71,3 +71,25 @@ test("select retains root identity, selection, form and portal theme", async () 
   expect(change.mock.calls[0]?.[0]).toBe("b")
   expect(new FormData(container.querySelector("form")!).get("choice")).toBe("b")
 })
+
+test("unstyled select preserves icon, forwarding and selection semantics", async () => {
+  const change = vi.fn()
+  render(
+    <Select defaultValue="a" onValueChange={change}>
+      <SelectTrigger appearance="unstyled" aria-label="Role" data-contract="unstyled">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="a">Admin</SelectItem>
+        <SelectItem value="b">Member</SelectItem>
+      </SelectContent>
+    </Select>
+  )
+  const trigger = screen.getByRole("combobox", { name: "Role" })
+  expect(trigger.dataset.appearance).toBe("unstyled")
+  expect(trigger.dataset.contract).toBe("unstyled")
+  expect(trigger.querySelector("svg")).not.toBeNull()
+  fireEvent.click(trigger)
+  fireEvent.keyDown(await screen.findByRole("option", { name: "Member" }), { key: "Enter" })
+  expect(change.mock.calls[0]?.[0]).toBe("b")
+})

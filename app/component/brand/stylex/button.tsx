@@ -95,6 +95,7 @@ const sizeStyle = stylex.create({
   xs: { height: 24, gap: 4, paddingInline: 8, fontSize: 12, lineHeight: "16px", borderRadius: 8 },
   sm: { height: 28, gap: 4, paddingInline: 10, fontSize: "0.8rem", lineHeight: 1.5, borderRadius: 8 },
   lg: { height: 36, gap: 6, paddingInline: 10 },
+  xl: { height: 44, gap: 6, paddingInline: 12, fontSize: 18, lineHeight: "28px" },
   icon: { height: 32, width: 32, padding: 0 },
   "icon-xs": { height: 24, width: 24, padding: 0, borderRadius: 8 },
   "icon-sm": { height: 28, width: 28, padding: 0, borderRadius: 8 },
@@ -161,7 +162,9 @@ export function Button({
     variant && style[variant],
     size && sizeStyle[size],
     (props["aria-expanded"] === true || props["aria-expanded"] === "true") &&
-      (variant === "outline" ? style.outlineExpanded : variant === "ghost" && style.expanded),
+      (variant === "outline"
+        ? style.outlineExpanded
+        : (variant === "ghost" || variant === "secondary") && style.expanded),
     invalid && style.invalid,
     popup && style.popupTrigger,
     inputGroupSize !== undefined && groupStyle.base,
@@ -174,6 +177,7 @@ export function Button({
   return (
     <Primitive
       data-slot="button"
+      data-size={size}
       {...props}
       className={
         typeof className === "function" ? (state) => `${classes} ${className(state)}` : `${classes} ${className ?? ""}`

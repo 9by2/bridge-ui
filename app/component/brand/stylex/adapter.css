@@ -296,22 +296,13 @@
   padding-right: 6px;
 }
 
-/* DEC-019: Bridge UI uses square corners across every rendered component slot. */
-:where([data-pilot-theme] [data-slot], [data-pilot-theme] [data-slot] *),
-:where([data-pilot-theme] [data-slot], [data-pilot-theme] [data-slot] *)::before,
-:where([data-pilot-theme] [data-slot], [data-pilot-theme] [data-slot] *)::after {
-  border-radius: 0 !important;
-}
-
-[data-pilot-theme] :is([data-slot="avatar"], [data-slot="avatar-image"], [data-slot="avatar-fallback"]),
-[data-pilot-theme] [data-slot="avatar"]::after {
-  border-radius: 9999px !important;
-}
-
-[data-pilot-theme] [data-variant="capsule"] > [data-slot="tabs-trigger"],
-[data-pilot-theme] [data-variant="capsule"] > [data-slot="tabs-trigger"] > [data-slot="badge"] {
-  border-radius: 999px !important;
-}
+/* DEC-019 (superseded by DEV-600 DEC-006/DEC-008): the former global square-corner
+   reset contradicted Cue's canonical rounded component recipe and forced every
+   descendant slot, including caller-owned content, to zero radius. Removed. Every
+   component now self-declares its own Cue-recipe radius (`token.shapeSurface`,
+   `token.shapePill`, or a literal) directly in its StyleX source, including the
+   intentionally square CTA/multi-select-trigger/tabs-link variants and the
+   intentionally pill avatar/badge/capsule-tab variants. */
 
 @media (min-width: 768px) {
   [data-pilot-theme] [data-slot="sidebar-wrapper"]:has([data-variant="inset"]) > [data-slot="sidebar-inset"] {

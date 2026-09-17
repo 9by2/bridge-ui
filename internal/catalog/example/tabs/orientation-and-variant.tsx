@@ -15,7 +15,7 @@ export default function Example() {
   return (
     <Axis label="orientation and variant">
       {(["horizontal", "vertical"] as const).flatMap((orientation) =>
-        (["default", "line"] as const).map((variant) => (
+        (["default", "line", "link"] as const).map((variant) => (
           <UI.Tabs key={`${orientation}-${variant}`} defaultValue="one" orientation={orientation}>
             <UI.TabsList variant={variant}>
               <UI.TabsTrigger value="one">One</UI.TabsTrigger>

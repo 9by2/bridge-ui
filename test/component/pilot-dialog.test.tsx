@@ -11,7 +11,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogFooter,
-  DialogOverlay
+  DialogOverlay,
+  DialogIcon
 } from "../../app/component/brand/stylex/dialog"
 import { numberTextClassName, Theme } from "../../app/component/brand/stylex/theme"
 
@@ -61,7 +62,7 @@ test("pilot dialog preserves controlled state, portaled theme and Escape focus r
   fireEvent.click(trigger)
   const popup = await screen.findByRole("dialog")
   expect(popup.closest("[data-pilot-theme]")?.getAttribute("data-pilot-theme")).toBe("dark")
-  expect(screen.getByRole("button", { name: "Close" })).toBeTruthy()
+  expect(screen.getByRole("button", { name: "dialog-close" })).toBeTruthy()
   fireEvent.keyDown(popup, { key: "Escape" })
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull())
   await waitFor(() => expect(document.activeElement).toBe(trigger))
@@ -116,7 +117,22 @@ test("pilot dialog retains hidden close option, footer action and unmount cleanu
   )
   const popup = await screen.findByRole("dialog")
   expect(popup.closest("[data-pilot-theme]")?.getAttribute("data-pilot-theme")).toBe("light")
-  expect(screen.getAllByRole("button", { name: "Close" })).toHaveLength(1)
+  expect(screen.getAllByRole("button", { name: "dialog-close" })).toHaveLength(1)
   unmount()
   expect(document.querySelector("[role=dialog]")).toBeNull()
+})
+
+test("dialog uses caller close affordance label and neutral icon composition", async () => {
+  render(
+    <Dialog defaultOpen>
+      <DialogContent closeLabel="Dismiss dialog">
+        <DialogIcon>!</DialogIcon>
+        <DialogTitle>Notice</DialogTitle>
+      </DialogContent>
+    </Dialog>
+  )
+  const close = screen.getByRole("button", { name: "Dismiss dialog" })
+  expect(close.dataset.slot).toBe("dialog-close")
+  expect(close.getAttribute("aria-label")).toBe("Dismiss dialog")
+  expect(document.querySelector("[data-slot=dialog-icon]")?.textContent).toBe("!")
 })
