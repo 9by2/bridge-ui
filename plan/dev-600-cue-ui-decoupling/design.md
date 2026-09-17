@@ -59,10 +59,20 @@ The rejected `rounded-none` forcing selector from `stylex-public-promotion` is s
 import { Button, Calendar, Theme } from "@bridge/ui"
 import "@bridge/ui/style.css"
 
-;<Theme name="cue-dark">
+;<Theme mode="cue">
   <Button size="xl">{label}</Button>
-  <Calendar value={date} onValueChange={setDate} />
+  <Calendar mode="single" selected={date} onSelect={setDate} />
 </Theme>
+```
+
+Direct stable imports are also available for migration-critical primitives:
+
+```tsx
+import { Button } from "@bridge/ui/button"
+import { Calendar } from "@bridge/ui/calendar"
+import { Dialog } from "@bridge/ui/dialog"
+import { Tabs } from "@bridge/ui/tabs"
+import { Select } from "@bridge/ui/select"
 ```
 
 ## Risk and mitigation

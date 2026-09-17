@@ -1,10 +1,19 @@
 import * as stylex from "@stylexjs/stylex"
 import { CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Loader2Icon } from "lucide-react"
-import { useTheme } from "next-themes"
 import type { CSSProperties } from "react"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
 
+import { themeMode, useThemeMode } from "./theme"
 import { token } from "./token.stylex"
+
+/**
+ * DEC-009: Sonner reads the nearest Bridge `Theme` mode instead of an external
+ * provider. `light` maps to Sonner light; `dark`, `cue`, and `future` map to Sonner
+ * dark, since all three are dark-scheme semantic layers.
+ */
+function sonnerTheme(mode: ReturnType<typeof useThemeMode>): "light" | "dark" {
+  return mode === themeMode.light ? "light" : "dark"
+}
 
 const spin = stylex.keyframes({ to: { rotate: "360deg" } })
 const style = stylex.create({
@@ -17,8 +26,9 @@ const style = stylex.create({
     animationPlayState: { default: "running", "@media (prefers-reduced-motion: reduce)": "paused" }
   }
 })
-export function Toaster(props: ToasterProps) {
-  const { theme = "system" } = useTheme()
+export function Toaster({ theme, ...props }: ToasterProps) {
+  const mode = useThemeMode()
+  const resolvedTheme = theme ?? sonnerTheme(mode)
   const variables: CSSProperties & Record<`--${string}`, string> = {
     "--normal-bg": token.background,
     "--normal-text": token.foreground,
@@ -36,7 +46,7 @@ export function Toaster(props: ToasterProps) {
   }
   return (
     <Sonner
-      theme={theme === "light" || theme === "dark" ? theme : "system"}
+      theme={resolvedTheme}
       className="toaster group"
       icons={{
         success: <CircleCheckIcon {...stylex.props(style.icon)} />,

@@ -53,6 +53,19 @@ describe("package contract", () => {
     })
   })
 
+  test("migration-critical primitives have stable root and direct package exports (REQ-005)", async () => {
+    const entry = await Bun.file(path.join(root, "app/index.ts")).text()
+    const manifest = await Bun.file(path.join(root, "package.json")).json()
+
+    for (const name of ["button", "calendar", "dialog", "tabs", "select"]) {
+      expect(entry).toContain(`export * from "./component/brand/stylex/${name}"`)
+      expect(manifest.exports[`./${name}`]).toEqual({
+        types: `./dist/component/brand/stylex/${name}.d.ts`,
+        import: `./dist/component/brand/stylex/${name}.js`
+      })
+    }
+  })
+
   test("reusable presentation is available from root and stable direct paths", async () => {
     const entry = await Bun.file(path.join(root, "app/index.ts")).text()
     const manifest = await Bun.file(path.join(root, "package.json")).json()

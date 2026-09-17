@@ -1,20 +1,22 @@
 # Decisions: DEV-600 Cue UI Decoupling
 
-| ID      | Title                                       | Status   |
-| ------- | ------------------------------------------- | -------- |
-| DEC-001 | Cue recipes are canonical                   | accepted |
-| DEC-002 | StyleX owns reusable presentation           | accepted |
-| DEC-003 | Themes are semantic color layers            | accepted |
-| DEC-004 | Product i18n stays outside package          | accepted |
-| DEC-005 | Ticket-named presentation remains reusable  | accepted |
-| DEC-006 | DEV-600 supersedes square-corner assumption | accepted |
-| DEC-007 | Public seams precede tests                  | accepted |
-| DEC-008 | Shape belongs to semantic component recipes | accepted |
-| DEC-009 | Theme names preserve mode compatibility     | accepted |
-| DEC-010 | Phase 2 primitive compatibility contracts   | accepted |
-| DEC-011 | Phase 3 presentation contract boundary      | accepted |
-| DEC-012 | `brandText` pairs brand fill with safe text | accepted |
-| DEC-013 | Remove live DEC-019 global radius override  | accepted |
+| ID      | Title                                                  | Status   |
+| ------- | ------------------------------------------------------ | -------- |
+| DEC-001 | Cue recipes are canonical                              | accepted |
+| DEC-002 | StyleX owns reusable presentation                      | accepted |
+| DEC-003 | Themes are semantic color layers                       | accepted |
+| DEC-004 | Product i18n stays outside package                     | accepted |
+| DEC-005 | Ticket-named presentation remains reusable             | accepted |
+| DEC-006 | DEV-600 supersedes square-corner assumption            | accepted |
+| DEC-007 | Public seams precede tests                             | accepted |
+| DEC-008 | Shape belongs to semantic component recipes            | accepted |
+| DEC-009 | Theme names preserve mode compatibility                | accepted |
+| DEC-010 | Phase 2 primitive compatibility contracts              | accepted |
+| DEC-011 | Phase 3 presentation contract boundary                 | accepted |
+| DEC-012 | `brandText` pairs brand fill with safe text            | accepted |
+| DEC-013 | Remove live DEC-019 global radius override             | accepted |
+| DEC-014 | Sonner reads Bridge Theme authority, not `next-themes` | accepted |
+| DEC-015 | Migration-critical primitives get direct exports       | accepted |
 
 ---
 
@@ -119,3 +121,19 @@
 **GIVEN** `app/component/brand/stylex/adapter.css` still shipped a `stylex-public-promotion` DEC-019 rule (`:where([data-pilot-theme] [data-slot], ... *) { border-radius: 0 !important; }`) into the published `dist/style.css`, forcing Card, Dialog, DropArea, and every other rounded Cue-recipe surface (and arbitrary caller-owned descendant content) to `0px` despite DEC-001/DEC-006/DEC-008 establishing Cue's rounded recipe as canonical
 **WHEN** DEV-600 Phase 1 claims the global reset is replaced by Cue-recipe-owned radius declarations
 **THEN** delete the DEC-019 selector block entirely. Every component that legitimately needs a square or pill shape already self-declares it in its own StyleX source (Button `cta`/multi-select-trigger, Tabs `link`/`multi-select` triggers, Avatar/Badge/capsule-tab pill radii), so removing the global override is safe with zero remaining consumer besides `internal/catalog/pilot.css`'s import of the same file. `test/browser/public-stylex.spec.ts` is rewritten to assert Cue's actual recipe (rounded-by-default Button/Card, square CTA, pill Avatar, and untouched caller host content) instead of a blanket zero-radius invariant. `test/browser/visual.spec.ts-snapshots/drop-area-dark-*.png` golden images are regenerated because DropArea's self-declared `borderRadius: 14` (Cue `radius-xl`) now renders correctly instead of being force-zeroed.
+
+---
+
+### DEC-014: Sonner reads Bridge Theme authority, not `next-themes`
+
+**GIVEN** DEC-009 requires Sonner to read the nearest Bridge `Theme` mode and map `light`→Sonner light and `dark`/`cue`/`future`→Sonner dark, but `SonnerToaster` still called `useTheme()` from `next-themes`, an external provider the package's own `Theme` component never populates, and `ThemeContext` was not exported so nothing could observe the current mode from outside `theme.tsx`
+**WHEN** REQ-003's audited acceptance ("Toast role, keyboard/focus restoration, portal scope, and outside sentinel behavior are verified") is proven against real evidence
+**THEN** `theme.tsx` exports a public `useThemeMode()` hook reading `ThemeContext`; `sonner.tsx` drops the `next-themes` import and dependency entirely and calls `useThemeMode()`, mapping via `mode === themeMode.light ? "light" : "dark"`; an explicit caller `theme` prop still wins. `test/component/pilot-sonner.test.tsx` proves the four-mode mapping, the no-ancestor default, the explicit-override path, and an outside-Theme-boundary sentinel (a sibling `Theme mode="cue"` node does not leak into an unrelated `Toaster`'s resolved mode). `next-themes` is removed from `package.json` dependencies as it has no remaining owned-source consumer.
+
+---
+
+### DEC-015: Migration-critical primitives get direct exports
+
+**GIVEN** REQ-005 explicitly requires Button `xl`, Tabs link semantics, Select unstyled, and Dialog accessible portal/focus behavior to each have "a stable root and direct package export plus declaration coverage," but only `./button` existed in `package.json`; Calendar, Dialog, Tabs, and Select were reachable only via the root barrel or the implementation-shaped `./component/shadcn/*` wildcard
+**WHEN** REQ-005's acceptance is proven against real evidence
+**THEN** add `./calendar`, `./dialog`, `./tabs`, `./select` to `package.json` exports, each pointing at the existing per-file build output already produced by `cmd/build-package.ts` (owned StyleX source is already built as separate entries; only the manifest mapping was missing). `test/internal/package-contract.test.ts` adds a dedicated assertion for all five migration-critical direct exports, and `bun cmd/verify-package.ts` proves every one resolves from an installed tarball with declaration checking (125 installed public entries verified, up from 121).

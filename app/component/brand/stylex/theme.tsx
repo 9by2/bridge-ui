@@ -266,6 +266,16 @@ const future = stylex.createTheme(token, {
 })
 const modeTheme = { light, dark, cue, future } as const
 const ThemeContext = createContext<ThemeMode>(themeMode.light)
+
+/**
+ * Public seam for reading the nearest Bridge `Theme` mode (DEC-009). Consumers that
+ * render inside a portal, such as `SonnerToaster`, use this instead of any external
+ * theme provider so package-owned components stay coupled to `@bridge/ui` theme
+ * authority only.
+ */
+export function useThemeMode(): ThemeMode {
+  return useContext(ThemeContext)
+}
 const style = stylex.create({
   root: {
     "--pilot-background": token.background,

@@ -28,6 +28,22 @@
       "types": "./dist/component/brand/stylex/button.d.ts",
       "import": "./dist/component/brand/stylex/button.js"
     },
+    "./calendar": {
+      "types": "./dist/component/brand/stylex/calendar.d.ts",
+      "import": "./dist/component/brand/stylex/calendar.js"
+    },
+    "./dialog": {
+      "types": "./dist/component/brand/stylex/dialog.d.ts",
+      "import": "./dist/component/brand/stylex/dialog.js"
+    },
+    "./tabs": {
+      "types": "./dist/component/brand/stylex/tabs.d.ts",
+      "import": "./dist/component/brand/stylex/tabs.js"
+    },
+    "./select": {
+      "types": "./dist/component/brand/stylex/select.d.ts",
+      "import": "./dist/component/brand/stylex/select.js"
+    },
     "./data-state": {
       "types": "./dist/component/brand/stylex/data-state.d.ts",
       "import": "./dist/component/brand/stylex/data-state.js"
@@ -151,7 +167,6 @@
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.5.0",
     "lucide-react": "^1",
-    "next-themes": "^0.4.6",
     "react-day-picker": "^10.0.1",
     "react-dropzone": "^20.1.1",
     "react-resizable-panels": "^4.12.3",

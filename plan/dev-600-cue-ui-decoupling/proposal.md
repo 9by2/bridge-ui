@@ -26,10 +26,10 @@ Cue contains the company’s most mature component recipes for geometry, padding
 
 ## Success Criteria
 
-- [ ] `@bridge/ui` owns reusable StyleX presentation and a11y mechanics without importing consumer code or any product i18n.
-- [ ] Semantic color layers support white/light, Cue dark, and a future theme against identical DOM and geometry contracts.
-- [ ] Public component APIs, exports, test seams, catalog states, and packaged client/SSR contracts are specified before implementation.
-- [ ] The implementation sequence preserves every ADHD foundation gate before consumer migration is considered.
+- [x] `@bridge/ui` owns reusable StyleX presentation and a11y mechanics without importing consumer code or any product i18n (`test/component/dev-600-boundary.test.tsx`, `test/internal/source-boundary.test.ts`; zero `@cue/web`/`@bridge/web`/i18n imports anywhere in `app/`, `internal/catalog/example/`, `cmd/`).
+- [x] Semantic color layers support white/light, Cue dark, and a future theme against identical DOM and geometry contracts (`themeMode` has four modes: `light`, `dark`, `cue`, `future`; `test/component/dev-600-boundary.test.tsx` proves identical DOM/slot structure across all four; `test/browser/theme-parity.spec.ts` proves identical non-color computed geometry in a real browser).
+- [x] Public component APIs, exports, test seams, catalog states, and packaged client/SSR contracts are specified before implementation (`spec/ui-centralization/spec.md`, `design.md` public test seams table) and are now proven: `bun cmd/verify-package.ts` verifies 125 installed public entries with declaration checking plus a clean Vite client and SSR build.
+- [x] The implementation sequence preserves every ADHD foundation gate before consumer migration is considered. Consumer migration remains untouched; DEV-600 stayed scoped to `app/`, `internal/catalog/`, `cmd/`, and `test/`.
 
 ## Specs
 
