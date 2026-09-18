@@ -38,3 +38,11 @@
 **GIVEN** `deployment/Dockerfile.catalog` runs as root (no `USER` directive) and Chrome's zygote refuses `Running as root without --no-sandbox is not supported` — confirmed by direct `docker run` against the newly-pushed image: `backend: { type: "chrome", url: false }` alone fails with `Chrome process closed the pipe`, while adding `argv: ["--no-sandbox"]` succeeds; a non-root `-u 1000:1000` container also fails (`No usable sandbox! ... install chromium-sandbox package`) because Debian's `chromium` apt package ships without a setuid sandbox helper
 **WHEN** every `new Bun.WebView({ backend: { type: "chrome", ... } })` call site in the repository (`cmd/verify-ci-runtime.ts`, `test/browser/support/page.ts`, and 13 other `cmd/verify-*.ts` scripts) omits `--no-sandbox`, so this is a second, independent CI blocker beyond the stale image digest — it would break `before_script` and `catalog:test` even against a freshly-built image
 **THEN** add `argv: ["--no-sandbox"]` to the chrome backend options at every call site (not a Dockerfile/user change, since Debian's `chromium` package needs the setuid helper for non-root sandboxing and CI containers commonly run as root anyway).
+
+---
+
+### DEC-005: Add missing `next-themes` dependency
+
+**GIVEN** the fixed image/`--no-sandbox` change let CI's `source` job progress past `before_script` for the first time and reach `bun typecheck`, which then failed with `Cannot find module 'next-themes'` in `app/component/shadcn/sonner.tsx` and `internal/pilot/sonner.tsx`
+**WHEN** `next-themes` was never declared in `package.json`/`bun.lock` — it only resolved locally because of a stray, uncommitted `node_modules/next-themes` left over from a prior shadcn CLI generation, invisible to `bun install --frozen-lockfile` in CI
+**THEN** add `next-themes@^0.4.6` to `dependencies` in `package.json` and run `bun install` to update `bun.lock`; this is a pre-existing bug unrelated to the webview/catalog-runner fix, only surfaced because CI never got this far before.

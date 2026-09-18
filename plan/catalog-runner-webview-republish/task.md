@@ -36,5 +36,7 @@ Implementation order matters — complete top to bottom.
 - [x] `bun verify:tree-shaking` — clean
 - [x] `bun catalog:test` (full 522-test Bun.WebView suite) — 521/522 pass on first full run (one `dropdown-menu` axe flake under resource pressure); reran `catalog.test.ts` in isolation — 387/387 pass, confirming no regression from the `--no-sandbox` change.
 - [x] All specs in `spec/` reviewed against implementation
-      38|- [ ] Push commit to `main`; confirm GitLab pipeline `source`/`coverage`/`catalog` jobs pass.
+      38|- [x] Push commit to `main` (9c9b2ccd -> next commit); pipeline #59395/#59396 got past `before_script` for the first time, surfacing a separate pre-existing `next-themes` module-resolution bug at `bun typecheck`.
+- [x] Add `next-themes@^0.4.6` to `package.json` dependencies (was resolving only via a stray uncommitted `node_modules/next-themes`, absent from `bun.lock`); `bun install`; re-verify `bun fmt`/`lint`/`typecheck`/`boundary`/`build`/`test`/`coverage:brand`/`verify:package`/`verify:tree-shaking` all clean.
+- [ ] Push follow-up commit; confirm GitLab pipeline `source`/`coverage`/`catalog` jobs pass.
 - [ ] Archive proposal per plan/PROPOSAL.md
