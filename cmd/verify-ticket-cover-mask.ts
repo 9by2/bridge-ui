@@ -26,7 +26,7 @@ try {
     await using view = new Bun.WebView({
       width,
       height: Math.round((width * 9) / 16) + 80,
-      backend: { type: "chrome", url: false }
+      backend: { type: "chrome", url: false, argv: ["--no-sandbox"] }
     })
     await view.navigate("http://127.0.0.1:6007/?preview&theme=light#ticket-cover/default")
     await view.evaluate("document.fonts.ready")

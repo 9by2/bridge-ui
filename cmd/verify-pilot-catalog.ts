@@ -5,7 +5,11 @@ import { pathToFileURL } from "node:url"
 const output = path.resolve(".eval/0908-stylex-foundation")
 const axe = await Bun.file(new URL(import.meta.resolve("axe-core/axe.min.js"))).text()
 try {
-  await using view = new Bun.WebView({ backend: { type: "chrome", url: false }, width: 900, height: 1000 })
+  await using view = new Bun.WebView({
+    backend: { type: "chrome", url: false, argv: ["--no-sandbox"] },
+    width: 900,
+    height: 1000
+  })
   await view.navigate(pathToFileURL(path.join(output, "catalog/index.html")).href)
   await view.cdp("Emulation.setDeviceMetricsOverride", {
     width: 900,

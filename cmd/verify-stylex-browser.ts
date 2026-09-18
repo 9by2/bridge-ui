@@ -53,7 +53,11 @@ try {
           ).join("\n")
     for (const width of [390, 1280]) {
       for (const isDark of [false, true]) {
-        await using view = new Bun.WebView({ width, height: 300, backend: { type: "chrome", url: false } })
+        await using view = new Bun.WebView({
+          width,
+          height: 300,
+          backend: { type: "chrome", url: false, argv: ["--no-sandbox"] }
+        })
         const html = `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>StyleX contract</title><style>${css}</style><body>${renderToString(createElement(Contract, { isDark, width: 137 }))}</body></html>`
         await view.navigate(`data:text/html;charset=utf-8,${encodeURIComponent(html)}`)
         await view.cdp("Emulation.setDeviceMetricsOverride", {

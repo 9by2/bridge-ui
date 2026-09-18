@@ -101,7 +101,11 @@ try {
           if (process.env.PILOT_DEBUG && candidate) {
             await Bun.write(path.join(output, "debug.html"), `<style>${css}</style>${body}`)
           }
-          await using view = new Bun.WebView({ backend: { type: "chrome", url: false }, width: 800, height: 200 })
+          await using view = new Bun.WebView({
+            backend: { type: "chrome", url: false, argv: ["--no-sandbox"] },
+            width: 800,
+            height: 200
+          })
           await view.navigate(
             `data:text/html;charset=utf-8,${encodeURIComponent(`<!doctype html><html class="${mode === "dark" ? "dark" : ""}"><meta charset="utf-8"><style>${css}</style><body>${body}</body></html>`)}`
           )

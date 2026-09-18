@@ -7,7 +7,11 @@ const output = path.resolve(".eval/0914-catalog-ci-stability")
 const report = []
 await mkdir(output, { recursive: true })
 try {
-  await using view = new Bun.WebView({ backend: { type: "chrome", url: false }, width: 1280, height: 720 })
+  await using view = new Bun.WebView({
+    backend: { type: "chrome", url: false, argv: ["--no-sandbox"] },
+    width: 1280,
+    height: 720
+  })
   await view.navigate(base)
   for (const theme of ["light", "dark"]) {
     for (const name of [

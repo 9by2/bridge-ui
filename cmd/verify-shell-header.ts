@@ -21,7 +21,11 @@ type ShellReport = {
 try {
   for (const width of [390, 1280]) {
     for (const theme of ["light", "dark"]) {
-      await using view = new Bun.WebView({ width, height: 500, backend: { type: "chrome", url: false } })
+      await using view = new Bun.WebView({
+        width,
+        height: 500,
+        backend: { type: "chrome", url: false, argv: ["--no-sandbox"] }
+      })
       await view.navigate(`http://127.0.0.1:6007/?preview&theme=${theme}#shell-header/default`)
       await view.cdp("Emulation.setDeviceMetricsOverride", {
         width,
@@ -81,7 +85,11 @@ try {
     }
   }
 
-  await using longTitle = new Bun.WebView({ width: 390, height: 320, backend: { type: "chrome", url: false } })
+  await using longTitle = new Bun.WebView({
+    width: 390,
+    height: 320,
+    backend: { type: "chrome", url: false, argv: ["--no-sandbox"] }
+  })
   await longTitle.navigate("http://127.0.0.1:6007/?preview&theme=light#shell-header/long-title")
   await longTitle.evaluate("document.fonts.ready")
   for (let attempt = 0; attempt < 100; attempt++) {

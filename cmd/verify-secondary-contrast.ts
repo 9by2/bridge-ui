@@ -11,7 +11,11 @@ const axe = await Bun.file(new URL(import.meta.resolve("axe-core/axe.min.js"))).
 const reports = []
 try {
   for (const mode of ["light", "dark"]) {
-    await using view = new Bun.WebView({ backend: { type: "chrome", url: false }, width: 390, height: 200 })
+    await using view = new Bun.WebView({
+      backend: { type: "chrome", url: false, argv: ["--no-sandbox"] },
+      width: 390,
+      height: 200
+    })
     const html = `<!doctype html><html lang="en" class="${mode === "dark" ? "dark" : ""}"><meta charset="utf-8"><title>Secondary contrast</title><style>${css}</style><body><main style="padding:24px">${renderToString(createElement(Button, { variant: "secondary" }, "Secondary action"))}</main></body></html>`
     await view.navigate(`data:text/html;charset=utf-8,${encodeURIComponent(html)}`)
     await view.evaluate(`(() => { ${axe}; return true })()`)

@@ -26,7 +26,7 @@ export class Page {
     const view = new Bun.WebView({
       width: options.width ?? 1280,
       height: options.height ?? 720,
-      backend: { type: "chrome", url: false },
+      backend: { type: "chrome", url: false, argv: ["--no-sandbox"] },
       console(type, ...args) {
         if (type === "error") errors.push(args.map((value) => String(value)).join(" "))
       }

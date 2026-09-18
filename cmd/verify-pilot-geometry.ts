@@ -5,7 +5,11 @@ const base = process.env.CATALOG_URL ?? "http://localhost:6018"
 const output = path.resolve(".eval/0909-stylex-geometry")
 const reports = []
 try {
-  await using view = new Bun.WebView({ backend: { type: "chrome", url: false }, width: 1280, height: 900 })
+  await using view = new Bun.WebView({
+    backend: { type: "chrome", url: false, argv: ["--no-sandbox"] },
+    width: 1280,
+    height: 900
+  })
   await view.navigate(base)
   for (const theme of ["light", "dark"])
     for (const width of [390, 1280]) {

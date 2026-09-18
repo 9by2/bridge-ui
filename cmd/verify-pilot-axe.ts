@@ -19,7 +19,11 @@ const entries = [
 ] as const
 const reports = []
 try {
-  await using view = new Bun.WebView({ backend: { type: "chrome", url: false }, width: 390, height: 900 })
+  await using view = new Bun.WebView({
+    backend: { type: "chrome", url: false, argv: ["--no-sandbox"] },
+    width: 390,
+    height: 900
+  })
   await view.navigate(base)
   for (const theme of ["light", "dark"])
     for (const [name, selector] of entries) {

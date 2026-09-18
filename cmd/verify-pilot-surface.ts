@@ -64,7 +64,11 @@ try {
         const css =
           (await Bun.file(candidate ? path.join(temporary, "style.css") : "dist/style.css").text()) +
           (candidate ? await Bun.file("internal/pilot/adapter.css").text() : "")
-        await using view = new Bun.WebView({ backend: { type: "chrome", url: false }, width: 390, height: 200 })
+        await using view = new Bun.WebView({
+          backend: { type: "chrome", url: false, argv: ["--no-sandbox"] },
+          width: 390,
+          height: 200
+        })
         await view.navigate(
           `data:text/html;charset=utf-8,${encodeURIComponent(`<!doctype html><html class="${mode === "dark" ? "dark" : ""}"><meta charset="utf-8"><style>${css}</style><body>${renderToString(candidate ? createElement(Theme, { mode }, content) : content)}</body></html>`)}`
         )

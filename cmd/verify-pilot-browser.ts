@@ -56,7 +56,7 @@ try {
       await using view = new Bun.WebView({
         width,
         height: 700,
-        backend: { type: "chrome", url: false },
+        backend: { type: "chrome", url: false, argv: ["--no-sandbox"] },
         console(type, ...args) {
           if (type === "error") errors.push(args.map(String).join(" "))
         }

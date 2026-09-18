@@ -20,7 +20,11 @@ type CueReport = {
 
 try {
   for (const width of [390, 1280]) {
-    await using view = new Bun.WebView({ width, height: 480, backend: { type: "chrome", url: false } })
+    await using view = new Bun.WebView({
+      width,
+      height: 480,
+      backend: { type: "chrome", url: false, argv: ["--no-sandbox"] }
+    })
     await view.navigate("http://127.0.0.1:6007/style-x?preview&theme=cue#button/variant")
     await view.cdp("Emulation.setDeviceMetricsOverride", {
       width,

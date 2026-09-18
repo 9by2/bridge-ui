@@ -12,7 +12,7 @@ Required verification consumes a published multi-architecture catalog runtime by
 
 ### REQ-001: Immutable source
 
-Child CI must use `registry.fountain.sellsuki.com/service/bridge-ui-catalog-runner@sha256:887a2a4f53dd81fb6cada6384e5075e18a938ff07999d65a5115378e1a74ef8c`.
+Child CI must use `registry.fountain.sellsuki.com/service/bridge-ui-ci-verify-runtime@sha256:19eddc384cca8f39c94290a0c161ac4c837683418ed288849444ea4eeb750200`.
 
 **Acceptance:**
 
@@ -37,7 +37,7 @@ Runtime verification must pass when Docker selects either Linux amd64 or Linux a
 ## Schema / API
 
 ```text
-registry.fountain.sellsuki.com/service/bridge-ui-catalog-runner@sha256:887a2a4f53dd81fb6cada6384e5075e18a938ff07999d65a5115378e1a74ef8c
+registry.fountain.sellsuki.com/service/bridge-ui-ci-verify-runtime@sha256:19eddc384cca8f39c94290a0c161ac4c837683418ed288849444ea4eeb750200
 ```
 
 ## Examples

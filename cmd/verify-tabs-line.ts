@@ -7,7 +7,11 @@ const output = path.resolve(".eval/0914-tabs-line")
 
 await mkdir(output, { recursive: true })
 try {
-  await using view = new Bun.WebView({ backend: { type: "chrome", url: false }, width: 1280, height: 720 })
+  await using view = new Bun.WebView({
+    backend: { type: "chrome", url: false, argv: ["--no-sandbox"] },
+    width: 1280,
+    height: 720
+  })
   await view.navigate(`${base}/?preview&theme=dark#tabs/line`)
   await view.evaluate(
     `new Promise((resolve,reject)=>{const end=Date.now()+5000;function check(){if(document.querySelector('[data-variant="line"] [data-active]'))resolve(true);else if(Date.now()>end)reject(new Error('Tabs line readiness'));else requestAnimationFrame(check)}check()})`

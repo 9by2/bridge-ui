@@ -7,7 +7,11 @@ const base = process.env.CATALOG_URL ?? "http://127.0.0.1:6008"
 const families = (await readdir("internal/catalog/example")).sort()
 let caseCount = 0
 try {
-  await using view = new Bun.WebView({ backend: { type: "chrome", url: false }, width: 1280, height: 900 })
+  await using view = new Bun.WebView({
+    backend: { type: "chrome", url: false, argv: ["--no-sandbox"] },
+    width: 1280,
+    height: 900
+  })
   const wait = async (expression: string) => {
     await view.evaluate(
       `new Promise((resolve, reject) => { const end = Date.now() + 15000; function check() { if (${expression}) resolve(true); else if (Date.now() > end) reject(new Error('Preview readiness timeout')); else requestAnimationFrame(check); } check(); })`

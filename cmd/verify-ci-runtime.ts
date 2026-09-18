@@ -11,7 +11,11 @@ assert.equal(commandVersion(["node", "--version"]), "v22.22.0")
 assert.equal(["arm64", "x64"].includes(process.arch), true)
 
 try {
-  await using view = new Bun.WebView({ backend: { type: "chrome", url: false }, width: 10, height: 10 })
+  await using view = new Bun.WebView({
+    backend: { type: "chrome", url: false, argv: ["--no-sandbox"] },
+    width: 10,
+    height: 10
+  })
   await view.navigate("about:blank")
 } finally {
   Bun.WebView.closeAll()

@@ -19,7 +19,11 @@ try {
   console.log("case 1: tabs-link-contrast")
   // 1. Tabs `link` variant: active trigger text must clear WCAG AA contrast on light background.
   {
-    await using view = new Bun.WebView({ width: 1280, height: 640, backend: { type: "chrome", url: false } })
+    await using view = new Bun.WebView({
+      width: 1280,
+      height: 640,
+      backend: { type: "chrome", url: false, argv: ["--no-sandbox"] }
+    })
     await view.navigate("http://127.0.0.1:6007/?preview&theme=light#tabs/orientation-and-variant")
     await view.evaluate("document.fonts.ready")
     await waitFor(view, "!!document.querySelector('[data-slot=\"tabs-trigger\"][data-active]')")
@@ -38,7 +42,11 @@ try {
   console.log("case 2: receipt-structure")
   // 2. Receipt: dl must contain only dt/dd groups; caller detail note lives outside the dl.
   {
-    await using view = new Bun.WebView({ width: 640, height: 400, backend: { type: "chrome", url: false } })
+    await using view = new Bun.WebView({
+      width: 640,
+      height: 400,
+      backend: { type: "chrome", url: false, argv: ["--no-sandbox"] }
+    })
     await view.navigate("http://127.0.0.1:6007/?preview&theme=light#receipt/default")
     await waitFor(view, "!!document.querySelector('dl[data-slot=\"receipt\"]')")
     const structure = await view.evaluate<{ dlChildTags: string[]; hasDetailOutside: boolean }>(`(() => {
@@ -57,7 +65,11 @@ try {
   console.log("case 3: calendar-stable-day")
   // 3. Calendar: DEC-010 stable local YYYY-MM-DD day identity (not locale-dependent).
   {
-    await using view = new Bun.WebView({ width: 900, height: 700, backend: { type: "chrome", url: false } })
+    await using view = new Bun.WebView({
+      width: 900,
+      height: 700,
+      backend: { type: "chrome", url: false, argv: ["--no-sandbox"] }
+    })
     await view.navigate("http://127.0.0.1:6007/?preview#calendar/range-2")
     await waitFor(view, "document.querySelectorAll('[role=\"grid\"]').length === 2")
     const dayCell = await view.evaluate<string | null>(
@@ -73,7 +85,11 @@ try {
     const families = ["ticket-card", "ticket-cover", "product-item", "detail-item", "setting-item", "status-stamp"]
     for (const family of families) {
       console.log(`case 4: ${family}`)
-      await using view = new Bun.WebView({ width: 480, height: 420, backend: { type: "chrome", url: false } })
+      await using view = new Bun.WebView({
+        width: 480,
+        height: 420,
+        backend: { type: "chrome", url: false, argv: ["--no-sandbox"] }
+      })
       await view.navigate(`http://127.0.0.1:6007/?preview&theme=light#${family}/default`)
       await waitFor(view, "document.querySelector('.example-stage')?.children.length > 0")
       await Bun.write(path.join(output, `${family}-light.png`), await view.screenshot())

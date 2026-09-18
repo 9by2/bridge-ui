@@ -17,7 +17,11 @@ const component = renderToString(createElement(Theme, { mode: "dark" }, createEl
 const sentinel = '<div id="outside" style="font-family:serif;color:rgb(1, 2, 3);font-size:13px">Outside</div>'
 try {
   for (const order of ["before", "after"]) {
-    await using view = new Bun.WebView({ backend: { type: "chrome", url: false }, width: 390, height: 300 })
+    await using view = new Bun.WebView({
+      backend: { type: "chrome", url: false, argv: ["--no-sandbox"] },
+      width: 390,
+      height: 300
+    })
     const host = "#outside{letter-spacing:2px}"
     const styles =
       order === "before" ? `<style>${css}</style><style>${host}</style>` : `<style>${host}</style><style>${css}</style>`

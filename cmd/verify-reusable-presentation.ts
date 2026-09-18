@@ -29,7 +29,11 @@ const report = []
 
 try {
   for (const theme of ["light", "dark"]) {
-    await using view = new Bun.WebView({ width: 390, height: 900, backend: { type: "chrome", url: false } })
+    await using view = new Bun.WebView({
+      width: 390,
+      height: 900,
+      backend: { type: "chrome", url: false, argv: ["--no-sandbox"] }
+    })
     await view.navigate("about:blank")
     await view.cdp("Page.navigate", { url: `${baseUrl}?preview&theme=${theme}&motion=reduced#data-state/default` })
     await ready(view, '[data-slot="data-state"]')
@@ -78,7 +82,11 @@ try {
     report.push({ theme, dataState, timeline, table })
   }
 
-  await using page = new Bun.WebView({ width: 390, height: 700, backend: { type: "chrome", url: false } })
+  await using page = new Bun.WebView({
+    width: 390,
+    height: 700,
+    backend: { type: "chrome", url: false, argv: ["--no-sandbox"] }
+  })
   await page.navigate("about:blank")
   await page.cdp("Page.navigate", { url: `${baseUrl}?preview&theme=light#page/default` })
   await ready(page, '[data-slot="page-toolbar"]')
