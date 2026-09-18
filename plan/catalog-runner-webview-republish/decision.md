@@ -46,3 +46,11 @@
 **GIVEN** the fixed image/`--no-sandbox` change let CI's `source` job progress past `before_script` for the first time and reach `bun typecheck`, which then failed with `Cannot find module 'next-themes'` in `app/component/shadcn/sonner.tsx` and `internal/pilot/sonner.tsx`
 **WHEN** `next-themes` was never declared in `package.json`/`bun.lock` — it only resolved locally because of a stray, uncommitted `node_modules/next-themes` left over from a prior shadcn CLI generation, invisible to `bun install --frozen-lockfile` in CI
 **THEN** add `next-themes@^0.4.6` to `dependencies` in `package.json` and run `bun install` to update `bun.lock`; this is a pre-existing bug unrelated to the webview/catalog-runner fix, only surfaced because CI never got this far before.
+
+---
+
+### DEC-006: Add missing `axe-core` dependency
+
+**GIVEN** the `source`/`coverage` fixes let CI reach the `catalog` job for the first time since the webview migration, which then failed 383/522 tests with `Cannot find module 'axe-core/axe.min.js' from test/browser/support/axe.ts`
+**WHEN** `axe-core` was never declared in `package.json`/`bun.lock` — it resolved locally only via a leftover transitive install from the removed `@axe-core/playwright` package (installed 4.13.0, present in `node_modules` but absent from the lockfile)
+**THEN** add `axe-core@^4.13.0` to `devDependencies` (dev-only: used exclusively by `test/browser/support/axe.ts` and `cmd/verify-*.ts` scripts, never shipped in package output) and run `bun install`; re-ran the full local `bun catalog:test` suite afterward — 522/522 pass, confirming this was the last blocker and the single earlier `dropdown-menu` failure was a transient flake, not a regression.

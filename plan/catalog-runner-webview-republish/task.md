@@ -38,5 +38,7 @@ Implementation order matters — complete top to bottom.
 - [x] All specs in `spec/` reviewed against implementation
       38|- [x] Push commit to `main` (9c9b2ccd -> next commit); pipeline #59395/#59396 got past `before_script` for the first time, surfacing a separate pre-existing `next-themes` module-resolution bug at `bun typecheck`.
 - [x] Add `next-themes@^0.4.6` to `package.json` dependencies (was resolving only via a stray uncommitted `node_modules/next-themes`, absent from `bun.lock`); `bun install`; re-verify `bun fmt`/`lint`/`typecheck`/`boundary`/`build`/`test`/`coverage:brand`/`verify:package`/`verify:tree-shaking` all clean.
-- [ ] Push follow-up commit; confirm GitLab pipeline `source`/`coverage`/`catalog` jobs pass.
+- [x] Push follow-up commit; pipeline #59400/#59401 `source` and `coverage` jobs went green (confirms image republish + `--no-sandbox` + `next-themes` fixes all correct), but `catalog` job failed 383/522 with `Cannot find module 'axe-core/axe.min.js'`.
+- [x] Add `axe-core@^4.13.0` to `package.json` devDependencies (leftover transitive install from removed `@axe-core/playwright`, absent from `bun.lock`); `bun install`; re-verify all local gates; rerun full local `bun catalog:test` — 522/522 pass.
+- [ ] Push follow-up commit; confirm GitLab pipeline `source`/`coverage`/`catalog` jobs all pass.
 - [ ] Archive proposal per plan/PROPOSAL.md
