@@ -10,6 +10,7 @@ import {
   ProductItemAction,
   ProductItemContent,
   ProductItemMedia,
+  QrCode,
   QuantityStepper,
   Receipt,
   ReceiptDetail,
@@ -185,4 +186,26 @@ test("sticky alert falls back to an inline top when no offset is given", () => {
   const { container } = render(<StickyAlert>No offset</StickyAlert>)
   const node = container.querySelector("[data-slot=sticky-alert]") as HTMLElement | null
   expect(node?.style.top).toBe("")
+})
+
+test("qr code renders an accessible svg encoding the caller value with brand-safe defaults", () => {
+  const { container } = render(<QrCode value="https://example.com/ticket/abc" title="Ticket QR" />)
+  const svg = container.querySelector("[data-slot=qr-code]")
+  expect(svg?.tagName).toBe("svg")
+  expect(svg?.querySelector("title")?.textContent).toBe("Ticket QR")
+  expect(svg?.getAttribute("width")).toBe("128")
+  expect(svg?.getAttribute("height")).toBe("128")
+  const paths = svg?.querySelectorAll("path")
+  expect(paths?.[0]?.getAttribute("fill")).toBe("transparent")
+  expect(paths?.[1]?.getAttribute("fill")).toBe("currentColor")
+})
+
+test("qr code forwards size, level, and color overrides", () => {
+  const { container } = render(
+    <QrCode value="123" size={64} level="L" bgColor="white" fgColor="black" className="caller-class" />
+  )
+  const svg = container.querySelector("[data-slot=qr-code]")
+  expect(svg?.getAttribute("width")).toBe("64")
+  expect(svg?.getAttribute("height")).toBe("64")
+  expect(svg?.getAttribute("class")).toContain("caller-class")
 })

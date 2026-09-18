@@ -6,6 +6,7 @@ import { afterEach, expect, test } from "vitest"
 import * as Root from "../../app"
 import * as DetailItem from "../../app/component/brand/stylex/detail-item"
 import * as ProductItem from "../../app/component/brand/stylex/product-item"
+import * as QrCode from "../../app/component/brand/stylex/qr-code"
 import * as Receipt from "../../app/component/brand/stylex/receipt"
 import * as ResponsiveImage from "../../app/component/brand/stylex/responsive-image"
 import * as SettingItem from "../../app/component/brand/stylex/setting-item"
@@ -29,7 +30,8 @@ test("new presentation families have root and direct exports", () => {
     ResponsiveImage,
     ProductItem,
     TicketCover,
-    TicketCard
+    TicketCard,
+    QrCode
   ])
     expect(Object.keys(value).length).toBeGreaterThan(0)
   for (const name of [
@@ -42,7 +44,8 @@ test("new presentation families have root and direct exports", () => {
     "ResponsiveImage",
     "ProductItem",
     "TicketCover",
-    "TicketCard"
+    "TicketCard",
+    "QrCode"
   ])
     expect(name in Root).toBe(true)
 })
@@ -58,7 +61,8 @@ test("each new component source excludes consumer and i18n imports", async () =>
     "responsive-image",
     "product-item",
     "ticket-cover",
-    "ticket-card"
+    "ticket-card",
+    "qr-code"
   ]) {
     const source = await readFile(`app/component/brand/stylex/${name}.tsx`, "utf8")
     expect(source).not.toMatch(/from\s+["'](?:@cue\/web|@bridge\/web|[^"']*i18n)/)

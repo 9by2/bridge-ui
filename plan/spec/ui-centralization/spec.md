@@ -117,7 +117,7 @@ type TicketCardProps = React.ComponentProps<"article"> & {
 
 ## Phase 3 current implementation
 
-Receipt, StatusStamp, DetailItem, SettingItem, StickyAlert, SuccessBurst, ResponsiveImage, ProductItem/QuantityStepper, TicketCover, and TicketCard are implemented as StyleX presentation components with root and direct exports. Every family has a `default.tsx` catalog example, and the text-sensitive families (Receipt, StatusStamp, DetailItem, SettingItem, StickyAlert) additionally have a `states.tsx` example covering long copy, Thai copy, and tone/disabled variants. Packed tarball, client, and SSR verification cover all Phase 3 exports (`bun cmd/verify-package.ts`, 125 installed public entries verified).
+Receipt, StatusStamp, DetailItem, SettingItem, StickyAlert, SuccessBurst, ResponsiveImage, ProductItem/QuantityStepper, TicketCover, TicketCard, and QrCode are implemented as StyleX presentation components with root and direct exports. Every family has a `default.tsx` catalog example, and the text-sensitive families (Receipt, StatusStamp, DetailItem, SettingItem, StickyAlert) additionally have a `states.tsx` example covering long copy, Thai copy, and tone/disabled variants. QrCode wraps `react-qr-code` (the same library Cue uses for PromptPay and ticket QR) with brand-safe defaults (`bgColor="transparent"`, `fgColor="currentColor"`, `level="H"`); the underlying primitive derives its own `viewBox` from the QR module grid, so `size` is the caller-facing rendered-dimension control, not `viewBox`. Packed tarball, client, and SSR verification cover all Phase 3 exports (`bun cmd/verify-package.ts`).
 
 ## Non-Goal
 
