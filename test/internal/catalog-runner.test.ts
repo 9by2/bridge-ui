@@ -21,6 +21,7 @@ test("catalog CI uses a prebuilt version-pinned browser runtime", async () => {
   expect(child).not.toContain("playwright install")
   expect(child).not.toContain("playwright-report/")
   expect(child).toContain("- bun catalog:test")
+  expect(child).toMatch(/catalog:\n(?:.*\n)*?\s*timeout:\s*30m/)
   expect(dockerfile).not.toContain("playwright")
   expect(dockerfile).toContain("apt-get install -y --no-install-recommends git chromium")
   expect(dockerfile).toContain("FROM oven/bun:1.4.1")

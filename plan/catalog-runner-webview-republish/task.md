@@ -40,5 +40,7 @@ Implementation order matters — complete top to bottom.
 - [x] Add `next-themes@^0.4.6` to `package.json` dependencies (was resolving only via a stray uncommitted `node_modules/next-themes`, absent from `bun.lock`); `bun install`; re-verify `bun fmt`/`lint`/`typecheck`/`boundary`/`build`/`test`/`coverage:brand`/`verify:package`/`verify:tree-shaking` all clean.
 - [x] Push follow-up commit; pipeline #59400/#59401 `source` and `coverage` jobs went green (confirms image republish + `--no-sandbox` + `next-themes` fixes all correct), but `catalog` job failed 383/522 with `Cannot find module 'axe-core/axe.min.js'`.
 - [x] Add `axe-core@^4.13.0` to `package.json` devDependencies (leftover transitive install from removed `@axe-core/playwright`, absent from `bun.lock`); `bun install`; re-verify all local gates; rerun full local `bun catalog:test` — 522/522 pass.
+- [x] Push follow-up commit; pipeline #59413/#59414 `source` and `coverage` jobs green again, but `catalog` job hit GitLab's default 15-minute script timeout mid-run (real CI runs each test ~1.8-2.5x slower than local; full 522-test suite needs ~15-18min there).
+- [x] Add `timeout: 30m` to the `catalog` job in `deployment/.gitlab-ci.yml`; add a regression test asserting the timeout is present; re-verify all local gates.
 - [ ] Push follow-up commit; confirm GitLab pipeline `source`/`coverage`/`catalog` jobs all pass.
 - [ ] Archive proposal per plan/PROPOSAL.md

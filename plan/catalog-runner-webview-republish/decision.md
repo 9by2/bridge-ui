@@ -54,3 +54,11 @@
 **GIVEN** the `source`/`coverage` fixes let CI reach the `catalog` job for the first time since the webview migration, which then failed 383/522 tests with `Cannot find module 'axe-core/axe.min.js' from test/browser/support/axe.ts`
 **WHEN** `axe-core` was never declared in `package.json`/`bun.lock` — it resolved locally only via a leftover transitive install from the removed `@axe-core/playwright` package (installed 4.13.0, present in `node_modules` but absent from the lockfile)
 **THEN** add `axe-core@^4.13.0` to `devDependencies` (dev-only: used exclusively by `test/browser/support/axe.ts` and `cmd/verify-*.ts` scripts, never shipped in package output) and run `bun install`; re-ran the full local `bun catalog:test` suite afterward — 522/522 pass, confirming this was the last blocker and the single earlier `dropdown-menu` failure was a transient flake, not a regression.
+
+---
+
+### DEC-007: Add explicit 30-minute timeout to the `catalog` CI job
+
+**GIVEN** the `axe-core` fix let the `catalog` job run all 522 tests in real GitLab CI for the first time, and CI's shared runner executes each test at roughly 1.8–2.5s (vs ~1s locally), so the full suite needs ~15–18 minutes there — the job hit GitLab's default 15-minute script timeout mid-run (`execution took longer than 15m0s`) on an otherwise-passing test (`ts-chart/25-calendar-heatmap`, itself hit by the timeout cutting off mid-assertion, not a real failure)
+**WHEN** `deployment/.gitlab-ci.yml`'s `catalog` job had no explicit `timeout:` override, so it inherited the GitLab default
+**THEN** add `timeout: 30m` to the `catalog` job (2x headroom over the observed ~15–18 minute real runtime) and lock it in with a regression test in `test/internal/catalog-runner.test.ts`.

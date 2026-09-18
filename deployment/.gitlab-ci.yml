@@ -49,6 +49,7 @@ catalog:
   stage: verify
   rules:
     - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+  timeout: 30m
   script:
     - bun catalog:test
   artifacts:
