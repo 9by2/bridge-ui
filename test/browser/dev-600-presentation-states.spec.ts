@@ -102,14 +102,14 @@ test("responsive image renders the fallback source below the configured breakpoi
   expect(await image.getAttribute("src")).toContain("placehold.co")
 })
 
-test("ticket cover media masks with the ticket-notch silhouette and keeps a locked 16/9 ratio", async ({ page }) => {
+test("ticket cover masks with the ticket-notch silhouette and keeps a locked 16/9 ratio", async ({ page }) => {
   for (const width of [320, 480, 720, 960]) {
     await page.setViewportSize({ width, height: 700 })
     await page.goto("/?preview&theme=light#ticket-cover/default")
-    const media = page.locator('[data-slot="ticket-cover-media"]')
-    await expect(media).toBeVisible()
+    const frame = page.locator('[data-slot="ticket-cover"]')
+    await expect(frame).toBeVisible()
 
-    const computed = await media.evaluate((node) => {
+    const computed = await frame.evaluate((node) => {
       const style = getComputedStyle(node)
       const rect = node.getBoundingClientRect()
       return {
@@ -133,38 +133,34 @@ test("ticket cover media masks with the ticket-notch silhouette and keeps a lock
   }
 })
 
-test("ticket cover has no border/outline, no wavy scallop, and fills its media with a covering image", async ({
-  page
-}) => {
+test("ticket cover has no border/outline/radius and fills the frame with a covering image", async ({ page }) => {
   await page.goto("/?preview&theme=light#ticket-cover/default")
 
-  const root = page.locator('[data-slot="ticket-cover"]')
-  await expect(root).toBeVisible()
-  const rootStyle = await root.evaluate((node) => {
+  const frame = page.locator('[data-slot="ticket-cover"]')
+  await expect(frame).toBeVisible()
+  const frameStyle = await frame.evaluate((node) => {
     const style = getComputedStyle(node)
-    return { boxShadow: style.boxShadow, outlineStyle: style.outlineStyle, borderWidth: style.borderWidth }
+    return {
+      boxShadow: style.boxShadow,
+      outlineStyle: style.outlineStyle,
+      borderWidth: style.borderWidth,
+      borderRadius: style.borderRadius
+    }
   })
-  expect(rootStyle.boxShadow).toBe("none")
-  expect(rootStyle.outlineStyle).toBe("none")
-  expect(rootStyle.borderWidth).toBe("0px")
+  expect(frameStyle.boxShadow).toBe("none")
+  expect(frameStyle.outlineStyle).toBe("none")
+  expect(frameStyle.borderWidth).toBe("0px")
+  expect(frameStyle.borderRadius).toBe("0px")
 
-  const body = page.locator('[data-slot="ticket-cover-body"]')
-  const scallop = await body.evaluate((node) => {
-    const before = getComputedStyle(node, "::before")
-    return before.content
-  })
-  // No pseudo-element content means the wavy scallop overlay was removed.
-  expect(scallop === "none" || scallop === '""' || scallop === "").toBe(true)
-
-  const image = page.locator('[data-slot="ticket-cover-media"] img')
+  const image = page.locator('[data-slot="ticket-cover"] img')
   await expect(image).toBeVisible()
   const imageBox = await image.boundingBox()
-  const mediaBox = await page.locator('[data-slot="ticket-cover-media"]').boundingBox()
+  const frameBox = await frame.boundingBox()
   expect(imageBox).not.toBeNull()
-  expect(mediaBox).not.toBeNull()
-  if (imageBox && mediaBox) {
-    expect(imageBox.width).toBeCloseTo(mediaBox.width, 0)
-    expect(imageBox.height).toBeCloseTo(mediaBox.height, 0)
+  expect(frameBox).not.toBeNull()
+  if (imageBox && frameBox) {
+    expect(imageBox.width).toBeCloseTo(frameBox.width, 0)
+    expect(imageBox.height).toBeCloseTo(frameBox.height, 0)
   }
   const objectFit = await image.evaluate((node) => getComputedStyle(node).objectFit)
   expect(objectFit).toBe("cover")

@@ -123,8 +123,8 @@ test("responsive image forwards its native ref", () => {
 test("ticket cover and product item retain caller slots", () => {
   render(
     <>
-      <TicketCover media={<span>Media</span>} metadata={<span>Metadata</span>}>
-        <span>Cover content</span>
+      <TicketCover>
+        <span>Cover media</span>
       </TicketCover>
       <ProductItem>
         <ProductItemMedia>
@@ -139,17 +139,10 @@ test("ticket cover and product item retain caller slots", () => {
       </ProductItem>
     </>
   )
-  expect(screen.getByText("Media").closest("[data-slot=ticket-cover-media]")).not.toBeNull()
+  expect(screen.getByText("Cover media").closest("[data-slot=ticket-cover]")).not.toBeNull()
   expect(screen.getByText("Product media").closest("[data-slot=product-item-media]")).not.toBeNull()
   expect(screen.getByText("Product").closest("[data-slot=product-item-content]")).not.toBeNull()
   expect(screen.getByText("Product action").closest("[data-slot=product-item-action]")).not.toBeNull()
-})
-
-test("ticket cover renders without optional media or metadata slots", () => {
-  const { container } = render(<TicketCover>Bare content</TicketCover>)
-  expect(container.querySelector("[data-slot=ticket-cover-media]")).toBeNull()
-  expect(container.querySelector("[data-slot=ticket-cover-metadata]")).toBeNull()
-  expect(container.querySelector("[data-slot=ticket-cover-body]")).not.toBeNull()
 })
 
 test("quantity stepper without a max caps only at the minimum", () => {

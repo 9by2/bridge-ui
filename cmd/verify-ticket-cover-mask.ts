@@ -3,8 +3,8 @@ import { mkdir } from "node:fs/promises"
 import path from "node:path"
 
 /**
- * Visual + computed-style evidence that TicketCover's media slot masks with the
- * exact ticket-notch SVG the user supplied, and keeps a locked 16/9 ratio at
+ * Visual + computed-style evidence that TicketCover masks with the exact
+ * ticket-notch SVG the user supplied, and keeps a locked 16/9 ratio at
  * multiple widths. Run against a served catalog-dist on :6007.
  */
 const output = path.resolve(".eval/0918-ticket-cover-mask")
@@ -25,19 +25,19 @@ try {
     console.log(`case: ticket-cover-mask-${width}`)
     await using view = new Bun.WebView({
       width,
-      height: Math.round((width * 9) / 16) + 260,
+      height: Math.round((width * 9) / 16) + 80,
       backend: { type: "chrome", url: false }
     })
     await view.navigate("http://127.0.0.1:6007/?preview&theme=light#ticket-cover/default")
     await view.evaluate("document.fonts.ready")
-    await waitFor(view, "!!document.querySelector('[data-slot=\"ticket-cover-media\"]')")
+    await waitFor(view, "!!document.querySelector('[data-slot=\"ticket-cover\"]')")
     const computed = await view.evaluate<{
       maskImage: string
       maskSize: string
       maskRepeat: string
       ratio: number
     }>(`(() => {
-      const media = document.querySelector('[data-slot="ticket-cover-media"]')
+      const media = document.querySelector('[data-slot="ticket-cover"]')
       const style = getComputedStyle(media)
       const rect = media.getBoundingClientRect()
       return {

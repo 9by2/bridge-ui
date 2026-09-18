@@ -151,8 +151,8 @@
   height: 100%;
   object-fit: cover;
 }
-/* DEC-013: caller-owned media element; forced full-bleed cover fit cannot be set from inside the opaque `media` slot. */
-[data-pilot-theme] [data-slot="ticket-cover-media"] img {
+/* DEC-013: caller-owned media element; forced full-bleed cover fit cannot be set from inside the opaque ticket-cover frame. */
+[data-pilot-theme] [data-slot="ticket-cover"] img {
   width: 100%;
   height: 100%;
   object-fit: cover;
