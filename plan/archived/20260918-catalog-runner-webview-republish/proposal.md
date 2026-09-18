@@ -35,7 +35,7 @@ A second, independent bug surfaced during republish verification: `deployment/Do
 - [x] `test/internal/catalog-runner.test.ts`, `plan/spec/catalog-ci-image/spec.md`, `README.md` updated to the new image name and digest; `bun test test/internal/catalog-runner.test.ts` passes.
 - [x] Every `Bun.WebView` chrome backend call site passes `argv: ["--no-sandbox"]`; locked in by a new regression test.
 - [x] `bun cmd/verify-ci-runtime.ts` passes locally against the new image on `linux/amd64` and `linux/arm64`.
-- [ ] GitLab pipeline triggered from `main` (or a verification push) shows `source`, `coverage`, and `catalog` jobs passing.
+- [x] GitLab pipeline triggered from `main` (pipeline #59439) shows `source`, `coverage`, and `catalog` jobs all passing.
 
 ## Specs
 
