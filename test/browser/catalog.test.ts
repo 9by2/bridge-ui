@@ -82,6 +82,13 @@ for (const name of readdirSync(root)) {
         await pollUntil(() => menuButton.count())
         await menuButton.click()
         await page.getByRole("menuitem", { name: "Default", exact: true }).focus()
+        // The popup has a 100ms entrance animation (opacity 0 -> 1). Sampling axe's
+        // color-contrast check mid-animation intermittently computes a blended,
+        // under-threshold contrast for the destructive item's red text against the
+        // white popup background — flaky, not a real violation. Wait for every
+        // running animation to settle first, matching the same pattern used by
+        // cmd/verify-secondary-contrast.ts for pseudo-state contrast checks.
+        await page.evaluate(`() => Promise.allSettled(document.getAnimations().map((a) => a.finished))`)
       }
       const result = await runAxe(page.view)
       expect(result.violations).toEqual([])

@@ -62,3 +62,11 @@
 **GIVEN** the `axe-core` fix let the `catalog` job run all 522 tests in real GitLab CI for the first time, and CI's shared runner executes each test at roughly 1.8–2.5s (vs ~1s locally), so the full suite needs ~15–18 minutes there — the job hit GitLab's default 15-minute script timeout mid-run (`execution took longer than 15m0s`) on an otherwise-passing test (`ts-chart/25-calendar-heatmap`, itself hit by the timeout cutting off mid-assertion, not a real failure)
 **WHEN** `deployment/.gitlab-ci.yml`'s `catalog` job had no explicit `timeout:` override, so it inherited the GitLab default
 **THEN** add `timeout: 30m` to the `catalog` job (2x headroom over the observed ~15–18 minute real runtime) and lock it in with a regression test in `test/internal/catalog-runner.test.ts`.
+
+---
+
+### DEC-008: Wait for the entrance animation before running axe on `dropdown-menu/item-variant`
+
+**GIVEN** with the timeout fixed the `catalog` job reliably completes and reproduces a real, intermittent flake: `dropdown-menu/item-variant renders accessibly` occasionally reports a WCAG AA color-contrast violation (`3.91:1 < 4.5:1`) on the destructive menu item's red text — reproduced locally at roughly 1-in-8 across repeated runs
+**WHEN** `app/component/brand/stylex/dropdown-menu.tsx`'s popup has a 100ms `opacity: 0 -> 1` entrance animation (`animationName: enter`), and the test clicked the trigger then immediately ran `runAxe()` without waiting for the animation to settle — axe occasionally samples the DOM mid-fade, where the destructive item's red text is blended toward transparent and its computed contrast against the white popup background drops below threshold; this is a test-timing artifact, not a real accessibility regression (DEC-018 already fixed the actual dark-mode contrast token)
+**THEN** await `Promise.allSettled(document.getAnimations().map((a) => a.finished))` after opening the menu and before running axe, mirroring the existing pattern in `cmd/verify-secondary-contrast.ts` for pseudo-state contrast checks. Verified 15/15 consecutive local runs pass after the fix (previously flaky roughly 1-in-8).
