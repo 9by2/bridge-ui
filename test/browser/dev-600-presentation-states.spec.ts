@@ -101,3 +101,71 @@ test("responsive image renders the fallback source below the configured breakpoi
   await expect(image).toBeVisible()
   expect(await image.getAttribute("src")).toContain("placehold.co")
 })
+
+test("ticket cover media masks with the ticket-notch silhouette and keeps a locked 16/9 ratio", async ({ page }) => {
+  for (const width of [320, 480, 720, 960]) {
+    await page.setViewportSize({ width, height: 700 })
+    await page.goto("/?preview&theme=light#ticket-cover/default")
+    const media = page.locator('[data-slot="ticket-cover-media"]')
+    await expect(media).toBeVisible()
+
+    const computed = await media.evaluate((node) => {
+      const style = getComputedStyle(node)
+      const rect = node.getBoundingClientRect()
+      return {
+        maskImage: style.maskImage !== "none" ? style.maskImage : style.webkitMaskImage,
+        maskSize: style.maskSize !== "auto" ? style.maskSize : style.webkitMaskSize,
+        maskRepeat: style.maskRepeat || style.webkitMaskRepeat,
+        maskPosition: style.maskPosition || style.webkitMaskPosition,
+        width: rect.width,
+        height: rect.height
+      }
+    })
+
+    expect(computed.maskImage).toContain("data:image/svg+xml")
+    expect(computed.maskImage).toContain("svg")
+    expect(computed.maskSize).toMatch(/100%\s+100%/)
+    expect(computed.maskRepeat).toContain("no-repeat")
+    // Browsers resolve the `center` keyword to its computed "50% 50%" form.
+    expect(computed.maskPosition).toMatch(/50%\s+50%|center/)
+    // 16/9 ratio must hold at every tested width, not just the default preview width.
+    expect(computed.width / computed.height).toBeCloseTo(16 / 9, 1)
+  }
+})
+
+test("ticket cover has no border/outline, no wavy scallop, and fills its media with a covering image", async ({
+  page
+}) => {
+  await page.goto("/?preview&theme=light#ticket-cover/default")
+
+  const root = page.locator('[data-slot="ticket-cover"]')
+  await expect(root).toBeVisible()
+  const rootStyle = await root.evaluate((node) => {
+    const style = getComputedStyle(node)
+    return { boxShadow: style.boxShadow, outlineStyle: style.outlineStyle, borderWidth: style.borderWidth }
+  })
+  expect(rootStyle.boxShadow).toBe("none")
+  expect(rootStyle.outlineStyle).toBe("none")
+  expect(rootStyle.borderWidth).toBe("0px")
+
+  const body = page.locator('[data-slot="ticket-cover-body"]')
+  const scallop = await body.evaluate((node) => {
+    const before = getComputedStyle(node, "::before")
+    return before.content
+  })
+  // No pseudo-element content means the wavy scallop overlay was removed.
+  expect(scallop === "none" || scallop === '""' || scallop === "").toBe(true)
+
+  const image = page.locator('[data-slot="ticket-cover-media"] img')
+  await expect(image).toBeVisible()
+  const imageBox = await image.boundingBox()
+  const mediaBox = await page.locator('[data-slot="ticket-cover-media"]').boundingBox()
+  expect(imageBox).not.toBeNull()
+  expect(mediaBox).not.toBeNull()
+  if (imageBox && mediaBox) {
+    expect(imageBox.width).toBeCloseTo(mediaBox.width, 0)
+    expect(imageBox.height).toBeCloseTo(mediaBox.height, 0)
+  }
+  const objectFit = await image.evaluate((node) => getComputedStyle(node).objectFit)
+  expect(objectFit).toBe("cover")
+})
