@@ -9,10 +9,12 @@ const commandVersion = (command: string[]) => {
 assert.equal(Bun.version, "1.4.1")
 assert.equal(commandVersion(["node", "--version"]), "v22.22.0")
 assert.equal(["arm64", "x64"].includes(process.arch), true)
-assert.equal(process.env.PLAYWRIGHT_BROWSERS_PATH, "/ms-playwright")
-assert.equal(await Bun.file("/ms-playwright/chromium-1243/INSTALLATION_COMPLETE").exists(), true)
-assert.equal(await Bun.file("/ms-playwright/chromium_headless_shell-1243/INSTALLATION_COMPLETE").exists(), true)
-const playwright = await Bun.file("node_modules/@playwright/test/package.json").json()
-assert.equal(playwright.version, "1.63.0")
 
-console.log("Verified Bun, Node and Playwright runtime")
+try {
+  await using view = new Bun.WebView({ backend: { type: "chrome", url: false }, width: 10, height: 10 })
+  await view.navigate("about:blank")
+} finally {
+  Bun.WebView.closeAll()
+}
+
+console.log("Verified Bun, Node and Chrome runtime")

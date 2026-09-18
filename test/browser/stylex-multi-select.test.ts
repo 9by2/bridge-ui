@@ -1,0 +1,20 @@
+import { expect, openPage, pollUntil, test } from "./support"
+
+test("multi select registers label and retains selection across reopen", async () => {
+  await using page = await openPage()
+  await page.goto("/style-x?preview#multi-select/default")
+  const trigger = page.getByRole("combobox", { name: "Select teams" })
+  await pollUntil(() => trigger.count())
+  await expect(trigger).toContainText("Design")
+  await trigger.focus()
+  await page.pressKey("Enter")
+  await page.getByRole("option", { name: "Design", exact: true }).click()
+  await page.pressKey("Escape")
+  await expect(trigger).not.toContainText("Design")
+  await expect(trigger).toContainText("Engineering")
+  await trigger.focus()
+  await page.pressKey("Enter")
+  await page.getByRole("option", { name: "Design", exact: true }).click()
+  await page.pressKey("Escape")
+  await expect(trigger).toContainText("Design")
+})

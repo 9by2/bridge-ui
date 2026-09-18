@@ -3,26 +3,10 @@ import { expect, test } from "bun:test"
 const catalogImage =
   "registry.fountain.sellsuki.com/service/bridge-ui-catalog-runner@sha256:887a2a4f53dd81fb6cada6384e5075e18a938ff07999d65a5115378e1a74ef8c"
 
-for (const ci of ["true", ""]) {
-  test(`catalog runner preserves the gate with CI=${ci || "unset"}`, () => {
-    const result = Bun.spawnSync(
-      [
-        process.execPath,
-        "-e",
-        'import config from "./playwright.config"; console.log(JSON.stringify({ workers: config.workers, timeout: config.timeout, retries: config.retries ?? 0, expectTimeout: config.expect?.timeout ?? 5000, reporter: config.reporter }))'
-      ],
-      { env: { ...process.env, CI: ci }, stdout: "pipe", stderr: "pipe" }
-    )
-    expect(result.exitCode).toBe(0)
-    expect(JSON.parse(result.stdout.toString())).toEqual({
-      workers: ci ? 1 : 4,
-      timeout: 30000,
-      retries: 0,
-      expectTimeout: 5000,
-      reporter: [["list"], ["html", { open: "never" }]]
-    })
-  })
-}
+test("catalog:test script runs the Bun.WebView orchestrator", async () => {
+  const packageJson = await Bun.file("package.json").json()
+  expect(packageJson.scripts["catalog:test"]).toBe("bun cmd/run-catalog-test.ts")
+})
 
 test("catalog CI uses a prebuilt version-pinned browser runtime", async () => {
   const root = await Bun.file(".gitlab-ci.yml").text()
@@ -35,9 +19,33 @@ test("catalog CI uses a prebuilt version-pinned browser runtime", async () => {
   expect(child).toContain("image: $CATALOG_IMAGE")
   expect(child).not.toContain("cmd/install-ci-node.sh")
   expect(child).not.toContain("playwright install")
+  expect(child).not.toContain("playwright-report/")
   expect(child).toContain("- bun catalog:test")
-  expect(child).toContain("- playwright-report/")
-  expect(dockerfile).toContain("bunx playwright@1.63.0 install --with-deps chromium")
+  expect(dockerfile).not.toContain("playwright")
+  expect(dockerfile).toContain("apt-get install -y --no-install-recommends git chromium")
   expect(dockerfile).toContain("FROM oven/bun:1.4.1")
   expect(dockerfile).toContain("FROM node:22.22.0-bookworm-slim")
+})
+
+test("no Playwright dependency or runtime usage remains", async () => {
+  const packageJson = await Bun.file("package.json").text()
+  expect(packageJson).not.toContain("playwright")
+
+  const result = Bun.spawnSync(["grep", "-rli", "playwright", "app", "shared", "internal", "cmd", "test"], {
+    stdout: "pipe",
+    stderr: "pipe"
+  })
+  const matches = result.stdout
+    .toString()
+    .split("\n")
+    .filter(Boolean)
+    // Remaining hits are prose: the harness's own doc comments cross-reference Playwright's
+    // prior API for readers migrating from it, and historical evaluation READMEs describe
+    // what was true when that evidence was generated. Neither is a dependency or runtime call.
+    .filter((file) => file !== "test/internal/catalog-runner.test.ts")
+  for (const file of matches) {
+    const text = await Bun.file(file).text()
+    const hasImportOrRequire = /(?:from\s+["']|require\(["'])@?playwright/i.test(text)
+    expect(hasImportOrRequire).toBe(false)
+  }
 })

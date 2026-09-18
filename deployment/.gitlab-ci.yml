@@ -54,8 +54,6 @@ catalog:
   artifacts:
     when: always
     paths:
-      - test-results/
-      - playwright-report/
       - catalog-dist/
     expire_in: 7 days
 

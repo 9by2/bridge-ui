@@ -2,10 +2,8 @@ FROM node:22.22.0-bookworm-slim AS node
 FROM oven/bun:1.4.1
 
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
-ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 RUN apt-get update -qq \
-  && apt-get install -y --no-install-recommends git \
-  && bunx playwright@1.63.0 install --with-deps chromium \
+  && apt-get install -y --no-install-recommends git chromium \
   && rm -rf /var/lib/apt/lists/* /root/.bun/install/cache
 
 WORKDIR /workspace

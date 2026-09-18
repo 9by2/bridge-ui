@@ -111,7 +111,7 @@ Do not implement any consumer migration until all foundation gate pass.
 ### 5. Quality
 
 - package runtime coverage (`app/` and `shared/`) is at least 90%; generated `app/component/shadcn/**` and the export-only `app/index.ts` barrel are excluded from the percentage, not catalog, accessibility or package verification;
-- command and catalog verification remain separate required CI gate through Bun test, boundary, packed client/SSR, tree-shaking and Playwright; no repository-wide percentage is claimed;
+- command and catalog verification remain separate required CI gate through Bun test, boundary, packed client/SSR, tree-shaking and Bun.WebView; no repository-wide percentage is claimed;
 - every non-Shadcn component has 100% statement, branch, function, and line coverage;
 - lint, typecheck, test, component catalog, visual, package, client, and SSR build pass.
 

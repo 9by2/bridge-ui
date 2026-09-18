@@ -1,0 +1,43 @@
+import { expect, openPage, pollUntil, test } from "./support"
+
+test("StyleX route retains catalog inventory and candidate iframe", async () => {
+  await using page = await openPage()
+  await page.goto("/#button/default")
+  const navigation = page.getByRole("navigation", { name: "Component", exact: true })
+  await pollUntil(() => navigation.count())
+  const baseline = await navigation.locator("a").allTextContents()
+  const preview = page.getByRole("link", { name: "StyleX preview", exact: true })
+  await pollUntil(() => preview.count())
+  await preview.click()
+  await expect(page).toHaveURL(/\/style-x.*#button\/default/)
+  await expect(page.getByRole("status")).toContainText("Private candidate")
+  expect(await navigation.locator("a").allTextContents()).toEqual(baseline)
+  const frame = page.locator("iframe").first()
+  await pollUntil(() => frame.count())
+  await expect(frame).toHaveAttribute("src", /^\/style-x\?preview/)
+  await expect(frame.contentFrame().locator(".pilot-button").first()).toBeVisible()
+  const codePanel = page.locator("details.code-panel").first()
+  await pollUntil(() => codePanel.count())
+  await codePanel.locator("summary").click()
+  await expect(codePanel).toContainText("@catalog-pilot")
+  await page.goto("/style-x#badge/default")
+  await expect(page.getByRole("status")).toContainText("Parity review remains open")
+})
+
+for (const theme of ["light", "dark"])
+  for (const width of [390, 1280]) {
+    test(`StyleX dialog theme and cleanup ${theme} ${width}`, async () => {
+      await using page = await openPage()
+      await page.setViewportSize({ width, height: 900 })
+      await page.goto(`/style-x?preview&theme=${theme}#dialog/default`)
+      const trigger = page.getByRole("button", { name: "Open dialog", exact: true })
+      await pollUntil(() => trigger.count())
+      await expect(trigger).toHaveClass(/pilot-button/)
+      await trigger.click()
+      await expect(page.getByRole("dialog")).toBeVisible()
+      await expect(page.locator(`[data-pilot-theme=${theme}] [role=dialog]`)).toBeVisible()
+      await page.pressKey("Escape")
+      await expect(page.getByRole("dialog")).toHaveCount(0)
+      await expect(trigger).toBeFocused()
+    })
+  }

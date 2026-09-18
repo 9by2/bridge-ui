@@ -13,7 +13,7 @@ Read [ADHD.md](./ADHD.md) for the north star, architecture boundary, foundation 
 - TypeScript
 - Tailwind 4 during current transition
 - Planned StyleX package build
-- Vite component catalog with Playwright verification
+- Vite component catalog with Bun.WebView verification
 - Planned private GitLab npm registry publication
 
 ## Current Source
@@ -24,7 +24,7 @@ Read [ADHD.md](./ADHD.md) for the north star, architecture boundary, foundation 
 - `app/style/component.css`: published font and narrow engine normalization entry.
 - `app/style/global.css`: legacy generated/catalog baseline retained during review; no longer packaged as `style.css`.
 - `internal/catalog/example/`: real package example and exact copyable source.
-- `vite.config.ts` and `playwright.config.ts`: catalog and browser verification.
+- `vite.config.ts`: catalog build/preview; `test/browser/`: Bun.WebView browser verification.
 - `cmd/`: private repository build, verification and publication command.
 - `test/`: repository verification test.
 - `plan/`: active proposal and accepted spec.
@@ -86,7 +86,7 @@ Changesets CLI is pinned to 2.29.8 with changesets-gitlab 0.14.0: this integrati
 
 CI gates package runtime coverage separately from command and catalog verification. Local runtime coverage reaches 100% in every metric. V8 coverage uses real Node 22.22.0 from the prebuilt catalog runtime rather than Bun's Node fallback. Historical Linux amd64 Docker proof used upstream `oven/bun:1.4.0` and passed the source sequence and 375 browser check; current Linux arm64 proof passes all 431 browser checks in the prebuilt runtime. Private registry publication remains unproven.
 
-`deployment/Dockerfile.catalog` provides Bun 1.4.1, Node 22.22.0 and the Chromium revision for Playwright 1.63.0. Child verification pins the published amd64/arm64 service image by OCI index digest; repository CI does not build or push it. Build locally with `docker buildx build --platform linux/amd64,linux/arm64 -f deployment/Dockerfile.catalog -t registry.fountain.sellsuki.com/service/bridge-ui-catalog-runner:latest --push .`, then update the digest pin only after both platforms pass runtime verification. Use an isolated source copy and fresh `bun install --frozen-lockfile`; never reuse macOS `node_modules`. Browser binary and system dependency are prebuilt, so do not run `playwright install` in normal verification. Normal CI never updates screenshot expectations.
+`deployment/Dockerfile.catalog` provides Bun 1.4.1, Node 22.22.0 and a system Chromium package that `Bun.WebView`'s `backend: { type: "chrome" }` auto-detects. Child verification pins the published amd64/arm64 service image by OCI index digest; repository CI does not build or push it. Build locally with `docker buildx build --platform linux/amd64,linux/arm64 -f deployment/Dockerfile.catalog -t registry.fountain.sellsuki.com/service/bridge-ui-catalog-runner:latest --push .`, then update the digest pin only after both platforms pass runtime verification. Use an isolated source copy and fresh `bun install --frozen-lockfile`; never reuse macOS `node_modules`. Browser binary and system dependency are prebuilt, so normal verification installs nothing extra. Normal CI never updates screenshot baselines.
 
 ## Package Command
 
@@ -125,7 +125,7 @@ Bridge Web density policy, route integration, authorization, query state, transl
 
 `bun catalog:test` builds and serves an isolated static catalog on port 6007. Long pages mount nearby preview only; leaving a preview resets its transient state. All example sections and source remain inline.
 
-Catalog verification uses one Playwright browser worker when `CI` is set and four locally. Shared runner execution must not multiply Chromium load against an unknown CPU budget. The assertion deadline remains five seconds with no retry; use `CI=true bun catalog:test` to reproduce the CI schedule locally. List output and `playwright-report/` retain the case duration and review index alongside failure traces. Bun.WebView remains useful for targeted render, computed-style and injected Axe proof, but does not replace the required Playwright gate covering screenshot, upload, permission, focus, keyboard, memory and replayable trace contracts.
+Catalog verification runs the full `test/browser/*.test.ts` suite under `bun test` against the built catalog through `Bun.WebView`'s Chrome backend, orchestrated by `cmd/run-catalog-test.ts` (build catalog, start Vite preview on port 6007, poll readiness, run `bun test --timeout 30000 test/browser`, tear the preview server down). `bun catalog:test` reproduces the CI run locally. Bun.WebView is the sole required browser-verification gate, covering render, computed-style, accessibility (axe), screenshot diff, upload, permission, focus, keyboard and memory contracts — there is no separate Playwright gate.
 
 Private `internal/catalog/preview.tsx` owns creation/destruction of nearby iframe; offscreen placeholder has no browsing context. Private `source.tsx` fetches raw source only on disclosure. This catalog lifecycle does not affect application-owned TsChart state or force viewport resets on package consumers.
 
@@ -159,7 +159,7 @@ The open dropdown-menu example passes the unfiltered accessibility scan. Package
 
 ## Policy
 
-`bun coverage:runtime` measures `app/` and `shared/` at a 90% statement, branch, function and line floor, with brand coverage at 100%. Generated `app/component/shadcn/**` and the export-only `app/index.ts` barrel are excluded; hook code remains in scope. Command and catalog verification remain mandatory through Bun test, boundary, packed client/SSR, tree-shaking and Playwright. This is package runtime coverage, not repository-wide coverage.
+`bun coverage:runtime` measures `app/` and `shared/` at a 90% statement, branch, function and line floor, with brand coverage at 100%. Generated `app/component/shadcn/**` and the export-only `app/index.ts` barrel are excluded; hook code remains in scope. Command and catalog verification remain mandatory through Bun test, boundary, packed client/SSR, tree-shaking and Bun.WebView. This is package runtime coverage, not repository-wide coverage.
 
 Upload composition is available from root import or `@bridge/ui/upload-viewer`, `@bridge/ui/upload-list` and `@bridge/ui/image-crop`:
 
