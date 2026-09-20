@@ -4,5 +4,5 @@
 
 - [x] Test layout selection and file interaction.
 - [x] Implement public layout and eight inline catalog compositions.
-- [ ] Verify accessibility, mobile layout, selection removal and preview cleanup.
-- [ ] Run build, typecheck, coverage and browser gate.
+- [x] Verify accessibility, mobile layout, selection removal and preview cleanup.
+- [x] Run build, typecheck, coverage and browser gate.

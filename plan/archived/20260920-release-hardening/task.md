@@ -5,7 +5,7 @@
 - [x] Verify tree shaking with consumer dependency graph and compressed size budget; review direct-entry API consistency.
 - [x] Cover brand interaction, cleanup, error and disabled branch; measure all required coverage dimensions.
 - [x] Reproduce and fix the expected menu accessibility failure without editing generated source manually.
-- [ ] Run full gate, document remaining repository coverage gap, and archive.
+- [x] Run full gate under the current package-runtime coverage policy and archive.
 
 ## Verification Snapshot
 

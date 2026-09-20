@@ -1,6 +1,6 @@
 # Release Hardening Contract
 
-**Status:** draft
+**Status:** accepted
 
 Repeated navigation must release offscreen chart resource. Every supported public import resolves JavaScript and declaration from the installed tarball. Small-component consumer must exclude chart/upload implementation. Brand source must satisfy statement, branch, function and line coverage gate. No expected accessibility failure is accepted as a clean result.
 

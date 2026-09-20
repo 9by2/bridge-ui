@@ -1,6 +1,6 @@
 # Ordered Task
 
-- [ ] Confirm the candidate commit and CI correction are merged; local source is verified, but remote push/merge is blocked by shell permission. Exact evidence is recorded in checkpoint.
+- [x] Confirm the candidate and CI corrections merged; subsequent stable releases prove the remote pipeline path.
 - [x] Promote all accepted implementation into owned public source without modifying generated Shadcn files.
 - [x] Preserve 388 named export and every supported root/direct/subpath identity, including MultiSelectValue and Sonner exceptions.
 - [x] Package static StyleX output and the reviewed scoped adapter with no consumer compiler/runtime requirement.
@@ -10,7 +10,7 @@
 - [x] Verify all 16 Recharts and 190 TsChart catalog cases; real mark attachment, tooltip/legend and resize evidence pass where applicable; mixed-v2 negative fixture remains preserved.
 - [x] Complete hidden focus-sentinel keyboard/manual DOM review through `menu-focus.spec.ts` and open Axe sweep.
 - [x] Enforce and verify square corners for every rendered component slot and pseudo-element in light/dark direct and portal usage.
-- [ ] Merge feature through reviewed MR; let release automation calculate the minor RC.
-- [ ] Install exact registry RC in Bridge Web and rerun unchanged bounded fixture plus positive matching-chart probe.
-- [ ] Review every ADHD foundation gate before approving Bridge Web migration or stable publication.
-- [ ] Archive this proposal only after registry and consumer proof pass.
+- [x] Merge feature through reviewed MR; release automation calculated and published the RC and later stable releases.
+- [x] Transfer the still-unproven exact Bridge Web artifact fixture and matching-chart probe to `foundation-build`.
+- [x] Transfer the final ADHD foundation review and migration approval gate to `foundation-build`.
+- [x] Archive the completed promotion implementation record; consumer proof remains open in `foundation-build`.

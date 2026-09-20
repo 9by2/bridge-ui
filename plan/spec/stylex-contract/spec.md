@@ -1,6 +1,6 @@
 # StyleX Contract And Acceptance
 
-**Status:** accepted for the complete private candidate. Public export/CSS/registry/consumer clauses continue in `plan/stylex-public-promotion/`.
+**Status:** accepted for the complete private candidate. Public export and CSS promotion are archived in `plan/archived/20260920-stylex-public-promotion/`; remaining consumer proof is tracked in `plan/foundation-build/`.
 
 ## Contract
 

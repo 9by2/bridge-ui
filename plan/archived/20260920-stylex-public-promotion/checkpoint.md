@@ -32,3 +32,8 @@ Push is blocked by the current shell permission layer. Remote remains at `6416f5
 - MR !5 catalog had one distant TsChart lazy-preview timeout after 428 passes. The existing visibility assertion now allows 15s for the distant iframe; full promoted catalog passes locally.
 - MR !6 retry then failed `publication.test.ts` after 5.63s because it started 12 Bun CLI processes. `publishPackage` is now an injectable function with a thin `import.meta.main` CLI wrapper; the same stable/RC/new/retry/denied/install-failure/tag-conflict/already-released matrix runs in-process in 11-17ms. The exact source sequence now completes all Bun tests in 1.84s under the default timeout.
 - Do not merge release MR !5 until !6 and this CI follow-up merge and the bot refreshes the release branch.
+
+## Reconciliation
+
+- Stable tags `v0.2.0`, `v0.3.0`, and `v0.4.0` supersede the historical remote/publication blocker above.
+- The exact current Bridge Web registry-artifact fixture and matching-chart proof are not present in this repository; they remain required under `plan/foundation-build/`.

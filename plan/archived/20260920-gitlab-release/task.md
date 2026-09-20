@@ -21,7 +21,7 @@ Docker proof: upstream oven/bun:1.4.0 linux/amd64 (private mirror denied local p
 - [x] Add validation and protected prerelease deployment contract.
 - [x] Test release guard and validate YAML with GitLab.
 - [x] Run required local check and record known failure for the single checkpoint commit.
-- [ ] Verify first runner execution and registry publication after foundation gate passes.
+- [x] Verify runner execution and registry publication through the published 0.2.0, 0.3.0, and 0.4.0 release history.
 - [x] Load concurrency override in parent/child; relocate private command to cmd and verify reference/root resolution.
 
 Local verification: formatting, lint (ten generated warning), typecheck, boundary, 15 Bun test, brand coverage, 375 browser check and packed build pass. Repository coverage fails the unchanged 90% floor. Parent and child YAML both accepted by project 872 CI lint API. Linux visual baseline and mirrored Bun image are not locally proven. Generated/vendor formatter churn was removed and excluded from formatter ownership.
