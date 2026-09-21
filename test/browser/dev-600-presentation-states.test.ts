@@ -18,7 +18,8 @@ describe("branded presentation dark theme", () => {
     "responsive-image",
     "product-item",
     "ticket-cover",
-    "ticket-card"
+    "ticket-card",
+    "wizard-step"
   ]) {
     test(`${family}/default renders in dark theme`, async () => {
       await using page = await openPage()
@@ -31,7 +32,7 @@ describe("branded presentation dark theme", () => {
 })
 
 describe("branded presentation mobile viewport", () => {
-  for (const family of ["receipt", "ticket-card", "ticket-cover", "setting-item", "detail-item"]) {
+  for (const family of ["receipt", "ticket-card", "ticket-cover", "setting-item", "detail-item", "wizard-step"]) {
     test(`${family}/default remains contained at 390px`, async () => {
       await using page = await openPage()
       await page.setViewportSize({ width: 390, height: 700 })
@@ -42,6 +43,30 @@ describe("branded presentation mobile viewport", () => {
       expect(await stage.evaluate<boolean>(`(node) => node.scrollWidth <= window.innerWidth + 1`)).toBe(true)
     })
   }
+})
+
+test("wizard step error state renders a distinct destructive indicator and connector", async () => {
+  await using page = await openPage()
+  await page.goto("/?preview&theme=light#wizard-step/states")
+  const errorIndicator = page.locator('[data-slot="wizard-step-indicator"][data-state="error"]')
+  await pollUntil(() => errorIndicator.count())
+  await expect(errorIndicator).toBeVisible()
+  const errorConnector = page.locator('[data-slot="wizard-step-connector"][data-state="error"]')
+  await expect(errorConnector).toHaveCount(1)
+  const completedIndicator = page.locator('[data-slot="wizard-step-indicator"][data-state="completed"]').first()
+  const errorColor = await errorIndicator.css("background-color")
+  const completedColor = await completedIndicator.css("background-color")
+  expect(errorColor).not.toBe(completedColor)
+})
+
+test("wizard step completed item exposes an interactive button while upcoming stays inert", async () => {
+  await using page = await openPage()
+  await page.goto("/?preview&theme=light#wizard-step/default")
+  const completed = page.locator('[data-slot="wizard-step-item"][data-state="completed"]')
+  await pollUntil(() => completed.count())
+  expect(await completed.evaluate<string>(`(node) => node.tagName`)).toBe("BUTTON")
+  const upcoming = page.locator('[data-slot="wizard-step-item"][data-state="upcoming"]')
+  expect(await upcoming.evaluate<string>(`(node) => node.tagName`)).toBe("DIV")
 })
 
 test("success burst pauses its transition under reduced motion", async () => {
