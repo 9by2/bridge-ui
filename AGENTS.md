@@ -26,7 +26,7 @@
 - **ALWAYS** add targeted regression test for a fixed defect.
 
 - **NEVER** manually edit `app/component/shadcn/`. Add or refresh generated source only through the Shadcn CLI with Bun.
-- **NEVER** implement Bridge Web or Cue migration until every foundation gate in ADHD pass.
+- **NEVER** implement consumer migration in this repository.
 - **NEVER** require 100% coverage for every non-generated component.
 - **NEVER** add a test only to execute a presentation branch or raise a coverage number.
 - **NEVER** test Tailwind, StyleX output, class composition, exact DOM shape, ordinary copy, translation rendering, or visual variant through unit coverage.

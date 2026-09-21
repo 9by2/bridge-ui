@@ -3,7 +3,7 @@ import * as UI from "@bridge/ui"
 const item = [
   { title: "Audit", description: "Review reusable presentation and remove product coupling.", state: "completed" },
   { title: "Package", description: "สร้างสัญญา StyleX ที่ทุกแอปพลิเคชันใช้ร่วมกันได้", state: "current" },
-  { title: "Integrate", description: "Adopt the release through the Bridge Web facade.", state: "upcoming" }
+  { title: "Integrate", description: "Adopt the release through an application facade.", state: "upcoming" }
 ] as const
 
 export default function Example() {

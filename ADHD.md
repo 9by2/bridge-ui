@@ -38,10 +38,9 @@ UI state may stay in a component. Business state must stay in an application con
 
 ## Canonical Direction
 
-- Cue is the current visual and component baseline.
-- Bridge Web current theme is obsolete.
-- Bridge Web is the first consumer migration.
-- Cue is the second consumer migration.
+- The package owns its canonical visual and component baseline.
+- Consumer applications consume the package contract.
+- Product-specific theme implementation stays outside this repository.
 - Future company application consume the same package contract.
 - Product-specific page composition may differ. Primitive implementation must not fork.
 - Product i18n never live in this package. Copy enter through prop or child.
@@ -75,7 +74,7 @@ import "@bridge/ui/style.css"
 
 ## Foundation First
 
-Do not implement any consumer migration until all foundation gate pass.
+Do not implement consumer migration in this repository.
 
 ### 1. Boundary
 
@@ -117,16 +116,14 @@ Do not implement any consumer migration until all foundation gate pass.
 
 ## Build Order
 
-1. Delete copied container, domain component, Cue i18n, and consumer import.
+1. Delete copied container, domain component, product i18n, and consumer import.
 2. Build stable package export, declaration, CSS, and fixture.
 3. Add component catalog for every Shadcn component.
 4. Integrate StyleX and prove static package output.
 5. Publish and install a private GitLab prerelease.
 6. Pass every foundation gate.
-7. Migrate Bridge Web one primitive family at a time; delete each local duplicate immediately.
-8. Stabilize the package.
-9. Migrate Cue.
-10. Require every future company application to consume `@bridge/ui`.
+7. Stabilize the package.
+8. Require every future company application to consume `@bridge/ui`.
 
 ## Current Reality
 
@@ -147,7 +144,7 @@ At this document revision:
 - source-boundary check, package build, full typecheck, test, package runtime coverage, packed client/SSR, and tree-shaking pass locally;
 - Shadcn source refreshed through CLI 4.21.0; `multi-select` is preserved because it is unavailable in the current registry;
 - generated source has 10 lint warnings and zero lint errors;
-- `@bridge/ui@0.6.0` exact registry artifact passes the bounded Bridge Web fixture with the shared Recharts v3 runtime: matching bars render, the 390px viewport does not overflow, production SSR is clean, and no unexpected browser error or network request occurs.
+- `@bridge/ui@0.6.0` exact registry artifact passes the bounded consumer fixture with the shared Recharts v3 runtime: matching bars render, the 390px viewport does not overflow, production SSR is clean, and no unexpected browser error or network request occurs.
 
 Do not weaken the gate to make the current snapshot pass. Fix the foundation.
 
