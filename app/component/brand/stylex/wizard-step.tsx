@@ -37,7 +37,7 @@ const style = stylex.create({
     display: "flex",
     flexShrink: 0,
     minWidth: 0,
-    alignItems: "flex-start",
+    alignItems: "center",
     gap: 8,
     borderWidth: 0,
     borderStyle: "none",
@@ -57,7 +57,7 @@ const style = stylex.create({
     minWidth: 24,
     height: 2,
     marginInline: 12,
-    marginTop: { default: 15, [stylex.when.ancestor('[data-variant="dot"]')]: 4 }
+    marginTop: 20
   },
   connectorVertical: { width: 2, height: 24, marginInlineStart: 15 },
   connectorUpcoming: { backgroundColor: token.border },

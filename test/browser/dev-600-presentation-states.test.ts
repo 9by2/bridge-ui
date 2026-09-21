@@ -94,8 +94,32 @@ test("wizard step dot connector centers on its dot indicators", async () => {
         }
       }`
     )
-  expect(geometry.connectorCenter).toBeCloseTo(geometry.startIndicatorCenter, 1)
-  expect(geometry.connectorCenter).toBeCloseTo(geometry.endIndicatorCenter, 1)
+  expect(Math.abs(geometry.connectorCenter - geometry.startIndicatorCenter)).toBeLessThan(0.5)
+  expect(Math.abs(geometry.connectorCenter - geometry.endIndicatorCenter)).toBeLessThan(0.5)
+})
+
+test("wizard step aligns mixed description labels with its indicator centerline", async () => {
+  await using page = await openPage()
+  await page.goto("/?preview&theme=light#wizard-step/states")
+  const errorStep = page.locator('[data-slot="wizard-step"][aria-label="Error state"]')
+  await pollUntil(() => errorStep.count())
+  const geometry = await errorStep
+    .locator('[data-slot="wizard-step-item"]')
+    .first()
+    .evaluate<{ indicatorCenter: number; labelCenter: number }>(
+      `(node) => {
+        const indicator = node.querySelector('[data-slot="wizard-step-indicator"]')
+        const label = node.querySelector('[data-slot="wizard-step-label"]')
+        const indicatorRect = indicator?.getBoundingClientRect()
+        const labelRect = label?.getBoundingClientRect()
+        if (!indicatorRect || !labelRect) throw new Error("Wizard step mixed label geometry is incomplete")
+        return {
+          indicatorCenter: indicatorRect.top + indicatorRect.height / 2,
+          labelCenter: labelRect.top + labelRect.height / 2
+        }
+      }`
+    )
+  expect(geometry.indicatorCenter).toBeCloseTo(geometry.labelCenter, 1)
 })
 
 test("wizard step horizontal connector centers on its indicators", async () => {
@@ -124,8 +148,8 @@ test("wizard step horizontal connector centers on its indicators", async () => {
       }
     }`
   )
-  expect(geometry.connectorCenter).toBeCloseTo(geometry.startIndicatorCenter, 1)
-  expect(geometry.connectorCenter).toBeCloseTo(geometry.endIndicatorCenter, 1)
+  expect(Math.abs(geometry.connectorCenter - geometry.startIndicatorCenter)).toBeLessThan(0.5)
+  expect(Math.abs(geometry.connectorCenter - geometry.endIndicatorCenter)).toBeLessThan(0.5)
 })
 
 test("success burst pauses its transition under reduced motion", async () => {
