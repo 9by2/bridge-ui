@@ -130,7 +130,7 @@ Do not implement any consumer migration until all foundation gate pass.
 
 ## Current Reality
 
-Foundation is not ready.
+Foundation is ready for consumer implementation.
 
 At this document revision:
 
@@ -147,7 +147,7 @@ At this document revision:
 - source-boundary check, package build, full typecheck, test, package runtime coverage, packed client/SSR, and tree-shaking pass locally;
 - Shadcn source refreshed through CLI 4.21.0; `multi-select` is preserved because it is unavailable in the current registry;
 - generated source has 10 lint warnings and zero lint errors;
-- the `0.4.0` Bridge Web registry-artifact fixture fails its matching Recharts probe and 390px overflow check; the next `0.6.0` source tarball passes with a shared Recharts v3 runtime, but immutable-artifact proof remains required, so consumer migration remains blocked.
+- `@bridge/ui@0.6.0` exact registry artifact passes the bounded Bridge Web fixture with the shared Recharts v3 runtime: matching bars render, the 390px viewport does not overflow, production SSR is clean, and no unexpected browser error or network request occurs.
 
 Do not weaken the gate to make the current snapshot pass. Fix the foundation.
 

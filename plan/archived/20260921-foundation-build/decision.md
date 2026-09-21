@@ -43,3 +43,13 @@ family uses Recharts v3 APIs
 **WHEN** exporting the ChartContainer composition seam
 **THEN** require compatible Recharts v3 as a peer dependency so package and
 consumer resolve one runtime instance.
+
+### DEC-007: Separate publication from consumer acceptance
+
+**GIVEN** `@bridge/ui@0.6.0` is published and the matching local tarball
+fixture passes, while no Bridge Web run has verified the immutable registry
+artifact
+**WHEN** reconciling the foundation plan
+**THEN** record publication as complete, retain one explicit external rerun
+task and handoff, and keep the plan active until that acceptance evidence
+passes.

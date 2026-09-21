@@ -29,7 +29,7 @@ Read [ADHD.md](./ADHD.md) for the north star, architecture boundary, foundation 
 - `test/`: repository verification test.
 - `plan/`: active proposal and accepted spec.
 
-The repository builds and publishes an importable ESM package with declarations and a stable CSS export. Consumer migration remains blocked by the final exact-artifact Bridge Web fixture and explicit completion of every quality gate in [ADHD.md](./ADHD.md).
+The repository builds and publishes an importable ESM package with declarations and a stable CSS export. `@bridge/ui@0.6.0` is published, and every [ADHD.md](./ADHD.md) foundation gate passes.
 
 ## Command
 
@@ -84,7 +84,7 @@ Commit the pre-state change and push `main`. CI prepares the stable release MR, 
 
 Changesets CLI is pinned to 2.29.8 with changesets-gitlab 0.14.0: this integration reads the v2 prerelease state, not the v3 archived-note layout. Upgrade together only after the RC/exit regression passes.
 
-CI gates package runtime coverage separately from command and catalog verification. Local runtime coverage reaches 100% in every metric. V8 coverage uses real Node 22.22.0 from the prebuilt catalog runtime rather than Bun's Node fallback. Historical Linux amd64 Docker proof used upstream `oven/bun:1.4.0` and passed the source sequence and 375 browser check; current Linux arm64 proof passes all 431 browser checks in the prebuilt runtime. Private registry publication is proven by the published RC and stable tag history. The 2026-09-21 bounded Bridge Web fixture against installed `@bridge/ui@0.4.0` passes production SSR with no browser error or unexpected network request, but fails its matching Recharts probe and 390px overflow check. The locally packed source for the next `0.6.0` artifact passes with shared Recharts v3; immutable registry installation and rerun remain required before consumer migration.
+CI gates package runtime coverage separately from command and catalog verification. Local runtime coverage reaches 100% in every metric. V8 coverage uses real Node 22.22.0 from the prebuilt catalog runtime rather than Bun's Node fallback. Historical Linux amd64 Docker proof used upstream `oven/bun:1.4.0` and passed the source sequence and 375 browser check; current Linux arm64 proof passes all 431 browser checks in the prebuilt runtime. Private registry publication is proven by the published RC and stable tag history. The exact installed `@bridge/ui@0.6.0` Bridge Web fixture passes with the shared Recharts v3 runtime: matching bars render, the 390px viewport does not overflow, and production SSR has no browser error or unexpected network request.
 
 `deployment/Dockerfile.catalog` provides Bun 1.4.1, Node 22.22.0 and a system Chromium package that `Bun.WebView`'s `backend: { type: "chrome" }` auto-detects. The image runs as root, and Chrome refuses to launch as root without `--no-sandbox`, so every `Bun.WebView({ backend: { type: "chrome", ... } })` call site passes `argv: ["--no-sandbox"]`. Child verification pins the published amd64/arm64 service image by OCI index digest; repository CI does not build or push it. Build locally with `docker buildx build --platform linux/amd64,linux/arm64 -f deployment/Dockerfile.catalog -t registry.fountain.sellsuki.com/service/bridge-ui-ci-verify-runtime:latest --push .`, then update the digest pin only after both platforms pass runtime verification. Use an isolated source copy and fresh `bun install --frozen-lockfile`; never reuse macOS `node_modules`. Browser binary and system dependency are prebuilt, so normal verification installs nothing extra. Normal CI never updates screenshot baselines.
 
@@ -100,7 +100,7 @@ Private StyleX pilot verification (no export promotion): `NODE_ENV=production bu
 
 `bun cmd/verify-component-inventory.ts` checks the StyleX migration matrix against the current component source and emits its named export inventory. It fails on missing, extra or duplicate entries, invalid TSX and unresolved wildcard/default export. Babel parses TypeScript/JSX because TypeScript 7 does not expose the former JavaScript compiler AST API. The private verifier uses Effect v4; no Effect runtime is added to React/Base UI or published component imports. The completed private candidate record lives in `plan/archived/20260909-stylex-component-foundation/`; public promotion is archived in `plan/archived/20260920-stylex-public-promotion/`; failed current consumer proof and its required rerun are tracked in `plan/foundation-build/`.
 
-Package build explicitly emits production JSX, independent of the build process environment. `bun test test/internal/production-jsx.test.ts` renders root/direct component output under production React and rejects development JSX runtime imports. `bun verify:package` also executes the installed tarball's Vite SSR bundle under production React. This fixes the `jsxDEV is not a function` failure found in `0.1.1-rc.0`; the production-JSX package regression is covered. The bounded Bridge Web fixture has been rerun against `0.4.0` but failed its matching-chart and mobile-overflow acceptance, so a new exact registry artifact and passing rerun remain required before migration approval.
+Package build explicitly emits production JSX, independent of the build process environment. `bun test test/internal/production-jsx.test.ts` renders root/direct component output under production React and rejects development JSX runtime imports. `bun verify:package` also executes the installed tarball's Vite SSR bundle under production React. This fixes the `jsxDEV is not a function` failure found in `0.1.1-rc.0`; the production-JSX package regression is covered. The exact installed `0.6.0` Bridge Web fixture passes matching-chart and mobile-overflow acceptance.
 
 Package output is split ESM with declarations. Root named import is tree-shakeable; direct entry avoids loading unrelated module for an unbundled consumer:
 
@@ -112,7 +112,7 @@ import { UploadPreview } from "@bridge/ui/upload-preview"
 import "@bridge/ui/style.css"
 ```
 
-Other generated-compatible and brand entry remains available as `@bridge/ui/component/shadcn/<name>` or `@bridge/ui/component/brand/<name>`, but resolves to owned StyleX source where presentation was promoted. `@bridge/ui/theme` exposes the scoped `Theme`. CSS is shared, not per-component tree-shaken. Private registry publication is complete; the current consumer integration rerun failed and remains a migration blocker.
+Other generated-compatible and brand entry remains available as `@bridge/ui/component/shadcn/<name>` or `@bridge/ui/component/brand/<name>`, but resolves to owned StyleX source where presentation was promoted. `@bridge/ui/theme` exposes the scoped `Theme`. CSS is shared, not per-component tree-shaken. Private registry publication and the exact consumer integration proof are complete.
 
 Reusable application-neutral presentation is available from the root or stable direct entry:
 
@@ -129,7 +129,7 @@ Catalog verification runs the full `test/browser/*.test.ts` suite under `bun tes
 
 Private `internal/catalog/preview.tsx` owns creation/destruction of nearby iframe; offscreen placeholder has no browsing context. Private `source.tsx` fetches raw source only on disclosure. This catalog lifecycle does not affect application-owned TsChart state or force viewport resets on package consumers.
 
-The complete StyleX implementation covers all 70 component modules and all 69 catalog families. Public root/direct/generated-compatible paths now resolve owned StyleX source, with Direction and TsChart retaining documented identity. Validation includes 100% owned runtime coverage, slot/state/geometry parity, reduced motion, RTL, open-overlay Axe, adapter isolation, packed package and 206 chart cases. Publication is proven; consumer migration remains a separate gate.
+The complete StyleX implementation covers all 70 component modules and all 69 catalog families. Public root/direct/generated-compatible paths now resolve owned StyleX source, with Direction and TsChart retaining documented identity. Validation includes 100% owned runtime coverage, slot/state/geometry parity, reduced motion, RTL, open-overlay Axe, adapter isolation, packed package and 206 chart cases. Publication and immutable consumer integration proof are complete.
 
 `bun verify:package` checks all 71 public entry paths from an isolated Bun-installed tarball with declaration checking enabled, then builds the Vite client and SSR fixture. Emitted declaration uses relative package-local import, not private source alias. The Chromium memory regression repeats chart navigation eight times without page reload and checks post-GC heap/DOM growth after warmup; it does not measure total browser process memory.
 
@@ -153,7 +153,7 @@ Open http://127.0.0.1:6006/style-x for the retained comparison route. Both regul
 
 Dark is the default theme; the theme toggle and `?theme=light` support light mode. Chart includes 16 inline examples. TsChart includes the 188-entry upstream v0.16.0 catalog plus two small Bridge compositions. Vendored source, supporting module, license and dataset attribution live under `internal/catalog/vendor/tanstack/`; this development-only source is not published with the package.
 
-The open dropdown-menu example passes the unfiltered accessibility scan. Package CSS makes aria-hidden Base UI focus guards zero-area and pointer-inert without removing their tab stop. Keyboard regression verifies arrow navigation, Escape focus restoration and modal Tab redirection without retained focus on a hidden guard. Registry publication is complete; current Bridge Web matching-chart and mobile-overflow acceptance fail, so consumer integration approval remains blocked.
+The open dropdown-menu example passes the unfiltered accessibility scan. Package CSS makes aria-hidden Base UI focus guards zero-area and pointer-inert without removing their tab stop. Keyboard regression verifies arrow navigation, Escape focus restoration and modal Tab redirection without retained focus on a hidden guard. Registry publication and Bridge Web matching-chart and mobile-overflow acceptance pass.
 
 `bun coverage:brand` enforces 100% statement, branch, function and line coverage per brand component using Vitest/V8. It includes upload acceptance, rejection, extraction error, drag, disabled and cleanup behavior plus chart renderer/height and selection badge behavior. This scoped gate is not repository-wide coverage. `bun verify:tree-shaking` inspects retained module contribution and enforces an 18,000-byte gzip budget; Button measures about 16,280 gzip bytes with no chart/upload dependency retained.
 

@@ -22,19 +22,14 @@
 - A locally packed source tarball, installed with one shared Recharts v3
   runtime, passes the same fixture: two mixed bars, no browser error or
   unexpected network request, and no overflow at 390px. Changesets calculates
-  the next immutable artifact as `0.6.0`; registry publication and an
-  exact-artifact rerun remain required for approval.
+  the immutable artifact as `0.6.0`; it is published and verified below.
 
-### Remaining Foundation Gaps
+### Passing Immutable Consumer Proof
 
-- Bridge Web exact registry artifact proof is failing. The bounded fixture ran
-  `@bridge/ui@0.4.0` and passed production SSR with no browser error or
-  unexpected network request, but the matching Recharts probe found zero bars
-  in all four theme/viewport scenarios. Its 390px scenarios also overflowed to
-  451px. Evidence: `../bridge-web/.eval/0908-bridge-ui-rc/report.json`.
-- The exact current registry artifact remains different from the passing local
-  source tarball. Publish `@bridge/ui@0.6.0`, install that immutable version in
-  Bridge Web with the shared Recharts v3 runtime, regenerate Bridge Web's
-  lockfile, and rerun the bounded probe before approving consumer migration.
+- Bridge Web installed exact registry `@bridge/ui@0.6.0` with its shared
+  Recharts v3 runtime and reran `bun cmd/spike-ui-rc.tsx`.
+- The bounded fixture passes: two mixed bars render in every theme/viewport
+  scenario, document width is at most 390px at the 390px viewport, and
+  production SSR has no browser error or unexpected network request.
 
-Foundation-build remains active. No consumer migration is approved.
+Foundation-build is complete. Consumer migration is approved.
