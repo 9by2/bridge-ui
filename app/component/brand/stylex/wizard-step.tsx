@@ -52,7 +52,7 @@ const style = stylex.create({
     boxShadow: { default: "none", ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.ring}, transparent 50%)` }
   },
   connector: { boxSizing: "border-box", flexShrink: 0, borderRadius: 2 },
-  connectorHorizontal: { flex: "1 1 auto", minWidth: 24, height: 2, marginTop: 15 },
+  connectorHorizontal: { flex: "1 1 auto", minWidth: 24, height: 2, marginInline: 12, marginTop: 15 },
   connectorVertical: { width: 2, height: 24, marginInlineStart: 15 },
   connectorUpcoming: { backgroundColor: token.border },
   connectorCompleted: { backgroundColor: token.primary },
