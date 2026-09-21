@@ -84,6 +84,17 @@ describe("package contract", () => {
     })
   })
 
+  test("flip text is available from root and its stable direct package path", async () => {
+    const entry = await Bun.file(path.join(root, "app/index.ts")).text()
+    const manifest = await Bun.file(path.join(root, "package.json")).json()
+
+    expect(entry).toContain('export * from "./component/brand/stylex/flip-text"')
+    expect(manifest.exports["./flip-text"]).toEqual({
+      types: "./dist/component/brand/stylex/flip-text.d.ts",
+      import: "./dist/component/brand/stylex/flip-text.js"
+    })
+  })
+
   test("built root and direct entry preserve component and provider identity", async () => {
     const entry = await import(path.join(root, "dist/index.js"))
     for (const file of new Bun.Glob("dist/component/brand/stylex/*.js").scanSync({ cwd: root })) {

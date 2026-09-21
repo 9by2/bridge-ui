@@ -64,6 +64,10 @@
       "types": "./dist/component/brand/stylex/wizard-step.d.ts",
       "import": "./dist/component/brand/stylex/wizard-step.js"
     },
+    "./flip-text": {
+      "types": "./dist/component/brand/stylex/flip-text.d.ts",
+      "import": "./dist/component/brand/stylex/flip-text.js"
+    },
     "./ts-chart": {
       "types": "./dist/component/brand/ts-chart.d.ts",
       "import": "./dist/component/brand/ts-chart.js"
