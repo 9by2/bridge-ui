@@ -43,9 +43,7 @@ function Row({
           <UI.WizardStepItem
             state={value.state}
             {...(value.state === "completed" ? { render: <button type="button" /> } : {})}>
-            <UI.WizardStepIndicator state={value.state} tone={tone} dot={variant === "dot"}>
-              {index + 1}
-            </UI.WizardStepIndicator>
+            <UI.WizardStepIndicator state={value.state}>{index + 1}</UI.WizardStepIndicator>
             <UI.WizardStepLabel>
               <UI.WizardStepTitle>{value.title}</UI.WizardStepTitle>
               <UI.WizardStepDescription>{value.description}</UI.WizardStepDescription>
@@ -64,6 +62,7 @@ export default function Example() {
       <Row orientation="horizontal" variant="number" tone="hard" data={item} label="Number variant, hard tone" />
       <Row orientation="horizontal" variant="number" tone="soft" data={item} label="Number variant, soft tone" />
       <Row orientation="horizontal" variant="dot" tone="hard" data={item} label="Dot variant" />
+      <Row orientation="horizontal" variant="line" tone="hard" data={item} label="Line variant" />
       <Row orientation="vertical" variant="number" tone="hard" data={item} label="Vertical orientation" />
       <UI.WizardStep aria-label="Error state">
         <UI.WizardStepItem state="completed" render={<button type="button" />}>

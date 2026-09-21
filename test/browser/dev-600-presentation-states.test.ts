@@ -98,7 +98,23 @@ test("wizard step dot connector centers on its dot indicators", async () => {
   expect(Math.abs(geometry.connectorCenter - geometry.endIndicatorCenter)).toBeLessThan(0.5)
 })
 
-test("wizard step aligns mixed description labels with its indicator centerline", async () => {
+test("wizard step line segments are slim and separated", async () => {
+  await using page = await openPage()
+  await page.goto("/?preview&theme=light#wizard-step/states")
+  const lineStep = page.locator('[data-slot="wizard-step"][data-variant="line"]')
+  await pollUntil(() => lineStep.count())
+  const geometry = await lineStep.evaluate<{ gap: number; height: number }>(`(node) => {
+    const indicator = [...node.querySelectorAll('[data-slot="wizard-step-indicator"]')]
+    const first = indicator[0]?.getBoundingClientRect()
+    const second = indicator[1]?.getBoundingClientRect()
+    if (!first || !second) throw new Error("Wizard step line geometry is incomplete")
+    return { height: first.height, gap: second.left - first.right }
+  }`)
+  expect(geometry.height).toBe(6)
+  expect(geometry.gap).toBe(8)
+})
+
+test("wizard step number tracker places mixed description labels below indicators", async () => {
   await using page = await openPage()
   await page.goto("/?preview&theme=light#wizard-step/states")
   const errorStep = page.locator('[data-slot="wizard-step"][aria-label="Error state"]')
@@ -106,7 +122,7 @@ test("wizard step aligns mixed description labels with its indicator centerline"
   const geometry = await errorStep
     .locator('[data-slot="wizard-step-item"]')
     .first()
-    .evaluate<{ indicatorCenter: number; labelCenter: number }>(
+    .evaluate<{ indicatorBottom: number; labelTop: number }>(
       `(node) => {
         const indicator = node.querySelector('[data-slot="wizard-step-indicator"]')
         const label = node.querySelector('[data-slot="wizard-step-label"]')
@@ -114,12 +130,12 @@ test("wizard step aligns mixed description labels with its indicator centerline"
         const labelRect = label?.getBoundingClientRect()
         if (!indicatorRect || !labelRect) throw new Error("Wizard step mixed label geometry is incomplete")
         return {
-          indicatorCenter: indicatorRect.top + indicatorRect.height / 2,
-          labelCenter: labelRect.top + labelRect.height / 2
+          indicatorBottom: indicatorRect.bottom,
+          labelTop: labelRect.top
         }
       }`
     )
-  expect(geometry.indicatorCenter).toBeCloseTo(geometry.labelCenter, 1)
+  expect(geometry.labelTop).toBeGreaterThan(geometry.indicatorBottom)
 })
 
 test("wizard step horizontal connector centers on its indicators", async () => {

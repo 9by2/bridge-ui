@@ -2,7 +2,7 @@ import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import * as stylex from "@stylexjs/stylex"
 import { CheckIcon, XIcon } from "lucide-react"
-import type { ComponentProps } from "react"
+import { createContext, useContext, type ComponentProps } from "react"
 
 import { token } from "./token.stylex"
 
@@ -23,6 +23,12 @@ export type WizardStepVariant = ValueOf<typeof wizardStepVariant>
 export type WizardStepTone = ValueOf<typeof wizardStepTone>
 export type WizardStepState = ValueOf<typeof wizardStepState>
 
+const Context = createContext<{
+  orientation: WizardStepOrientation
+  variant: WizardStepVariant
+  tone: WizardStepTone
+}>({ orientation: "horizontal", variant: "number", tone: "hard" })
+
 const style = stylex.create({
   root: { display: "flex", width: "100%", minWidth: 0 },
   horizontal: {
@@ -32,6 +38,9 @@ const style = stylex.create({
     overscrollBehaviorInline: "contain"
   },
   vertical: { flexDirection: "column", alignItems: "stretch" },
+  lineHorizontal: { gap: 8 },
+  itemNumberHorizontal: { flex: "1 1 0", flexDirection: "column", alignItems: "center", gap: 8, textAlign: "center" },
+  itemLineHorizontal: { flex: "1 1 0", flexDirection: "column", alignItems: "stretch", gap: 12 },
   item: {
     position: "relative",
     display: "flex",
@@ -57,14 +66,16 @@ const style = stylex.create({
     minWidth: 24,
     height: 2,
     marginInline: 12,
-    marginTop: 20
+    marginTop: 15
   },
+  connectorDotHorizontal: { marginTop: 20 },
   connectorVertical: { width: 2, height: 24, marginInlineStart: 15 },
   connectorUpcoming: { backgroundColor: token.border },
   connectorCompleted: { backgroundColor: token.primary },
   connectorCurrentHorizontal: { backgroundImage: `linear-gradient(90deg, ${token.primary}, ${token.border})` },
   connectorCurrentVertical: { backgroundImage: `linear-gradient(${token.primary}, ${token.border})` },
   connectorError: { backgroundColor: token.destructive },
+  connectorLine: { display: "none" },
   indicator: {
     position: "relative",
     zIndex: 1,
@@ -98,8 +109,13 @@ const style = stylex.create({
     backgroundColor: token.destructive,
     color: token.destructiveForeground
   },
+  indicatorLine: { width: "100%", height: 6, borderWidth: 0, borderRadius: 999, backgroundColor: token.border },
+  indicatorLineCurrent: { backgroundColor: token.primary },
+  indicatorLineCompleted: { backgroundColor: token.primary },
+  indicatorLineError: { backgroundColor: token.destructive },
   indicatorIcon: { width: 14, height: 14 },
   label: { display: "flex", minWidth: 0, minHeight: 40, flexDirection: "column", gap: 2 },
+  labelNumberHorizontal: { alignItems: "center", textAlign: "center" },
   title: {
     minWidth: 0,
     color: token.foreground,
@@ -126,20 +142,26 @@ export function WizardStep({
   ...prop
 }: WizardStepProps) {
   return (
-    <div
-      data-slot="wizard-step"
-      data-orientation={orientation}
-      data-variant={variant}
-      data-tone={tone}
-      {...prop}
-      className={[
-        stylex.props(stylex.defaultMarker(), style.root, orientation === "vertical" ? style.vertical : style.horizontal)
-          .className,
-        className
-      ]
-        .filter(Boolean)
-        .join(" ")}
-    />
+    <Context value={{ orientation, variant, tone }}>
+      <div
+        data-slot="wizard-step"
+        data-orientation={orientation}
+        data-variant={variant}
+        data-tone={tone}
+        {...prop}
+        className={[
+          stylex.props(
+            stylex.defaultMarker(),
+            style.root,
+            orientation === "vertical" ? style.vertical : style.horizontal,
+            orientation === "horizontal" && variant === "line" && style.lineHorizontal
+          ).className,
+          className
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      />
+    </Context>
   )
 }
 
@@ -149,14 +171,27 @@ export function WizardStepItem({
   render,
   ...props
 }: useRender.ComponentProps<"div"> & { state?: WizardStepState }) {
+  const { orientation, variant } = useContext(Context)
   return useRender({
     defaultTagName: "div",
     props: mergeProps<"div">(
-      { className: [stylex.props(stylex.defaultMarker(), style.item).className, className].filter(Boolean).join(" ") },
+      {
+        className: [
+          stylex.props(
+            stylex.defaultMarker(),
+            style.item,
+            orientation === "horizontal" && variant === "number" && style.itemNumberHorizontal,
+            orientation === "horizontal" && variant === "line" && style.itemLineHorizontal
+          ).className,
+          className
+        ]
+          .filter(Boolean)
+          .join(" ")
+      },
       props
     ),
     render,
-    state: { slot: "wizard-step-item", state }
+    state: { slot: "wizard-step-item", state, variant }
   })
 }
 
@@ -169,11 +204,15 @@ export type WizardStepIndicatorProps = ComponentProps<"div"> & {
 export function WizardStepIndicator({
   className,
   state = "upcoming",
-  tone = "hard",
+  tone,
   dot = false,
   children,
   ...prop
 }: WizardStepIndicatorProps) {
+  const context = useContext(Context)
+  const inheritedTone = tone ?? context.tone
+  const isLine = context.variant === "line"
+  const isDot = !isLine && (dot || context.variant === "dot")
   const icon =
     state === "completed" ? (
       <CheckIcon aria-hidden="true" {...stylex.props(style.indicatorIcon)} />
@@ -186,22 +225,30 @@ export function WizardStepIndicator({
     <div
       data-slot="wizard-step-indicator"
       data-state={state}
-      data-tone={tone}
+      data-tone={inheritedTone}
+      data-variant={context.variant}
       {...prop}
       className={[
         stylex.props(
           style.indicator,
-          dot && style.indicatorDot,
-          state === "completed" && style.indicatorCompleted,
-          state === "current" && !dot && (tone === "soft" ? style.indicatorCurrentSoft : style.indicatorCurrent),
-          state === "current" && dot && style.indicatorCurrentDot,
-          state === "error" && style.indicatorError
+          isDot && style.indicatorDot,
+          isLine && style.indicatorLine,
+          !isLine && state === "completed" && style.indicatorCompleted,
+          !isLine &&
+            state === "current" &&
+            !isDot &&
+            (inheritedTone === "soft" ? style.indicatorCurrentSoft : style.indicatorCurrent),
+          !isLine && state === "current" && isDot && style.indicatorCurrentDot,
+          !isLine && state === "error" && style.indicatorError,
+          isLine && state === "completed" && style.indicatorLineCompleted,
+          isLine && state === "current" && style.indicatorLineCurrent,
+          isLine && state === "error" && style.indicatorLineError
         ).className,
         className
       ]
         .filter(Boolean)
         .join(" ")}>
-      {dot ? null : icon}
+      {isDot || isLine ? null : icon}
     </div>
   )
 }
@@ -211,27 +258,27 @@ export type WizardStepConnectorProps = ComponentProps<"div"> & {
   state?: WizardStepState
 }
 
-export function WizardStepConnector({
-  className,
-  orientation = "horizontal",
-  state = "upcoming",
-  ...prop
-}: WizardStepConnectorProps) {
+export function WizardStepConnector({ className, orientation, state = "upcoming", ...prop }: WizardStepConnectorProps) {
+  const context = useContext(Context)
+  const inheritedOrientation = orientation ?? context.orientation
   return (
     <div
       data-slot="wizard-step-connector"
-      data-orientation={orientation}
+      data-orientation={inheritedOrientation}
       data-state={state}
+      data-variant={context.variant}
       aria-hidden="true"
       {...prop}
       className={[
         stylex.props(
           style.connector,
-          orientation === "vertical" ? style.connectorVertical : style.connectorHorizontal,
+          context.variant === "line" && style.connectorLine,
+          inheritedOrientation === "vertical" ? style.connectorVertical : style.connectorHorizontal,
+          context.variant === "dot" && inheritedOrientation === "horizontal" && style.connectorDotHorizontal,
           state === "upcoming" && style.connectorUpcoming,
           state === "completed" && style.connectorCompleted,
           state === "current" &&
-            (orientation === "vertical" ? style.connectorCurrentVertical : style.connectorCurrentHorizontal),
+            (inheritedOrientation === "vertical" ? style.connectorCurrentVertical : style.connectorCurrentHorizontal),
           state === "error" && style.connectorError
         ).className,
         className
@@ -243,11 +290,19 @@ export function WizardStepConnector({
 }
 
 export function WizardStepLabel({ className, ...prop }: ComponentProps<"div">) {
+  const { orientation, variant } = useContext(Context)
   return (
     <div
       data-slot="wizard-step-label"
+      data-variant={variant}
       {...prop}
-      className={[stylex.props(style.label).className, className].filter(Boolean).join(" ")}
+      className={[
+        stylex.props(style.label, orientation === "horizontal" && variant === "number" && style.labelNumberHorizontal)
+          .className,
+        className
+      ]
+        .filter(Boolean)
+        .join(" ")}
     />
   )
 }

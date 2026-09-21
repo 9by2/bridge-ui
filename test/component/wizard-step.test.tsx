@@ -41,6 +41,55 @@ test("wizard step root defaults to horizontal orientation, number variant, and h
   expect(root.getAttribute("data-tone")).toBe("hard")
 })
 
+test("wizard step coordinates number and line presentations across its compound slots", () => {
+  render(
+    <>
+      <WizardStep variant="number" aria-label="Account setup">
+        <WizardStepItem state="current" data-testid="number-item">
+          <WizardStepIndicator state="current" data-testid="number-indicator">
+            1
+          </WizardStepIndicator>
+          <WizardStepLabel>Account</WizardStepLabel>
+        </WizardStepItem>
+        <WizardStepConnector state="current" data-testid="number-connector" />
+      </WizardStep>
+      <WizardStep variant="line" aria-label="Event setup">
+        <WizardStepItem state="current" data-testid="line-item">
+          <WizardStepIndicator className="custom-line-indicator" state="current" data-testid="line-indicator">
+            1
+          </WizardStepIndicator>
+          <WizardStepLabel>Location</WizardStepLabel>
+        </WizardStepItem>
+        <WizardStepConnector state="current" data-testid="line-connector" />
+        <WizardStepIndicator state="completed" data-testid="line-completed">
+          2
+        </WizardStepIndicator>
+        <WizardStepIndicator state="error" data-testid="line-error">
+          3
+        </WizardStepIndicator>
+      </WizardStep>
+      <WizardStep variant="dot" aria-label="Progress">
+        <WizardStepIndicator state="current" data-testid="dot-indicator">
+          1
+        </WizardStepIndicator>
+        <WizardStepConnector state="current" data-testid="dot-connector" />
+      </WizardStep>
+    </>
+  )
+
+  expect(screen.getByTestId("number-item").getAttribute("data-variant")).toBe("number")
+  expect(screen.getByTestId("number-indicator").textContent).toBe("1")
+  expect(screen.getByTestId("number-connector").getAttribute("data-variant")).toBe("number")
+  expect(screen.getByTestId("line-item").getAttribute("data-variant")).toBe("line")
+  expect(screen.getByTestId("line-indicator").textContent).toBe("")
+  expect(screen.getByTestId("line-indicator").className).toContain("custom-line-indicator")
+  expect(screen.getByTestId("line-connector").getAttribute("data-variant")).toBe("line")
+  expect(screen.getByTestId("line-completed").textContent).toBe("")
+  expect(screen.getByTestId("line-error").textContent).toBe("")
+  expect(screen.getByTestId("dot-indicator").textContent).toBe("")
+  expect(screen.getByTestId("dot-connector").getAttribute("data-variant")).toBe("dot")
+})
+
 test("wizard step item exposes data-state for every state and defaults to a non-interactive div", () => {
   const state = ["upcoming", "current", "completed", "error"] as const
   render(
