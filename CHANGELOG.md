@@ -1,5 +1,12 @@
 # @bridge/ui
 
+## 0.6.1
+
+### Patch Changes
+
+- 7344ef3: Build published CSS without Tailwind processing and remove redundant package-build dependency.
+- 599de30: Tighten WizardStep line segments and add spacing between them.
+
 ## 0.6.0
 
 ### Minor Changes
