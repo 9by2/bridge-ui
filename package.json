@@ -64,6 +64,10 @@
       "types": "./dist/component/brand/stylex/wizard-step.d.ts",
       "import": "./dist/component/brand/stylex/wizard-step.js"
     },
+    "./fractal-glass": {
+      "types": "./dist/component/brand/stylex/fractal-glass.d.ts",
+      "import": "./dist/component/brand/stylex/fractal-glass.js"
+    },
     "./flip-text": {
       "types": "./dist/component/brand/stylex/flip-text.d.ts",
       "import": "./dist/component/brand/stylex/flip-text.js"
