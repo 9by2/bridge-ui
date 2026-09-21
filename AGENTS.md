@@ -1,4 +1,4 @@
-# Agent Rule
+# BridgeUI Agents Rule
 
 - Read [ADHD.md](./ADHD.md) before any implementation. It is the source of truth for the north star, package architecture, foundation gate, and migration order.
 - Read [README.md](./README.md) for current project fact and command.
@@ -19,3 +19,21 @@
 - When user ask for implementation or approve plan. Must relentlessly implement it. Never stop until fully finished. If decision needed, just ask right away.
 - When asking question, must provide full context with recommendation
 - Use `Bun.WebView` to inspect and verify UX before handoff to user. Evaluation evidence must store in `.eval/{{MMDD}}-{{task}}/` including screen capture, video recording, reproducing step, runner script and etc as needed.
+
+## Testing Rules
+
+- **ALWAYS** follow the tdd skill for the general testing workflow.
+- **ALWAYS** protect meaningful user behavior React/UI tests such as: interactions, state transitions, validation behavior, navigation, accessibility state, permissions, loading/error behavior
+- **ALWAYS** testing business behavior at the Effect/service layer when possible.
+- **NEVER** apply exhaustive TDD to presentation details.
+- **NEVER** add tests solely for: Tailwind classes, StyleX output or class composition, conditional styling, exact DOM structure, snapshots, ordinary translation rendering, copy changes with no behavioral significance
+
+### Testing Example
+
+- Prefer `expect(button).toBeDisabled()` over: `expect(button).toHaveClass("opacity-50")`
+- Prefer testing the Effect rule that determines whether an action is allowed instead of exhaustively testing every React styling permutation.
+- Translation catalogs, interpolation, fallback behavior, and missing keys may be tested centrally rather than in every component.
+
+### Testing Rule of thumb
+
+Before adding a UI test, ask: `What meaningful user behavior would regress?`. If the answer is only styling, classes, markup, or ordinary translated copy, do not add the test.

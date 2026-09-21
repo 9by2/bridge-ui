@@ -82,7 +82,7 @@ treatment `WizardStep` just received.
       in packed client/SSR fixtures.
 - [x] `internal/catalog/example/fractal-glass/default.tsx` exists and
       satisfies the catalog inventory test.
-       70|- [x] Formatter, lint, typecheck, boundary, `bun test`, brand/runtime
+      70|- [x] Formatter, lint, typecheck, boundary, `bun test`, brand/runtime
       coverage, catalog build + `catalog:test`, package build, packed
       client/SSR, and tree-shaking all pass.
 
