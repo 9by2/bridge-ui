@@ -39,6 +39,7 @@
 - **ALWAYS** follow the tdd skill for the general testing workflow.
 - **ALWAYS** protect meaningful user behavior React/UI tests such as: interactions, state transitions, validation behavior, navigation, accessibility state, permissions, loading/error behavior
 - **ALWAYS** testing business behavior at the Effect/service layer when possible.
+
 - **NEVER** apply exhaustive TDD to presentation details.
 - **NEVER** add tests solely for: Tailwind classes, StyleX output or class composition, conditional styling, exact DOM structure, snapshots, ordinary translation rendering, copy changes with no behavioral significance
 
