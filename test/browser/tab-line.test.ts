@@ -15,6 +15,7 @@ test("line tab uses only a primary active underline", async () => {
     borderLeftWidth: string
     borderRightWidth: string
     borderTopWidth: string
+    borderRadius: string
     color: string
     underline: string
   }>(`(node) => {
@@ -25,6 +26,7 @@ test("line tab uses only a primary active underline", async () => {
       borderLeftWidth: style.borderLeftWidth,
       borderRightWidth: style.borderRightWidth,
       borderTopWidth: style.borderTopWidth,
+      borderRadius: style.borderRadius,
       color: style.color,
       underline: style.borderBottomColor
     }
@@ -36,6 +38,7 @@ test("line tab uses only a primary active underline", async () => {
     borderRightWidth: "0px",
     borderTopWidth: "0px"
   })
+  expect(appearance.borderRadius).toBe("0px")
   expect(appearance.color).toBe(appearance.underline)
   await expect(icon).toHaveCSS("width", "16px")
   await expect(icon).toHaveCSS("height", "16px")

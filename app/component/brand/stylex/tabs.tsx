@@ -24,6 +24,7 @@ const style = stylex.create({
     },
     borderRadius: {
       default: 8,
+      [stylex.when.ancestor('[data-variant="line"]')]: 0,
       [stylex.when.ancestor('[data-variant="capsule"]')]: 999,
       [stylex.when.ancestor('[data-variant="link"]')]: 0
     },
