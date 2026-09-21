@@ -14,7 +14,15 @@ export type ChartConfig = Record<
 >
 const Context = createContext<{ config: ChartConfig } | null>(null)
 const style = stylex.create({
-  root: { display: "flex", aspectRatio: "16 / 9", justifyContent: "center", fontSize: 12, lineHeight: "16px" },
+  root: {
+    display: "flex",
+    minHeight: 200,
+    minWidth: 0,
+    aspectRatio: "16 / 9",
+    justifyContent: "center",
+    fontSize: 12,
+    lineHeight: "16px"
+  },
   tooltip: {
     display: "grid",
     minWidth: 128,

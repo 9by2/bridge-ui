@@ -36,8 +36,10 @@ describe("package contract", () => {
     expect(manifest.sideEffects).toContain("**/*.css")
     expect(manifest.peerDependencies.react).toBeDefined()
     expect(manifest.peerDependencies["react-dom"]).toBeDefined()
+    expect(manifest.peerDependencies.recharts).toBe("^3.8.0")
     expect(manifest.dependencies.react).toBeUndefined()
     expect(manifest.dependencies["react-dom"]).toBeUndefined()
+    expect(manifest.dependencies.recharts).toBeUndefined()
   })
 
   test("shell header is available from root and the stable StyleX path", async () => {

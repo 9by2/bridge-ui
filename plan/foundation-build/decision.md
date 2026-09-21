@@ -23,3 +23,23 @@
 **GIVEN** StyleX public promotion and private registry publication are complete but the exact Bridge Web consumer rerun remains unproven
 **WHEN** reconciling active plan
 **THEN** track that consumer proof and the final ADHD review only in `foundation-build`; archive the completed promotion implementation record.
+
+### DEC-005: Keep consumer approval blocked on the exact-artifact probe
+
+**GIVEN** Bridge Web's bounded production fixture used the installed registry
+`@bridge/ui@0.4.0` artifact on 2026-09-21
+**WHEN** the fixture completed production SSR with no browser error or external
+network request but reported zero matching Recharts bars and 451px document
+width at a 390px viewport
+**THEN** record the failed evidence, keep consumer migration and Foundation
+approval blocked, and require a passing rerun against the next exact registry
+artifact before closing this proposal.
+
+### DEC-006: Share the consumer Recharts runtime
+
+**GIVEN** `ChartContainer` from Bridge UI and `BarChart` from Bridge Web render
+through incompatible Recharts v3 and v2 contexts, and the generated chart
+family uses Recharts v3 APIs
+**WHEN** exporting the ChartContainer composition seam
+**THEN** require compatible Recharts v3 as a peer dependency so package and
+consumer resolve one runtime instance.

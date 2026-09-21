@@ -136,7 +136,7 @@ At this document revision:
 
 - 63 generated Shadcn component file;
 - generated and brand component catalog, including the 188-entry TanStack reference inventory;
-- browser suite covers every example and core interaction;
+- catalog browser suite requires a retained complete Bun.WebView run; local/package component checks do not substitute for this gate;
 - open-menu accessibility and keyboard regression pass; hidden focus sentinel still requires manual accessibility review; full state and visual coverage remains incomplete;
 - brand component reaches 100% statement, branch, function and line coverage; package runtime coverage replaces the former repository-wide percentage policy;
 - required button, input, checkbox, select, dialog, popover, tabs, accordion, tooltip, and toast interactions pass;
@@ -144,9 +144,10 @@ At this document revision:
 - static StyleX extraction for owned upload layout; generated Tailwind styling remains during transition;
 - ESM package, declaration, source map, CSS export, tarball, client fixture, and SSR fixture pass;
 - copied application component and consumer import removed;
-- source-boundary check, package build, full typecheck, and test pass;
+- source-boundary check, package build, full typecheck, test, package runtime coverage, packed client/SSR, and tree-shaking pass locally;
 - Shadcn source refreshed through CLI 4.21.0; `multi-select` is preserved because it is unavailable in the current registry;
-- generated source has 10 lint warnings and zero lint errors.
+- generated source has 10 lint warnings and zero lint errors;
+- the `0.4.0` Bridge Web registry-artifact fixture fails its matching Recharts probe and 390px overflow check; the next `0.6.0` source tarball passes with a shared Recharts v3 runtime, but immutable-artifact proof remains required, so consumer migration remains blocked.
 
 Do not weaken the gate to make the current snapshot pass. Fix the foundation.
 
