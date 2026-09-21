@@ -1,5 +1,11 @@
 # @bridge/ui
 
+## 0.6.2
+
+### Patch Changes
+
+- ff2fa70: Keep horizontal line Tab triggers square-edged.
+
 ## 0.6.1
 
 ### Patch Changes
