@@ -98,7 +98,7 @@ describe("package contract", () => {
   test("built root and direct entry preserve component and provider identity", async () => {
     const entry = await import(path.join(root, "dist/index.js"))
     for (const file of new Bun.Glob("dist/component/brand/stylex/*.js").scanSync({ cwd: root })) {
-      if (file.endsWith("token.stylex.js") || file.endsWith("use-mobile.js")) continue
+      if (file.endsWith(".stylex.js") || file.endsWith("use-mobile.js")) continue
       const direct = await import(path.join(root, file))
       for (const [name, value] of Object.entries(direct)) {
         if (

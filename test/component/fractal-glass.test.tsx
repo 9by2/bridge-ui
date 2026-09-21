@@ -1,10 +1,12 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react"
+import { renderToString } from "react-dom/server"
 import { afterEach, expect, test, vi } from "vitest"
 
 import {
   WebGLSurface,
   resetWebGLAvailability,
-  supportsWebGL
+  supportsWebGL,
+  useEffectReducedMotion
 } from "../../app/component/brand/stylex-support/webgl-surface"
 import { FractalGlass } from "../../app/component/brand/stylex/fractal-glass"
 
@@ -83,13 +85,13 @@ vi.mock("three", () => three.module)
 
 const { dispose, loseContext, render: renderScene, setPixelRatio, setSize, textureLoad } = three.state
 
-const resizeObserver = vi.fn()
+let onResize: ResizeObserverCallback = () => {}
 
 class ResizeObserverMock {
   observe = vi.fn()
   disconnect = vi.fn()
   constructor(callback: ResizeObserverCallback) {
-    resizeObserver.mockImplementation(callback)
+    onResize = callback
   }
 }
 
@@ -105,7 +107,7 @@ afterEach(() => {
   setPixelRatio.mockReset()
   dispose.mockReset()
   loseContext.mockReset()
-  resizeObserver.mockReset()
+  onResize = () => {}
   videoPlay.mockReset()
   videoPlay.mockResolvedValue(undefined)
   videoPause.mockReset()
@@ -146,6 +148,37 @@ test("WebGL support probe caches results, releases its temporary context, and tr
     throw new Error("WebGL probe failed")
   })
   expect(supportsWebGL()).toBe(false)
+
+  resetWebGLAvailability()
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockImplementation(
+    () => ({ getExtension: () => null }) as unknown as RenderingContext
+  )
+  expect(supportsWebGL()).toBe(true)
+})
+
+test("WebGLSurface supports an unconfigured fallback and releases its motion subscription", () => {
+  stubBrowser()
+  const { unmount } = render(<WebGLSurface />)
+
+  expect(screen.getByRole("img", { name: "Bridge UI visual effect" }).style.backgroundImage).toBe("")
+  unmount()
+
+  resetWebGLAvailability()
+  stubBrowser({ webgl: true })
+  const removeMotionListener = vi.spyOn(media, "removeEventListener")
+  textureLoad.mockImplementation((_: string, done: (texture: InstanceType<typeof three.module.Texture>) => void) => {
+    done(new three.module.Texture())
+  })
+  const { unmount: unmountGlass } = render(<FractalGlass imageSrc="https://example.test/motion.png" />)
+  unmountGlass()
+  expect(removeMotionListener).toHaveBeenCalledWith("change", expect.any(Function))
+})
+
+test("WebGL support and motion hooks provide conservative server snapshots", () => {
+  const Motion = () => <span>{String(useEffectReducedMotion())}</span>
+
+  expect(renderToString(<Motion />)).toContain("true")
+  expect(renderToString(<WebGLSurface imageSrc="/server.png" />)).toContain('data-supported="false"')
 })
 
 test("WebGLSurface retains its fallback if an enhanced child throws", () => {
@@ -187,7 +220,18 @@ test("FractalGlass supports caller label and mounts the image shader when WebGL 
       done: (texture: { image: { naturalWidth: number; naturalHeight: number }; dispose: () => void }) => void
     ) => done({ image: { naturalWidth: 600, naturalHeight: 400 }, dispose })
   )
-  const { unmount } = render(<FractalGlass imageSrc="https://example.test/hero.png" label="Invoice backdrop" />)
+  const { unmount } = render(
+    <FractalGlass
+      imageSrc="https://example.test/hero.png"
+      label="Invoice backdrop"
+      stripesFrequency={12}
+      glassStrength={0.4}
+      glassSmoothness={0.2}
+      parallaxStrength={0.3}
+      distortionMultiplier={4}
+      edgePadding={0.2}
+    />
+  )
 
   expect(screen.getByRole("img", { name: "Invoice backdrop" })).toBeTruthy()
   const root = document.querySelector('[data-slot="webgl-surface"]') as HTMLDivElement
@@ -197,10 +241,35 @@ test("FractalGlass supports caller label and mounts the image shader when WebGL 
   expect(textureLoad).toHaveBeenCalledWith("https://example.test/hero.png", expect.any(Function))
   expect(renderScene).toHaveBeenCalled()
   fireEvent.pointerMove(canvas, { clientX: 20, clientY: 20 })
-  resizeObserver([], {} as ResizeObserver)
+  onResize([], {} as ResizeObserver)
   unmount()
   expect(cancelAnimationFrame).toHaveBeenCalledWith(17)
   expect(dispose).toHaveBeenCalled()
+})
+
+test("FractalGlass handles zero-sized layout and missing image dimensions", () => {
+  stubBrowser({ webgl: true })
+  textureLoad.mockImplementation(
+    (
+      _: string,
+      done: (texture: {
+        image: { naturalWidth: number; naturalHeight: number; width: number; height: number }
+        dispose: () => void
+      }) => void
+    ) => done({ image: { naturalWidth: 0, naturalHeight: 0, width: 0, height: 0 }, dispose })
+  )
+  const { rerender } = render(<FractalGlass imageSrc="https://example.test/no-size.png" />)
+
+  const canvas = document.querySelector('[data-slot="fractal-glass-canvas"]') as HTMLDivElement
+  Object.defineProperties(canvas, {
+    clientWidth: { configurable: true, value: 0 },
+    clientHeight: { configurable: true, value: 0 }
+  })
+  onResize([], {} as ResizeObserver)
+  expect(setSize).toHaveBeenLastCalledWith(1, 1)
+
+  rerender(<FractalGlass imageSrc="https://example.test/no-size.png" parallaxStrength={0.9} />)
+  expect(textureLoad).toHaveBeenCalledTimes(2)
 })
 
 test("FractalGlass honors reduced motion by rendering a static shader frame", () => {
@@ -260,7 +329,11 @@ test("FractalGlass autoplays video when motion is allowed", () => {
     const element = createElement(name, options)
     if (name === "video") {
       video = element as HTMLVideoElement
-      Object.defineProperty(video, "play", { configurable: true, value: videoPlay })
+      Object.defineProperties(video, {
+        play: { configurable: true, value: videoPlay },
+        pause: { configurable: true, value: videoPause },
+        load: { configurable: true, value: videoLoad }
+      })
     }
     return element
   })
@@ -274,6 +347,33 @@ test("FractalGlass autoplays video when motion is allowed", () => {
 
   expect(video).toBeDefined()
   expect(video!.autoplay).toBe(true)
+  expect(videoPlay).toHaveBeenCalledOnce()
+})
+
+test("FractalGlass ignores a rejected video autoplay request", async () => {
+  stubBrowser({ webgl: true })
+  videoPlay.mockRejectedValueOnce(new Error("autoplay blocked"))
+  const createElement = document.createElement.bind(document)
+  vi.spyOn(document, "createElement").mockImplementation((name, options) => {
+    const element = createElement(name, options)
+    if (name === "video") {
+      Object.defineProperties(element, {
+        play: { configurable: true, value: videoPlay },
+        pause: { configurable: true, value: videoPause },
+        load: { configurable: true, value: videoLoad }
+      })
+    }
+    return element
+  })
+
+  render(
+    <FractalGlass
+      imageSrc="https://example.test/poster.png"
+      mediaType="video"
+      videoSrc="https://example.test/blocked.mp4"
+    />
+  )
+  await Promise.resolve()
   expect(videoPlay).toHaveBeenCalledOnce()
 })
 

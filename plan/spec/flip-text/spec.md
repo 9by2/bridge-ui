@@ -2,7 +2,7 @@
 
 **Spec ID:** `flip-text`
 **Proposal:** `flip-text`
-**Status:** draft
+**Status:** accepted
 
 ## Summary
 
@@ -16,26 +16,26 @@ This spec defines a reusable, application-neutral animated text presentation com
 
 **Acceptance:**
 
-- [ ] Root is `data-slot="flip-text"` and accepts native span props, ref, and caller class.
-- [ ] Each visible grapheme is `data-slot="flip-text-character"` and uses a StyleX rotate-X keyframe.
-- [ ] Staggered mode applies sine-distributed delays; `together` applies the same delay to every grapheme; false `loop` performs one iteration.
-- [ ] Reduced-motion users receive zero animation duration.
+- [x] Root is `data-slot="flip-text"` and accepts native span props, ref, and caller class.
+- [x] Each visible grapheme is `data-slot="flip-text-character"` and uses a StyleX rotate-X keyframe.
+- [x] Staggered mode applies sine-distributed delays; `together` applies the same delay to every grapheme; false `loop` performs one iteration.
+- [x] Reduced-motion users receive zero animation duration.
 
 ### REQ-002 Unicode and accessibility
 
 **Acceptance:**
 
-- [ ] Graphemes use `Intl.Segmenter`, preserving Thai combined units and emoji modifiers.
-- [ ] One visually-hidden text copy supplies semantic content; visual characters are aria-hidden.
-- [ ] No default copy or business interaction exists.
+- [x] Graphemes use `Intl.Segmenter`, preserving Thai combined units and emoji modifiers.
+- [x] One visually-hidden text copy supplies semantic content; visual characters are aria-hidden.
+- [x] No default copy or business interaction exists.
 
 ### REQ-003 Package contract
 
 **Acceptance:**
 
-- [ ] The package root exports `FlipText`.
-- [ ] `@bridge/ui/flip-text` resolves to the StyleX source in declaration and JavaScript package output.
-- [ ] A default catalog example exists.
+- [x] The package root exports `FlipText`.
+- [x] `@bridge/ui/flip-text` resolves to the StyleX source in declaration and JavaScript package output.
+- [x] A default catalog example exists.
 
 ## API
 

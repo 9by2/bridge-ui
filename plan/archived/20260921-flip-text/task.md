@@ -22,5 +22,6 @@
 ## Verification
 
 - [x] Run focused tests, formatter, lint, typecheck, boundary, package build, catalog build, and packed package verification; record unrelated repository-wide coverage/catalog-browser blockers in `.eval/0921-flip-text/`.
+- [x] Replace the equivalent manual Segmenter loop with `Array.from` so V8 does not report an unreachable iterator-control branch against the 100% non-Shadcn gate.
 - [x] Review every spec acceptance item.
-- [ ] Archive proposal and sync canonical spec after all verification passes.
+- [x] Archive proposal and sync canonical spec after all verification passes.

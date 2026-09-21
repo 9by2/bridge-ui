@@ -1,7 +1,7 @@
 # Fractal Glass
 
 **Proposal:** `fractal-glass`
-**Status:** in-progress
+**Status:** complete
 **Phase:** [ADHD.md](../../ADHD.md) — StyleX Bundle / reusable presentation family (same tier as `TimelineStep`, `WizardStep`)
 
 ## Problem
@@ -71,18 +71,18 @@ treatment `WizardStep` just received.
 
 ## Success Criteria
 
-- [ ] `FractalGlass` renders the accessible fallback (`role="img"`,
+- [x] `FractalGlass` renders the accessible fallback (`role="img"`,
       60| Bridge UI label, no ObsidianUI text) when WebGL is unavailable.
-- [ ] No `obsidianui.dev` URL or "ObsidianUI" string remains anywhere in
+- [x] No `obsidianui.dev` URL or "ObsidianUI" string remains anywhere in
       package source.
-- [ ] `useEffectReducedMotion` and `supportsWebGL`/`WebGLSurface` live only
+- [x] `useEffectReducedMotion` and `supportsWebGL`/`WebGLSurface` live only
       in `app/component/brand/stylex-support/webgl-surface.tsx`; the
       `internal/catalog/lib-webgl-surface.tsx` duplicate is deleted.
-- [ ] Root and stable direct (`@bridge/ui/fractal-glass`) export resolve
+- [x] Root and stable direct (`@bridge/ui/fractal-glass`) export resolve
       in packed client/SSR fixtures.
-- [ ] `internal/catalog/example/fractal-glass/default.tsx` exists and
+- [x] `internal/catalog/example/fractal-glass/default.tsx` exists and
       satisfies the catalog inventory test.
-      70|- [ ] Formatter, lint, typecheck, boundary, `bun test`, brand/runtime
+       70|- [x] Formatter, lint, typecheck, boundary, `bun test`, brand/runtime
       coverage, catalog build + `catalog:test`, package build, packed
       client/SSR, and tree-shaking all pass.
 

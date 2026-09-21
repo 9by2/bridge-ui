@@ -1,7 +1,7 @@
 # Flip Text
 
 **Proposal:** `flip-text`
-**Status:** in-progress
+**Status:** complete
 **Phase:** [ADHD.md](../../ADHD.md) — reusable package presentation component
 
 ## Problem
@@ -24,10 +24,10 @@ The added `app/component/brand/flip-text.tsx` was an incomplete external-style s
 
 ## Success Criteria
 
-- [ ] `FlipText` exposes an accessible native span and decorative animated grapheme layer.
-- [ ] Thai grapheme clusters and emoji remain individual animation units.
-- [ ] Motion uses a StyleX keyframe and stops for reduced motion.
-- [ ] Root/direct exports, catalog inventory, package test, and focused tests pass.
+- [x] `FlipText` exposes an accessible native span and decorative animated grapheme layer.
+- [x] Thai grapheme clusters and emoji remain individual animation units.
+- [x] Motion uses a StyleX keyframe and stops for reduced motion.
+- [x] Root/direct exports, catalog inventory, package test, and focused tests pass.
 
 ## Specs
 

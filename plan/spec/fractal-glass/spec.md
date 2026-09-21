@@ -2,7 +2,7 @@
 
 **Spec ID:** `fractal-glass`
 **Proposal:** `fractal-glass`
-**Status:** draft
+**Status:** accepted
 
 ## Summary
 
@@ -18,40 +18,40 @@ motion.
 
 **Acceptance:**
 
-- [ ] A `role="img"` element with an `aria-label` (default `"Bridge UI
+- [x] A `role="img"` element with an `aria-label` (default `"Bridge UI
 refracted glass image"`, overridable via `label`) is present in the
       DOM on every render, regardless of WebGL support.
-- [ ] The fallback element's `background-image` resolves to the supplied
+- [x] The fallback element's `background-image` resolves to the supplied
       `imageSrc`.
 
 ### REQ-002: WebGL-gated enhancement
 
 **Acceptance:**
 
-    20|- [ ] When `getContext("webgl2")` returns a context, the Three.js mesh
+    20|- [x] When `getContext("webgl2")` returns a context, the Three.js mesh
       mounts inside a `SurfaceBoundary` alongside the fallback.
 
-- [ ] When `getContext("webgl2")` returns `null`/throws, only the static
+- [x] When `getContext("webgl2")` returns `null`/throws, only the static
       fallback renders; no Three.js renderer is constructed.
-- [ ] A render error inside the Three.js mesh is caught by
+- [x] A render error inside the Three.js mesh is caught by
       `SurfaceBoundary` and the static fallback remains visible.
 
 ### REQ-003: No third-party branding in package source
 
 **Acceptance:**
 
-- [ ] No occurrence of the string `ObsidianUI` (case-insensitive) exists
+- [x] No occurrence of the string `ObsidianUI` (case-insensitive) exists
       30| in `app/component/brand/stylex/fractal-glass.tsx` or
       `app/component/brand/stylex-support/webgl-surface.tsx`.
-- [ ] No occurrence of `obsidianui.dev` exists in package source.
-- [ ] `imageSrc` has no default value; TypeScript requires callers to
+- [x] No occurrence of `obsidianui.dev` exists in package source.
+- [x] `imageSrc` has no default value; TypeScript requires callers to
       supply it.
 
 ### REQ-004: Reduced motion disables animation
 
 **Acceptance:**
 
-- [ ] When `prefers-reduced-motion: reduce` matches, the pointer-parallax
+- [x] When `prefers-reduced-motion: reduce` matches, the pointer-parallax
       animation frame loop does not start (no `requestAnimationFrame`
       40| call beyond the initial static render) and, for `mediaType="video"`,
       the video element does not autoplay.
@@ -60,7 +60,7 @@ refracted glass image"`, overridable via `label`) is present in the
 
 **Acceptance:**
 
-- [ ] Unmounting cancels any pending animation frame, removes the pointer
+- [x] Unmounting cancels any pending animation frame, removes the pointer
       listener, disconnects the `ResizeObserver`, disposes the Three.js
       texture/material/geometry/renderer, and (for video) pauses and
       clears the video element source.
@@ -69,11 +69,11 @@ refracted glass image"`, overridable via `label`) is present in the
 
 **Acceptance:**
 
-    50|- [ ] `FractalGlass` is exported from the package root (`app/index.ts`).
+    50|- [x] `FractalGlass` is exported from the package root (`app/index.ts`).
 
-- [ ] `FractalGlass` is exported from the stable direct path
+- [x] `FractalGlass` is exported from the stable direct path
       `@bridge/ui/fractal-glass` (`package.json` `exports["./fractal-glass"]`).
-- [ ] `internal/catalog/example/fractal-glass/default.tsx` exists,
+- [x] `internal/catalog/example/fractal-glass/default.tsx` exists,
       imports from `"@bridge/ui"`, and exports a default `Example`
       function, satisfying `test/internal/catalog.test.ts`.
 

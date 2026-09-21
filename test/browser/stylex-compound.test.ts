@@ -5,7 +5,7 @@ for (const theme of ["light", "dark"]) {
     await using page = await openPage()
     await page.goto(`/style-x?preview&theme=${theme}#combobox/default`)
     const team = page.getByRole("combobox", { name: "Team" })
-    await pollUntil(() => team.count())
+    await pollUntil(() => team.count(), { timeout: 15_000 })
     await team.fill("Eng")
     await expect(page.getByRole("option", { name: "Engineering" })).toBeVisible()
     await page.pressKey("ArrowDown")
@@ -14,7 +14,7 @@ for (const theme of ["light", "dark"]) {
 
     await page.goto(`/style-x?preview&theme=${theme}#drawer/default`)
     const openDrawer = page.getByRole("button", { name: "Open drawer" })
-    await pollUntil(() => openDrawer.count())
+    await pollUntil(() => openDrawer.count(), { timeout: 15_000 })
     await openDrawer.click()
     const drawer = page.getByRole("dialog")
     await expect(drawer).toBeVisible()
@@ -30,14 +30,14 @@ for (const theme of ["light", "dark"]) {
 
     await page.goto(`/style-x?preview&theme=${theme}#input-otp/default`)
     const otp = page.getByRole("textbox")
-    await pollUntil(() => otp.count())
+    await pollUntil(() => otp.count(), { timeout: 15_000 })
     await otp.fill("123456")
     await expect(otp).toHaveValue("1234")
 
     for (const family of ["sheet", "alert-dialog"]) {
       await page.goto(`/style-x?preview&theme=${theme}#${family}/default`)
       const opener = page.locator(`[data-slot="${family}-trigger"]`)
-      await pollUntil(() => opener.count())
+      await pollUntil(() => opener.count(), { timeout: 15_000 })
       await opener.click()
       const popup = page.locator(`[data-slot="${family}-content"]`)
       await expect(popup).toBeVisible()
@@ -53,7 +53,7 @@ for (const theme of ["light", "dark"]) {
 
     await page.goto(`/style-x?preview&theme=${theme}#select/default`)
     const trigger = page.getByRole("combobox", { name: "Role" })
-    await pollUntil(() => trigger.count())
+    await pollUntil(() => trigger.count(), { timeout: 15_000 })
     await trigger.click()
     await expect(page.locator(`[data-pilot-theme="${theme}"] [data-slot="select-content"]`)).toBeVisible()
     await page.getByRole("option", { name: "Member" }).click()
@@ -66,7 +66,7 @@ for (const theme of ["light", "dark"]) {
 
     await page.goto(`/style-x?preview&theme=${theme}#input-group/default`)
     const input = page.getByRole("textbox", { name: "Search" })
-    await pollUntil(() => input.count())
+    await pollUntil(() => input.count(), { timeout: 15_000 })
     await page.locator('[data-slot="input-group-addon"]').click()
     await expect(input).toBeFocused()
     await input.fill("Search value")
@@ -76,7 +76,7 @@ for (const theme of ["light", "dark"]) {
 
     await page.goto(`/style-x?preview&theme=${theme}#toggle-group/default`)
     const right = page.getByRole("button", { name: "Right" })
-    await pollUntil(() => right.count())
+    await pollUntil(() => right.count(), { timeout: 15_000 })
     await right.click()
     await expect(page.getByRole("button", { name: "Right" })).toHaveAttribute("aria-pressed", "true")
     await page.pressKey("ArrowLeft")
@@ -84,13 +84,13 @@ for (const theme of ["light", "dark"]) {
 
     await page.goto(`/style-x?preview&theme=${theme}#item/default`)
     const item = page.locator('[data-slot="item"]')
-    await pollUntil(() => item.count())
+    await pollUntil(() => item.count(), { timeout: 15_000 })
     await expect(item).toBeVisible()
     expect(await item.evaluate<number>(`(node) => node.getBoundingClientRect().width`)).toBe(320)
 
     await page.goto(`/style-x?preview&theme=${theme}#label/default`)
     const label = page.locator('[data-slot="label"]')
-    await pollUntil(() => label.count())
+    await pollUntil(() => label.count(), { timeout: 15_000 })
     await expect(label).toHaveAttribute("for", "story-label")
   })
 }

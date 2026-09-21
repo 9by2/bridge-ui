@@ -6,6 +6,8 @@
 | DEC-002 | Remove ObsidianUI branding; `imageSrc` becomes a required caller prop    | accepted |
 | DEC-003 | Component lives directly under `stylex/`, matching `wizard-step`         | accepted |
 | DEC-004 | Coverage targets the React-facing seam, not the WebGL render loop        | accepted |
+| DEC-005 | Runtime coverage includes the promoted WebGL support module              | accepted |
+| DEC-006 | Ignore only proven StyleX sourcemap coverage artifacts                   | accepted |
 
 ---
 
@@ -78,3 +80,19 @@ filter/wrap constants) so the full render/resize/pointer/cleanup branches
 execute deterministically without a real GPU context — consistent with
 how `image-crop.test.tsx` mocks `HTMLCanvasElement.prototype.getContext`
 and `createImageBitmap` rather than exercising real canvas/image decoding.
+
+---
+
+### DEC-005: Runtime coverage includes the promoted WebGL support module
+
+**GIVEN** the runtime gate applies 100% coverage to every non-Shadcn module under `app/component/brand/**/*.tsx`
+**WHEN** `FractalGlass` promotes its WebGL boundary into `stylex-support`
+**THEN** deterministic jsdom tests cover the support probe, subscription cleanup, fallback variants, renderer lifecycle, image dimension fallbacks, resize behavior, and video autoplay rejection without weakening the coverage glob.
+
+---
+
+### DEC-006: Ignore only proven StyleX sourcemap coverage artifacts
+
+**GIVEN** focused assertions execute late texture disposal, resize uniform updates, default tuning, and effect dependency changes, while V8 reports zero-count empty branches at their remapped StyleX source locations
+**WHEN** enforcing the unchanged 100% non-Shadcn coverage threshold
+**THEN** use reasoned `v8 ignore next` annotations only on those transformed metadata artifacts; keep every behavioral branch covered by tests and do not exclude the component or lower thresholds.

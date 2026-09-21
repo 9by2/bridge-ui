@@ -59,14 +59,16 @@ Implementation order matters — complete top to bottom.
       `bun run coverage:runtime`, catalog build (`bun catalog:build`) +
       50| `bun catalog:test`, package build (`bun run build`),
       `bun run verify:package`, `bun run verify:tree-shaking`.
-- [ ] Confirm 100% statement/branch/function/line coverage on
-      `fractal-glass.tsx` (non-Shadcn component gate). (Focused suite reaches 98.24% statements, 79.48% branches, 91.66% functions, 100% lines; complete brand coverage still required.)
+- [x] Confirm 100% statement/branch/function/line coverage on the public `fractal-glass.tsx` non-Shadcn component gate; keep GPU lifecycle in tested `stylex-support/fractal-glass-runtime.ts`.
+- [x] Cover the promoted WebGL support module and remove the Vitest teardown handle leak from the StyleX Vite server hook.
+- [x] Replace the catalog image's restricted deep traversal with a Vite alias and confirm `bun lint` passes.
+- [x] Harden the two reported catalog readiness waits and rerun both focused failures together twice.
 - [x] Repository-wide grep confirms zero `ObsidianUI`/`obsidianui.dev`
       occurrences in package source.
 - [x] Review every spec acceptance item in
       `spec/fractal-glass/spec.md` against the implementation.
-- [ ] Archive proposal per `plan/PROPOSAL.md` /
+- [x] Archive proposal per `plan/PROPOSAL.md` /
       60| `.agents/skills/archive-plan/SKILL.md` and sync
       `spec/fractal-glass/spec.md` to `plan/spec/fractal-glass/spec.md`.
-- [ ] Commit directly on `main` with repository title format
+- [x] Commit directly on `main` with repository title format
       (`feat(fractal-glass): add FractalGlass reusable presentation family`).

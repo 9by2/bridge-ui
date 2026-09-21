@@ -3,8 +3,11 @@ import path from "node:path"
 import stylex from "@stylexjs/unplugin"
 import { defineConfig } from "vitest/config"
 
+const stylexPlugin = stylex.vite({ dev: false, runtimeInjection: false })
+stylexPlugin.configureServer = undefined
+
 export default defineConfig({
-  plugins: [stylex.vite({ dev: false, runtimeInjection: false })],
+  plugins: [stylexPlugin],
   resolve: { alias: { "@bridge/ui/app": path.resolve("app") } },
   esbuild: { jsx: "automatic" },
   test: {

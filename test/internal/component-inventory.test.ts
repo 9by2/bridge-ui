@@ -64,7 +64,7 @@ test("inventory command verifies the checked-in component matrix", () => {
   })
   expect(result.exitCode).toBe(0)
   const report = JSON.parse(result.stdout.toString())
-  expect(report.count).toBe(74)
+  expect(report.count).toBe(75)
   expect(report.modules["shadcn/button"]).toEqual([
     { name: "Button", kind: "value" },
     { name: "buttonVariants", kind: "value" }
