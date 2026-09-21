@@ -37,7 +37,7 @@ const style = stylex.create({
     display: "flex",
     flexShrink: 0,
     minWidth: 0,
-    alignItems: "center",
+    alignItems: "flex-start",
     gap: 8,
     borderWidth: 0,
     borderStyle: "none",
