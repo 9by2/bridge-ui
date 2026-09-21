@@ -52,7 +52,13 @@ const style = stylex.create({
     boxShadow: { default: "none", ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.ring}, transparent 50%)` }
   },
   connector: { boxSizing: "border-box", flexShrink: 0, borderRadius: 2 },
-  connectorHorizontal: { flex: "1 1 auto", minWidth: 24, height: 2, marginInline: 12, marginTop: 15 },
+  connectorHorizontal: {
+    flex: "1 1 auto",
+    minWidth: 24,
+    height: 2,
+    marginInline: 12,
+    marginTop: { default: 15, [stylex.when.ancestor('[data-variant="dot"]')]: 4 }
+  },
   connectorVertical: { width: 2, height: 24, marginInlineStart: 15 },
   connectorUpcoming: { backgroundColor: token.border },
   connectorCompleted: { backgroundColor: token.primary },
@@ -93,7 +99,7 @@ const style = stylex.create({
     color: token.destructiveForeground
   },
   indicatorIcon: { width: 14, height: 14 },
-  label: { display: "flex", minWidth: 0, flexDirection: "column", gap: 2 },
+  label: { display: "flex", minWidth: 0, minHeight: 40, flexDirection: "column", gap: 2 },
   title: {
     minWidth: 0,
     color: token.foreground,

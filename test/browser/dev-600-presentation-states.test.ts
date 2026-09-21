@@ -69,6 +69,35 @@ test("wizard step completed item exposes an interactive button while upcoming st
   expect(await upcoming.evaluate<string>(`(node) => node.tagName`)).toBe("DIV")
 })
 
+test("wizard step dot connector centers on its dot indicators", async () => {
+  await using page = await openPage()
+  await page.goto("/?preview&theme=light#wizard-step/states")
+  const dotStep = page.locator('[data-slot="wizard-step"][data-variant="dot"]')
+  await pollUntil(() => dotStep.count())
+  const geometry = await dotStep
+    .locator('[data-slot="wizard-step-connector"]')
+    .first()
+    .evaluate<{ connectorCenter: number; startIndicatorCenter: number; endIndicatorCenter: number }>(
+      `(node) => {
+        const item = node.previousElementSibling
+        const next = node.nextElementSibling
+        const indicator = item?.querySelector('[data-slot="wizard-step-indicator"]')
+        const nextIndicator = next?.querySelector('[data-slot="wizard-step-indicator"]')
+        const connectorRect = node.getBoundingClientRect()
+        const indicatorRect = indicator?.getBoundingClientRect()
+        const nextIndicatorRect = nextIndicator?.getBoundingClientRect()
+        if (!indicatorRect || !nextIndicatorRect) throw new Error("Wizard step dot geometry is incomplete")
+        return {
+          connectorCenter: connectorRect.top + connectorRect.height / 2,
+          startIndicatorCenter: indicatorRect.top + indicatorRect.height / 2,
+          endIndicatorCenter: nextIndicatorRect.top + nextIndicatorRect.height / 2
+        }
+      }`
+    )
+  expect(geometry.connectorCenter).toBeCloseTo(geometry.startIndicatorCenter, 1)
+  expect(geometry.connectorCenter).toBeCloseTo(geometry.endIndicatorCenter, 1)
+})
+
 test("wizard step horizontal connector centers on its indicators", async () => {
   await using page = await openPage()
   await page.goto("/?preview&theme=light#wizard-step/default")
