@@ -11,8 +11,8 @@ Read [ADHD.md](./ADHD.md) for the north star, architecture boundary, foundation 
 - Shadcn
 - Bun
 - TypeScript
-- Tailwind 4 for legacy generated/catalog reference source
-- Static StyleX package build
+- Tailwind 4 for private generated catalog reference source
+- Static StyleX-only package build
 - Vite component catalog with Bun.WebView verification
 - Private GitLab npm registry publication through Changesets automation
 
@@ -22,7 +22,7 @@ Read [ADHD.md](./ADHD.md) for the north star, architecture boundary, foundation 
 - `app/component/brand/`: custom TsChart, DropArea and multiselect badge treatment.
 - `app/hook/use-mobile.ts`: generated Shadcn support.
 - `app/style/component.css`: published font and narrow engine normalization entry.
-- `app/style/global.css`: legacy generated/catalog baseline retained during review; no longer packaged as `style.css`.
+- `app/style/global.css`: private Tailwind catalog baseline; never packaged as `style.css`.
 - `internal/catalog/example/`: real package example and exact copyable source.
 - `vite.config.ts`: catalog build/preview; `test/browser/`: Bun.WebView browser verification.
 - `cmd/`: private repository build, verification and publication command.
@@ -82,25 +82,17 @@ Commit the pre-state change and push `main`. CI prepares the stable release MR, 
 - Missing bot credentials fail the release job explicitly. A green verification job alone does not mean publication succeeded; inspect the child `release` log and Package Registry.
 - Existing `v0.1.0` published nothing. Leave it alone and release a new Changesets-calculated version; automation will not repoint it.
 
-Changesets CLI is pinned to 2.29.8 with changesets-gitlab 0.14.0: this integration reads the v2 prerelease state, not the v3 archived-note layout. Upgrade together only after the RC/exit regression passes.
+Changesets CLI is pinned to 2.29.8 with changesets-gitlab 0.14.0. The release branch owns the local version bump; use the Package Registry and release tag, not this branch's pre-release `package.json` version, to identify the latest published package.
 
-CI gates package runtime coverage separately from command and catalog verification. Local runtime coverage reaches 100% in every metric. V8 coverage uses real Node 22.22.0 from the prebuilt catalog runtime rather than Bun's Node fallback. Historical Linux amd64 Docker proof used upstream `oven/bun:1.4.0` and passed the source sequence and 375 browser check; current Linux arm64 proof passes all 431 browser checks in the prebuilt runtime. Private registry publication is proven by the published RC and stable tag history. The exact installed `@bridge/ui@0.6.0` Bridge Web fixture passes with the shared Recharts v3 runtime: matching bars render, the 390px viewport does not overflow, and production SSR has no browser error or unexpected network request.
+CI separately gates package runtime coverage, package verification, and catalog browser verification. The exact installed `@bridge/ui@0.6.0` Bridge Web fixture passes with the shared Recharts v3 runtime: matching bars render, the 390px viewport does not overflow, and production SSR has no browser error or unexpected network request.
 
 `deployment/Dockerfile.catalog` provides Bun 1.4.1, Node 22.22.0 and a system Chromium package that `Bun.WebView`'s `backend: { type: "chrome" }` auto-detects. The image runs as root, and Chrome refuses to launch as root without `--no-sandbox`, so every `Bun.WebView({ backend: { type: "chrome", ... } })` call site passes `argv: ["--no-sandbox"]`. Child verification pins the published amd64/arm64 service image by OCI index digest; repository CI does not build or push it. Build locally with `docker buildx build --platform linux/amd64,linux/arm64 -f deployment/Dockerfile.catalog -t registry.fountain.sellsuki.com/service/bridge-ui-ci-verify-runtime:latest --push .`, then update the digest pin only after both platforms pass runtime verification. Use an isolated source copy and fresh `bun install --frozen-lockfile`; never reuse macOS `node_modules`. Browser binary and system dependency are prebuilt, so normal verification installs nothing extra. Normal CI never updates screenshot baselines.
 
-## Package Command
+## Verification
 
-`bun cmd/verify-pilot-budget.ts` records historical baseline/candidate Button measurements. The promoted package tree-shaking gate now measures root and direct StyleX Button at about 6.1 KB gzip with no chart/upload retention. Published `style.css` is about 77 KB raw / 16 KB gzip and contains fonts, narrow focus-guard normalization, extracted StyleX and the scoped engine adapter.
+`bun verify:package` packs the package, installs it in an isolated Bun fixture, verifies every declared package export and declaration, and builds Vite client and production SSR fixtures. `bun verify:tree-shaking` enforces the Button bundle budget. `bun catalog:test` runs Bun.WebView render, accessibility, visual, interaction, and memory checks against the static catalog.
 
-Promotion preserves recorded accessibility deviations DEC-010/011/012/018 and the scoped descendant adapter approved in DEC-013/017. `app/component/brand/stylex/adapter.css` is included in public `style.css` and applies only under `[data-pilot-theme]` or the documented Button compatibility class.
-
-After package build, `bun cmd/build-pilot-catalog.ts` creates the isolated private A/B page at `.eval/0908-stylex-foundation/catalog/index.html`. `bun cmd/verify-pilot-catalog.ts` verifies both frame render through Bun.WebView and captures the comparison. Theme/width controls use identical copy; the candidate frame loads no baseline stylesheet. This review page is not published package source.
-
-Private StyleX pilot verification (no export promotion): `NODE_ENV=production bun cmd/verify-pilot-browser.ts` runs Bun.WebView production hydration, form/dialog, scroll cleanup and WCAG A/AA checks. `bun cmd/verify-stylex-browser.ts` verifies compiler computed-style output. After package build, `NODE_ENV=production bun cmd/verify-pilot-style.ts` compares Button against generated output; set `PILOT_COMPONENT=input|field|dialog`, `PILOT_STATE=hover|active|focus-visible`, or `PILOT_PSEUDO=::placeholder|::file-selector-button` for the targeted matrix. Chrome and Bun.WebView are required. Evidence is written under `.eval/0908-stylex-foundation/`. The self-contained browser fixture avoids the host loopback issue; HTTP/CSP integration and full compound-state parity remain separate work.
-
-`bun cmd/verify-component-inventory.ts` checks the StyleX migration matrix against the current component source and emits its named export inventory. It fails on missing, extra or duplicate entries, invalid TSX and unresolved wildcard/default export. Babel parses TypeScript/JSX because TypeScript 7 does not expose the former JavaScript compiler AST API. The private verifier uses Effect v4; no Effect runtime is added to React/Base UI or published component imports. The completed private candidate record lives in `plan/archived/20260909-stylex-component-foundation/`; public promotion is archived in `plan/archived/20260920-stylex-public-promotion/`; failed current consumer proof and its required rerun are tracked in `plan/foundation-build/`.
-
-Package build explicitly emits production JSX, independent of the build process environment. `bun test test/internal/production-jsx.test.ts` renders root/direct component output under production React and rejects development JSX runtime imports. `bun verify:package` also executes the installed tarball's Vite SSR bundle under production React. This fixes the `jsxDEV is not a function` failure found in `0.1.1-rc.0`; the production-JSX package regression is covered. The exact installed `0.6.0` Bridge Web fixture passes matching-chart and mobile-overflow acceptance.
+`bun cmd/verify-component-inventory.ts` verifies the generated and brand source inventory against its catalog matrix. The inventory report, package manifest, and isolated tarball verification are the export source of truth; documentation intentionally does not maintain entry totals.
 
 Package output is split ESM with declarations. Root named import is tree-shakeable; direct entry avoids loading unrelated module for an unbundled consumer:
 
@@ -129,9 +121,7 @@ Catalog verification runs the full `test/browser/*.test.ts` suite under `bun tes
 
 Private `internal/catalog/preview.tsx` owns creation/destruction of nearby iframe; offscreen placeholder has no browsing context. Private `source.tsx` fetches raw source only on disclosure. This catalog lifecycle does not affect application-owned TsChart state or force viewport resets on package consumers.
 
-The complete StyleX implementation covers all 70 component modules and all 69 catalog families. Public root/direct/generated-compatible paths now resolve owned StyleX source, with Direction and TsChart retaining documented identity. Validation includes 100% owned runtime coverage, slot/state/geometry parity, reduced motion, RTL, open-overlay Axe, adapter isolation, packed package and 206 chart cases. Publication and immutable consumer integration proof are complete.
-
-`bun verify:package` checks all 71 public entry paths from an isolated Bun-installed tarball with declaration checking enabled, then builds the Vite client and SSR fixture. Emitted declaration uses relative package-local import, not private source alias. The Chromium memory regression repeats chart navigation eight times without page reload and checks post-GC heap/DOM growth after warmup; it does not measure total browser process memory.
+Public root, stable direct, and compatible wildcard paths resolve to owned StyleX source, with Direction and TsChart retaining documented identity. Emitted declaration uses relative package-local import, not private source alias. Publication and immutable consumer integration proof are complete.
 
 ```bash
 bun install
@@ -149,7 +139,7 @@ bun verify:package
 
 Run `bun dev` to open the entire catalog at http://127.0.0.1:6006. Each component page displays every available example inline, with a heading, description, isolated preview and source disclosure. No variant dropdown is required. Theme and mobile controls remain available.
 
-Open http://127.0.0.1:6006/style-x for the retained comparison route. Both regular and StyleX routes now exercise the promoted owned source; `/style-x` keeps historical source disclosure and parity evidence. Example layout still uses utility CSS, but published component runtime does not.
+Open http://127.0.0.1:6006/style-x for the private comparison route. Catalog layout may use utility CSS; published component runtime does not.
 
 Dark is the default theme; the theme toggle and `?theme=light` support light mode. Chart includes 16 inline examples. TsChart includes the 188-entry upstream v0.16.0 catalog plus two small Bridge compositions. Vendored source, supporting module, license and dataset attribution live under `internal/catalog/vendor/tanstack/`; this development-only source is not published with the package.
 
@@ -159,7 +149,7 @@ The open dropdown-menu example passes the unfiltered accessibility scan. Package
 
 ## Policy
 
-`bun coverage:runtime` measures `app/` and `shared/` at a 90% statement, branch, function and line floor, with brand coverage at 100%. Generated `app/component/shadcn/**` and the export-only `app/index.ts` barrel are excluded; hook code remains in scope. Command and catalog verification remain mandatory through Bun test, boundary, packed client/SSR, tree-shaking and Bun.WebView. This is package runtime coverage, not repository-wide coverage.
+`bun coverage:runtime` measures `app/` and `shared/` at a 90% statement, branch, function and line floor, with brand coverage at 100%. Generated `app/component/shadcn/**` and the export-only `app/index.ts` barrel are excluded; hook code remains in scope. Command and catalog verification remain mandatory through Bun test, boundary, packed client/SSR, tree-shaking and Bun.WebView. This is package runtime coverage, not repository-wide coverage. Focus-sentinel review and further catalog state/visual expansion are tracked as non-blocking package follow-up.
 
 Upload composition is available from root import or `@bridge/ui/upload-viewer`, `@bridge/ui/upload-list` and `@bridge/ui/image-crop`:
 
@@ -168,11 +158,11 @@ Upload composition is available from root import or `@bridge/ui/upload-viewer`, 
 - `UploadList`: controlled local File or remote URL metadata, cumulative count/byte limit, per-file rejection callback and feedback announcement. Removal returns focus to the selection trigger. Caller supplies translated copy and size formatting.
 - `ImageCrop`: drag or keyboard position, zoom, 90-degree rotation and square/original/3:1 banner ratio. Apply emits a PNG with width 768px; upload remains a separate caller action. Bitmap cleanup occurs on replacement/unmount.
 
-The catalog demonstrates existing attachment, preview focus restoration, static transfer state and separate crop/apply/upload. Packed verification now resolves 79 public entry. These additions satisfy their package-runtime and browser contract but do not complete the remaining consumer foundation proof.
+The catalog demonstrates existing attachment, preview focus restoration, static transfer state and separate crop/apply/upload.
 
 `UploadPreview` packages an Item row with MIME-specific image/video/audio/PDF/file icon, optional thumbnail, filename, caller-formatted size/status and accessible preview/remove callback buttons. Compose it beside DropArea; the caller owns file selection, preview URL and actual upload. The catalog uses this public component rather than a private filename row.
 
-`TsChart` is a separate public wrapper for TanStack SVG, tooltip and custom renderer support. Core and React adapter remain pinned to alpha `0.16.0`. `DropArea` adapts Bridge Web's Dropzone interaction through react-dropzone, with caller-owned copy, constraint and callback; no consumer migration was performed. Brand MultiSelectValue uses primary badge styling without modifying generated source. Calendar includes two- and four-month range selection. Empty, menu, navigation, conversation, pagination and Sonner have expanded demonstration.
+`TsChart` is a separate public wrapper for TanStack SVG, tooltip and custom renderer support. Core and React adapter remain pinned to alpha `0.16.0`. `DropArea` adapts react-dropzone with caller-owned copy, constraint and callback. Brand MultiSelectValue uses primary badge styling without modifying generated source. Calendar includes two- and four-month range selection. Empty, menu, navigation, conversation, pagination and Sonner have expanded demonstration.
 
 - [ADHD.md](./ADHD.md): north star and ideal repository contract.
 - [AGENTS.md](./AGENTS.md): agent workflow.

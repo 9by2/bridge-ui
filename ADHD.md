@@ -137,11 +137,11 @@ At this document revision:
 - 63 generated Shadcn component file;
 - generated and brand component catalog, including the 188-entry TanStack reference inventory;
 - catalog browser suite requires a retained complete Bun.WebView run; local/package component checks do not substitute for this gate;
-- open-menu accessibility and keyboard regression pass; hidden focus sentinel still requires manual accessibility review; full state and visual coverage remains incomplete;
+- open-menu accessibility and keyboard regression pass; focus-sentinel review and remaining state/visual expansion are accepted non-blocking catalog follow-up;
 - brand component reaches 100% statement, branch, function and line coverage; package runtime coverage replaces the former repository-wide percentage policy;
 - required button, input, checkbox, select, dialog, popover, tabs, accordion, tooltip, and toast interactions pass;
 - component catalog development smoke test and static build pass;
-- static StyleX extraction for owned upload layout; generated Tailwind styling remains during transition;
+- published package CSS is statically extracted through StyleX; generated catalog reference source retains private Tailwind styling;
 - ESM package, declaration, source map, CSS export, tarball, client fixture, and SSR fixture pass;
 - copied application component and consumer import removed;
 - source-boundary check, package build, full typecheck, test, package runtime coverage, packed client/SSR, and tree-shaking pass locally;

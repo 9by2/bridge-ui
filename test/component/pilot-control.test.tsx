@@ -34,9 +34,8 @@ test("control variant and callback class preserve caller state", () => {
       expect(toggleVariants({ size, variant })).toBeTypeOf("string")
       unmount()
     }
-  const { rerender } = render(<Slider orientation="vertical" className={() => "caller"} />)
+  render(<Slider orientation="vertical" className={() => "caller"} />)
   expect(screen.getByRole("group").className).toContain("caller")
-  rerender(<Slider value={[25]} />)
 })
 
 test("radio group and toggle preserve primitive selection", () => {
@@ -57,12 +56,15 @@ test("radio group and toggle preserve primitive selection", () => {
 })
 
 test("slider retains range thumb and value", () => {
-  const { rerender } = render(<Slider defaultValue={[20, 80]} />)
   // jsdom has no layout; Base UI hides the thumb until browser measurement.
+  const { unmount } = render(<Slider defaultValue={[20, 80]} />)
   expect(screen.getAllByRole("slider", { hidden: true }).map((node) => node.getAttribute("aria-valuenow"))).toEqual([
     "20",
     "80"
   ])
+  unmount()
+
+  const { rerender } = render(<Slider value={[20, 80]} />)
   rerender(<Slider value={[40]} />)
   expect(screen.getAllByRole("slider", { hidden: true }).length).toBe(1)
 })

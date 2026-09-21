@@ -1,8 +1,6 @@
 import { cp, rm, writeFile } from "node:fs/promises"
 import path from "node:path"
 
-import tailwind from "bun-plugin-tailwind"
-
 import { createPackageStylexPlugin } from "../internal/package-stylex"
 
 const root = path.resolve(import.meta.dir, "..")
@@ -41,8 +39,7 @@ const result = await Bun.build({
       enableMediaQueryOrder: false,
       runtimeInjection: false,
       bunDevCssOutput: path.join(outdir, "stylex.css")
-    }),
-    tailwind
+    })
   ],
   sourcemap: "linked",
   target: "browser"
