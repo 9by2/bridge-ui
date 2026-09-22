@@ -7,42 +7,56 @@ const PageSpacing = {
   COMFORTABLE: "comfortable"
 } as const
 
+const PageVariant = { DEFAULT: "default", CONTAINER: "container" } as const
+
 const example = [
   {
     name: "Default",
     spacing: PageSpacing.DEFAULT,
+    variant: PageVariant.DEFAULT,
     isDynamicPadding: false,
     description: "Default static page gutters."
   },
   {
     name: "None",
     spacing: PageSpacing.NONE,
+    variant: PageVariant.DEFAULT,
     isDynamicPadding: false,
     description: "Zero padding for layouts that own their inner spacing."
   },
   {
     name: "Compact",
     spacing: PageSpacing.COMPACT,
+    variant: PageVariant.DEFAULT,
     isDynamicPadding: false,
     description: "16px padding for dense and dialog-adjacent layouts."
   },
   {
     name: "Comfortable",
     spacing: PageSpacing.COMFORTABLE,
+    variant: PageVariant.DEFAULT,
     isDynamicPadding: false,
     description: "24px padding for an intermediate page density."
   },
   {
     name: "Dynamic",
     spacing: PageSpacing.DEFAULT,
+    variant: PageVariant.DEFAULT,
     isDynamicPadding: true,
     description: "Responsive desktop, tablet, and mobile gutters when explicitly requested."
+  },
+  {
+    name: "Container",
+    spacing: PageSpacing.DEFAULT,
+    variant: PageVariant.CONTAINER,
+    isDynamicPadding: false,
+    description: "A 1480px centered layout when the page composition requires it."
   }
 ] as const
 
-function PageExample({ name, spacing, isDynamicPadding, description }: (typeof example)[number]) {
+function PageExample({ name, spacing, variant, isDynamicPadding, description }: (typeof example)[number]) {
   return (
-    <UI.Page spacing={spacing} isDynamicPadding={isDynamicPadding} className="border">
+    <UI.Page variant={variant} spacing={spacing} isDynamicPadding={isDynamicPadding} className="border">
       <UI.PageBreadcrumb>
         <UI.Breadcrumb>
           <UI.BreadcrumbList>

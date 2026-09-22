@@ -128,6 +128,18 @@ Supported color keys are `background`, `foreground`, `primary`, `primaryForegrou
 
 Use component props for intentional local exceptions, for example `<Card radius="none" />`. Do not rely on StyleX class names, `pilot-*` classes, or undocumented `data-slot` selectors as a customization API.
 
+## Page layout
+
+`Page` is full-width by default. Pass `variant="container"` only when the composition needs the package's 1480px centered content width.
+
+```tsx
+import { Page } from "@bridge/ui/page"
+
+export function Report() {
+  return <Page variant="container">Constrained report content</Page>
+}
+```
+
 ## Typography
 
 `Heading`, `Label`, and `Body` provide the Cue semantic typography baseline. Heading uses the package heading family and highlight color; `Body` preserves Cue's compact `1.3` line height. Pass `as` to choose a semantic heading level, or omit it for an `h4`.
@@ -239,7 +251,7 @@ Use the catalog for complete states and examples. All components accept their do
 | AspectRatio, Resizable, ScrollArea, Separator | Ratio, pane direction/default sizes, viewport behavior, and orientation.                                                                           |
 | Card, Table                                   | Card `radius`/`size`/`ghost`; Table `variant="frame"`, density, hint, viewport, columns, rows, and empty content. `TableFrame` remains compatible. |
 | Carousel                                      | Controlled slide API, orientation, and previous/next controls.                                                                                     |
-| Page, ShellHeader, Sidebar                    | Page spacing/layout props; header slots; Sidebar provider, rail, trigger, and collapsible state.                                                   |
+| Page, ShellHeader, Sidebar                    | Page `variant`, spacing/layout props, header slots; Sidebar provider, rail, trigger, and collapsible state.                                        |
 | Tabs                                          | Controlled value; List, Trigger, and Content composition. Bridge `capsule` is additive to Cue defaults.                                            |
 | Breadcrumb                                    | Item/link/separator composition; custom separator children.                                                                                        |
 | Direction                                     | `dir="ltr"` or `dir="rtl"` subtree direction.                                                                                                      |

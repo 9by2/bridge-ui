@@ -87,3 +87,16 @@ test("page exposes static named density and opt-in dynamic padding", () => {
   expect(page[0]?.hasAttribute("data-dynamic-padding")).toBe(false)
   expect(page[3]?.getAttribute("data-dynamic-padding")).toBe("true")
 })
+
+test("page defaults to full-width and explicitly opts into a container layout", () => {
+  const { container } = render(
+    <>
+      <Page>Full-width</Page>
+      <Page variant="container">Container</Page>
+    </>
+  )
+
+  const page = container.querySelectorAll("[data-slot=page]")
+  expect(page[0]?.getAttribute("data-variant")).toBe("default")
+  expect(page[1]?.getAttribute("data-variant")).toBe("container")
+})

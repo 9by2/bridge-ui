@@ -4,19 +4,24 @@ import type { ComponentProps } from "react"
 import { token } from "./token.stylex"
 import { Heading, WAIHeading } from "./typography"
 
+const pageVariant = { default: "default", container: "container" } as const
+
+type ValueOf<T> = T[keyof T]
+
+export type PageVariant = ValueOf<typeof pageVariant>
+
 const style = stylex.create({
   root: {
     boxSizing: "border-box",
     width: "100%",
-    maxWidth: 1480,
     minWidth: 0,
-    marginInline: "auto",
     paddingTop: 24,
     paddingRight: 44,
     paddingBottom: 48,
     paddingLeft: 44,
     color: token.foreground
   },
+  container: { maxWidth: 1480, marginInline: "auto" },
   none: { paddingTop: 0, paddingRight: 0, paddingBottom: 0, paddingLeft: 0 },
   compact: { paddingTop: 16, paddingRight: 16, paddingBottom: 16, paddingLeft: 16 },
   comfortable: { paddingTop: 24, paddingRight: 24, paddingBottom: 24, paddingLeft: 24 },
@@ -80,15 +85,23 @@ const style = stylex.create({
   content: { minWidth: 0 }
 })
 
+export type PageProps = ComponentProps<"div"> & {
+  variant?: PageVariant
+  spacing?: "default" | "none" | "compact" | "comfortable"
+  isDynamicPadding?: boolean
+}
+
 export function Page({
+  variant = pageVariant.default,
   spacing = "default",
   isDynamicPadding = false,
   className,
   ...props
-}: ComponentProps<"div"> & { spacing?: "default" | "none" | "compact" | "comfortable"; isDynamicPadding?: boolean }) {
+}: PageProps) {
   return (
     <div
       data-slot="page"
+      data-variant={variant}
       data-spacing={spacing}
       data-dynamic-padding={isDynamicPadding || undefined}
       {...props}
@@ -96,6 +109,7 @@ export function Page({
         stylex.props(
           stylex.defaultMarker(),
           style.root,
+          variant === pageVariant.container && style.container,
           spacing === "none" && style.none,
           spacing === "compact" && style.compact,
           spacing === "comfortable" && style.comfortable,
