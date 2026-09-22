@@ -1,5 +1,39 @@
 # @bridge/ui
 
+## 0.7.0
+
+### Minor Changes
+
+- 91eddf7: Add the reusable BridgeCalendar schedule component with scheduled, week, and month views.
+- 1025a96: Add independent Dialog background and foreground theme colors.
+- 5754b5c: Add a StyleX Kanban compound component with controlled item and column reordering.
+- ce5cf7f: Make Page full-width by default and add the explicit container layout variant.
+- ba9083d: Add the `SettingItem` inline presentation variant.
+- 2576ee3: Add responsive settings composition with sidebar identity header and catalog action patterns.
+- 69c4d6c: Add a theme-aware SwimLaneBoard compound component for Kanban and Scrum workflows.
+- 7287e2e: Add scoped custom theme colors, shared radius, spacing, and density overrides for P0 owned component families.
+
+### Patch Changes
+
+- d2d5a37: Document custom Breadcrumb separator content in the component catalog.
+- d2d5a37: Add a Breadcrumb catalog gallery for custom separator content.
+- a0d8fd5: Fix BridgeCalendar month-grid accessibility and packaged React 19 declaration verification.
+- 8a7f7dd: Add configurable Card border-radius variants.
+- fd0eca3: Reduce the catalog startup bundle and enforce catalog asset budgets.
+- 7bc99f9: Fix avatar fallback text contrast and stabilize parallel catalog verification.
+- 5153035: Add semantic component variants, ReactCrop-compatible image selection, framed Table composition, and expanded catalog examples. Repair responsive crop composition, framed table sizing, and Calendar range/today presentation.
+- a58cf0c: Restore runtime coverage and full catalog verification gates.
+- b234bed: Restore Cue-derived primary Button defaults after StyleX compilation.
+- 1025a96: Restore Cue-derived default recipes for core controls and status/navigation components while retaining Bridge extensions.
+- 27faab6: Add Cue-compatible semantic typography primitives.
+- 194fbe2: Fix Dialog footer padding at compact and comfortable density.
+- 0b2c5cd: Add a decorative leading icon option to Input.
+- 3235e52: Reduce the default Page title scale for a denser layout hierarchy.
+- ec18139: Add opt-in, side-aware native resizing for SheetContent.
+- f73c176: Remove the catalog's separate normal example mode so every preview uses the public StyleX implementation.
+- bb5ff06: Fix SwimLaneBoard pointer and keyboard movement across whole-cell drop zones, add stable drag overlays, and highlight valid cells during drag.
+- 5dbb9dd: Give tab lists an opaque background for readable sticky overlays.
+
 ## 0.6.2
 
 ### Patch Changes
