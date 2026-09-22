@@ -8,6 +8,14 @@ import path from "node:path"
 const root = path.resolve(import.meta.dir, "..")
 const port = Number(process.env.CATALOG_PORT ?? 6007)
 const catalogDist = path.join(root, "catalog-dist")
+const BrowserContractFile = [
+  "./test/browser/catalog.test.ts",
+  "./test/browser/accessibility.test.ts",
+  "./test/browser/render-pipeline.test.ts",
+  "./test/browser/menu-focus.test.ts",
+  "./test/browser/upload-composition.test.ts",
+  "./test/browser/responsive.test.ts"
+] as const
 
 const build = Bun.spawnSync(["bun", "catalog:build"], { cwd: root, stdout: "inherit", stderr: "inherit" })
 if (build.exitCode !== 0) process.exit(build.exitCode ?? 1)
@@ -32,7 +40,7 @@ let exitCode = 1
 try {
   const args = process.argv.slice(2)
   const test = Bun.spawn(
-    ["bun", "test", "--timeout", "30000", "--parallel=2", ...(args.length > 0 ? args : ["./test/browser"])],
+    ["bun", "test", "--timeout", "30000", "--parallel=2", ...(args.length > 0 ? args : BrowserContractFile)],
     { cwd: root, stdout: "inherit", stderr: "inherit", env: { ...process.env, CATALOG_URL: baseUrl } }
   )
   exitCode = await test.exited

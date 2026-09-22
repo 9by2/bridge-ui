@@ -6,7 +6,7 @@
 
 ## Summary
 
-Defines bounded parallel execution and actionable preview lifecycle failures for the complete catalog browser suite.
+Defines bounded parallel execution and actionable preview lifecycle failures for compact catalog browser contracts.
 
 ## Requirements
 

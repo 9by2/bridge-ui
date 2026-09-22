@@ -51,11 +51,13 @@ bun coverage:runtime
 bun run build
 bun catalog:build
 bun catalog:test
+bun catalog:test:visual
+bun catalog:test:memory
 bun verify:package
 bun verify:tree-shaking
 ```
 
-Run `bun dev` for catalog at http://127.0.0.1:6006. `bun catalog:test` builds the static catalog and runs Bun.WebView render, accessibility, visual, interaction, and memory verification. Run `bun hooks:install` once after cloning; the repository pre-push hook runs this complete suite locally. `git push --no-verify` explicitly bypasses that quality gate.
+Run `bun dev` for catalog at http://127.0.0.1:6006. `bun catalog:build` compiles every example. `bun catalog:test` runs compact Bun.WebView contracts for catalog shell, render pipeline, accessibility archetypes, focus, upload and responsive behavior before push. `bun catalog:test:visual` and `bun catalog:test:memory` run explicit diagnostics for relevant visual/lifecycle work and release verification. Run `bun hooks:install` once after cloning; `git push --no-verify` explicitly bypasses the compact browser gate.
 
 ## Release
 
@@ -67,7 +69,7 @@ Use `bun changeset pre enter rc` for RC release under `next`; use `bun changeset
 
 ## CI
 
-Root CI triggers `deployment/.gitlab-ci.yml`. Child CI runs source, coverage, static catalog build, and packed-package verification; complete Bun.WebView verification runs locally before push. Release runs only on protected default-branch CI. `CI_JOB_TOKEN` accesses the registry. Protected `GITLAB_TOKEN` maintains release branch, merge request, and version tag.
+Root CI triggers `deployment/.gitlab-ci.yml`. Child CI runs source, coverage, static catalog build, and packed-package verification; compact Bun.WebView contracts run locally before push. Release runs only on protected default-branch CI. `CI_JOB_TOKEN` accesses the registry. Protected `GITLAB_TOKEN` maintains release branch, merge request, and version tag.
 
 `deployment/Dockerfile.catalog` provides Bun, Node, and Chromium for Bun.WebView. CI pins its published runtime image by digest.
 

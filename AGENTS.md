@@ -41,16 +41,57 @@
 - **ALWAYS** follow the tdd skill for the general testing workflow.
 - **ALWAYS** protect meaningful user behavior React/UI tests such as: interactions, state transitions, validation behavior, navigation, accessibility state, permissions, loading/error behavior
 - **ALWAYS** testing business behavior at the Effect/service layer when possible.
+- **ALWAYS** state the meaningful user or consumer behavior a test protects.
+- **ALWAYS** use the cheapest reliable seam: static test for inventory/build, component test for public behavior, browser test only for browser-only behavior.
+- **ALWAYS** add browser coverage for focus, keyboard, portal, browser API, lazy lifecycle, responsive overflow, unique semantic accessibility composition, documented visual contract, or fixed browser defect.
+- **ALWAYS** add a new accessibility archetype test when a component introduces materially different semantics or composition.
+- **ALWAYS** multiply themes, viewports, variants, or routes only when that dimension can change the asserted behavior.
+- **ALWAYS** retain exact visual or CSS measurements only when an accepted spec promises them or a regression requires them.
 
 - **NEVER** apply exhaustive TDD to presentation details.
 - **NEVER** add tests solely for: Tailwind classes, StyleX output or class composition, conditional styling, exact DOM structure, snapshots, ordinary translation rendering, copy changes with no behavioral significance
+- **NEVER** add a test solely because a catalog example, visual variant, theme, or viewport exists.
+- **NEVER** use a browser test to duplicate public behavior already covered reliably through a component test.
+- **NEVER** run axe against every catalog fixture by default; test representative semantic archetypes and unique compositions.
+- **NEVER** test classes, ordinary DOM shape, ordinary copy, padding, pixel values, font weight, transition duration, or other implementation detail without a documented contract or focused defect regression.
+- **NEVER** retain completed migration-parity coverage unless it protects an ongoing public contract.
+- **NEVER** delete meaningful test coverage without moving its protected behavior to an equally reliable or cheaper seam.
 
 ### Testing Example
 
-- Prefer `expect(button).toBeDisabled()` over: `expect(button).toHaveClass("opacity-50")` or `expect(button).toHaveCss("...")`
-- Prefer testing the Effect rule that determines whether an action is allowed instead of exhaustively testing every React styling permutation.
-- Translation catalogs, interpolation, fallback behavior, and missing keys may be tested centrally rather than in every component.
+Start by naming the protected behavior and selecting the cheapest reliable seam.
 
-### Testing Rule of thumb
+| Behavior                              | Preferred seam            | Good test                                                                               | Avoid                            |
+| ------------------------------------- | ------------------------- | --------------------------------------------------------------------------------------- | -------------------------------- |
+| Catalog example exists and compiles   | Static inventory/build    | Verify the example is registered and `bun catalog:build` compiles it                    | Open every example in WebView    |
+| Component validates invalid input     | Component/public API      | Enter invalid value and assert exposed invalid/error state                              | Assert destructive border class  |
+| Quantity cannot pass configured bound | Component/public API      | Click increment and `expect(button).toBeDisabled()` at maximum                          | Assert disabled opacity          |
+| Dialog restores focus after close     | Browser                   | Open dialog, close it, assert trigger is focused                                        | Assert portal wrapper DOM shape  |
+| Menu skips hidden focus guard         | Browser regression        | Navigate by keyboard and assert a menu item receives focus                              | Assert focus-guard width/padding |
+| Mobile composition remains usable     | Browser                   | Set mobile viewport and assert no document overflow                                     | Assert exact sidebar width       |
+| Theme token keeps readable contrast   | Browser accessibility     | Audit a representative semantic archetype in each distinct theme                        | Axe-audit every visual fixture   |
+| Lazy chart releases preview resource  | Browser diagnostic        | Navigate away and assert preview iframe is removed; use memory probe for lifecycle work | Heap-test every routine change   |
+| Documented visual geometry            | Browser visual/regression | Assert the accepted ratio or use a curated screenshot baseline                          | Assert incidental pixel padding  |
 
-Before adding a UI test, ask: `What meaningful user behavior would regress?`. If the answer is only styling, classes, markup, or ordinary translated copy, do not add the test.
+```ts
+// Component seam: public behavior, not styling.
+await user.click(incrementButton)
+expect(incrementButton).toBeDisabled()
+
+// Browser seam: focus restoration needs a real browser/portal.
+await openDialog.click()
+await page.pressKey("Escape")
+await expect(openDialog).toBeFocused()
+
+// Static seam: all examples remain discoverable and compilable.
+expect(exampleModule).toMatch(/export default function Example|export \{ default \} from/)
+```
+
+**Before adding a test, answer:**
+
+1. What meaningful user or consumer behavior can regress?
+2. What is the cheapest reliable seam that observes it?
+3. Does a new theme, viewport, variant, or fixture change that behavior?
+4. Is an exact visual value documented or required by a defect regression?
+
+If these questions do not identify a behavior beyond implementation detail, do not add the test.

@@ -175,6 +175,8 @@
     "dev": "vite --config vite.config.ts",
     "catalog:build": "vite build --config vite.config.ts && bun cmd/verify-catalog-bundle-size.ts",
     "catalog:test": "bun cmd/run-catalog-test.ts",
+    "catalog:test:visual": "bun cmd/run-catalog-test.ts ./test/browser/visual.test.ts",
+    "catalog:test:memory": "bun cmd/run-catalog-test.ts ./test/browser/memory.test.ts",
     "boundary": "bun cmd/check-source-boundary.ts",
     "build": "bun cmd/build-package.ts",
     "fmt": "oxfmt",

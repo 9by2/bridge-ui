@@ -3,9 +3,11 @@ import { expect, test } from "bun:test"
 const catalogImage =
   "registry.fountain.sellsuki.com/service/bridge-ui-ci-verify-runtime@sha256:19eddc384cca8f39c94290a0c161ac4c837683418ed288849444ea4eeb750200"
 
-test("catalog:test script runs the Bun.WebView orchestrator", async () => {
+test("catalog commands split compact contracts from visual and memory diagnostics", async () => {
   const packageJson = await Bun.file("package.json").json()
   expect(packageJson.scripts["catalog:test"]).toBe("bun cmd/run-catalog-test.ts")
+  expect(packageJson.scripts["catalog:test:visual"]).toBe("bun cmd/run-catalog-test.ts ./test/browser/visual.test.ts")
+  expect(packageJson.scripts["catalog:test:memory"]).toBe("bun cmd/run-catalog-test.ts ./test/browser/memory.test.ts")
   const runner = await Bun.file("cmd/run-catalog-test.ts").text()
   expect(runner).toContain('"--parallel=2"')
   expect(runner).not.toContain('"--concurrent"')
@@ -13,6 +15,10 @@ test("catalog:test script runs the Bun.WebView orchestrator", async () => {
   expect(runner).toContain("server.stop(true)")
   expect(runner).toContain("path.extname(relativePath)")
   expect(runner).toContain("server.port")
+  expect(runner).toContain('"./test/browser/accessibility.test.ts"')
+  expect(runner).toContain('"./test/browser/render-pipeline.test.ts"')
+  expect(runner).toContain('"./test/browser/responsive.test.ts"')
+  expect(runner).not.toContain('"./test/browser"')
 })
 
 test("complete WebView verification runs before push while CI retains the static catalog gate", async () => {

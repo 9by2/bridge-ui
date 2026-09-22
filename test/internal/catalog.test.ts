@@ -30,7 +30,16 @@ test("catalog exposes a default example for every public component family", asyn
   for (const file of examples) {
     const source = await Bun.file(file).text()
     expect(source, file).toContain('from "@bridge/ui"')
-    expect(source, file).toContain("export default function Example")
+    expect(source, file).toMatch(/export default function Example|export \{ default \} from/)
+  }
+})
+
+test("catalog statically inventories every example module", async () => {
+  const examples = [...new Bun.Glob("internal/catalog/example/**/*.tsx").scanSync({ cwd: root })]
+  expect(examples.length).toBeGreaterThan(0)
+  for (const file of examples) {
+    const source = await Bun.file(path.join(root, file)).text()
+    expect(source, file).toMatch(/export default function Example|export \{ default \} from/)
   }
 })
 

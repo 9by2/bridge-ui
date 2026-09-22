@@ -89,7 +89,7 @@ Production implementation must begin only after its public test seams and failin
 
 - [x] Tests target public `data-slot`, forwarding, controlled callback, provider, semantic-token, and export seams instead of private implementation details (component tests use `screen.getByRole`/`data-slot` queries, not internal StyleX class assertions; contract tests assert `package.json`/`app/index.ts` public surface).
 - [x] Tests are written red before each production component/foundation implementation. Phases 0-3 followed vertical red-green slices per `design.md`/`decision.md`; the DEC-013 radius-override correction and REQ-003/REQ-005 gap closure in this session each started from a reproducing failing test (axe violations reproduced via `bun catalog:test`, missing-export reproduced via a new `package-contract.test.ts` case, Sonner theme mismatch reproduced via `pilot-sonner.test.tsx`) before the corresponding source fix.
-- [x] Package boundary, accessibility, visual, packed client, and SSR checks remain separate required gates (`bun boundary`, `CI=true bun catalog:test` axe sweep, `test/browser/visual.spec.ts` golden screenshots, `bun cmd/verify-package.ts` client+SSR, all run and passing independently — see Phase 4 verification log in `task.md`).
+- [x] Package boundary, accessibility, visual, packed client, and SSR checks remain separate required gates (`bun boundary`, compact `bun catalog:test` accessibility contracts, `bun catalog:test:visual` screenshots, `bun cmd/verify-package.ts` client+SSR, all run independently — see Phase 4 verification log in `task.md`).
 
 ## API
 

@@ -6,19 +6,20 @@
 
 ## Summary
 
-Defines complete Bun.WebView catalog verification as a repository pre-push gate and static catalog compilation as the retained CI gate.
+Defines compact Bun.WebView catalog contracts as a repository pre-push gate, exhaustive static catalog compilation as the retained CI gate, and explicit visual/memory diagnostics.
 
 ## Requirements
 
 ### REQ-001: Repository hook
 
-The repository-owned pre-push hook SHALL run the complete `bun catalog:test` command and propagate its exit status.
+The repository-owned pre-push hook SHALL run compact `bun catalog:test` browser contracts and propagate its exit status.
 
 **Acceptance:**
 
 - [ ] `.githooks/pre-push` is executable.
 - [ ] The hook uses an OS-assigned catalog server port by default.
 - [ ] A failed catalog suite blocks a normal push.
+- [ ] Visual and memory diagnostics are exposed by independent commands.
 
 ### REQ-002: Explicit installation
 
