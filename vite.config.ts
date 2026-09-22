@@ -26,6 +26,23 @@ export default defineConfig({
       { find: /^@bridge\/ui\/(.*)$/, replacement: path.resolve("$1") }
     ]
   },
-  server: { host: "0.0.0.0", allowedHosts: true, port: 6006, strictPort: true, open: true },
-  build: { outDir: "../../catalog-dist", emptyOutDir: true }
+  server: { host: "0.0.0.0", allowedHosts: true, port: 6006 },
+  build: {
+    outDir: "../../catalog-dist",
+    emptyOutDir: true,
+    assetsInlineLimit: 0,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules/three/")) return "three"
+          if (id.includes("node_modules/@tanstack/charts/")) return "tanstack-chart"
+          if (id.includes("node_modules/@base-ui/react/")) return "base-ui"
+          if (id.includes("node_modules/lucide-react/")) return "lucide"
+          if (id.includes("node_modules/d3-") || id.includes("node_modules/topojson-")) return "geo-chart"
+          if (id.includes("node_modules/react/") || id.includes("node_modules/react-dom/")) return "react"
+        }
+      }
+    },
+    chunkSizeWarningLimit: 900
+  }
 })
