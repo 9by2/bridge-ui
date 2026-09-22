@@ -116,6 +116,10 @@
       "types": "./dist/component/brand/stylex/setting-item.d.ts",
       "import": "./dist/component/brand/stylex/setting-item.js"
     },
+    "./settings": {
+      "types": "./dist/component/brand/stylex/settings.d.ts",
+      "import": "./dist/component/brand/stylex/settings.js"
+    },
     "./sticky-alert": {
       "types": "./dist/component/brand/stylex/sticky-alert.d.ts",
       "import": "./dist/component/brand/stylex/sticky-alert.js"
