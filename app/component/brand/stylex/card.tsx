@@ -3,6 +3,12 @@ import type { ComponentProps } from "react"
 
 import { token } from "./token.stylex"
 
+type ValueOf<T> = T[keyof T]
+
+const cardRadius = { none: "none", sm: "sm", default: "default", lg: "lg" } as const
+
+export type CardRadius = ValueOf<typeof cardRadius>
+
 const style = stylex.create({
   root: {
     boxSizing: "border-box",
@@ -18,6 +24,9 @@ const style = stylex.create({
     lineHeight: "20px",
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%)`
   },
+  radiusNone: { borderRadius: 0 },
+  radiusSm: { borderRadius: 8 },
+  radiusLg: { borderRadius: 18 },
   top: { paddingTop: { default: 16, ":has(> img:first-child)": 0 } },
   small: {
     gap: 12,
@@ -29,8 +38,18 @@ const style = stylex.create({
     gridAutoRows: "min-content",
     alignItems: "start",
     gap: 4,
-    borderTopLeftRadius: 14,
-    borderTopRightRadius: 14,
+    borderTopLeftRadius: {
+      default: 14,
+      [stylex.when.ancestor('[data-radius="none"]')]: 0,
+      [stylex.when.ancestor('[data-radius="sm"]')]: 8,
+      [stylex.when.ancestor('[data-radius="lg"]')]: 18
+    },
+    borderTopRightRadius: {
+      default: 14,
+      [stylex.when.ancestor('[data-radius="none"]')]: 0,
+      [stylex.when.ancestor('[data-radius="sm"]')]: 8,
+      [stylex.when.ancestor('[data-radius="lg"]')]: 18
+    },
     paddingInline: 16,
     containerType: "inline-size",
     gridTemplateColumns: { default: null, ':has([data-slot="card-action"])': "1fr auto" }
@@ -47,8 +66,18 @@ const style = stylex.create({
   footer: {
     display: "flex",
     alignItems: "center",
-    borderBottomLeftRadius: 14,
-    borderBottomRightRadius: 14,
+    borderBottomLeftRadius: {
+      default: 14,
+      [stylex.when.ancestor('[data-radius="none"]')]: 0,
+      [stylex.when.ancestor('[data-radius="sm"]')]: 8,
+      [stylex.when.ancestor('[data-radius="lg"]')]: 18
+    },
+    borderBottomRightRadius: {
+      default: 14,
+      [stylex.when.ancestor('[data-radius="none"]')]: 0,
+      [stylex.when.ancestor('[data-radius="sm"]')]: 8,
+      [stylex.when.ancestor('[data-radius="lg"]')]: 18
+    },
     borderTopWidth: 1,
     borderTopStyle: "solid",
     borderTopColor: token.border,
@@ -56,14 +85,28 @@ const style = stylex.create({
     paddingBlock: { default: 16, [stylex.when.ancestor('[data-size="sm"]')]: 12 }
   }
 })
-export function Card({ className, size = "default", ...props }: ComponentProps<"div"> & { size?: "default" | "sm" }) {
+export function Card({
+  className,
+  size = "default",
+  radius = cardRadius.default,
+  ...props
+}: ComponentProps<"div"> & { radius?: CardRadius; size?: "default" | "sm" }) {
   return (
     <div
       data-slot="card"
       data-size={size}
+      data-radius={radius}
       {...props}
       className={[
-        stylex.props(stylex.defaultMarker(), style.root, style.top, size === "sm" && style.small).className,
+        stylex.props(
+          stylex.defaultMarker(),
+          style.root,
+          style.top,
+          size === "sm" && style.small,
+          radius === cardRadius.none && style.radiusNone,
+          radius === cardRadius.sm && style.radiusSm,
+          radius === cardRadius.lg && style.radiusLg
+        ).className,
         className
       ]
         .filter(Boolean)

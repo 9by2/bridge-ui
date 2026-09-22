@@ -13,15 +13,28 @@ function Axis({ children, label }: { readonly children: ReactNode; readonly labe
 
 export default function Example() {
   return (
-    <Axis label="size">
-      {(["default", "sm"] as const).map((size) => (
-        <UI.Card key={size} size={size} className="w-56">
-          <UI.CardHeader>
-            <UI.CardTitle>{size}</UI.CardTitle>
-            <UI.CardDescription>Card size</UI.CardDescription>
-          </UI.CardHeader>
-        </UI.Card>
-      ))}
-    </Axis>
+    <div className="space-y-6">
+      <Axis label="size">
+        {(["default", "sm"] as const).map((size) => (
+          <UI.Card key={size} size={size} className="w-56">
+            <UI.CardHeader>
+              <UI.CardTitle>{size}</UI.CardTitle>
+              <UI.CardDescription>Card size</UI.CardDescription>
+            </UI.CardHeader>
+          </UI.Card>
+        ))}
+      </Axis>
+      <Axis label="radius">
+        {(["none", "sm", "default", "lg"] as const).map((radius) => (
+          <UI.Card key={radius} radius={radius} className="w-56">
+            <UI.CardHeader>
+              <UI.CardTitle>{radius}</UI.CardTitle>
+              <UI.CardDescription>Card radius</UI.CardDescription>
+            </UI.CardHeader>
+            <UI.CardFooter>Card footer</UI.CardFooter>
+          </UI.Card>
+        ))}
+      </Axis>
+    </div>
   )
 }

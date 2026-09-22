@@ -201,7 +201,7 @@ test("badge preserves link render, helper string and variant state", () => {
   }
 })
 
-test("card retains compound slot, size and native callback", () => {
+test("card retains compound slot, size, radius and native callback", () => {
   for (const size of [undefined, "sm"] as const) {
     const { unmount, container } = render(
       <Card size={size} className="caller">
@@ -217,6 +217,14 @@ test("card retains compound slot, size and native callback", () => {
     expect(container.querySelector("[data-slot=card]")?.getAttribute("data-size")).toBe(size ?? "default")
     expect(container.querySelectorAll("[data-slot]").length).toBe(7)
     expect(screen.getByText("Body").getAttribute("data-slot")).toBe("card-content")
+    unmount()
+  }
+})
+
+test("card exposes every supported radius option", () => {
+  for (const radius of [undefined, "none", "sm", "default", "lg"] as const) {
+    const { container, unmount } = render(<Card radius={radius}>Card</Card>)
+    expect(container.querySelector('[data-slot="card"]')?.getAttribute("data-radius")).toBe(radius ?? "default")
     unmount()
   }
 })
