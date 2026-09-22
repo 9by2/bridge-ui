@@ -18,23 +18,22 @@ try {
     )
   }
   await view.navigate(`${base}/#button/default`)
-  console.log("Regular route loaded")
+  console.log("Catalog route loaded")
   await wait("document.querySelector('nav[aria-label=Component]')")
-  const baseline = await view.evaluate(
+  const inventory = await view.evaluate(
     "Array.from(document.querySelectorAll('nav[aria-label=Component] a'), node => node.textContent)"
   )
   await view.navigate(`${base}/style-x#button/default`)
-  console.log("StyleX route loaded")
-  await wait("document.querySelector('[role=status]')")
+  console.log("Compatibility route loaded")
   await wait("document.querySelector('iframe')")
   assert.deepEqual(
     await view.evaluate(
       "Array.from(document.querySelectorAll('nav[aria-label=Component] a'), node => node.textContent)"
     ),
-    baseline
+    inventory
   )
   assert.equal(
-    await view.evaluate("document.querySelector('iframe').getAttribute('src').startsWith('/style-x?preview')"),
+    await view.evaluate("document.querySelector('iframe').getAttribute('src').startsWith('/?preview')"),
     true
   )
   await Bun.write(path.join(output, "desktop.png"), await view.screenshot())
@@ -98,7 +97,7 @@ try {
       }
     }
   await view.navigate(`${base}/style-x#badge/default`)
-  await wait("document.querySelector('[role=status]')?.textContent.includes('Parity review remains open')")
+  await wait("document.querySelector('iframe')")
   for (const name of families) {
     await view.cdp("Page.navigate", { url: `${base}/style-x?preview#${name}/default` })
     await wait(
@@ -109,15 +108,15 @@ try {
   }
   await view.navigate(`${base}/?preview#button/default`)
   await wait("document.querySelector('[data-slot=button]')")
-  assert.equal(await view.evaluate("!!document.querySelector('.pilot-button')"), false)
+  assert.equal(await view.evaluate("!!document.querySelector('.pilot-button')"), true)
   await Bun.write(
     path.join(output, "report.json"),
     JSON.stringify(
       {
         inventory: true,
-        candidate: true,
+        stylex: true,
         portal: true,
-        baselineUnchanged: true,
+        singleImplementation: true,
         caseCount: 128,
         inventoryCaseCount: caseCount
       },

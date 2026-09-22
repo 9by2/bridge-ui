@@ -9,23 +9,11 @@ import { createRoot } from "react-dom/client"
 import { Preview } from "./preview"
 import { Source } from "./source"
 
-import "./pilot.css"
+import "@bridge-owned/adapter.css"
 import chartInventory from "./vendor/tanstack/catalog-index.json"
 
 const modules = import.meta.glob<{ default: ComponentType }>("./example/*/*.tsx")
-const candidate = location.pathname.replace(/\/$/, "") === "/style-x"
-const pilotModules = import.meta.glob<{ default: ComponentType }>("./example/*/*.tsx", {
-  query: "?pilot"
-})
-if (candidate) Object.assign(modules, pilotModules)
 const sources = import.meta.glob<string>("./example/*/*.tsx", { query: "?raw", import: "default" })
-if (candidate)
-  for (const key of Object.keys(pilotModules)) {
-    const load = sources[key]
-    if (load)
-      sources[key] = async () =>
-        `// Private catalog pilot, not a published import.\n${(await load()).replaceAll('from "@bridge/ui"', 'from "@catalog-pilot"')}`
-  }
 const uploadSource = () => import("./upload.tsx?raw").then((module) => module.default)
 for (const mode of ["inline", "compact", "media", "avatar", "file-list", "document", "transfer", "crop"]) {
   const key = `./example/drop-area/${mode}.tsx`
@@ -162,7 +150,6 @@ function App() {
   const embedded = params.has("preview")
   const [name = "button", example = "default"] = route.split("/")
   const entry = entries.find((item) => item.name === name && item.example === example)
-  const pilot = candidate && !!entry && entry.path in pilotModules
   const choices = entries
     .filter((item) => item.name === name)
     .sort((a, b) => (a.example === "default" ? -1 : b.example === "default" ? 1 : a.example.localeCompare(b.example)))
@@ -180,7 +167,7 @@ function App() {
       ? "reduced"
       : "normal"
     document.documentElement.lang = embedded ? (params.get("lang") ?? "en") : locale
-    document.title = `${title(name)} / ${candidate ? "StyleX / " : ""}Bridge UI`
+    document.title = `${title(name)} / Bridge UI`
   }, [dark, motion, locale, name])
   if (embedded) {
     const Example = entry ? components[entry.path] : undefined
@@ -219,7 +206,7 @@ function App() {
     <div className="preview-wrap" style={{ maxWidth: mobile ? 390 : undefined }}>
       <Preview
         title={label}
-        src={`${candidate ? "/style-x" : "/"}?preview&theme=${dark ? "dark" : "light"}&lang=${locale}&motion=${motion ? "reduced" : "normal"}#${name}/${selected}`}
+        src={`/?preview&theme=${dark ? "dark" : "light"}&lang=${locale}&motion=${motion ? "reduced" : "normal"}#${name}/${selected}`}
       />
     </div>
   )
@@ -231,9 +218,6 @@ function App() {
         </a>
         <span className="header-note">The shared interface library</span>
         <div className="header-action">
-          <a href={`${candidate ? "/" : "/style-x"}?theme=${dark ? "dark" : "light"}${location.hash}`}>
-            {candidate ? "Regular preview" : "StyleX preview"}
-          </a>
           <span className="version">v0.1.0</span>
           <button onClick={() => setDark(!dark)} aria-label="Toggle theme">
             {dark ? "Light" : "Dark"}
@@ -281,16 +265,9 @@ function App() {
           <>
             <div className="page-heading">
               <div>
-                <div className="eyebrow">{candidate ? "STYLEX PREVIEW" : "BUILD WITH BRIDGE"}</div>
+                <div className="eyebrow">BUILD WITH BRIDGE</div>
                 <h1>{title(name)}</h1>
                 <p>Every available example, described and displayed below. No switching required.</p>
-                {candidate && (
-                  <p role="status">
-                    {pilot
-                      ? "Private candidate: StyleX plus scoped compatibility CSS. Parity review remains open; example layout retains utility CSS."
-                      : "Generated baseline. This component has not migrated to StyleX yet."}
-                  </p>
-                )}
               </div>
               <a
                 className="upstream"
@@ -318,9 +295,7 @@ function App() {
               <span>
                 {locale === "th"
                   ? "ตัวอย่างคอมโพเนนต์ที่ใช้ร่วมกัน"
-                  : pilot
-                    ? "Interactive preview. Uses the private StyleX candidate."
-                    : "Interactive preview. Uses the actual package component."}
+                  : "Interactive preview. Uses the public StyleX package component."}
               </span>
               <label>
                 <input type="checkbox" checked={motion} onChange={(event) => setMotion(event.target.checked)} /> Reduced
