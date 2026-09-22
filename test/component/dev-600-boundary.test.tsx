@@ -13,6 +13,7 @@ import * as SettingItem from "../../app/component/brand/stylex/setting-item"
 import * as StatusStamp from "../../app/component/brand/stylex/status-stamp"
 import * as StickyAlert from "../../app/component/brand/stylex/sticky-alert"
 import * as SuccessBurst from "../../app/component/brand/stylex/success-burst"
+import * as SwimLaneBoard from "../../app/component/brand/stylex/swim-lane-board"
 import { themeMode, Theme } from "../../app/component/brand/stylex/theme"
 import * as TicketCard from "../../app/component/brand/stylex/ticket-card"
 import * as TicketCover from "../../app/component/brand/stylex/ticket-cover"
@@ -31,7 +32,8 @@ test("new presentation families have root and direct exports", () => {
     ProductItem,
     TicketCover,
     TicketCard,
-    QrCode
+    QrCode,
+    SwimLaneBoard
   ])
     expect(Object.keys(value).length).toBeGreaterThan(0)
   for (const name of [
@@ -45,7 +47,8 @@ test("new presentation families have root and direct exports", () => {
     "ProductItem",
     "TicketCover",
     "TicketCard",
-    "QrCode"
+    "QrCode",
+    "SwimLaneBoard"
   ])
     expect(name in Root).toBe(true)
 })
@@ -62,7 +65,8 @@ test("each new component source excludes consumer and i18n imports", async () =>
     "product-item",
     "ticket-cover",
     "ticket-card",
-    "qr-code"
+    "qr-code",
+    "swim-lane-board"
   ]) {
     const source = await readFile(`app/component/brand/stylex/${name}.tsx`, "utf8")
     expect(source).not.toMatch(/from\s+["'](?:@cue\/web|@bridge\/web|[^"']*i18n)/)

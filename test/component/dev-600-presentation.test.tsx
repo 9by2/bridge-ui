@@ -26,7 +26,12 @@ import {
   TicketCard,
   TicketCardFront,
   TicketCardBack,
-  TicketCover
+  TicketCover,
+  SwimLaneBoard,
+  SwimLaneBoardCell,
+  SwimLaneBoardColumn,
+  SwimLaneBoardItem,
+  SwimLaneBoardLane
 } from "../../app"
 
 afterEach(cleanup)
@@ -172,6 +177,52 @@ test("ticket card ignores toggle when a caller omits onSideChange", () => {
   expect(container.querySelector("[data-slot=ticket-card]")?.getAttribute("data-side")).toBe("front")
   fireEvent.click(screen.getByRole("button", { name: "Back" }))
   expect(container.querySelector("[data-slot=ticket-card]")?.getAttribute("data-side")).toBe("back")
+})
+
+test("swim lane board auto-collapses empty columns while lanes remain static", () => {
+  render(
+    <SwimLaneBoard label="Board">
+      <SwimLaneBoardColumn id="todo" label="Todo" count={1} />
+      <SwimLaneBoardColumn id="done" label="Done" count={0} />
+      <SwimLaneBoardLane id="active" label="Active" count={1}>
+        <SwimLaneBoardCell columnId="todo">
+          <SwimLaneBoardItem id="item-1">Item one</SwimLaneBoardItem>
+        </SwimLaneBoardCell>
+      </SwimLaneBoardLane>
+      <SwimLaneBoardLane id="empty" label="Empty" count={0} />
+    </SwimLaneBoard>
+  )
+  expect(screen.getByRole("button", { name: "Expand Done" }).getAttribute("aria-expanded")).toBe("false")
+  expect(screen.queryByRole("button", { name: /Empty/ })).toBeNull()
+})
+
+test("swim lane board emits a pointer move intent without mutating caller data", () => {
+  const move: unknown[] = []
+  render(
+    <SwimLaneBoard label="Board" autoCollapse="never" onItemMove={(intent) => move.push(intent)}>
+      <SwimLaneBoardColumn id="todo" label="Todo" count={1} />
+      <SwimLaneBoardColumn id="done" label="Done" count={0} />
+      <SwimLaneBoardLane id="active" label="Active" count={1}>
+        <SwimLaneBoardCell columnId="todo">
+          <SwimLaneBoardItem id="item-1">Item one</SwimLaneBoardItem>
+        </SwimLaneBoardCell>
+        <SwimLaneBoardCell columnId="done" />
+      </SwimLaneBoardLane>
+    </SwimLaneBoard>
+  )
+  const item = screen.getByText("Item one")
+  const target = screen.getByLabelText("Active / Done")
+  fireEvent.dragStart(item)
+  fireEvent.dragOver(target)
+  fireEvent.drop(target)
+  expect(move).toEqual([
+    {
+      itemId: "item-1",
+      source: { laneId: "active", columnId: "todo", index: 0 },
+      destination: { laneId: "active", columnId: "done", index: 0 },
+      sourceEvent: "pointer"
+    }
+  ])
 })
 
 test("responsive image renders without a source set and defaults alt to undefined", () => {

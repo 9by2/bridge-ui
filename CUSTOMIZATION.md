@@ -255,6 +255,7 @@ Use the catalog for complete states and examples. All components accept their do
 | DetailItem, Item, SettingItem, Settings       | Label/value, icon, action, description, and grouped-item composition.                                        |
 | Progress, SuccessBurst                        | Progress value/status; completion animation trigger.                                                         |
 | Toast, Sonner                                 | Toast provider/viewport and action composition; Sonner global options and toast API.                         |
+| SwimLaneBoard                                 | Compound column/lane/cell/item composition; controlled column collapse ids; `autoCollapse="never"` opt-out; `rowMaxHeight` scroll boundary (default `66vh`); `onItemMove` UI intent. Theme colors, density, radius, border, and ring inherit from `Theme`. |
 | TicketCard, TicketCover, ProductItem, Receipt | Semantic content slots, image/media, metadata, and action children.                                          |
 | TimelineStep                                  | State, icon, title, description, and connector composition.                                                  |
 | UploadList, UploadPreview, UploadViewer       | File state, preview renderer, item actions, and download/remove callbacks.                                   |

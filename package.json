@@ -148,6 +148,10 @@
       "types": "./dist/component/brand/stylex/ticket-card.d.ts",
       "import": "./dist/component/brand/stylex/ticket-card.js"
     },
+    "./swim-lane-board": {
+      "types": "./dist/component/brand/stylex/swim-lane-board.d.ts",
+      "import": "./dist/component/brand/stylex/swim-lane-board.js"
+    },
     "./qr-code": {
       "types": "./dist/component/brand/stylex/qr-code.d.ts",
       "import": "./dist/component/brand/stylex/qr-code.js"
