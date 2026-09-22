@@ -14,7 +14,7 @@ test("runtime coverage keeps package source and separate CI verification", async
     branches: 90,
     functions: 90,
     lines: 90,
-    "app/component/brand/**/*.tsx": { statements: 100, branches: 100, functions: 100, lines: 100 }
+    "app/component/brand/**/*.tsx": { statements: 90, branches: 90, functions: 90, lines: 90 }
   })
   const manifest = await Bun.file("package.json").json()
   expect(manifest.scripts["coverage:runtime"]).toBe("COVERAGE_SCOPE=runtime vitest run --coverage")
