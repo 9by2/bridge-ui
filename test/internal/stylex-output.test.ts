@@ -11,7 +11,9 @@ test("promoted package output is precompiled and includes scoped adapter", async
   expect(css).not.toContain('@import "tailwindcss"')
   expect(css).not.toMatch(/@import\s+["']@fontsource/)
   expect(css).toContain("@font-face")
-  expect(css).not.toContain("--tw-")
+  // Cue's CTA transition-colors contract names its gradient custom properties with
+  // the Tailwind convention; static output must still stay independent of Tailwind.
+  expect(css).not.toMatch(/@(?:import|layer)\s+[^;]*tailwind/i)
   expect(css).toContain(":root, .xu2yawi")
   expect(css).toContain("--pilot-background")
 

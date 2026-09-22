@@ -69,6 +69,16 @@ export function App() {
 
 `density` supports `bridgeDensity.compact`, `bridgeDensity.default`, and `bridgeDensity.comfortable`. It adjusts shared padding and layout gaps while retaining package control heights and focus behavior.
 
+## Button
+
+`Button` uses Cue's complete control recipe in `mode="cue"`, including variants, sizes, focus treatment, disabled state, expanded outline and ghost states, icon spacing, and CTA gradient motion. Use `variant` and `size` to select that contract; use `className` only for product layout.
+
+```tsx
+<Button variant="outline" size="sm" aria-expanded={open}>
+  Filter
+</Button>
+```
+
 ### Supported P0 components
 
 The global theme contract currently applies to these owned components:

@@ -2,7 +2,7 @@ import assert from "node:assert/strict"
 import { mkdir } from "node:fs/promises"
 import path from "node:path"
 
-const output = path.resolve(".eval/0914-cue-theme-alignment")
+const output = path.resolve(".eval/0922-cue-button-full-parity")
 await mkdir(output, { recursive: true })
 const reports = []
 
@@ -16,6 +16,8 @@ type CueReport = {
   warningColor: string
   destructiveBackground: string
   destructiveColor: string
+  outlineHeight: string
+  outlineExpandedBackground: string
 }
 
 try {
@@ -46,6 +48,8 @@ try {
       const cta = getComputedStyle(button('cta'))
       const warning = getComputedStyle(button('warning'))
       const destructive = getComputedStyle(button('destructive'))
+      const outline = button('outline')
+      outline.setAttribute('aria-expanded', 'true')
       return {
         mode: theme.dataset.pilotTheme,
         colorScheme: getComputedStyle(theme).colorScheme,
@@ -55,7 +59,9 @@ try {
         warningBackground: warning.backgroundColor,
         warningColor: warning.color,
         destructiveBackground: destructive.backgroundColor,
-        destructiveColor: destructive.color
+        destructiveColor: destructive.color,
+        outlineHeight: getComputedStyle(outline).height,
+        outlineExpandedBackground: getComputedStyle(outline).backgroundColor
       }
     })()`)
     assert.equal(actual.mode, "cue")
@@ -64,7 +70,9 @@ try {
     assert.match(actual.ctaFont, /Plus Jakarta Sans Variable/)
     assert.match(actual.ctaGradient, /linear-gradient/)
     assert.equal(actual.warningColor, actual.destructiveColor)
-    await Bun.write(path.join(output, `cue-${width}.png`), await view.screenshot())
+    assert.equal(actual.outlineHeight, "32px")
+    assert.notEqual(actual.outlineExpandedBackground, actual.destructiveBackground)
+    await Bun.write(path.join(output, `cue-variant-${width}.png`), await view.screenshot())
     reports.push({ width, ...actual })
   }
   await Bun.write(
@@ -77,7 +85,7 @@ try {
   )
   await Bun.write(
     path.join(output, "README.md"),
-    "# Cue theme evaluation\n\nRun `bun cmd/verify-cue-theme.ts` while the static catalog is served on port 6007. Evidence covers 390px and 1280px Cue Button variant rendering, semantic action color, CTA typography/shape, and native dark color scheme.\n"
+    "# Cue Button full parity evaluation\n\nRun `bun cmd/verify-cue-theme.ts` while the static catalog is served on port 6007. Evidence covers 390px and 1280px Cue Button variants, CTA typography and gradient, expanded outline state, semantic action color, and dark color scheme. The catalog browser suite verifies every Button size.\n"
   )
   console.log(`Verified ${reports.length} Cue Bun.WebView case`)
 } finally {

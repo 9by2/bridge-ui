@@ -85,7 +85,7 @@ test("pilot button preserves callback class, null variant and invalid attribute"
   expect(screen.getByRole("button").getAttribute("aria-invalid")).toBe("false")
 })
 
-test("button xl exposes Cue size and secondary expanded treatment", () => {
+test("button xl preserves Cue secondary expanded treatment", () => {
   const { rerender } = render(
     <Button size="xl" variant="secondary" aria-expanded>
       Continue
@@ -100,5 +100,5 @@ test("button xl exposes Cue size and secondary expanded treatment", () => {
       Continue
     </Button>
   )
-  expect(screen.getByRole("button").className).not.toBe(expandedClass)
+  expect(screen.getByRole("button").className).toBe(expandedClass)
 })

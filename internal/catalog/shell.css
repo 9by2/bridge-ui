@@ -71,7 +71,7 @@
   --shell-line: #2c2c30;
   --shell-soft: #18181b;
 }
-.catalog-shell button,
+.catalog-shell button:not([data-slot]),
 .catalog-shell select {
   border: 1px solid var(--shell-line);
   border-radius: 7px;
@@ -81,8 +81,8 @@
   cursor: pointer;
   font: inherit;
 }
-.catalog-shell button:hover,
-.catalog-shell button[aria-pressed="true"] {
+.catalog-shell button:not([data-slot]):hover,
+.catalog-shell button:not([data-slot])[aria-pressed="true"] {
   background: var(--shell-soft);
   border-color: var(--shell-muted);
 }

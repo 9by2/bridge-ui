@@ -140,10 +140,10 @@ const dark = stylex.createTheme(token, {
   inputDisabled: "oklch(1 0 0 / 28.8%)",
   invalidBorder: "oklch(0.5489 0.1841 25.69 / 50%)",
   outlineFocus: "oklch(1 0 0 / 36%)",
-  outlineHover: "oklch(1 0 0 / 18%)",
+  outlineHover: "oklch(0.32 0 0)",
   ghostHover: "oklch(0.269 0 0 / 50%)",
   destructiveHoverOpacity: "30%",
-  outlineBackground: "oklch(1 0 0 / 10.8%)",
+  outlineBackground: "oklch(0.1776 0 0)",
   outlineBorder: "oklch(1 0 0 / 36%)",
   destructiveOpacity: "20%",
   background: "oklch(0.1776 0 0)",
@@ -203,10 +203,10 @@ const cue = stylex.createTheme(token, {
   inputDisabled: "oklch(1 0 0 / 28.8%)",
   invalidBorder: "oklch(0.5489 0.1841 25.69 / 50%)",
   outlineFocus: "oklch(1 0 0 / 36%)",
-  outlineHover: "oklch(1 0 0 / 18%)",
+  outlineHover: "oklch(0.32 0 0)",
   ghostHover: "oklch(0.269 0 0 / 50%)",
   destructiveHoverOpacity: "30%",
-  outlineBackground: "oklch(1 0 0 / 10.8%)",
+  outlineBackground: "oklch(0.1776 0 0)",
   outlineBorder: "oklch(1 0 0 / 36%)",
   destructiveOpacity: "20%",
   background: "oklch(0.1776 0 0)",
@@ -291,6 +291,12 @@ const future = stylex.createTheme(token, {
   destructiveForeground: "oklch(1 0 0)"
 })
 const modeTheme = { light, dark, cue, future } as const
+const buttonColor = {
+  light: { primary: "oklch(0.205 0 0)", primaryForeground: "oklch(0.985 0 0)" },
+  dark: { primary: "white", primaryForeground: "oklch(0.1776 0 0)" },
+  cue: { primary: "white", primaryForeground: "oklch(0.1776 0 0)" },
+  future: { primary: "oklch(0.7 0.19 284.37)", primaryForeground: "oklch(1 0 0)" }
+} as const
 type BridgeTheme = { mode: ThemeMode; density: BridgeDensity; theme: BridgeThemeOverride }
 
 const ThemeContext = createContext<BridgeTheme>({ mode: themeMode.light, density: bridgeDensity.default, theme: {} })
@@ -341,6 +347,7 @@ function mergeTheme(parent: BridgeThemeOverride, current: BridgeThemeOverride | 
 }
 
 function themeVariables(
+  mode: ThemeMode,
   density: BridgeDensity,
   theme: BridgeThemeOverride
 ): CSSProperties & Record<`--${string}`, string> {
@@ -348,6 +355,15 @@ function themeVariables(
   const comfortable = density === bridgeDensity.comfortable
   const space = { 1: "0.25rem", 2: "0.5rem", 3: "0.75rem", 4: "1rem", 5: "1.5rem", ...theme.space }
   const variables: CSSProperties & Record<string, string> = {
+    "--bridge-button-primary": theme.color?.primary ?? buttonColor[mode].primary,
+    "--bridge-button-primary-foreground": theme.color?.primaryForeground ?? buttonColor[mode].primaryForeground,
+    "--bridge-button-radius": theme.radius?.control ?? "0.625rem",
+    "--bridge-button-radius-small": theme.radius?.controlSmall ?? "0.5rem",
+    "--bridge-button-padding-inline": compact
+      ? "var(--bridge-space-2)"
+      : comfortable
+        ? "var(--bridge-space-3)"
+        : "0.625rem",
     "--bridge-space-1": space[1],
     "--bridge-space-2": space[2],
     "--bridge-space-3": space[3],
@@ -418,7 +434,7 @@ export function Theme({
         data-bridge-theme={current.mode}
         data-bridge-density={current.density}
         {...props}
-        style={{ ...themeVariables(current.density, current.theme), ...callerStyle }}
+        style={{ ...themeVariables(current.mode, current.density, current.theme), ...callerStyle }}
         className={[stylex.props(style.root, modeTheme[current.mode]).className, className].filter(Boolean).join(" ")}
       />
     </ThemeContext>

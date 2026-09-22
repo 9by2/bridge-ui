@@ -66,6 +66,15 @@ export const token = stylex.defineVars({
   destructiveForeground: "oklch(1 0 0)"
 })
 
+/** Literal names retain the documented Theme override seam after StyleX compilation. */
+export const buttonToken = stylex.defineVars({
+  "--bridge-button-primary": "oklch(0.205 0 0)",
+  "--bridge-button-primary-foreground": "oklch(0.985 0 0)",
+  "--bridge-button-radius": "10px",
+  "--bridge-button-radius-small": "8px",
+  "--bridge-button-padding-inline": "10px"
+})
+
 /** Public CSS variable bridge used by statically compiled component recipes. */
 export const themeToken = {
   background: `var(--bridge-color-background, ${token.background})`,

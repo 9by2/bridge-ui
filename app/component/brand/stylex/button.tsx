@@ -1,11 +1,9 @@
 import { Button as Primitive } from "@base-ui/react/button"
 import * as stylex from "@stylexjs/stylex"
 
-import { geometryToken, themeToken, token } from "./token.stylex"
+import { buttonToken, themeToken, token } from "./token.stylex"
 
 const style = stylex.create({
-  expanded: { backgroundColor: token.muted, color: token.foreground },
-  outlineExpanded: { backgroundColor: token.outlineExpanded, color: token.foreground },
   press: { translate: { default: "none", ":active": "0 1px" } },
   popupTrigger: { translate: { default: "none", ":active": "none" } },
   root: {
@@ -14,7 +12,7 @@ const style = stylex.create({
     alignItems: "center",
     justifyContent: "center",
     boxSizing: "border-box",
-    borderRadius: geometryToken.controlRadius,
+    borderRadius: buttonToken["--bridge-button-radius"],
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: { default: "transparent", ":focus-visible": token.ring },
@@ -29,8 +27,11 @@ const style = stylex.create({
     boxShadow: { default: "none", ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.ring}, transparent 50%)` },
     opacity: { default: 1, ":disabled": 0.5 },
     pointerEvents: { default: "auto", ":disabled": "none" },
-    transitionProperty: "color, background-color, border-color, box-shadow, transform",
-    transitionDuration: { default: "150ms", "@media (prefers-reduced-motion: reduce)": "0s" }
+    // Cue's `transition-all` default is intentional: consumers expect every visual state
+    // change in the default control recipe to use the same 150ms motion curve.
+    transitionProperty: "all",
+    transitionDuration: { default: "150ms", "@media (prefers-reduced-motion: reduce)": "0s" },
+    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)"
   },
   invalid: {
     borderColor: token.invalidBorder,
@@ -38,15 +39,19 @@ const style = stylex.create({
   },
   default: {
     backgroundColor: {
-      default: themeToken.primary,
-      ":hover": `color-mix(in oklch, ${themeToken.primary}, transparent 20%)`
+      default: buttonToken["--bridge-button-primary"],
+      ":hover": `color-mix(in oklch, ${buttonToken["--bridge-button-primary"]}, transparent 20%)`
     },
-    color: themeToken.primaryForeground
+    color: buttonToken["--bridge-button-primary-foreground"]
   },
   outline: {
-    borderColor: { default: token.outlineBorder, ":focus-visible": token.outlineFocus },
-    backgroundColor: { default: token.outlineBackground, ":hover": token.outlineHover },
-    color: token.foreground
+    borderColor: token.outlineBorder,
+    backgroundColor: {
+      default: token.outlineBackground,
+      ":hover": token.outlineHover,
+      ':is([aria-expanded="true"])': token.muted
+    },
+    color: { default: token.foreground, ':is([aria-expanded="true"])': token.foreground }
   },
   secondary: {
     backgroundColor: {
@@ -55,11 +60,18 @@ const style = stylex.create({
     },
     color: token.secondaryForeground
   },
-  ghost: { backgroundColor: { default: "transparent", ":hover": token.ghostHover }, color: token.foreground },
+  ghost: {
+    backgroundColor: {
+      default: "transparent",
+      ":hover": token.ghostHover,
+      ':is([aria-expanded="true"])': token.muted
+    },
+    color: token.foreground
+  },
   destructive: {
     boxShadow: {
       default: "none",
-      ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.destructive} ${token.errorRingOpacity}, transparent)`
+      ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.destructive}, transparent 60%)`
     },
     borderColor: {
       default: "transparent",
@@ -82,9 +94,14 @@ const style = stylex.create({
   },
   cta: {
     borderRadius: 0,
-    backgroundImage: `linear-gradient(to right, ${token.brand}, ${token.brandAccent})`,
+    backgroundImage: {
+      default: `linear-gradient(to right, ${token.brand}, ${token.brandAccent})`,
+      ":hover": `linear-gradient(to right, color-mix(in oklch, ${token.brand}, transparent 10%), color-mix(in oklch, ${token.brandAccent}, transparent 10%))`
+    },
     color: token.highlight,
-    fontFamily: token.fontHeading
+    fontFamily: token.fontHeading,
+    transitionProperty:
+      "color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to"
   },
   link: {
     backgroundColor: "transparent",
@@ -94,24 +111,24 @@ const style = stylex.create({
   }
 })
 const sizeStyle = stylex.create({
-  default: { height: 32, gap: 6, paddingInline: geometryToken.controlPaddingInline },
+  default: { height: 32, gap: 6, paddingInline: buttonToken["--bridge-button-padding-inline"] },
   xs: {
     height: 24,
     gap: 4,
     paddingInline: 8,
     fontSize: 12,
     lineHeight: "16px",
-    borderRadius: geometryToken.controlRadiusSmall
+    borderRadius: buttonToken["--bridge-button-radius-small"]
   },
   sm: {
     height: 28,
     gap: 4,
-    paddingInline: geometryToken.controlPaddingInline,
+    paddingInline: buttonToken["--bridge-button-padding-inline"],
     fontSize: "0.8rem",
     lineHeight: 1.5,
-    borderRadius: geometryToken.controlRadiusSmall
+    borderRadius: buttonToken["--bridge-button-radius-small"]
   },
-  lg: { height: 36, gap: 6, paddingInline: geometryToken.controlPaddingInline },
+  lg: { height: 36, gap: 6, paddingInline: buttonToken["--bridge-button-padding-inline"] },
   xl: { height: 44, gap: 6, paddingInline: 12, fontSize: 18, lineHeight: "28px" },
   icon: { height: 32, width: 32, padding: 0 },
   "icon-xs": { height: 24, width: 24, padding: 0, borderRadius: 8 },
@@ -178,10 +195,6 @@ export function Button({
     style.press,
     variant && style[variant],
     size && sizeStyle[size],
-    (props["aria-expanded"] === true || props["aria-expanded"] === "true") &&
-      (variant === "outline"
-        ? style.outlineExpanded
-        : (variant === "ghost" || variant === "secondary") && style.expanded),
     invalid && style.invalid,
     popup && style.popupTrigger,
     inputGroupSize !== undefined && groupStyle.base,
