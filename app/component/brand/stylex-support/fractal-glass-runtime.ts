@@ -1,5 +1,18 @@
 import { createElement, useEffect, useRef } from "react"
-import * as THREE from "three"
+import {
+  ClampToEdgeWrapping,
+  LinearFilter,
+  Mesh,
+  OrthographicCamera,
+  PlaneGeometry,
+  Scene,
+  ShaderMaterial,
+  Texture,
+  TextureLoader,
+  Vector2,
+  VideoTexture,
+  WebGLRenderer
+} from "three"
 
 import { useEffectReducedMotion } from "./webgl-surface"
 
@@ -136,19 +149,19 @@ export function FractalGlassRuntime({
     let disposed = false
     const width = Math.max(1, element.clientWidth)
     const height = Math.max(1, element.clientHeight)
-    const renderer = new THREE.WebGLRenderer({ antialias: true })
+    const renderer = new WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.setSize(width, height)
     element.appendChild(renderer.domElement)
 
-    const scene = new THREE.Scene()
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10)
+    const scene = new Scene()
+    const camera = new OrthographicCamera(-1, 1, 1, -1, 0.1, 10)
     camera.position.z = 1
     const uniforms = {
-      uTexture: { value: new THREE.Texture() },
-      uResolution: { value: new THREE.Vector2(width, height) },
-      uTextureSize: { value: new THREE.Vector2(1, 1) },
-      uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+      uTexture: { value: new Texture() },
+      uResolution: { value: new Vector2(width, height) },
+      uTextureSize: { value: new Vector2(1, 1) },
+      uMouse: { value: new Vector2(0.5, 0.5) },
       uParallaxStrength: { value: parallaxStrength },
       uDistortionMultiplier: { value: distortionMultiplier },
       uGlassStrength: { value: glassStrength },
@@ -158,7 +171,7 @@ export function FractalGlassRuntime({
     }
 
     let videoElement: HTMLVideoElement | null = null
-    let videoTexture: THREE.Texture | null = null
+    let videoTexture: Texture | null = null
 
     if (mediaType === fractalGlassMediaType.video && videoSrc) {
       const video = document.createElement("video")
@@ -175,18 +188,18 @@ export function FractalGlassRuntime({
       }
       if (!reducedMotion) video.play().catch(() => {})
 
-      videoTexture = new THREE.VideoTexture(video)
-      videoTexture.minFilter = THREE.LinearFilter
-      videoTexture.magFilter = THREE.LinearFilter
-      videoTexture.wrapS = THREE.ClampToEdgeWrapping
-      videoTexture.wrapT = THREE.ClampToEdgeWrapping
+      videoTexture = new VideoTexture(video)
+      videoTexture.minFilter = LinearFilter
+      videoTexture.magFilter = LinearFilter
+      videoTexture.wrapS = ClampToEdgeWrapping
+      videoTexture.wrapT = ClampToEdgeWrapping
       uniforms.uTexture.value.dispose()
       uniforms.uTexture.value = videoTexture
       videoElement.onloadeddata = () => {
         if (!disposed) renderer.render(scene, camera)
       }
     } else {
-      const loader = new THREE.TextureLoader()
+      const loader = new TextureLoader()
       loader.crossOrigin = "anonymous"
       loader.load(imageSrc, (texture) => {
         /* v8 ignore if -- @preserve Both paths are covered; transformed sourcemap retains an empty branch location. */
@@ -194,10 +207,10 @@ export function FractalGlassRuntime({
           texture.dispose()
         } else {
           uniforms.uTexture.value.dispose()
-          texture.minFilter = THREE.LinearFilter
-          texture.magFilter = THREE.LinearFilter
-          texture.wrapS = THREE.ClampToEdgeWrapping
-          texture.wrapT = THREE.ClampToEdgeWrapping
+          texture.minFilter = LinearFilter
+          texture.magFilter = LinearFilter
+          texture.wrapS = ClampToEdgeWrapping
+          texture.wrapT = ClampToEdgeWrapping
           uniforms.uTexture.value = texture
           uniforms.uTextureSize.value.set(
             texture.image.naturalWidth || texture.image.width || 1920,
@@ -208,9 +221,9 @@ export function FractalGlassRuntime({
       })
     }
 
-    const geometry = new THREE.PlaneGeometry(2, 2)
-    const material = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms })
-    scene.add(new THREE.Mesh(geometry, material))
+    const geometry = new PlaneGeometry(2, 2)
+    const material = new ShaderMaterial({ vertexShader, fragmentShader, uniforms })
+    scene.add(new Mesh(geometry, material))
 
     const target = { x: 0.5, y: 0.5 }
     const current = { x: 0.5, y: 0.5 }

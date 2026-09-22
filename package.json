@@ -157,7 +157,7 @@
     "release:version": "bun changeset version && bun install --lockfile-only && bun fmt",
     "release:publish": "bun run build && bun cmd/publish-package.ts",
     "dev": "vite --config vite.config.ts",
-    "catalog:build": "vite build --config vite.config.ts",
+    "catalog:build": "vite build --config vite.config.ts && bun cmd/verify-catalog-bundle-size.ts",
     "catalog:test": "bun cmd/run-catalog-test.ts",
     "boundary": "bun cmd/check-source-boundary.ts",
     "build": "bun cmd/build-package.ts",
