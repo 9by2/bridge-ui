@@ -69,7 +69,7 @@ export default function Example() {
       hasMore
       labels={labels}
       onEventActivate={(activeEvent) => window.alert(`Open ${activeEvent.id}`)}
-      onLoadMore={() => window.alert("Load more schedules")}
+      onLoadMore={() => undefined}
       onSlotSelect={(selection) => window.alert(`Create ${selection.start.toLocaleString()}`)}
     />
   )

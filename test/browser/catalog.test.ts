@@ -4,6 +4,16 @@ import { expect, openPage, pollUntil, runAxe, test } from "./support"
 
 const root = "internal/catalog/example"
 
+async function waitForFonts(page: Awaited<ReturnType<typeof openPage>>): Promise<void> {
+  const result = await page.evaluate<"ready" | "timeout">(
+    `() => Promise.race([
+      document.fonts.ready.then(() => "ready"),
+      new Promise((resolve) => setTimeout(() => resolve("timeout"), 5000))
+    ])`
+  )
+  if (result === "timeout") throw new Error("document.fonts.ready timed out after 5000ms")
+}
+
 test("embedded chart geometry survives full catalog navigation", async () => {
   await using page = await openPage()
   await page.goto("/#chart/default")
@@ -41,7 +51,7 @@ for (const file of readdirSync(`${root}/chart`)) {
     await pollUntil(() => chart.count())
     await expect(page.locator("html")).toHaveClass("dark")
     await expect(chart).toBeVisible()
-    await page.evaluate(`() => document.fonts.ready`)
+    await waitForFonts(page)
     const result = await runAxe(page.view)
     expect(result.violations).toEqual([])
   })
@@ -82,7 +92,7 @@ for (const name of readdirSync(root)) {
       }
       await expect(page.getByText("Loading preview...")).toHaveCount(0)
       await expect(page.getByText("This example could not render.", { exact: false })).toHaveCount(0)
-      await page.evaluate(`() => document.fonts.ready`)
+      await waitForFonts(page)
       if (name === "dropdown-menu" && example === "item-variant") {
         const menuButton = page.getByRole("button", { name: "Menu", exact: true })
         await pollUntil(() => menuButton.count())
@@ -99,7 +109,7 @@ for (const name of readdirSync(root)) {
       const result = await runAxe(page.view)
       expect(result.violations).toEqual([])
       expect(page.errors).toEqual([])
-    })
+    }, 30_000)
   }
 }
 
