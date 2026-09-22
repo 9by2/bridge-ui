@@ -1,4 +1,4 @@
-import { BellIcon, PaletteIcon, ShieldCheckIcon } from "lucide-react"
+import { BellIcon, PaletteIcon, PencilIcon, ShieldCheckIcon } from "lucide-react"
 import { useState } from "react"
 
 import * as UI from "@bridge/ui"
@@ -62,6 +62,24 @@ export default function Example() {
           <h2 className="m-0 text-xl font-semibold">{current.label}</h2>
           <p className="mt-1 text-sm text-muted-foreground">Choose how the workspace works for you.</p>
           <div className="mt-5">
+            <UI.SettingItem variant="inline">
+              <UI.SettingItemTitle>Username</UI.SettingItemTitle>
+              <UI.SettingItemAction>
+                naraw.workspace
+                <UI.Button aria-label="Edit username" size="icon-sm" variant="ghost">
+                  <PencilIcon aria-hidden="true" />
+                </UI.Button>
+              </UI.SettingItemAction>
+            </UI.SettingItem>
+            <UI.SettingItem variant="inline">
+              <UI.SettingItemTitle>Email</UI.SettingItemTitle>
+              <UI.SettingItemAction>
+                nara@workspace.example
+                <UI.Button aria-label="Edit email" size="icon-sm" variant="ghost">
+                  <PencilIcon aria-hidden="true" />
+                </UI.Button>
+              </UI.SettingItemAction>
+            </UI.SettingItem>
             <UI.SettingItem>
               <UI.SettingItemTitle>Email updates</UI.SettingItemTitle>
               <UI.SettingItemDescription>Receive a summary of important workspace activity.</UI.SettingItemDescription>
