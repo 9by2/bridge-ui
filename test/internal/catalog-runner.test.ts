@@ -6,6 +6,12 @@ const catalogImage =
 test("catalog:test script runs the Bun.WebView orchestrator", async () => {
   const packageJson = await Bun.file("package.json").json()
   expect(packageJson.scripts["catalog:test"]).toBe("bun cmd/run-catalog-test.ts")
+  const runner = await Bun.file("cmd/run-catalog-test.ts").text()
+  expect(runner).toContain('"--parallel=2"')
+  expect(runner).not.toContain('"--concurrent"')
+  expect(runner).toContain("Bun.serve")
+  expect(runner).toContain("server.stop(true)")
+  expect(runner).toContain("path.extname(relativePath)")
 })
 
 test("catalog CI uses a prebuilt version-pinned browser runtime", async () => {
@@ -22,6 +28,12 @@ test("catalog CI uses a prebuilt version-pinned browser runtime", async () => {
   expect(child).not.toContain("playwright-report/")
   expect(child).toContain("- bun catalog:test")
   expect(child).toMatch(/catalog:\n(?:.*\n)*?\s*timeout:\s*30m/)
+  expect(child).toContain("$CI_COMMIT_TITLE !~ /^chore(\\([^)]*\\))?:/")
+  expect(child).toContain("$IS_MERGE_REQUEST =~ /^(merge_request_event|external_pull_request_event)$/")
+  expect(child).toContain("$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH")
+  expect(root).toContain("workflow:\n  rules:")
+  expect(root).toContain("$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS")
+  expect(root).toContain("when: never")
   expect(dockerfile).not.toContain("playwright")
   expect(dockerfile).toContain("apt-get install -y --no-install-recommends git chromium")
   expect(dockerfile).toContain("FROM oven/bun:1.4.1")

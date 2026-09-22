@@ -67,7 +67,13 @@ for (const name of readdirSync(root)) {
       await using page = await openPage()
       await page.goto(`/?preview&theme=light#${name}/${example}`)
       const stage = page.locator(".example-stage")
-      await pollUntil(() => stage.count(), { timeout: name === "ts-chart" ? 15_000 : 5000 })
+      await pollUntil(
+        () => {
+          if (page.errors.length > 0) throw new Error(page.errors.join("\n"))
+          return stage.count()
+        },
+        { timeout: name === "ts-chart" ? 15_000 : 5000 }
+      )
       await expect(stage).toBeVisible()
       if (name === "ts-chart") {
         await expect(page.locator("svg.ts-chart").first()).toBeVisible()

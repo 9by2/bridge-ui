@@ -32,7 +32,7 @@ const style = stylex.create({
     backgroundColor: token.muted,
     fontSize: { default: 14, [stylex.when.ancestor('[data-size="sm"]')]: 12 },
     lineHeight: "20px",
-    color: token.mutedForeground
+    color: token.foreground
   },
   badge: {
     position: "absolute",
