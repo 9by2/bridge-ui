@@ -79,6 +79,38 @@ export function App() {
 </Button>
 ```
 
+## Sheet
+
+Set `resizable` on `SheetContent` to show a centered pointer drag handle on the sheet edge facing the application. Supply `size` and `onSizeChange` from the consuming composition; the component neither stores nor persists dimensions. Left and right sheets resize horizontally and default to `maxWidth="80vw"`; top and bottom sheets resize vertically and default to `maxHeight="70vh"`. Pass the matching prop to override that maximum.
+
+```tsx
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@bridge/ui"
+
+const [inspectorWidth, setInspectorWidth] = useState(384)
+
+<Sheet>
+  <SheetTrigger>Open inspector</SheetTrigger>
+  <SheetContent
+    side="right"
+    resizable
+    size={inspectorWidth}
+    onSizeChange={setInspectorWidth}
+    maxWidth="48rem">
+    <SheetHeader>
+      <SheetTitle>Inspector</SheetTitle>
+    </SheetHeader>
+  </SheetContent>
+</Sheet>
+```
+
+Pass `onClose` when the consuming composition must keep a Sheet open until a condition is met. Return `false` to prevent close requests from the close button, Escape, and the backdrop; return `true` or omit the callback to allow dismissal.
+
+```tsx
+<Sheet open={open} onOpenChange={setOpen} onClose={() => isConfirmed}>
+  <SheetContent>...</SheetContent>
+</Sheet>
+```
+
 ## BridgeCalendar
 
 `BridgeCalendar` is a client-side schedule calendar with scheduled, week, and month views. It is separate from `Calendar`, the date-picker component. Import the package style once and provide every visible label from the application so product translation stays outside the package.

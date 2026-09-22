@@ -32,6 +32,10 @@
       "types": "./dist/component/brand/stylex/calendar.d.ts",
       "import": "./dist/component/brand/stylex/calendar.js"
     },
+    "./bridge-calendar": {
+      "types": "./dist/component/brand/stylex/bridge-calendar.d.ts",
+      "import": "./dist/component/brand/stylex/bridge-calendar.js"
+    },
     "./dialog": {
       "types": "./dist/component/brand/stylex/dialog.d.ts",
       "import": "./dist/component/brand/stylex/dialog.js"
@@ -267,7 +271,3 @@
     "recharts": "^3.8.0"
   }
 }
-    "./bridge-calendar": {
-      "types": "./dist/component/brand/stylex/bridge-calendar.d.ts",
-      "import": "./dist/component/brand/stylex/bridge-calendar.js"
-    },
