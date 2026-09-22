@@ -7,7 +7,7 @@ export default function Example() {
         <UI.BreadcrumbItem>
           <UI.BreadcrumbLink href="#">Home</UI.BreadcrumbLink>
         </UI.BreadcrumbItem>
-        <UI.BreadcrumbSeparator />
+        <UI.BreadcrumbSeparator>/</UI.BreadcrumbSeparator>
         <UI.BreadcrumbItem>
           <UI.BreadcrumbPage>UI</UI.BreadcrumbPage>
         </UI.BreadcrumbItem>

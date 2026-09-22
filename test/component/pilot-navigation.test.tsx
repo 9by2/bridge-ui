@@ -32,6 +32,9 @@ test("breadcrumb retains navigation semantics and caller separator", () => {
         <BreadcrumbSeparator />
         <BreadcrumbEllipsis />
         <BreadcrumbSeparator>/</BreadcrumbSeparator>
+        <BreadcrumbSeparator>
+          <span data-testid="dot-separator">•</span>
+        </BreadcrumbSeparator>
         <BreadcrumbItem>
           <BreadcrumbPage>Current</BreadcrumbPage>
         </BreadcrumbItem>
@@ -40,6 +43,8 @@ test("breadcrumb retains navigation semantics and caller separator", () => {
   )
   expect(screen.getByRole("navigation").getAttribute("aria-label")).toBe("breadcrumb")
   expect(screen.getByRole("link", { name: "Current" }).getAttribute("aria-current")).toBe("page")
+  expect(screen.getByText("/")).toBeTruthy()
+  expect(screen.getByTestId("dot-separator")).toBeTruthy()
 })
 test("pagination retains baseline anchor role and active state", () => {
   const baseline = render(<BaselineLink href="#baseline">Baseline</BaselineLink>)
