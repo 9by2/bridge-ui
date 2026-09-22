@@ -169,9 +169,20 @@ const style = stylex.create({
     color: token.foreground,
     textAlign: "start"
   },
-  outside: { color: token.mutedForeground, backgroundColor: token.muted },
+  outside: { color: token.foreground, backgroundColor: token.muted },
   holiday: { backgroundColor: token.secondary },
   dayNumber: { fontSize: 12, fontWeight: 600 },
+  dayButton: {
+    alignSelf: "flex-start",
+    borderWidth: 0,
+    padding: 0,
+    backgroundColor: "transparent",
+    color: "inherit",
+    font: "inherit",
+    textAlign: "start",
+    cursor: "pointer",
+    ":focus-visible": { outlineWidth: 2, outlineStyle: "solid", outlineColor: token.ring, outlineOffset: 2 }
+  },
   holidayText: {
     overflow: "hidden",
     color: token.secondaryForeground,
@@ -308,7 +319,7 @@ const style = stylex.create({
     color: token.background,
     fontWeight: 600
   },
-  monthEventTime: { flexShrink: 0, color: token.mutedForeground, fontSize: 10, fontVariantNumeric: "tabular-nums" },
+  monthEventTime: { flexShrink: 0, color: token.foreground, fontSize: 10, fontVariantNumeric: "tabular-nums" },
   monthEventTitle: { overflow: "hidden", textOverflow: "ellipsis" },
   empty: {
     display: "flex",
@@ -687,6 +698,42 @@ function DaySlot({
   )
 }
 
+function MonthDaySlot({
+  children,
+  date,
+  onDrop,
+  onSelectDay,
+  ...props
+}: {
+  children: ReactNode
+  date: Date
+  onDrop?: (date: Date) => void
+  onSelectDay: (date: Date) => void
+} & Omit<ComponentProps<"div">, "onDrop">) {
+  const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault()
+      onSelectDay(date)
+    }
+  }
+  return (
+    <div
+      onDragOver={onDrop ? (event) => event.preventDefault() : undefined}
+      onDrop={onDrop ? () => onDrop(date) : undefined}
+      {...props}>
+      <button
+        type="button"
+        aria-label={formatKey(date)}
+        onClick={() => onSelectDay(date)}
+        onKeyDown={onKeyDown}
+        {...stylex.props(style.dayButton, style.dayNumber)}>
+        {date.getDate()}
+      </button>
+      {children}
+    </div>
+  )
+}
+
 const hour = Array.from({ length: 24 }, (_, index) => index)
 const minuteInDay = 24 * 60
 
@@ -962,13 +1009,12 @@ function MonthView({
         const dayHolidays = holidays.filter((item) => overlapsDay(item.start, item.end, day))
         const outside = day.getMonth() !== date.getMonth()
         return (
-          <DaySlot
+          <MonthDaySlot
             key={formatKey(day)}
             date={day}
             onSelectDay={onSlotSelect}
             onDrop={onSlotDrop}
             {...stylex.props(style.day, outside && style.outside, dayHolidays.length > 0 && style.holiday)}>
-            <span {...stylex.props(style.dayNumber)}>{day.getDate()}</span>
             {dayHolidays.map((item) => (
               <span key={item.id} {...stylex.props(style.holidayText)}>
                 {item.title}
@@ -978,7 +1024,7 @@ function MonthView({
             {dayEvents.length > 3 ? (
               <span {...stylex.props(style.meta)}>{labels.moreEvent(dayEvents.length - 3)}</span>
             ) : null}
-          </DaySlot>
+          </MonthDaySlot>
         )
       })}
     </div>

@@ -116,6 +116,18 @@ test("success checkbox, line collapsible, and button combobox retain primitive b
   expect(await screen.findByRole("option", { name: "Design" })).toBeTruthy()
 })
 
+test("collapsible accepts caller classes without a chevron", async () => {
+  render(
+    <Collapsible defaultOpen>
+      <CollapsibleTrigger className={() => "caller"}>Details</CollapsibleTrigger>
+      <CollapsibleContent>Expanded content</CollapsibleContent>
+    </Collapsible>
+  )
+
+  expect(screen.getByRole("button", { name: "Details" }).className).toContain("caller")
+  expect(await screen.findByText("Expanded content")).toBeTruthy()
+})
+
 test("switch keeps size, callback class and native form value", () => {
   for (const size of [undefined, "sm"] as const) {
     const { unmount, container } = render(

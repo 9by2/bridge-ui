@@ -28,6 +28,16 @@ try {
 async function verifyClient(fixture: string, packageTarball: string): Promise<void> {
   await writeFixture(fixture, packageTarball, {
     "index.html": '<div id="root"></div><script type="module" src="/src/main.tsx"></script>\n',
+    "src/jsx-compat.d.ts": `
+import type React from "react"
+
+declare global {
+  namespace JSX {
+    type Element = React.JSX.Element
+    interface IntrinsicElements extends React.JSX.IntrinsicElements {}
+  }
+}
+`,
     "src/main.tsx": `
 import { Button, Input } from "@bridge/ui"
 import "@bridge/ui/style.css"
@@ -74,6 +84,16 @@ createRoot(document.getElementById("root")!).render(
 
 async function verifySsr(fixture: string, packageTarball: string): Promise<void> {
   await writeFixture(fixture, packageTarball, {
+    "src/jsx-compat.d.ts": `
+import type React from "react"
+
+declare global {
+  namespace JSX {
+    type Element = React.JSX.Element
+    interface IntrinsicElements extends React.JSX.IntrinsicElements {}
+  }
+}
+`,
     "src/entry-server.tsx": `
 import { Button } from "@bridge/ui/button"
 import { TsChart } from "@bridge/ui/ts-chart"

@@ -78,3 +78,9 @@ test("framed table is canonical while TableFrame remains compatible", () => {
   expect(screen.getByLabelText("Compatible frame").getAttribute("data-slot")).toBe("table-frame")
   expect(screen.getByLabelText("Compatible viewport").getAttribute("data-slot")).toBe("table-frame-viewport")
 })
+
+test("framed table defaults to standard density", () => {
+  render(<Table variant="frame" aria-label="Standard frame" />)
+
+  expect(screen.getByLabelText("Standard frame").getAttribute("data-density")).toBe("standard")
+})

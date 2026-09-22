@@ -123,6 +123,27 @@ describe("BridgeCalendar", () => {
     expect(onSlotDrop).toHaveBeenCalledWith({ start: new Date(2026, 8, 16, 9), end: new Date(2026, 8, 16, 10) })
   })
 
+  test("keeps month day selection separate from event activation", () => {
+    const onSlotSelect = vi.fn()
+    const onEventActivate = vi.fn()
+    render(
+      <BridgeCalendar
+        defaultDate={new Date(2026, 8, 15)}
+        defaultView="month"
+        events={[event]}
+        labels={labels}
+        onEventActivate={onEventActivate}
+        onSlotSelect={onSlotSelect}
+      />
+    )
+
+    fireEvent.click(screen.getByRole("button", { name: "Team rehearsal" }))
+    expect(onEventActivate).toHaveBeenCalledWith(event)
+    expect(onSlotSelect).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole("button", { name: "2026-09-15" }))
+    expect(onSlotSelect).toHaveBeenCalledWith({ start: new Date(2026, 8, 15, 9), end: new Date(2026, 8, 15, 10) })
+  })
+
   test("requests another scheduled page only when available and idle", () => {
     const onLoadMore = vi.fn()
     render(
@@ -363,6 +384,29 @@ describe("BridgeCalendar", () => {
     scheduled.focus()
     fireEvent.keyDown(scheduled, { key: "ArrowRight" })
     expect(screen.getByRole("tab", { name: "Week" }).getAttribute("aria-selected")).toBe("true")
+  })
+
+  test("renders optional header action, event metadata, icon, and every event tone", () => {
+    render(
+      <BridgeCalendar
+        defaultDate={new Date(2026, 8, 15)}
+        events={[
+          ...(["neutral", "info", "success", "warning", "danger"] as const).map((tone) => ({
+            ...event,
+            id: tone,
+            title: tone,
+            tone,
+            icon: <span>Icon</span>
+          }))
+        ]}
+        labels={labels}
+        action={<button type="button">Create event</button>}
+      />
+    )
+
+    expect(screen.getByRole("button", { name: "Create event" })).toBeTruthy()
+    expect(screen.getAllByText("Studio A")).toHaveLength(5)
+    expect(screen.getAllByText("Icon")).toHaveLength(5)
   })
 
   test("observes the scheduled pagination sentinel and disconnects it on unmount", () => {

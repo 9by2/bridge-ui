@@ -90,6 +90,22 @@ test("sheet resize handle changes the permitted dimension", async () => {
   expect(dialog.style.width).toBe("320px")
   unmount()
 })
+
+test("sheet resize supports vertical growth and minimum dimensions", async () => {
+  const change = vi.fn()
+  render(
+    <Sheet open>
+      <SheetContent side="top" resizable size={200} onSizeChange={change}>
+        <SheetTitle>Resizable</SheetTitle>
+      </SheetContent>
+    </Sheet>
+  )
+  const handle = screen.getByRole("separator", { name: "Resize height" })
+  fireEvent.pointerDown(handle, { pointerId: 1, clientY: 100 })
+  fireEvent.pointerMove(handle, { pointerId: 1, clientY: 140 })
+  fireEvent.pointerUp(handle, { pointerId: 1, clientY: 140 })
+  expect(change).toHaveBeenLastCalledWith(240)
+})
 test("sheet close guard can keep the sheet open", async () => {
   const change = vi.fn()
   render(

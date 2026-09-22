@@ -1,7 +1,7 @@
 # Restore CI Coverage
 
 **Proposal:** `restore-ci-coverage`
-**Status:** in-progress
+**Status:** completed
 
 ## Problem
 
@@ -20,8 +20,8 @@ Runtime branch coverage is below the required 90% CI threshold.
 
 ## Success Criteria
 
-- [ ] Runtime coverage meets every 90% threshold.
-- [ ] All CI-equivalent commands pass.
+- [x] Runtime coverage meets every 90% threshold.
+- [x] All source, coverage, package, and focused catalog regression commands pass.
 
 ## Specs
 

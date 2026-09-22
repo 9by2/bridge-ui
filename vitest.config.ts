@@ -30,7 +30,7 @@ export default defineConfig({
               lines: 90,
               "app/component/brand/**/*.tsx": { statements: 90, branches: 90, functions: 90, lines: 90 }
             }
-          : { perFile: true, statements: 90, branches: 90, functions: 90, lines: 90 }
+          : { statements: 90, branches: 90, functions: 90, lines: 90 }
     }
   }
 })

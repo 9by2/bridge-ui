@@ -98,6 +98,30 @@ test("controlled quantity and ticket side report caller state", () => {
   expect(view.container.querySelector("[data-slot=ticket-card]")?.getAttribute("data-side")).toBe("front")
 })
 
+test("status stamps support every public tone", () => {
+  const tone = [
+    "neutral",
+    "info",
+    "pending",
+    "inactive",
+    "partial-success",
+    "success",
+    "warning",
+    "destructive"
+  ] as const
+  render(
+    <>
+      {tone.map((value) => (
+        <StatusStamp key={value} tone={value}>
+          {value}
+        </StatusStamp>
+      ))}
+    </>
+  )
+
+  for (const value of tone) expect(screen.getByText(value).getAttribute("data-tone")).toBe(value)
+})
+
 test("responsive image has presentation-only source and decorative semantics", () => {
   const { container } = render(
     <>

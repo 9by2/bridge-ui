@@ -16,8 +16,8 @@ Board controls and callbacks are verified through their public React interface.
 
 **Acceptance:**
 
-- [ ] Tests interact with accessible board controls.
-- [ ] `bun coverage:runtime` passes configured thresholds.
+- [x] Tests interact with accessible board controls.
+- [x] `bun coverage:runtime` passes configured thresholds.
 
 ## Non-Goals
 
