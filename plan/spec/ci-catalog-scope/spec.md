@@ -2,11 +2,11 @@
 
 **Spec ID:** `ci-catalog-scope`
 **Proposal:** `ci-catalog-scope`
-**Status:** accepted
+**Status:** superseded
 
 ## Summary
 
-Defines when the complete Bun.WebView catalog suite runs while preserving the full suite whenever it is eligible.
+Defines the historical CI scope of the complete Bun.WebView catalog suite. Complete WebView execution is superseded by `local-webview-gate`; CI retains static catalog compilation.
 
 ## Requirements
 

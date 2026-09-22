@@ -26,7 +26,7 @@ test("runtime coverage keeps package source and separate CI verification", async
     "boundary",
     "verify:package",
     "verify:tree-shaking",
-    "catalog:test"
+    "catalog:build"
   ]) {
     expect(ci).toContain(`- bun ${command}\n`)
   }

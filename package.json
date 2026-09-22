@@ -182,6 +182,7 @@
     "test": "bun test",
     "coverage:brand": "vitest run --coverage",
     "coverage:runtime": "COVERAGE_SCOPE=runtime vitest run --coverage",
+    "hooks:install": "git config core.hooksPath .githooks",
     "typecheck": "bun node_modules/typescript/bin/tsc --noEmit",
     "verify:package": "bun cmd/verify-package.ts",
     "verify:tree-shaking": "bun cmd/verify-tree-shaking.ts"

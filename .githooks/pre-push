@@ -1,0 +1,4 @@
+#!/bin/sh
+
+export CATALOG_PORT="${CATALOG_PORT:-0}"
+exec bun catalog:test
