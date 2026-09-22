@@ -25,6 +25,7 @@
 - **ALWAYS** retain catalog, accessibility, package, tree-shaking, client, SSR, and Bun.WebView verification as separate required gate.
 - **ALWAYS** test an interactive component through its public contract, not its internal implementation path.
 - **ALWAYS** add targeted regression test for a fixed defect.
+- **ALWAYS** document how to use each modules in [CUSTOMIZATION.md](./CUSTOMIZATION.md).
 
 - **NEVER** manually edit `app/component/shadcn/`. Add or refresh generated source only through the Shadcn CLI with Bun.
 - **NEVER** implement consumer migration in this repository.
@@ -46,7 +47,7 @@
 
 ### Testing Example
 
-- Prefer `expect(button).toBeDisabled()` over: `expect(button).toHaveClass("opacity-50")`
+- Prefer `expect(button).toBeDisabled()` over: `expect(button).toHaveClass("opacity-50")` or `expect(button).toHaveCss("...")`
 - Prefer testing the Effect rule that determines whether an action is allowed instead of exhaustively testing every React styling permutation.
 - Translation catalogs, interpolation, fallback behavior, and missing keys may be tested centrally rather than in every component.
 
