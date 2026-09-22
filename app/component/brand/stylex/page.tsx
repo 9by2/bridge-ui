@@ -33,7 +33,7 @@ const style = stylex.create({
     overflowWrap: "anywhere",
     color: token.foreground,
     fontFamily: "inherit",
-    fontSize: { default: 42, "@media (max-width: 640px)": 28 },
+    fontSize: { default: 32, "@media (max-width: 640px)": 26 },
     lineHeight: 1.06,
     fontWeight: 600,
     letterSpacing: "-0.035em"
