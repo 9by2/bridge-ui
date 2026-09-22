@@ -7,7 +7,7 @@ export default function Example() {
     <div className="grid w-full gap-4 sm:grid-cols-3">
       {(["dot", "line", "dashed"] as const).map((indicator) => (
         <section key={indicator}>
-          <h3>{indicator}</h3>
+          <UI.Heading as={UI.WAIHeading.H3}>{indicator}</UI.Heading>
           <UI.ChartContainer className="h-48 w-full" config={{ value: { label: "Revenue", color: "#818cf8" } }}>
             <BarChart
               data={[

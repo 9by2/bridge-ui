@@ -31,7 +31,9 @@ export default function Example() {
         <header className="flex h-16 items-center gap-3 border-b px-6">
           <UI.SidebarTrigger />
           <div>
-            <h3 className="text-sm font-semibold">Offcanvas collapse</h3>
+            <UI.Heading as={UI.WAIHeading.H3} className="text-sm font-semibold">
+              Offcanvas collapse
+            </UI.Heading>
             <p className="text-xs text-muted-foreground">Toggle to move the sidebar outside the viewport.</p>
           </div>
         </header>

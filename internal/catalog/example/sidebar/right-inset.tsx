@@ -8,7 +8,9 @@ export default function Example() {
       <UI.SidebarInset>
         <header className="flex h-16 items-center justify-end gap-3 border-b px-6">
           <div className="text-right">
-            <h3 className="text-sm font-semibold">Right inset</h3>
+            <UI.Heading as={UI.WAIHeading.H3} className="text-sm font-semibold">
+              Right inset
+            </UI.Heading>
             <p className="text-xs text-muted-foreground">Inset content beside right navigation.</p>
           </div>
           <UI.SidebarTrigger />
