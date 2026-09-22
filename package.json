@@ -267,3 +267,7 @@
     "recharts": "^3.8.0"
   }
 }
+    "./bridge-calendar": {
+      "types": "./dist/component/brand/stylex/bridge-calendar.d.ts",
+      "import": "./dist/component/brand/stylex/bridge-calendar.js"
+    },

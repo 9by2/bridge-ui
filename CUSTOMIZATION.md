@@ -79,6 +79,38 @@ export function App() {
 </Button>
 ```
 
+## BridgeCalendar
+
+`BridgeCalendar` is a client-side schedule calendar with scheduled, week, and month views. It is separate from `Calendar`, the date-picker component. Import the package style once and provide every visible label from the application so product translation stays outside the package.
+
+```tsx
+import { BridgeCalendar, type BridgeCalendarLabels } from "@bridge/ui/bridge-calendar"
+import "@bridge/ui/style.css"
+
+const labels: BridgeCalendarLabels = {
+  previous: "Previous period",
+  next: "Next period",
+  today: "Today",
+  view: { scheduled: "Schedule", week: "Week", month: "Month" },
+  weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  period: ({ view, date, week }) =>
+    view === "week" && week ? `${week.start.toLocaleDateString()} - ${week.end.toLocaleDateString()}` : `${view}: ${date.toLocaleDateString()}`,
+  time: (hour, minute = 0) => `${hour}:${String(minute).padStart(2, "0")}`,
+  currentTime: "Current time",
+  moreEvent: (count) => `+${count} more`
+}
+
+<BridgeCalendar
+  defaultView="week"
+  events={events}
+  labels={labels}
+  onEventActivate={(event) => openEvent(event.id)}
+  onSlotSelect={(selection) => createDraft(selection)}
+/>
+```
+
+Use `view` and `date` with `onViewChange` and `onDateChange` for controlled state; use `defaultView` and `defaultDate` otherwise. `period` formats the displayed period and receives the visible week range in week view. Events and holidays use generic `id`, `title`, `start`, and `end` fields. Set `allDay` for full-day events: these render in a separate week lane and as compact inverted month pills prefixed with `[ALL DAY]`, without a time prefix. Set `weekStartsOn` from `0` through `6` to select the first displayed weekday. Map queue status, location, translated event copy, fetching, mutations, and authorization in the application before rendering. Use `renderEvent` or `renderEmpty` when the default generic presentation is insufficient.
+
 ### Supported P0 components
 
 The global theme contract currently applies to these owned components:

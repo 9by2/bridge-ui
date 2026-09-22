@@ -1,0 +1,30 @@
+[
+  {
+    "viewport": {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000
+    },
+    "page": {
+      "overflow": false,
+      "view": "week",
+      "eventCount": 9,
+      "timeCount": 24,
+      "hasCurrentTime": true
+    }
+  },
+  {
+    "viewport": {
+      "name": "mobile",
+      "width": 390,
+      "height": 900
+    },
+    "page": {
+      "overflow": false,
+      "view": "week",
+      "eventCount": 9,
+      "timeCount": 24,
+      "hasCurrentTime": true
+    }
+  }
+]

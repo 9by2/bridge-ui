@@ -95,3 +95,4 @@ export type { UploadAttachment, UploadRejection } from "./component/brand/stylex
 export { ImageCrop, ImageCropEditor } from "./component/brand/stylex/image-crop"
 export type { ImageCropProps } from "./component/brand/stylex/image-crop"
 export * from "./component/brand/stylex/theme"
+export * from "./component/brand/stylex/bridge-calendar"
