@@ -62,6 +62,8 @@ const title = (value: string) =>
         .join(" "))
 const components = Object.fromEntries(Object.entries(modules).map(([path, load]) => [path, lazy(load)]))
 const description: Record<string, string> = {
+  "theme/default":
+    "The default Theme establishes Bridge UI defaults. Nested Theme boundaries can opt into compact density or scoped product color and geometry values.",
   "drop-area/default":
     "Stacked file selection with a filename status. Accepts one file up to 5 MB; selection does not upload it.",
   "drop-area/inline":

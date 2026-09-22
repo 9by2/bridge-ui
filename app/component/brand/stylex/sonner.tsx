@@ -3,8 +3,8 @@ import { CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Loader2Icon
 import type { CSSProperties } from "react"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
 
-import { themeMode, useThemeMode } from "./theme"
-import { token } from "./token.stylex"
+import { themeMode, useBridgeTheme, useThemeMode } from "./theme"
+import { geometryToken, themeToken, token } from "./token.stylex"
 
 /**
  * DEC-009: Sonner reads the nearest Bridge `Theme` mode instead of an external
@@ -28,11 +28,12 @@ const style = stylex.create({
 })
 export function Toaster({ theme, ...props }: ToasterProps) {
   const mode = useThemeMode()
+  const bridgeTheme = useBridgeTheme()
   const resolvedTheme = theme ?? sonnerTheme(mode)
   const variables: CSSProperties & Record<`--${string}`, string> = {
-    "--normal-bg": token.background,
-    "--normal-text": token.foreground,
-    "--normal-border": token.border,
+    "--normal-bg": themeToken.surface,
+    "--normal-text": themeToken.surfaceForeground,
+    "--normal-border": themeToken.border,
     "--success-bg": token.brand,
     "--success-text": token.brandForeground,
     "--success-border": token.brand,
@@ -42,7 +43,7 @@ export function Toaster({ theme, ...props }: ToasterProps) {
     "--error-bg": token.destructive,
     "--error-text": token.destructiveForeground,
     "--error-border": token.destructive,
-    "--border-radius": "14px"
+    "--border-radius": bridgeTheme.theme.radius?.overlay ?? geometryToken.overlayRadius
   }
   return (
     <Sonner

@@ -3,7 +3,7 @@ import * as stylex from "@stylexjs/stylex"
 import type { ComponentProps } from "react"
 
 import { Theme } from "./theme"
-import { token } from "./token.stylex"
+import { geometryToken, themeToken, token } from "./token.stylex"
 
 const enter = stylex.keyframes({ from: { opacity: 0, scale: "0.95" }, to: { opacity: 1, scale: "1" } })
 const exit = stylex.keyframes({ from: { opacity: 1, scale: "1" }, to: { opacity: 0, scale: "0.95" } })
@@ -16,14 +16,14 @@ const style = stylex.create({
     width: 288,
     transformOrigin: "var(--transform-origin)",
     flexDirection: "column",
-    gap: 10,
-    borderRadius: 10,
-    backgroundColor: token.popover,
-    padding: 10,
+    gap: geometryToken.layoutGap,
+    borderRadius: geometryToken.overlayRadius,
+    backgroundColor: themeToken.popover,
+    padding: geometryToken.surfacePadding,
     fontSize: 14,
     lineHeight: "20px",
-    color: token.popoverForeground,
-    boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%), 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%)`,
+    color: themeToken.popoverForeground,
+    boxShadow: `0 0 0 1px color-mix(in oklch, ${themeToken.foreground}, transparent 90%), 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%)`,
     outline: "none",
     animationName: enter,
     animationDuration: { default: "100ms", "@media (prefers-reduced-motion: reduce)": "0s" }
@@ -31,7 +31,7 @@ const style = stylex.create({
   closed: { animationName: exit },
   header: { display: "flex", flexDirection: "column", gap: 2, fontSize: 14, lineHeight: "20px" },
   title: { fontFamily: token.fontHeading, fontWeight: 500, margin: 0 },
-  description: { color: token.mutedForeground, margin: 0 }
+  description: { color: themeToken.mutedForeground, margin: 0 }
 })
 export function Popover(props: Primitive.Root.Props) {
   return <Primitive.Root {...props} />

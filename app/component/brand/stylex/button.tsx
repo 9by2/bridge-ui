@@ -1,7 +1,7 @@
 import { Button as Primitive } from "@base-ui/react/button"
 import * as stylex from "@stylexjs/stylex"
 
-import { token } from "./token.stylex"
+import { geometryToken, themeToken, token } from "./token.stylex"
 
 const style = stylex.create({
   expanded: { backgroundColor: token.muted, color: token.foreground },
@@ -14,7 +14,7 @@ const style = stylex.create({
     alignItems: "center",
     justifyContent: "center",
     boxSizing: "border-box",
-    borderRadius: 10,
+    borderRadius: geometryToken.controlRadius,
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: { default: "transparent", ":focus-visible": token.ring },
@@ -37,8 +37,11 @@ const style = stylex.create({
     boxShadow: `0 0 0 3px color-mix(in oklch, ${token.destructive} ${token.errorRingOpacity}, transparent)`
   },
   default: {
-    backgroundColor: { default: token.primary, ":hover": `color-mix(in oklch, ${token.primary}, transparent 20%)` },
-    color: token.primaryForeground
+    backgroundColor: {
+      default: themeToken.primary,
+      ":hover": `color-mix(in oklch, ${themeToken.primary}, transparent 20%)`
+    },
+    color: themeToken.primaryForeground
   },
   outline: {
     borderColor: { default: token.outlineBorder, ":focus-visible": token.outlineFocus },
@@ -91,10 +94,24 @@ const style = stylex.create({
   }
 })
 const sizeStyle = stylex.create({
-  default: { height: 32, gap: 6, paddingInline: 10 },
-  xs: { height: 24, gap: 4, paddingInline: 8, fontSize: 12, lineHeight: "16px", borderRadius: 8 },
-  sm: { height: 28, gap: 4, paddingInline: 10, fontSize: "0.8rem", lineHeight: 1.5, borderRadius: 8 },
-  lg: { height: 36, gap: 6, paddingInline: 10 },
+  default: { height: 32, gap: 6, paddingInline: geometryToken.controlPaddingInline },
+  xs: {
+    height: 24,
+    gap: 4,
+    paddingInline: 8,
+    fontSize: 12,
+    lineHeight: "16px",
+    borderRadius: geometryToken.controlRadiusSmall
+  },
+  sm: {
+    height: 28,
+    gap: 4,
+    paddingInline: geometryToken.controlPaddingInline,
+    fontSize: "0.8rem",
+    lineHeight: 1.5,
+    borderRadius: geometryToken.controlRadiusSmall
+  },
+  lg: { height: 36, gap: 6, paddingInline: geometryToken.controlPaddingInline },
   xl: { height: 44, gap: 6, paddingInline: 12, fontSize: 18, lineHeight: "28px" },
   icon: { height: 32, width: 32, padding: 0 },
   "icon-xs": { height: 24, width: 24, padding: 0, borderRadius: 8 },

@@ -65,3 +65,31 @@ export const token = stylex.defineVars({
   destructive: "oklch(0.5489 0.1841 25.69)",
   destructiveForeground: "oklch(1 0 0)"
 })
+
+/** Public CSS variable bridge used by statically compiled component recipes. */
+export const themeToken = {
+  background: `var(--bridge-color-background, ${token.background})`,
+  foreground: `var(--bridge-color-foreground, ${token.foreground})`,
+  primary: `var(--bridge-color-primary, ${token.primary})`,
+  primaryForeground: `var(--bridge-color-primary-foreground, ${token.primaryForeground})`,
+  surface: `var(--bridge-color-surface, ${token.card})`,
+  surfaceForeground: `var(--bridge-color-surface-foreground, ${token.cardForeground})`,
+  popover: `var(--bridge-color-popover, ${token.popover})`,
+  popoverForeground: `var(--bridge-color-popover-foreground, ${token.popoverForeground})`,
+  border: `var(--bridge-color-border, ${token.border})`,
+  input: `var(--bridge-color-input, ${token.input})`,
+  muted: `var(--bridge-color-muted, ${token.muted})`,
+  mutedForeground: `var(--bridge-color-muted-foreground, ${token.mutedForeground})`,
+  ring: `var(--bridge-color-ring, ${token.ring})`
+} as const
+
+export const geometryToken = {
+  controlRadius: "var(--bridge-control-radius, 10px)",
+  controlRadiusSmall: "var(--bridge-control-radius-sm, 8px)",
+  surfaceRadius: "var(--bridge-surface-radius, 14px)",
+  overlayRadius: "var(--bridge-overlay-radius, var(--bridge-surface-radius, 14px))",
+  controlPaddingInline: "var(--bridge-control-padding-inline, 10px)",
+  controlPaddingBlock: "var(--bridge-control-padding-block, 4px)",
+  surfacePadding: "var(--bridge-surface-padding, 16px)",
+  layoutGap: "var(--bridge-layout-gap, 16px)"
+} as const

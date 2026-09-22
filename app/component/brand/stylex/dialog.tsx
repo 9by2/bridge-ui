@@ -4,7 +4,7 @@ import type { ComponentProps } from "react"
 
 import { Button } from "./button"
 import { Theme } from "./theme"
-import { token } from "./token.stylex"
+import { geometryToken, themeToken, token } from "./token.stylex"
 
 const enter = stylex.keyframes({ from: { opacity: 0, scale: "0.95" }, to: { opacity: 1, scale: "1" } })
 const fade = stylex.keyframes({ from: { opacity: 0 }, to: { opacity: 1 } })
@@ -39,11 +39,11 @@ const style = stylex.create({
     boxSizing: "border-box",
     width: "100%",
     maxWidth: { default: "calc(100% - 2rem)", "@media (min-width: 640px)": "24rem" },
-    gap: 16,
-    borderRadius: token.shapeSurface,
-    backgroundColor: token.background,
-    color: token.foreground,
-    padding: 16,
+    gap: geometryToken.layoutGap,
+    borderRadius: geometryToken.overlayRadius,
+    backgroundColor: themeToken.surface,
+    color: themeToken.surfaceForeground,
+    padding: geometryToken.surfacePadding,
     fontSize: 14,
     lineHeight: "20px",
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%)`,
@@ -55,7 +55,7 @@ const style = stylex.create({
     right: 8,
     borderWidth: 1,
     borderStyle: "solid",
-    borderColor: token.border,
+    borderColor: themeToken.border,
     borderRadius: token.shapePill
   },
   icon: {
@@ -75,16 +75,16 @@ const style = stylex.create({
     gap: 8,
     marginInline: -16,
     marginBottom: -16,
-    borderBottomLeftRadius: token.shapeSurface,
-    borderBottomRightRadius: token.shapeSurface,
+    borderBottomLeftRadius: geometryToken.overlayRadius,
+    borderBottomRightRadius: geometryToken.overlayRadius,
     borderTopWidth: 1,
     borderTopStyle: "solid",
-    borderTopColor: token.border,
-    backgroundColor: `color-mix(in oklch, ${token.muted}, transparent 50%)`,
-    padding: 16
+    borderTopColor: themeToken.border,
+    backgroundColor: `color-mix(in oklch, ${themeToken.muted}, transparent 50%)`,
+    padding: geometryToken.surfacePadding
   },
   title: { fontFamily: token.fontHeading, fontSize: 16, lineHeight: 1, fontWeight: 500, margin: 0 },
-  description: { color: token.mutedForeground, fontSize: 14, lineHeight: "20px", margin: 0 }
+  description: { color: themeToken.mutedForeground, fontSize: 14, lineHeight: "20px", margin: 0 }
 })
 export function Dialog(props: Primitive.Root.Props) {
   return <Primitive.Root {...props} />

@@ -12,6 +12,23 @@
   pointer-events: none;
 }
 
+/* Public customization defaults. Theme writes these values inline so nested themes and portals retain the nearest contract. */
+[data-bridge-theme] {
+  --bridge-space-1: 0.25rem;
+  --bridge-space-2: 0.5rem;
+  --bridge-space-3: 0.75rem;
+  --bridge-space-4: 1rem;
+  --bridge-space-5: 1.5rem;
+  --bridge-control-radius: 0.625rem;
+  --bridge-control-radius-sm: 0.5rem;
+  --bridge-surface-radius: 0.875rem;
+  --bridge-overlay-radius: var(--bridge-surface-radius);
+  --bridge-control-padding-inline: 0.625rem;
+  --bridge-control-padding-block: 0.25rem;
+  --bridge-surface-padding: var(--bridge-space-4);
+  --bridge-layout-gap: var(--bridge-space-4);
+}
+
 [data-pilot-theme="cue"] {
   color-scheme: dark;
   scrollbar-color: oklch(0.4 0 0) transparent;

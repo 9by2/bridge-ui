@@ -4,7 +4,7 @@ import { XIcon, CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Load
 
 import { Button } from "./button"
 import { Theme } from "./theme"
-import { token } from "./token.stylex"
+import { geometryToken, themeToken, token } from "./token.stylex"
 
 const spin = stylex.keyframes({ to: { rotate: "360deg" } })
 const height = "var(--toast-frontmost-height, var(--toast-height))"
@@ -31,15 +31,15 @@ const style = stylex.create({
     zIndex: "calc(1000 - var(--toast-index))",
     width: { default: "100%", "::after": "100%" },
     transformOrigin: "bottom",
-    borderRadius: 18,
+    borderRadius: geometryToken.overlayRadius,
     borderWidth: 1,
     borderStyle: "solid",
-    borderColor: { default: token.border, ":focus-visible": token.ring },
-    backgroundColor: token.background,
-    color: token.foreground,
+    borderColor: { default: themeToken.border, ":focus-visible": themeToken.ring },
+    backgroundColor: themeToken.surface,
+    color: themeToken.surfaceForeground,
     boxShadow: {
       default: "0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%)",
-      ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.ring}, transparent 50%)`
+      ":focus-visible": `0 0 0 3px color-mix(in oklch, ${themeToken.ring}, transparent 50%)`
     },
     willChange: "transform",
     outline: "none",
@@ -69,21 +69,21 @@ const style = stylex.create({
     display: "flex",
     height: "100%",
     alignItems: "center",
-    gap: 12,
+    gap: geometryToken.layoutGap,
     overflow: "hidden",
-    padding: 16,
+    padding: geometryToken.surfacePadding,
     transitionProperty: "opacity",
     transitionDuration: "250ms",
     transitionTimingFunction: "cubic-bezier(0.22,1,0.36,1)",
     opacity: { default: 1, ":is([data-behind])": 0, ":is([data-expanded])": 1 }
   },
   title: { fontSize: 14, lineHeight: "20px", fontWeight: 500 },
-  description: { fontSize: 14, lineHeight: "20px", color: token.mutedForeground },
+  description: { fontSize: 14, lineHeight: "20px", color: themeToken.mutedForeground },
   action: { flexShrink: 0 },
   close: {
     position: { default: "relative", "::after": "absolute" },
     flexShrink: 0,
-    color: { default: token.mutedForeground, ":hover": token.foreground },
+    color: { default: themeToken.mutedForeground, ":hover": themeToken.foreground },
     inset: { "::after": -8 },
     content: { "::after": '""' }
   },

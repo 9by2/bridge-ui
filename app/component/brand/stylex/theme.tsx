@@ -1,10 +1,36 @@
 import * as stylex from "@stylexjs/stylex"
-import { createContext, useContext, type ComponentProps } from "react"
+import { createContext, useContext, type ComponentProps, type CSSProperties } from "react"
 
 import { token } from "./token.stylex"
 
 export const themeMode = { light: "light", dark: "dark", cue: "cue", future: "future" } as const
 export type ThemeMode = ValueOf<typeof themeMode>
+
+export const bridgeDensity = { compact: "compact", default: "default", comfortable: "comfortable" } as const
+export type BridgeDensity = ValueOf<typeof bridgeDensity>
+
+type BridgeThemeColor =
+  | "background"
+  | "foreground"
+  | "primary"
+  | "primaryForeground"
+  | "surface"
+  | "surfaceForeground"
+  | "popover"
+  | "popoverForeground"
+  | "border"
+  | "input"
+  | "muted"
+  | "mutedForeground"
+  | "ring"
+type BridgeThemeRadius = "control" | "controlSmall" | "surface" | "overlay"
+type BridgeThemeSpace = 1 | 2 | 3 | 4 | 5
+
+export type BridgeThemeOverride = {
+  color?: Partial<Record<BridgeThemeColor, string>>
+  radius?: Partial<Record<BridgeThemeRadius, string>>
+  space?: Partial<Record<BridgeThemeSpace, string>>
+}
 
 type ValueOf<T> = T[keyof T]
 
@@ -265,7 +291,9 @@ const future = stylex.createTheme(token, {
   destructiveForeground: "oklch(1 0 0)"
 })
 const modeTheme = { light, dark, cue, future } as const
-const ThemeContext = createContext<ThemeMode>(themeMode.light)
+type BridgeTheme = { mode: ThemeMode; density: BridgeDensity; theme: BridgeThemeOverride }
+
+const ThemeContext = createContext<BridgeTheme>({ mode: themeMode.light, density: bridgeDensity.default, theme: {} })
 
 /**
  * Public seam for reading the nearest Bridge `Theme` mode (DEC-009). Consumers that
@@ -274,6 +302,11 @@ const ThemeContext = createContext<ThemeMode>(themeMode.light)
  * authority only.
  */
 export function useThemeMode(): ThemeMode {
+  return useContext(ThemeContext).mode
+}
+
+/** Reads the nearest resolved Bridge customization for package portals and consumer composition. */
+export function useBridgeTheme(): BridgeTheme {
   return useContext(ThemeContext)
 }
 const style = stylex.create({
@@ -299,15 +332,94 @@ const style = stylex.create({
 
 export const numberTextClassName = String(stylex.props(style.number).className)
 
-export function Theme({ mode, className, ...props }: ComponentProps<"div"> & { mode?: ThemeMode }) {
+function mergeTheme(parent: BridgeThemeOverride, current: BridgeThemeOverride | undefined): BridgeThemeOverride {
+  return {
+    color: { ...parent.color, ...current?.color },
+    radius: { ...parent.radius, ...current?.radius },
+    space: { ...parent.space, ...current?.space }
+  }
+}
+
+function themeVariables(
+  density: BridgeDensity,
+  theme: BridgeThemeOverride
+): CSSProperties & Record<`--${string}`, string> {
+  const compact = density === bridgeDensity.compact
+  const comfortable = density === bridgeDensity.comfortable
+  const space = { 1: "0.25rem", 2: "0.5rem", 3: "0.75rem", 4: "1rem", 5: "1.5rem", ...theme.space }
+  const variables: CSSProperties & Record<string, string> = {
+    "--bridge-space-1": space[1],
+    "--bridge-space-2": space[2],
+    "--bridge-space-3": space[3],
+    "--bridge-space-4": space[4],
+    "--bridge-space-5": space[5],
+    "--bridge-control-radius": theme.radius?.control ?? "0.625rem",
+    "--bridge-control-radius-sm": theme.radius?.controlSmall ?? "0.5rem",
+    "--bridge-surface-radius": theme.radius?.surface ?? "0.875rem",
+    "--bridge-overlay-radius": theme.radius?.overlay ?? theme.radius?.surface ?? "0.875rem",
+    "--bridge-control-padding-inline": compact
+      ? "var(--bridge-space-2)"
+      : comfortable
+        ? "var(--bridge-space-3)"
+        : "0.625rem",
+    "--bridge-control-padding-block": compact ? "0.125rem" : comfortable ? "0.375rem" : "0.25rem",
+    "--bridge-surface-padding": compact
+      ? "var(--bridge-space-3)"
+      : comfortable
+        ? "var(--bridge-space-5)"
+        : "var(--bridge-space-4)",
+    "--bridge-layout-gap": compact
+      ? "var(--bridge-space-3)"
+      : comfortable
+        ? "var(--bridge-space-5)"
+        : "var(--bridge-space-4)"
+  }
+  const { color } = theme
+  if (color) {
+    if (color.background) variables["--bridge-color-background"] = color.background
+    if (color.foreground) variables["--bridge-color-foreground"] = color.foreground
+    if (color.primary) variables["--bridge-color-primary"] = color.primary
+    if (color.primaryForeground) variables["--bridge-color-primary-foreground"] = color.primaryForeground
+    if (color.surface) variables["--bridge-color-surface"] = color.surface
+    if (color.surfaceForeground) variables["--bridge-color-surface-foreground"] = color.surfaceForeground
+    if (color.popover) variables["--bridge-color-popover"] = color.popover
+    if (color.popoverForeground) variables["--bridge-color-popover-foreground"] = color.popoverForeground
+    if (color.border) variables["--bridge-color-border"] = color.border
+    if (color.input) variables["--bridge-color-input"] = color.input
+    if (color.muted) variables["--bridge-color-muted"] = color.muted
+    if (color.mutedForeground) variables["--bridge-color-muted-foreground"] = color.mutedForeground
+    if (color.ring) variables["--bridge-color-ring"] = color.ring
+  }
+  return variables
+}
+
+export function Theme({
+  mode,
+  density,
+  theme,
+  className,
+  style: callerStyle,
+  ...props
+}: ComponentProps<"div"> & {
+  mode?: ThemeMode
+  density?: BridgeDensity
+  theme?: BridgeThemeOverride
+}) {
   const inherited = useContext(ThemeContext)
-  const current = mode ?? inherited
+  const current: BridgeTheme = {
+    mode: mode ?? inherited.mode,
+    density: density ?? inherited.density,
+    theme: mergeTheme(inherited.theme, theme)
+  }
   return (
     <ThemeContext value={current}>
       <div
-        data-pilot-theme={current}
+        data-pilot-theme={current.mode}
+        data-bridge-theme={current.mode}
+        data-bridge-density={current.density}
         {...props}
-        className={[stylex.props(style.root, modeTheme[current]).className, className].join(" ")}
+        style={{ ...themeVariables(current.density, current.theme), ...callerStyle }}
+        className={[stylex.props(style.root, modeTheme[current.mode]).className, className].filter(Boolean).join(" ")}
       />
     </ThemeContext>
   )

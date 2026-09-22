@@ -10,6 +10,27 @@ import "@bridge/ui/style.css"
 
 Wrap an application or a nested product region in `Theme` to customize the supported Bridge UI color, radius, and spacing system. Customization is scoped: nested Themes inherit values they do not replace. Package overlays such as Dialog, Popover, Toast, and Sonner retain the nearest Theme values.
 
+### Default setup
+
+Use `Theme` without overrides for the canonical Bridge UI default. This is the recommended application root unless a product has an approved custom theme.
+
+```tsx
+import { Theme } from "@bridge/ui"
+import "@bridge/ui/style.css"
+
+export function App() {
+  return (
+    <Theme>
+      <Routes />
+    </Theme>
+  )
+}
+```
+
+`<Theme />` uses `mode="light"` and `density={bridgeDensity.default}`. Use `mode="dark"`, `mode="cue"`, or `mode="future"` only when selecting an existing package palette.
+
+### Custom setup
+
 ```tsx
 import { Theme, bridgeDensity, type BridgeThemeOverride } from "@bridge/ui"
 import "@bridge/ui/style.css"
@@ -94,6 +115,25 @@ Other components retain their existing public props and default geometry until t
 Supported color keys are `background`, `foreground`, `primary`, `primaryForeground`, `surface`, `surfaceForeground`, `popover`, `popoverForeground`, `border`, `input`, `muted`, `mutedForeground`, and `ring`. Bridge UI supplies accessible defaults; a custom palette remains responsible for adequate text and focus contrast.
 
 Use component props for intentional local exceptions, for example `<Card radius="none" />`. Do not rely on StyleX class names, `pilot-*` classes, or undocumented `data-slot` selectors as a customization API.
+
+## Typography
+
+`Heading`, `Label`, and `Body` provide the Cue semantic typography baseline. Heading uses the package heading family and highlight color; `Body` preserves Cue's compact `1.3` line height. Pass `as` to choose a semantic heading level, or omit it for an `h4`.
+
+```tsx
+import { Body, Heading, WAIHeading } from "@bridge/ui"
+
+export function AccountSummary() {
+  return (
+    <section>
+      <Heading as={WAIHeading.H2}>Account</Heading>
+      <Body>Manage access and profile details.</Body>
+    </section>
+  )
+}
+```
+
+`Label` renders an inline `span`. All three primitives accept native element props and `className` for local layout.
 
 ## Input icons
 

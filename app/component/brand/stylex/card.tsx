@@ -1,7 +1,7 @@
 import * as stylex from "@stylexjs/stylex"
 import type { ComponentProps } from "react"
 
-import { token } from "./token.stylex"
+import { geometryToken, themeToken, token } from "./token.stylex"
 
 type ValueOf<T> = T[keyof T]
 
@@ -14,12 +14,12 @@ const style = stylex.create({
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
-    gap: 16,
+    gap: geometryToken.layoutGap,
     overflow: "hidden",
-    borderRadius: 14,
-    backgroundColor: token.card,
-    paddingBlock: { default: 16, ':has([data-slot="card-footer"])': 0 },
-    color: token.cardForeground,
+    borderRadius: geometryToken.surfaceRadius,
+    backgroundColor: themeToken.surface,
+    paddingBlock: { default: geometryToken.surfacePadding, ':has([data-slot="card-footer"])': 0 },
+    color: themeToken.surfaceForeground,
     fontSize: 14,
     lineHeight: "20px",
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%)`
@@ -39,7 +39,7 @@ const style = stylex.create({
     alignItems: "start",
     gap: 4,
     borderTopLeftRadius: {
-      default: 14,
+      default: geometryToken.surfaceRadius,
       [stylex.when.ancestor('[data-radius="none"]')]: 0,
       [stylex.when.ancestor('[data-radius="sm"]')]: 8,
       [stylex.when.ancestor('[data-radius="lg"]')]: 18
@@ -50,11 +50,11 @@ const style = stylex.create({
       [stylex.when.ancestor('[data-radius="sm"]')]: 8,
       [stylex.when.ancestor('[data-radius="lg"]')]: 18
     },
-    paddingInline: 16,
+    paddingInline: geometryToken.surfacePadding,
     containerType: "inline-size",
     gridTemplateColumns: { default: null, ':has([data-slot="card-action"])': "1fr auto" }
   },
-  spacing: { paddingInline: { default: 16, [stylex.when.ancestor('[data-size="sm"]')]: 12 } },
+  spacing: { paddingInline: { default: geometryToken.surfacePadding, [stylex.when.ancestor('[data-size="sm"]')]: 12 } },
   title: {
     fontFamily: token.fontHeading,
     fontSize: { default: 16, [stylex.when.ancestor('[data-size="sm"]')]: 14 },
@@ -67,7 +67,7 @@ const style = stylex.create({
     display: "flex",
     alignItems: "center",
     borderBottomLeftRadius: {
-      default: 14,
+      default: geometryToken.surfaceRadius,
       [stylex.when.ancestor('[data-radius="none"]')]: 0,
       [stylex.when.ancestor('[data-radius="sm"]')]: 8,
       [stylex.when.ancestor('[data-radius="lg"]')]: 18
@@ -80,9 +80,9 @@ const style = stylex.create({
     },
     borderTopWidth: 1,
     borderTopStyle: "solid",
-    borderTopColor: token.border,
-    backgroundColor: `color-mix(in oklch, ${token.muted}, transparent 50%)`,
-    paddingBlock: { default: 16, [stylex.when.ancestor('[data-size="sm"]')]: 12 }
+    borderTopColor: themeToken.border,
+    backgroundColor: `color-mix(in oklch, ${themeToken.muted}, transparent 50%)`,
+    paddingBlock: { default: geometryToken.surfacePadding, [stylex.when.ancestor('[data-size="sm"]')]: 12 }
   }
 })
 export function Card({

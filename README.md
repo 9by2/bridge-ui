@@ -35,9 +35,7 @@ import "@bridge/ui/style.css"
 
 Root import and stable direct entry are supported. Compatible generated entry remains available at `@bridge/ui/component/shadcn/<name>`.
 
-See [CUSTOMIZATION.md](./CUSTOMIZATION.md) for scoped custom themes, supported global radius/density overrides, and component-specific styling APIs.
-
-See [CUSTOMIZATION.md](./CUSTOMIZATION.md) for supported component customization, including Input icons.
+See [CUSTOMIZATION.md](./CUSTOMIZATION.md) for scoped custom themes, supported global radius/density overrides, Input icons, and component-specific styling APIs.
 
 ## Command
 

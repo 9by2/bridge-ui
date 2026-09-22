@@ -2,7 +2,7 @@ import { expect, test } from "bun:test"
 import path from "node:path"
 
 const catalogOnlyStylexName = ["shell-header"]
-const catalogExcludedStylexName = ["theme"]
+const catalogExcludedStylexName: string[] = []
 
 const directoryName = (file: string) => path.basename(path.dirname(file))
 const hasImport = (value: unknown): value is { import: string } =>
