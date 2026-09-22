@@ -30,9 +30,7 @@ export default function Example() {
       <UI.SidebarInset>
         <header className="flex h-16 items-center border-b px-6">
           <div>
-            <UI.Heading as={UI.WAIHeading.H3} className="text-sm font-semibold">
-              Persistent sidebar
-            </UI.Heading>
+            <h3 className="text-sm font-semibold">Persistent sidebar</h3>
             <p className="text-xs text-muted-foreground">This mode has no collapse control or released space.</p>
           </div>
         </header>

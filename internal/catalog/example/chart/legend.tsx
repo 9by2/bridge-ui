@@ -8,7 +8,7 @@ export default function Example() {
     <div className="grid w-full gap-4 sm:grid-cols-2">
       {[false, true].map((hideIcon) => (
         <section key={String(hideIcon)}>
-          <UI.Heading as={UI.WAIHeading.H3}>{hideIcon ? "Text only" : "Custom icon"}</UI.Heading>
+          <h3>{hideIcon ? "Text only" : "Custom icon"}</h3>
           <UI.ChartContainer
             className="h-56 w-full"
             config={{

@@ -6,6 +6,12 @@ const catalogImage =
 test("catalog:test script runs the Bun.WebView orchestrator", async () => {
   const packageJson = await Bun.file("package.json").json()
   expect(packageJson.scripts["catalog:test"]).toBe("bun cmd/run-catalog-test.ts")
+  const runner = await Bun.file("cmd/run-catalog-test.ts").text()
+  expect(runner).toContain('"--parallel=2"')
+  expect(runner).not.toContain('"--concurrent"')
+  expect(runner).toContain("Bun.serve")
+  expect(runner).toContain("server.stop(true)")
+  expect(runner).toContain("path.extname(relativePath)")
 })
 
 test("catalog CI uses a prebuilt version-pinned browser runtime", async () => {

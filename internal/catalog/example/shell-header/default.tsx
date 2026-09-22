@@ -121,7 +121,7 @@ export default function Example() {
         </UI.ShellHeader>
         <div {...stylex.props(style.content)}>
           <section {...stylex.props(style.card)}>
-            <UI.Heading as={UI.WAIHeading.H2}>Project overview</UI.Heading>
+            <h2>Project overview</h2>
             <p>The shell header remains visible while this route content scrolls.</p>
           </section>
         </div>

@@ -97,17 +97,6 @@ describe("package contract", () => {
     })
   })
 
-  test("Cue typography is available from root and its stable direct package path", async () => {
-    const entry = await Bun.file(path.join(root, "app/index.ts")).text()
-    const manifest = await Bun.file(path.join(root, "package.json")).json()
-
-    expect(entry).toContain('from "./component/brand/stylex/typography"')
-    expect(manifest.exports["./typography"]).toEqual({
-      types: "./dist/component/brand/stylex/typography.d.ts",
-      import: "./dist/component/brand/stylex/typography.js"
-    })
-  })
-
   test("built root and direct entry preserve component and provider identity", async () => {
     const entry = await import(path.join(root, "dist/index.js"))
     for (const file of new Bun.Glob("dist/component/brand/stylex/*.js").scanSync({ cwd: root })) {
@@ -119,12 +108,7 @@ describe("package contract", () => {
           (name === "MultiSelectValue" || name === "MultiSelectValueAppearance")
         )
           continue
-        const publicName =
-          file.endsWith("stylex/sonner.js") && name === "Toaster"
-            ? "SonnerToaster"
-            : file.endsWith("stylex/typography.js") && name === "Label"
-              ? "TypographyLabel"
-              : name
+        const publicName = file.endsWith("stylex/sonner.js") && name === "Toaster" ? "SonnerToaster" : name
         expect(entry[publicName], `${file}: ${name}`).toBe(value)
       }
     }

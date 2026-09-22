@@ -80,9 +80,7 @@ export default function Example() {
           </header>
           <div className="grid flex-1 content-start gap-4 p-5">
             <div>
-              <UI.Heading as={UI.WAIHeading.H3} className="text-base font-semibold">
-                Navigation
-              </UI.Heading>
+              <h3 className="text-base font-semibold">Navigation</h3>
               <p className="mt-1 max-w-md text-sm text-muted-foreground">
                 Organize product destinations into clear groups.
               </p>

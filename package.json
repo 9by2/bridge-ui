@@ -72,10 +72,6 @@
       "types": "./dist/component/brand/stylex/flip-text.d.ts",
       "import": "./dist/component/brand/stylex/flip-text.js"
     },
-    "./typography": {
-      "types": "./dist/component/brand/stylex/typography.d.ts",
-      "import": "./dist/component/brand/stylex/typography.js"
-    },
     "./ts-chart": {
       "types": "./dist/component/brand/ts-chart.d.ts",
       "import": "./dist/component/brand/ts-chart.js"

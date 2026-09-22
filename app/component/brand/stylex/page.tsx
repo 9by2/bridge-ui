@@ -2,7 +2,6 @@ import * as stylex from "@stylexjs/stylex"
 import type { ComponentProps } from "react"
 
 import { token } from "./token.stylex"
-import { Heading, WAIHeading } from "./typography"
 
 const style = stylex.create({
   root: {
@@ -33,6 +32,7 @@ const style = stylex.create({
     minWidth: 0,
     overflowWrap: "anywhere",
     color: token.foreground,
+    fontFamily: "inherit",
     fontSize: { default: 32, "@media (max-width: 640px)": 26 },
     lineHeight: 1.06,
     fontWeight: 600,
@@ -114,8 +114,7 @@ export function PageHeading({ className, ...props }: ComponentProps<"div">) {
 
 export function PageTitle({ className, ...props }: ComponentProps<"h1">) {
   return (
-    <Heading
-      as={WAIHeading.H1}
+    <h1
       data-slot="page-title"
       {...props}
       className={[stylex.props(style.title).className, className].filter(Boolean).join(" ")}

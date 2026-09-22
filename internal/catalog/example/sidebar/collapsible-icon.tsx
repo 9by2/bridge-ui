@@ -31,9 +31,7 @@ export default function Example() {
         <header className="flex h-16 items-center gap-3 border-b px-6">
           <UI.SidebarTrigger />
           <div>
-            <UI.Heading as={UI.WAIHeading.H3} className="text-sm font-semibold">
-              Icon collapse
-            </UI.Heading>
+            <h3 className="text-sm font-semibold">Icon collapse</h3>
             <p className="text-xs text-muted-foreground">Toggle to retain a compact icon rail.</p>
           </div>
         </header>
