@@ -63,6 +63,21 @@ test("pilot field preserves native label, required, invalid and form value", () 
   expect(new FormData(ref.current?.form ?? undefined).get("email")).toBe("person@example.com")
   expect(screen.getByRole("alert").textContent).toBe("Required")
 })
+test("input renders a decorative leading icon without changing native form behavior", () => {
+  const ref = createRef<HTMLInputElement>()
+  render(
+    <form>
+      <label htmlFor="search">Search</label>
+      <Input icon={<svg data-testid="search-icon" />} id="search" name="search" ref={ref} defaultValue="report" />
+    </form>
+  )
+  const input = screen.getByLabelText("Search")
+  input.focus()
+  expect(screen.getByTestId("search-icon").parentElement?.getAttribute("aria-hidden")).toBe("true")
+  expect(document.activeElement).toBe(input)
+  expect(ref.current).toBe(input)
+  expect(new FormData(input.closest("form")!).get("search")).toBe("report")
+})
 test("pilot field error retains child precedence and empty/multiple behavior", () => {
   const { rerender } = render(<FieldError />)
   expect(screen.queryByRole("alert")).toBeNull()
