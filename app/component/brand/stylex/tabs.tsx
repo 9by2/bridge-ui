@@ -69,14 +69,14 @@ const style = stylex.create({
     gap: 4,
     width: "100%",
     justifyContent: "start",
-    backgroundColor: "transparent",
+    backgroundColor: token.background,
     borderRadius: 0,
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
     borderBottomColor: token.border,
     padding: 0
   },
-  capsule: { gap: 4, backgroundColor: "transparent", padding: 0 },
+  capsule: { gap: 4, backgroundColor: token.background, padding: 0 },
   link: {
     gap: 16,
     width: "100%",
@@ -84,7 +84,7 @@ const style = stylex.create({
     justifyContent: "start",
     overflowX: "auto",
     overflowY: "hidden",
-    backgroundColor: "transparent",
+    backgroundColor: token.background,
     borderRadius: 0,
     padding: 0
   },
