@@ -6,7 +6,7 @@ import { token } from "./token.stylex"
 
 const style = stylex.create({
   root: {
-    position: "relative",
+    position: { default: "relative", "::after": "absolute" },
     boxSizing: "border-box",
     display: "flex",
     width: 16,
@@ -20,14 +20,18 @@ const style = stylex.create({
     borderStyle: "solid",
     borderColor: { default: token.input, ":focus-visible": token.ring },
     backgroundColor: token.inputBackground,
+    content: { "::after": '""' },
+    insetInline: { "::after": -12 },
+    insetBlock: { "::after": -8 },
+    opacity: { default: 1, ":disabled": 0.5 },
     transitionProperty: "color, background-color, border-color",
     transitionDuration: "150ms",
     outline: "none",
     boxShadow: { default: "none", ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.ring}, transparent 50%)` },
-    opacity: { default: 1, ":disabled": 0.5 },
     cursor: { default: "default", ":disabled": "not-allowed" }
   },
   checked: { borderColor: token.primary, backgroundColor: token.primary, color: token.primaryForeground },
+  invalidChecked: { borderColor: token.primary },
   invalid: {
     borderColor: token.invalidBorder,
     boxShadow: `0 0 0 3px color-mix(in oklch, ${token.destructive} ${token.errorRingOpacity}, transparent)`
@@ -45,7 +49,10 @@ export function Checkbox({ className, ...props }: Primitive.Root.Props) {
           stylex.props(
             style.root,
             state.checked && style.checked,
-            (props["aria-invalid"] === true || props["aria-invalid"] === "true") && style.invalid
+            (props["aria-invalid"] === true || props["aria-invalid"] === "true") && style.invalid,
+            state.checked &&
+              (props["aria-invalid"] === true || props["aria-invalid"] === "true") &&
+              style.invalidChecked
           ).className,
           typeof className === "function" ? className(state) : className
         ]

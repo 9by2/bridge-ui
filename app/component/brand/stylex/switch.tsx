@@ -5,7 +5,7 @@ import { token } from "./token.stylex"
 
 const style = stylex.create({
   root: {
-    position: "relative",
+    position: { default: "relative", "::after": "absolute" },
     boxSizing: "border-box",
     display: "inline-flex",
     flexShrink: 0,
@@ -18,6 +18,9 @@ const style = stylex.create({
     borderStyle: "solid",
     borderColor: { default: "transparent", ":focus-visible": token.ring },
     backgroundColor: token.switchOff,
+    content: { "::after": '""' },
+    insetInline: { "::after": -12 },
+    insetBlock: { "::after": -8 },
     transitionProperty: "all",
     transitionDuration: "150ms",
     outline: "none",

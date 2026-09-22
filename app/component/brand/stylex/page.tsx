@@ -11,11 +11,19 @@ const style = stylex.create({
     maxWidth: 1480,
     minWidth: 0,
     marginInline: "auto",
+    paddingTop: 24,
+    paddingRight: 44,
+    paddingBottom: 48,
+    paddingLeft: 44,
+    color: token.foreground
+  },
+  none: { paddingTop: 0, paddingRight: 0, paddingBottom: 0, paddingLeft: 0 },
+  compact: { paddingTop: 16, paddingRight: 16, paddingBottom: 16, paddingLeft: 16 },
+  comfortable: { paddingTop: 24, paddingRight: 24, paddingBottom: 24, paddingLeft: 24 },
+  dynamicPadding: {
     paddingTop: { default: 24, "@media (max-width: 640px)": 20 },
     paddingRight: { default: 44, "@media (max-width: 1024px)": 24, "@media (max-width: 640px)": 16 },
-    paddingBottom: 48,
-    paddingLeft: { default: 44, "@media (max-width: 1024px)": 24, "@media (max-width: 640px)": 16 },
-    color: token.foreground
+    paddingLeft: { default: 44, "@media (max-width: 1024px)": 24, "@media (max-width: 640px)": 16 }
   },
   breadcrumb: { marginBottom: 20, minWidth: 0 },
   header: {
@@ -72,12 +80,31 @@ const style = stylex.create({
   content: { minWidth: 0 }
 })
 
-export function Page({ className, ...props }: ComponentProps<"div">) {
+export function Page({
+  spacing = "default",
+  isDynamicPadding = false,
+  className,
+  ...props
+}: ComponentProps<"div"> & { spacing?: "default" | "none" | "compact" | "comfortable"; isDynamicPadding?: boolean }) {
   return (
     <div
       data-slot="page"
+      data-spacing={spacing}
+      data-dynamic-padding={isDynamicPadding || undefined}
       {...props}
-      className={[stylex.props(stylex.defaultMarker(), style.root).className, className].filter(Boolean).join(" ")}
+      className={[
+        stylex.props(
+          stylex.defaultMarker(),
+          style.root,
+          spacing === "none" && style.none,
+          spacing === "compact" && style.compact,
+          spacing === "comfortable" && style.comfortable,
+          isDynamicPadding && style.dynamicPadding
+        ).className,
+        className
+      ]
+        .filter(Boolean)
+        .join(" ")}
     />
   )
 }

@@ -60,8 +60,9 @@ test("nested Theme inherits omitted customization and only replaces explicit val
 })
 
 test("Dialog portal receives the nearest resolved customization", async () => {
+  const dialogTheme = { color: { ...productTheme.color, dialog: "midnightblue", dialogForeground: "white" } } as const
   render(
-    <Theme theme={productTheme}>
+    <Theme theme={{ ...productTheme, ...dialogTheme }}>
       <Dialog defaultOpen>
         <DialogContent>Theme-aware dialog</DialogContent>
       </Dialog>
@@ -72,6 +73,8 @@ test("Dialog portal receives the nearest resolved customization", async () => {
   const portalTheme = dialog.closest("[data-bridge-theme]") as HTMLElement
   expect(portalTheme.style.getPropertyValue("--bridge-color-primary")).toBe("rebeccapurple")
   expect(portalTheme.style.getPropertyValue("--bridge-surface-radius")).toBe("11px")
+  expect(portalTheme.style.getPropertyValue("--bridge-color-dialog")).toBe("midnightblue")
+  expect(portalTheme.style.getPropertyValue("--bridge-color-dialog-foreground")).toBe("white")
 })
 
 test("density presets are finite public values", () => {
@@ -105,13 +108,15 @@ test("Theme supports every documented semantic color override", () => {
     primaryForeground: "color-4",
     surface: "color-5",
     surfaceForeground: "color-6",
-    popover: "color-7",
-    popoverForeground: "color-8",
-    border: "color-9",
-    input: "color-10",
-    muted: "color-11",
-    mutedForeground: "color-12",
-    ring: "color-13"
+    dialog: "color-7",
+    dialogForeground: "color-8",
+    popover: "color-9",
+    popoverForeground: "color-10",
+    border: "color-11",
+    input: "color-12",
+    muted: "color-13",
+    mutedForeground: "color-14",
+    ring: "color-15"
   } as const
   render(
     <Theme theme={{ color }} data-testid="theme">

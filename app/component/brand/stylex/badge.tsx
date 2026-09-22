@@ -19,7 +19,8 @@ const style = stylex.create({
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: { default: "transparent", ":focus-visible": token.ring },
-    paddingInline: 8,
+    paddingRight: { default: 8, ':has([data-icon="inline-end"])': 6 },
+    paddingLeft: { default: 8, ':has([data-icon="inline-start"])': 6 },
     paddingBlock: 2,
     fontSize: 12,
     lineHeight: "16px",
@@ -54,7 +55,17 @@ const style = stylex.create({
       ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.destructive} ${token.errorRingOpacity}, transparent)`
     }
   },
-  warning: { backgroundColor: token.warning, color: token.warningForeground },
+  warning: {
+    backgroundColor: {
+      default: token.warning,
+      ":is(a):hover": `color-mix(in oklch, ${token.warning}, transparent 10%)`
+    },
+    color: token.warningForeground,
+    boxShadow: {
+      default: "none",
+      ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.warning} ${token.errorRingOpacity}, transparent)`
+    }
+  },
   success: { backgroundColor: token.brand, color: token.brandForeground },
   partialSuccess: { backgroundColor: token.brandAccent, color: token.brandAccentForeground },
   outline: {

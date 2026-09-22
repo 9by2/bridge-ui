@@ -48,7 +48,7 @@ coverage:
 catalog:
   stage: verify
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline" && $CI_COMMIT_TITLE !~ /^chore(\([^)]*\))?:/ && ($IS_MERGE_REQUEST =~ /^(merge_request_event|external_pull_request_event)$/ || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH)'
   timeout: 30m
   script:
     - bun catalog:test

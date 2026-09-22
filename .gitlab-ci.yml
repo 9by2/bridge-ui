@@ -4,6 +4,13 @@ include:
     file: "templates/default.template.yml"
   - local: "/deployment/concurrency.gitlab-ci.yml"
 
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE =~ /^(merge_request_event|external_pull_request_event)$/'
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
+      when: never
+    - when: always
+
 stages:
   - triggers
 

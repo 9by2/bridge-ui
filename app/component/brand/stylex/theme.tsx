@@ -16,6 +16,8 @@ type BridgeThemeColor =
   | "primaryForeground"
   | "surface"
   | "surfaceForeground"
+  | "dialog"
+  | "dialogForeground"
   | "popover"
   | "popoverForeground"
   | "border"
@@ -355,6 +357,12 @@ function themeVariables(
   const comfortable = density === bridgeDensity.comfortable
   const space = { 1: "0.25rem", 2: "0.5rem", 3: "0.75rem", 4: "1rem", 5: "1.5rem", ...theme.space }
   const variables: CSSProperties & Record<string, string> = {
+    "--bridge-color-dialog":
+      theme.color?.dialog ?? theme.color?.surface ?? `var(--bridge-color-surface, ${token.card})`,
+    "--bridge-color-dialog-foreground":
+      theme.color?.dialogForeground ??
+      theme.color?.surfaceForeground ??
+      `var(--bridge-color-surface-foreground, ${token.cardForeground})`,
     "--bridge-button-primary": theme.color?.primary ?? buttonColor[mode].primary,
     "--bridge-button-primary-foreground": theme.color?.primaryForeground ?? buttonColor[mode].primaryForeground,
     "--bridge-button-radius": theme.radius?.control ?? "0.625rem",

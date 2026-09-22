@@ -36,6 +36,25 @@ test("Dialog footer retains the selected Theme surface padding", async () => {
   }
 })
 
+test("Dialog uses its scoped semantic background variable", async () => {
+  await using page = await openPage()
+  for (const theme of ["light", "dark"]) {
+    await page.goto(`/?preview&theme=${theme}#dialog/default`)
+    const trigger = page.getByRole("button", { name: "Open dialog", exact: true })
+    await pollUntil(() => trigger.count())
+    await trigger.click()
+    const dialog = page.getByRole("dialog")
+    expect(await dialog.evaluate<string>(`(node) => getComputedStyle(node).backgroundColor`)).not.toBe(
+      "rgba(0, 0, 0, 0)"
+    )
+    await dialog.evaluate(
+      `(node) => node.closest('[data-bridge-theme]')?.style.setProperty('--bridge-color-dialog', 'midnightblue')`
+    )
+    await expect(dialog).toHaveCSS("background-color", "rgb(25, 25, 112)")
+    await page.pressKey("Escape")
+  }
+})
+
 test("component slots use Cue's own recipe radius, not a forced global reset (DEC-006, DEC-008)", async () => {
   await using page = await openPage()
   for (const theme of ["light", "dark"]) {

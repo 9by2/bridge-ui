@@ -70,3 +70,20 @@ test("page retains semantic slot, native prop, ref and optional composition", ()
     expect(document.querySelector(`[data-slot="${slot}"]`)).not.toBeNull()
   expect(screen.getByRole("button", { name: "Action" })).not.toBeNull()
 })
+
+test("page exposes static named density and opt-in dynamic padding", () => {
+  const { container } = render(
+    <>
+      <Page spacing="none">None</Page>
+      <Page spacing="compact">Compact</Page>
+      <Page spacing="comfortable">Comfortable</Page>
+      <Page isDynamicPadding>Dynamic</Page>
+    </>
+  )
+  const page = container.querySelectorAll("[data-slot=page]")
+  expect(page[0]?.getAttribute("data-spacing")).toBe("none")
+  expect(page[1]?.getAttribute("data-spacing")).toBe("compact")
+  expect(page[2]?.getAttribute("data-spacing")).toBe("comfortable")
+  expect(page[0]?.hasAttribute("data-dynamic-padding")).toBe(false)
+  expect(page[3]?.getAttribute("data-dynamic-padding")).toBe("true")
+})

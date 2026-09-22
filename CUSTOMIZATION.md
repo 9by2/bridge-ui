@@ -83,15 +83,15 @@ export function App() {
 
 The global theme contract currently applies to these owned components:
 
-| Family          | Color                            | Radius  | Density / spacing           |
-| --------------- | -------------------------------- | ------- | --------------------------- |
-| Button          | primary action                   | control | control padding             |
-| Input, Textarea | input text/border/ring           | control | control padding             |
-| Card            | surface, border, muted footer    | surface | surface padding, layout gap |
-| Dialog          | surface, border, muted footer    | overlay | surface padding, layout gap |
-| Popover         | popover surface/text             | overlay | surface padding, layout gap |
-| Toast           | surface, border, text            | overlay | surface padding, layout gap |
-| Sonner          | normal toast surface/text/border | overlay | Sonner radius               |
+| Family          | Color                                           | Radius  | Density / spacing           |
+| --------------- | ----------------------------------------------- | ------- | --------------------------- |
+| Button          | primary action                                  | control | control padding             |
+| Input, Textarea | input text/border/ring                          | control | control padding             |
+| Card            | surface, border, muted footer                   | surface | surface padding, layout gap |
+| Dialog          | dialog, dialog foreground, border, muted footer | overlay | surface padding, layout gap |
+| Popover         | popover surface/text                            | overlay | surface padding, layout gap |
+| Toast           | surface, border, text                           | overlay | surface padding, layout gap |
+| Sonner          | normal toast surface/text/border                | overlay | Sonner radius               |
 
 Other components retain their existing public props and default geometry until they are added to this matrix. Generated Shadcn source is not a CSS override target and is never manually edited by Bridge UI consumers.
 
@@ -105,6 +105,8 @@ Other components retain their existing public props and default geometry until t
   --bridge-color-primary-foreground: white;
   --bridge-color-surface: papayawhip;
   --bridge-color-surface-foreground: oklch(0.18 0 0);
+  --bridge-color-dialog: midnightblue;
+  --bridge-color-dialog-foreground: white;
   --bridge-color-border: oklch(0.86 0.02 280);
   --bridge-control-radius: 0.375rem;
   --bridge-control-radius-sm: 0.25rem;
@@ -122,7 +124,7 @@ Other components retain their existing public props and default geometry until t
 }
 ```
 
-Supported color keys are `background`, `foreground`, `primary`, `primaryForeground`, `surface`, `surfaceForeground`, `popover`, `popoverForeground`, `border`, `input`, `muted`, `mutedForeground`, and `ring`. Bridge UI supplies accessible defaults; a custom palette remains responsible for adequate text and focus contrast.
+Supported color keys are `background`, `foreground`, `primary`, `primaryForeground`, `surface`, `surfaceForeground`, `dialog`, `dialogForeground`, `popover`, `popoverForeground`, `border`, `input`, `muted`, `mutedForeground`, and `ring`. Bridge UI supplies accessible defaults; a custom palette remains responsible for adequate text and focus contrast.
 
 Use component props for intentional local exceptions, for example `<Card radius="none" />`. Do not rely on StyleX class names, `pilot-*` classes, or undocumented `data-slot` selectors as a customization API.
 
@@ -218,44 +220,44 @@ Use the catalog for complete states and examples. All components accept their do
 
 ### Fields and selection
 
-| Family                                      | Use supported customization for                                                                     |
-| ------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| Checkbox, RadioGroup, Switch                | Controlled `checked`/`value`; label and description composition.                                    |
-| Combobox, MultiSelect, Select, NativeSelect | Controlled value/open state; option/item children; empty, clear, and search content where provided. |
-| Input, Textarea                             | `icon` only for decorative leading icons; `invalid`, `disabled`, and native field props.            |
-| InputGroup, InputOtp                        | Addon, button, text, and input composition; use InputGroup for interactive adornments.              |
-| Calendar                                    | Controlled selected value; locale, month, and disabled-date rules.                                  |
-| Slider                                      | Controlled value, range, min/max/step, and accessible label.                                        |
-| Field, Label                                | Label, description, error, and control composition.                                                 |
-| DropArea, Attachment                        | Accepted file rules, upload state, callbacks, previews, and action slots.                           |
-| Questionnaire                               | Question, answer, validation, and navigation composition.                                           |
+| Family                                      | Use supported customization for                                                                                                         |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Checkbox, RadioGroup, Switch                | Controlled `checked`/`value`; label and description composition. Bridge `Switch` retains `sm`.                                          |
+| Combobox, MultiSelect, Select, NativeSelect | Controlled value/open state; option/item children; empty, clear, and search content where provided. Bridge `Select` retains `unstyled`. |
+| Input, Textarea                             | `icon` only for decorative leading icons; `invalid`, `disabled`, and native field props.                                                |
+| InputGroup, InputOtp                        | Addon, button, text, and input composition; use InputGroup for interactive adornments.                                                  |
+| Calendar                                    | Controlled selected value; locale, month, and disabled-date rules.                                                                      |
+| Slider                                      | Controlled value, range, min/max/step, and accessible label.                                                                            |
+| Field, Label                                | Label, description, error, and control composition.                                                                                     |
+| DropArea, Attachment                        | Accepted file rules, upload state, callbacks, previews, and action slots.                                                               |
+| Questionnaire                               | Question, answer, validation, and navigation composition.                                                                               |
 
 ### Layout and navigation
 
-| Family                                        | Use supported customization for                                                                  |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| AspectRatio, Resizable, ScrollArea, Separator | Ratio, pane direction/default sizes, viewport behavior, and orientation.                         |
-| Card, TableFrame, Table                       | Card `radius`/`size`; table columns, rows, empty content, and density props where exposed.       |
-| Carousel                                      | Controlled slide API, orientation, and previous/next controls.                                   |
-| Page, ShellHeader, Sidebar                    | Page spacing/layout props; header slots; Sidebar provider, rail, trigger, and collapsible state. |
-| Tabs                                          | Controlled value; List, Trigger, and Content composition.                                        |
-| Breadcrumb                                    | Item/link/separator composition; custom separator children.                                      |
-| Direction                                     | `dir="ltr"` or `dir="rtl"` subtree direction.                                                    |
-| ResponsiveImage                               | Responsive source, alt text, loading, and aspect-ratio props.                                    |
+| Family                                        | Use supported customization for                                                                         |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| AspectRatio, Resizable, ScrollArea, Separator | Ratio, pane direction/default sizes, viewport behavior, and orientation.                                |
+| Card, TableFrame, Table                       | Card `radius`/`size`; table columns, rows, empty content, and density props where exposed.              |
+| Carousel                                      | Controlled slide API, orientation, and previous/next controls.                                          |
+| Page, ShellHeader, Sidebar                    | Page spacing/layout props; header slots; Sidebar provider, rail, trigger, and collapsible state.        |
+| Tabs                                          | Controlled value; List, Trigger, and Content composition. Bridge `capsule` is additive to Cue defaults. |
+| Breadcrumb                                    | Item/link/separator composition; custom separator children.                                             |
+| Direction                                     | `dir="ltr"` or `dir="rtl"` subtree direction.                                                           |
+| ResponsiveImage                               | Responsive source, alt text, loading, and aspect-ratio props.                                           |
 
 ### Status, feedback, and display
 
-| Family                                        | Use supported customization for                                                      |
-| --------------------------------------------- | ------------------------------------------------------------------------------------ |
-| Avatar, Badge, Marker, StatusStamp            | Size and semantic variant; Avatar image/fallback composition.                        |
-| Bubble, Message, MessageScroller              | Sender/status metadata, message actions, scroll/loading behavior.                    |
-| DataState, Empty, Skeleton, Spinner           | Loading, empty, error, retry, and custom action content.                             |
-| DetailItem, Item, SettingItem, Settings       | Label/value, icon, action, description, and grouped-item composition.                |
-| Progress, SuccessBurst                        | Progress value/status; completion animation trigger.                                 |
-| Toast, Sonner                                 | Toast provider/viewport and action composition; Sonner global options and toast API. |
-| TicketCard, TicketCover, ProductItem, Receipt | Semantic content slots, image/media, metadata, and action children.                  |
-| TimelineStep                                  | State, icon, title, description, and connector composition.                          |
-| UploadList, UploadPreview, UploadViewer       | File state, preview renderer, item actions, and download/remove callbacks.           |
+| Family                                        | Use supported customization for                                                                              |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Avatar, Badge, Marker, StatusStamp            | Size and semantic variant; Avatar image/fallback composition. Badge retains `success` and `partial-success`. |
+| Bubble, Message, MessageScroller              | Sender/status metadata, message actions, scroll/loading behavior.                                            |
+| DataState, Empty, Skeleton, Spinner           | Loading, empty, error, retry, and custom action content.                                                     |
+| DetailItem, Item, SettingItem, Settings       | Label/value, icon, action, description, and grouped-item composition.                                        |
+| Progress, SuccessBurst                        | Progress value/status; completion animation trigger.                                                         |
+| Toast, Sonner                                 | Toast provider/viewport and action composition; Sonner global options and toast API.                         |
+| TicketCard, TicketCover, ProductItem, Receipt | Semantic content slots, image/media, metadata, and action children.                                          |
+| TimelineStep                                  | State, icon, title, description, and connector composition.                                                  |
+| UploadList, UploadPreview, UploadViewer       | File state, preview renderer, item actions, and download/remove callbacks.                                   |
 
 ### Data, media, and utilities
 

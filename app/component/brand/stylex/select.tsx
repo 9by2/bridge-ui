@@ -30,7 +30,12 @@ const style = stylex.create({
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: { default: token.input, ":focus-visible": token.ring },
-    backgroundColor: token.inputBackground,
+    backgroundColor: {
+      default: token.inputBackground,
+      ":hover": {
+        [stylex.when.ancestor('[data-pilot-theme="cue"]')]: `color-mix(in oklch, ${token.input}, transparent 50%)`
+      }
+    },
     paddingBlock: 8,
     paddingRight: 8,
     paddingLeft: 10,

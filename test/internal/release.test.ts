@@ -30,7 +30,8 @@ test("release automation runs after verification on protected default branch onl
 
 test("child verification explicitly accepts an MR parent pipeline", async () => {
   const ci = await Bun.file("deployment/.gitlab-ci.yml").text()
-  for (const job of ["source", "coverage", "catalog"]) {
+  for (const job of ["source", "coverage"]) {
     expect(ci).toContain(`${job}:\n  stage: verify\n  rules:\n    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'`)
   }
+  expect(ci).toContain('catalog:\n  stage: verify\n  rules:\n    - if: \'$CI_PIPELINE_SOURCE == "parent_pipeline"')
 })

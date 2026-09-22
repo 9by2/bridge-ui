@@ -16,6 +16,7 @@ Implementation order matters - complete top to bottom.
 - [x] Add a patch changeset.
 
 ## Verification
+
 - [x] Run targeted component test, formatting, lint, and typecheck.
 - [x] Run catalog build and retained Bun.WebView evidence.
 - [x] All specs in `spec/` reviewed against implementation.

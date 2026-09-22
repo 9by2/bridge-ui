@@ -75,6 +75,15 @@ export const buttonToken = stylex.defineVars({
   "--bridge-button-padding-inline": "10px"
 })
 
+/** Dialog needs literal Theme variables after StyleX static compilation. */
+export const dialogToken = stylex.defineVars({
+  "--bridge-color-dialog": "oklch(1 0 0)",
+  "--bridge-color-dialog-foreground": "oklch(0.145 0 0)",
+  "--bridge-overlay-radius": "14px",
+  "--bridge-surface-padding": "16px",
+  "--bridge-layout-gap": "16px"
+})
+
 /** Public CSS variable bridge used by statically compiled component recipes. */
 export const themeToken = {
   background: `var(--bridge-color-background, ${token.background})`,
@@ -102,10 +111,3 @@ export const geometryToken = {
   surfacePadding: "var(--bridge-surface-padding, 16px)",
   layoutGap: "var(--bridge-layout-gap, 16px)"
 } as const
-
-/** Dialog needs literal Theme variables after StyleX static compilation. */
-export const dialogToken = stylex.defineVars({
-  "--bridge-overlay-radius": "14px",
-  "--bridge-surface-padding": "16px",
-  "--bridge-layout-gap": "16px"
-})

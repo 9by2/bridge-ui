@@ -45,6 +45,13 @@ const style = stylex.create({
         default: "transparent",
         ":is([data-active])": token.primary
       }
+    },
+    boxShadow: {
+      default: "none",
+      ":is([data-active])": {
+        default: "0 1px 2px rgb(0 0 0 / 5%)",
+        [stylex.when.ancestor('[data-variant="line"]')]: "none"
+      }
     }
   },
   root: {
@@ -89,10 +96,14 @@ const style = stylex.create({
     padding: 0
   },
   trigger: {
-    position: "relative",
+    position: { default: "relative", "::after": "absolute" },
     boxSizing: "border-box",
     display: "inline-flex",
-    height: "calc(100% - 1px)",
+    height: {
+      default: "calc(100% - 1px)",
+      [stylex.when.ancestor('[data-orientation="horizontal"]')]: { "::after": 2 },
+      [stylex.when.ancestor('[data-orientation="vertical"]')]: { "::after": "100%" }
+    },
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
@@ -112,13 +123,39 @@ const style = stylex.create({
         [stylex.when.ancestor('[data-variant="link"]')]: token.brandText
       }
     },
-    transitionProperty: "all",
+    transitionProperty: { default: "all", "::after": "opacity" },
     transitionDuration: "150ms",
-    backgroundColor: { default: "transparent", ":is([data-active])": token.tabActiveBackground },
+    backgroundColor: {
+      default: "transparent",
+      ":is([data-active])": token.tabActiveBackground,
+      "::after": token.foreground
+    },
     borderColor: "transparent",
+    outline: { default: "none", ":focus-visible": `1px solid ${token.ring}` },
     pointerEvents: { default: "auto", ":disabled": "none" },
-    opacity: { default: 1, ":disabled": 0.5 },
-    boxShadow: { default: "none", ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.ring}, transparent 50%)` }
+    opacity: {
+      default: 1,
+      ":disabled": 0.5,
+      "::after": 0,
+      [stylex.when.ancestor('[data-variant="line"]')]: { ":is([data-active])::after": 1 }
+    },
+    boxShadow: { default: "none", ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.ring}, transparent 50%)` },
+    content: { "::after": '""' },
+    insetInline: {
+      [stylex.when.ancestor('[data-orientation="horizontal"]')]: { "::after": 0 }
+    },
+    bottom: {
+      [stylex.when.ancestor('[data-orientation="horizontal"]')]: { "::after": -5 }
+    },
+    insetBlock: {
+      [stylex.when.ancestor('[data-orientation="vertical"]')]: { "::after": 0 }
+    },
+    right: {
+      [stylex.when.ancestor('[data-orientation="vertical"]')]: { "::after": -4 }
+    },
+    width: {
+      [stylex.when.ancestor('[data-orientation="vertical"]')]: { "::after": 2 }
+    }
   },
   verticalTrigger: { width: "100%", justifyContent: "start" },
   content: { flex: 1, fontSize: 14, lineHeight: "20px", outline: "none" }

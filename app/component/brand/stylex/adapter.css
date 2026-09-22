@@ -283,6 +283,22 @@
 [data-pilot-theme] [data-slot="tabs-trigger"] > svg:not([class*="size-"]) {
   width: 16px;
   height: 16px;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+[data-pilot-theme] [data-slot="badge"] > svg:not([class*="size-"]) {
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+}
+[data-pilot-theme] [data-slot="field"]:has(:disabled) [data-slot="checkbox"] {
+  opacity: 0.5;
+}
+[data-pilot-theme] [data-slot="select-trigger"] svg,
+[data-pilot-theme] [data-slot="select-item"] svg {
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
   flex-shrink: 0;
 }
 .pilot-button-default:has([data-icon="inline-start"]),
