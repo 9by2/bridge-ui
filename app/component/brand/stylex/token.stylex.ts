@@ -93,3 +93,10 @@ export const geometryToken = {
   surfacePadding: "var(--bridge-surface-padding, 16px)",
   layoutGap: "var(--bridge-layout-gap, 16px)"
 } as const
+
+/** Dialog needs literal Theme variables after StyleX static compilation. */
+export const dialogToken = stylex.defineVars({
+  "--bridge-overlay-radius": "14px",
+  "--bridge-surface-padding": "16px",
+  "--bridge-layout-gap": "16px"
+})

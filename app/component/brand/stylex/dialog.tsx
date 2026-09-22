@@ -4,7 +4,7 @@ import type { ComponentProps } from "react"
 
 import { Button } from "./button"
 import { Theme } from "./theme"
-import { geometryToken, themeToken, token } from "./token.stylex"
+import { dialogToken, themeToken, token } from "./token.stylex"
 
 const enter = stylex.keyframes({ from: { opacity: 0, scale: "0.95" }, to: { opacity: 1, scale: "1" } })
 const fade = stylex.keyframes({ from: { opacity: 0 }, to: { opacity: 1 } })
@@ -39,11 +39,11 @@ const style = stylex.create({
     boxSizing: "border-box",
     width: "100%",
     maxWidth: { default: "calc(100% - 2rem)", "@media (min-width: 640px)": "24rem" },
-    gap: geometryToken.layoutGap,
-    borderRadius: geometryToken.overlayRadius,
+    gap: dialogToken["--bridge-layout-gap"],
+    borderRadius: dialogToken["--bridge-overlay-radius"],
     backgroundColor: themeToken.surface,
     color: themeToken.surfaceForeground,
-    padding: geometryToken.surfacePadding,
+    padding: dialogToken["--bridge-surface-padding"],
     fontSize: 14,
     lineHeight: "20px",
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%)`,
@@ -73,15 +73,15 @@ const style = stylex.create({
     flexDirection: { default: "column-reverse", "@media (min-width: 640px)": "row" },
     justifyContent: "flex-end",
     gap: 8,
-    marginInline: -16,
-    marginBottom: -16,
-    borderBottomLeftRadius: geometryToken.overlayRadius,
-    borderBottomRightRadius: geometryToken.overlayRadius,
+    marginInline: `calc(${dialogToken["--bridge-surface-padding"]} * -1)`,
+    marginBottom: `calc(${dialogToken["--bridge-surface-padding"]} * -1)`,
+    borderBottomLeftRadius: dialogToken["--bridge-overlay-radius"],
+    borderBottomRightRadius: dialogToken["--bridge-overlay-radius"],
     borderTopWidth: 1,
     borderTopStyle: "solid",
     borderTopColor: themeToken.border,
     backgroundColor: `color-mix(in oklch, ${themeToken.muted}, transparent 50%)`,
-    padding: geometryToken.surfacePadding
+    padding: dialogToken["--bridge-surface-padding"]
   },
   title: { fontFamily: token.fontHeading, fontSize: 16, lineHeight: 1, fontWeight: 500, margin: 0 },
   description: { color: themeToken.mutedForeground, fontSize: 14, lineHeight: "20px", margin: 0 }

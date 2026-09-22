@@ -1,0 +1,20 @@
+[
+  {
+    "density": "compact",
+    "padding": "12px",
+    "footerPadding": "12px",
+    "footerMarginLeft": "-12px"
+  },
+  {
+    "density": "default",
+    "padding": "16px",
+    "footerPadding": "16px",
+    "footerMarginLeft": "-16px"
+  },
+  {
+    "density": "comfortable",
+    "padding": "24px",
+    "footerPadding": "24px",
+    "footerMarginLeft": "-24px"
+  }
+]

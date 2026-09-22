@@ -15,6 +15,27 @@ test("regular catalog uses promoted public StyleX source", async () => {
   await expect(trigger).toBeFocused()
 })
 
+test("Dialog footer retains the selected Theme surface padding", async () => {
+  await using page = await openPage()
+  const expectedPadding = {
+    compact: "12px",
+    default: "16px",
+    comfortable: "24px"
+  } as const
+  for (const [density, padding] of Object.entries(expectedPadding)) {
+    await page.goto("/?preview#dialog/density")
+    const trigger = page.getByRole("button", { name: density, exact: true })
+    await pollUntil(() => trigger.count())
+    await trigger.click()
+    const dialog = page.getByRole("dialog")
+    await expect(dialog).toHaveCSS("padding", padding)
+    await expect(dialog.locator("[data-slot=dialog-footer]")).toHaveCSS("padding", padding)
+    await expect(dialog.locator("[data-slot=dialog-footer]")).toHaveCSS("margin-left", `-${padding}`)
+    await page.pressKey("Escape")
+    await expect(dialog).toHaveCount(0)
+  }
+})
+
 test("component slots use Cue's own recipe radius, not a forced global reset (DEC-006, DEC-008)", async () => {
   await using page = await openPage()
   for (const theme of ["light", "dark"]) {
