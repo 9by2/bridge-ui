@@ -1,5 +1,5 @@
 import * as UI from "@bridge/ui"
 
 export default function Example() {
-  return <UI.Textarea aria-label="Notes" placeholder="Notes" />
+  return <UI.Textarea variant="unstyled" aria-label="Notes" placeholder="Borderless notes" />
 }

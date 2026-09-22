@@ -2,6 +2,14 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, expect, test, vi } from "vitest"
 
 import { Checkbox } from "../../app/component/brand/stylex/checkbox"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../app/component/brand/stylex/collapsible"
+import {
+  Combobox,
+  ComboboxButton,
+  ComboboxContent,
+  ComboboxItem,
+  ComboboxList
+} from "../../app/component/brand/stylex/combobox"
 import { RadioGroup, RadioGroupItem } from "../../app/component/brand/stylex/radio-group"
 import { Slider } from "../../app/component/brand/stylex/slider"
 import { Switch } from "../../app/component/brand/stylex/switch"
@@ -79,6 +87,33 @@ test("checkbox keeps controlled, indeterminate and disabled behavior", () => {
   expect(screen.getByRole("checkbox").getAttribute("aria-checked")).toBe("mixed")
   fireEvent.click(screen.getByRole("checkbox"))
   expect(change).toHaveBeenCalledTimes(1)
+})
+
+test("success checkbox, line collapsible, and button combobox retain primitive behavior", async () => {
+  const change = vi.fn()
+  render(
+    <>
+      <Checkbox variant="success" aria-label="Approve" onCheckedChange={change} />
+      <Collapsible variant="line">
+        <CollapsibleTrigger showChevron>Details</CollapsibleTrigger>
+        <CollapsibleContent>Expanded content</CollapsibleContent>
+      </Collapsible>
+      <Combobox items={["Design"]}>
+        <ComboboxButton>Choose team</ComboboxButton>
+        <ComboboxContent>
+          <ComboboxList>
+            <ComboboxItem value="Design">Design</ComboboxItem>
+          </ComboboxList>
+        </ComboboxContent>
+      </Combobox>
+    </>
+  )
+  fireEvent.click(screen.getByRole("checkbox", { name: "Approve" }))
+  expect(change).toHaveBeenCalledWith(true, expect.anything())
+  fireEvent.click(screen.getByRole("button", { name: "Details" }))
+  expect(await screen.findByText("Expanded content")).toBeTruthy()
+  fireEvent.click(screen.getByRole("combobox", { name: "Choose team" }))
+  expect(await screen.findByRole("option", { name: "Design" })).toBeTruthy()
 })
 
 test("switch keeps size, callback class and native form value", () => {

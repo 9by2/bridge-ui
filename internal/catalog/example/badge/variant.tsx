@@ -22,6 +22,8 @@ export default function Example() {
           "secondary",
           "destructive",
           "warning",
+          "info",
+          "pending",
           "success",
           "partial-success",
           "outline",

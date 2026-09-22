@@ -3,6 +3,8 @@ import { afterEach, expect, test } from "vitest"
 
 import {
   Table,
+  TableHint,
+  TableViewport,
   TableHeader,
   TableBody,
   TableFooter,
@@ -11,6 +13,7 @@ import {
   TableCell,
   TableCaption
 } from "../../app/component/brand/stylex/table"
+import { TableFrame, TableFrameHint, TableFrameViewport } from "../../app/component/brand/stylex/table-frame"
 
 afterEach(cleanup)
 test("table retains native semantic composition and caller override", () => {
@@ -38,4 +41,40 @@ test("table retains native semantic composition and caller override", () => {
   expect(screen.getByRole("columnheader").getAttribute("scope")).toBe("col")
   expect(screen.getAllByRole("row")).toHaveLength(3)
   expect(screen.getByRole("table").parentElement?.getAttribute("data-slot")).toBe("table-container")
+})
+
+test("framed table is canonical while TableFrame remains compatible", () => {
+  render(
+    <>
+      <Table variant="frame" density="compact" aria-label="Canonical frame">
+        <TableHint>Scroll</TableHint>
+        <TableViewport aria-label="Canonical viewport">
+          <table>
+            <tbody>
+              <tr>
+                <td>Canonical</td>
+              </tr>
+            </tbody>
+          </table>
+        </TableViewport>
+      </Table>
+      <TableFrame density="standard" aria-label="Compatible frame">
+        <TableFrameHint>Scroll</TableFrameHint>
+        <TableFrameViewport aria-label="Compatible viewport">
+          <table>
+            <tbody>
+              <tr>
+                <td>Compatible</td>
+              </tr>
+            </tbody>
+          </table>
+        </TableFrameViewport>
+      </TableFrame>
+    </>
+  )
+  expect(screen.getByLabelText("Canonical frame").getAttribute("data-density")).toBe("compact")
+  expect(screen.getByLabelText("Canonical frame").getAttribute("data-fill")).toBe("width")
+  expect(screen.getByLabelText("Canonical viewport").getAttribute("data-slot")).toBe("table-viewport")
+  expect(screen.getByLabelText("Compatible frame").getAttribute("data-slot")).toBe("table-frame")
+  expect(screen.getByLabelText("Compatible viewport").getAttribute("data-slot")).toBe("table-frame-viewport")
 })

@@ -3,8 +3,18 @@ import type { ComponentProps } from "react"
 
 import { token } from "./token.stylex"
 
-const tone = { neutral: "neutral", success: "success", warning: "warning", destructive: "destructive" } as const
-export type StatusStampTone = (typeof tone)[keyof typeof tone]
+const tone = {
+  neutral: "neutral",
+  info: "info",
+  pending: "pending",
+  inactive: "inactive",
+  partialSuccess: "partial-success",
+  success: "success",
+  warning: "warning",
+  destructive: "destructive"
+} as const
+type ValueOf<T> = T[keyof T]
+export type StatusStampTone = ValueOf<typeof tone>
 const style = stylex.create({
   root: {
     display: "inline-flex",
@@ -22,6 +32,22 @@ const style = stylex.create({
     textTransform: "uppercase"
   },
   neutral: { borderColor: token.border, color: token.foreground },
+  info: {
+    borderColor: token.primary,
+    backgroundColor: `color-mix(in oklch, ${token.primary}, transparent 90%)`,
+    color: token.primary
+  },
+  pending: {
+    borderColor: token.warning,
+    backgroundColor: `color-mix(in oklch, ${token.warning}, transparent 88%)`,
+    color: token.foreground
+  },
+  inactive: { borderColor: token.border, backgroundColor: token.muted, color: token.foreground },
+  partialSuccess: {
+    borderColor: token.brandAccent,
+    backgroundColor: token.brandAccent,
+    color: token.brandAccentForeground
+  },
   success: { borderColor: token.brand, backgroundColor: token.brand, color: token.brandForeground },
   warning: { borderColor: token.warning, color: token.warning },
   destructive: { borderColor: token.destructive, color: token.destructive }
@@ -36,7 +62,12 @@ export function StatusStamp({
       data-slot="status-stamp"
       data-tone={value}
       {...prop}
-      className={[stylex.props(style.root, style[value]).className, className].filter(Boolean).join(" ")}
+      className={[
+        stylex.props(style.root, style[value === tone.partialSuccess ? "partialSuccess" : value]).className,
+        className
+      ]
+        .filter(Boolean)
+        .join(" ")}
     />
   )
 }

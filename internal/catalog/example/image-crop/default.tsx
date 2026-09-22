@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { Button, DropArea, ImageCrop, UploadPreview } from "@bridge/ui"
+import { Button, DropArea, ImageCropEditor, UploadPreview } from "@bridge/ui"
 
 export default function Example() {
   const [file, setFile] = useState<File>()
@@ -34,7 +34,7 @@ export default function Example() {
         Choose an image to crop
       </DropArea>
       {file && (
-        <ImageCrop
+        <ImageCropEditor
           key={`${file.name}-${file.lastModified}`}
           file={file}
           onApply={(next) => {

@@ -5,6 +5,35 @@ import { token } from "./token.stylex"
 
 const style = stylex.create({
   container: { position: "relative", width: "100%", overflowX: "auto" },
+  frame: {
+    boxSizing: "border-box",
+    width: "100%",
+    minWidth: 0,
+    flexShrink: 0,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: token.border,
+    backgroundColor: token.background,
+    color: token.foreground
+  },
+  compact: { "--table-frame-cell-block-padding": "8px", "--table-frame-head-height": "32px" },
+  standard: { "--table-frame-cell-block-padding": "12px", "--table-frame-head-height": "36px" },
+  hint: {
+    boxSizing: "border-box",
+    display: { default: "none", "@media (max-width: 640px)": "block" },
+    width: "100%",
+    borderBottomWidth: 1,
+    borderBottomStyle: "solid",
+    borderBottomColor: token.border,
+    paddingBlock: 8,
+    paddingInline: 12,
+    color: token.mutedForeground,
+    fontSize: 12,
+    lineHeight: 1.5,
+    overflowWrap: "anywhere"
+  },
+  viewport: { width: "100%", minWidth: 0, overflowX: "auto", overscrollBehaviorInline: "contain" },
   table: {
     width: "100%",
     captionSide: "bottom",
@@ -51,7 +80,37 @@ const style = stylex.create({
   },
   caption: { marginTop: 16, fontSize: 14, lineHeight: "20px", color: token.mutedForeground }
 })
-export function Table({ className, ...props }: ComponentProps<"table">) {
+const tableDensity = { compact: "compact", standard: "standard" } as const
+type ValueOf<T> = T[keyof T]
+export type TableDensity = ValueOf<typeof tableDensity>
+export type TableFrameOptions = ComponentProps<"section"> & { density?: TableDensity; variant: "frame" }
+type PlainTableProps = ComponentProps<"table">
+
+export function Table(props: TableFrameOptions): React.JSX.Element
+export function Table(props: PlainTableProps): React.JSX.Element
+export function Table(props: PlainTableProps | TableFrameOptions) {
+  if ("variant" in props)
+    return (
+      <section
+        data-slot="table-frame"
+        data-density={props.density ?? "standard"}
+        data-fill="width"
+        {...props}
+        className={[
+          stylex.props(
+            stylex.defaultMarker(),
+            style.frame,
+            props.density === "compact" ? style.compact : style.standard
+          ).className,
+          props.className
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      />
+    )
+  return <PlainTable {...props} />
+}
+function PlainTable({ className, ...props }: PlainTableProps) {
   return (
     <div data-slot="table-container" {...stylex.props(style.container)}>
       <table
@@ -60,6 +119,32 @@ export function Table({ className, ...props }: ComponentProps<"table">) {
         className={[stylex.props(style.table).className, className].filter(Boolean).join(" ")}
       />
     </div>
+  )
+}
+export function TableHint({
+  className,
+  dataSlot = "table-hint",
+  ...props
+}: ComponentProps<"div"> & { dataSlot?: string }) {
+  return (
+    <div
+      data-slot={dataSlot}
+      {...props}
+      className={[stylex.props(style.hint).className, className].filter(Boolean).join(" ")}
+    />
+  )
+}
+export function TableViewport({
+  className,
+  dataSlot = "table-viewport",
+  ...props
+}: ComponentProps<"div"> & { dataSlot?: string }) {
+  return (
+    <div
+      data-slot={dataSlot}
+      {...props}
+      className={[stylex.props(style.viewport).className, className].filter(Boolean).join(" ")}
+    />
   )
 }
 export function TableHeader(props: ComponentProps<"thead">) {

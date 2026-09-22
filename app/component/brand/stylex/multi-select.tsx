@@ -50,7 +50,7 @@ const style = stylex.create({
   wrap: { height: "100%", flexWrap: "wrap" },
   badge: { display: "flex", alignItems: "center", gap: 4 },
   remove: { width: 8, height: 8, color: token.mutedForeground },
-  popup: { minWidth: "var(--anchor-width)", padding: 0 },
+  popup: { minWidth: "var(--anchor-width)", backgroundColor: token.background, padding: 0 },
   hidden: { display: "none" },
   check: { marginRight: 8, width: 16, height: 16 },
   unchecked: { opacity: 0 },

@@ -123,6 +123,18 @@ export function ComboboxTrigger({ children, ...props }: Primitive.Trigger.Props)
     </Primitive.Trigger>
   )
 }
+export function ComboboxButton({ children, ...props }: Primitive.Trigger.Props) {
+  return (
+    <Primitive.Trigger
+      data-slot="combobox-button"
+      render={<Button variant="outline" />}
+      aria-label={props["aria-label"] ?? (typeof children === "string" ? children : undefined)}
+      {...props}>
+      {children}
+      <ChevronDownIcon {...stylex.props(style.icon)} />
+    </Primitive.Trigger>
+  )
+}
 function ComboboxClear(props: Primitive.Clear.Props) {
   return (
     <Primitive.Clear data-slot="combobox-clear" render={<InputGroupButton variant="ghost" size="icon-xs" />} {...props}>

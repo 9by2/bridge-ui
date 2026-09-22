@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { afterEach, expect, test, vi } from "vitest"
 
-import { ImageCrop } from "../../app/component/brand/image-crop"
+import { ImageCropEditor } from "../../app/component/brand/image-crop"
 
 afterEach(() => {
   cleanup()
@@ -24,7 +24,7 @@ test("crop applies output separately and closes bitmap", async () => {
   )
   const apply = vi.fn()
   const view = render(
-    <ImageCrop
+    <ImageCropEditor
       file={new File(["image"], "photo.png")}
       onApply={apply}
       copy={{
@@ -81,7 +81,7 @@ test("crop drag and keyboard position share bounded geometry", async () => {
     rotate: vi.fn(),
     drawImage: draw
   } as unknown as CanvasRenderingContext2D)
-  const view = render(<ImageCrop file={new File(["image"], "photo")} onApply={vi.fn()} copy={copy} />)
+  const view = render(<ImageCropEditor file={new File(["image"], "photo")} onApply={vi.fn()} copy={copy} />)
   await waitFor(() => expect(draw).toHaveBeenCalled())
   const canvas = screen.getByRole("img")
   Object.defineProperty(canvas, "setPointerCapture", { value: vi.fn() })
@@ -104,13 +104,13 @@ test("crop drag and keyboard position share bounded geometry", async () => {
 test("crop reports decoding and canvas failure and disposes late bitmap", async () => {
   const decode = vi.fn().mockRejectedValue(new Error("Bad image"))
   vi.stubGlobal("createImageBitmap", decode)
-  const view = render(<ImageCrop file={new File([], "bad")} onApply={vi.fn()} copy={copy} />)
+  const view = render(<ImageCropEditor file={new File([], "bad")} onApply={vi.fn()} copy={copy} />)
   await waitFor(() => expect(screen.getByRole("status").textContent).toBe("Failed"))
   view.unmount()
   const close = vi.fn()
   decode.mockResolvedValue({ width: 10, height: 10, close })
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null)
-  const missing = render(<ImageCrop file={new File([], "no-context")} onApply={vi.fn()} copy={copy} />)
+  const missing = render(<ImageCropEditor file={new File([], "no-context")} onApply={vi.fn()} copy={copy} />)
   await waitFor(() => expect(screen.getByRole("status").textContent).toBe("Failed"))
   missing.unmount()
   let resolve!: (value: unknown) => void
@@ -120,7 +120,7 @@ test("crop reports decoding and canvas failure and disposes late bitmap", async 
         resolve = done
       })
   )
-  const late = render(<ImageCrop file={new File([], "late")} onApply={vi.fn()} copy={copy} />)
+  const late = render(<ImageCropEditor file={new File([], "late")} onApply={vi.fn()} copy={copy} />)
   late.unmount()
   resolve({ width: 10, height: 10, close })
   await waitFor(() => expect(close).toHaveBeenCalledTimes(2))
@@ -131,7 +131,7 @@ test("crop reports decoding and canvas failure and disposes late bitmap", async 
         reject = fail
       })
   )
-  const rejected = render(<ImageCrop file={new File([], "late-error")} onApply={vi.fn()} copy={copy} />)
+  const rejected = render(<ImageCropEditor file={new File([], "late-error")} onApply={vi.fn()} copy={copy} />)
   rejected.unmount()
   reject(new Error("Late error"))
 })
@@ -150,7 +150,7 @@ test("crop handles failed encoding and disables editing during apply", async () 
   vi.spyOn(HTMLCanvasElement.prototype, "toBlob").mockImplementation((callback) => {
     encode = callback
   })
-  render(<ImageCrop file={new File([], "photo.png")} onApply={vi.fn()} copy={copy} />)
+  render(<ImageCropEditor file={new File([], "photo.png")} onApply={vi.fn()} copy={copy} />)
   await waitFor(() => expect(screen.getByRole("button", { name: "Apply crop" }).hasAttribute("disabled")).toBe(false))
   const canvas = screen.getByRole("img")
   Object.defineProperty(canvas, "setPointerCapture", { value: vi.fn() })

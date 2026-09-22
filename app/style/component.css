@@ -4,6 +4,7 @@
 @import "@fontsource/sarabun/500.css";
 @import "@fontsource/sarabun/600.css";
 @import "@fontsource/sarabun/700.css";
+@import "react-image-crop/dist/ReactCrop.css";
 
 /* Base UI focus guards redirect keyboard focus and are never pointer targets. */
 [data-base-ui-focus-guard][aria-hidden="true"] {

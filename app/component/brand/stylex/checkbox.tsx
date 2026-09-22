@@ -31,6 +31,7 @@ const style = stylex.create({
     cursor: { default: "default", ":disabled": "not-allowed" }
   },
   checked: { borderColor: token.primary, backgroundColor: token.primary, color: token.primaryForeground },
+  success: { borderColor: token.brand, backgroundColor: token.brand, color: token.brandForeground },
   invalidChecked: { borderColor: token.primary },
   invalid: {
     borderColor: token.invalidBorder,
@@ -39,16 +40,22 @@ const style = stylex.create({
   indicator: { display: "grid", placeContent: "center", color: "currentColor", transitionProperty: "none" },
   icon: { width: 14, height: 14 }
 })
-export function Checkbox({ className, ...props }: Primitive.Root.Props) {
+export function Checkbox({
+  className,
+  variant = "default",
+  ...props
+}: Primitive.Root.Props & { variant?: "default" | "success" }) {
   return (
     <Primitive.Root
       data-slot="checkbox"
+      data-variant={variant}
       {...props}
       className={(state) =>
         [
           stylex.props(
             style.root,
             state.checked && style.checked,
+            state.checked && variant === "success" && style.success,
             (props["aria-invalid"] === true || props["aria-invalid"] === "true") && style.invalid,
             state.checked &&
               (props["aria-invalid"] === true || props["aria-invalid"] === "true") &&

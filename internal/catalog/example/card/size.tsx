@@ -37,6 +37,14 @@ export default function Example() {
           </UI.Card>
         ))}
       </Axis>
+      <Axis label="variant">
+        <UI.Card variant="ghost" className="w-56">
+          <UI.CardHeader>
+            <UI.CardTitle>ghost</UI.CardTitle>
+            <UI.CardDescription>Borderless surface for embedded content.</UI.CardDescription>
+          </UI.CardHeader>
+        </UI.Card>
+      </Axis>
     </div>
   )
 }

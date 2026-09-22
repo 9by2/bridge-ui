@@ -34,16 +34,23 @@ export const textareaStyle = stylex.create({
   invalid: {
     borderColor: token.invalidBorder,
     boxShadow: `0 0 0 3px color-mix(in oklch, ${token.destructive} ${token.errorRingOpacity}, transparent)`
-  }
+  },
+  unstyled: { borderWidth: 0, borderRadius: 0, backgroundColor: "transparent", boxShadow: "none" }
 })
-export function Textarea({ className, ...props }: ComponentProps<"textarea">) {
+export function Textarea({
+  className,
+  variant = "default",
+  ...props
+}: ComponentProps<"textarea"> & { variant?: "default" | "unstyled" }) {
   return (
     <textarea
       data-slot="textarea"
+      data-variant={variant}
       {...props}
       className={[
         stylex.props(
           textareaStyle.root,
+          variant === "unstyled" && textareaStyle.unstyled,
           (props["aria-invalid"] === true || props["aria-invalid"] === "true") && textareaStyle.invalid
         ).className,
         className

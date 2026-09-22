@@ -20,6 +20,7 @@ export default function Example() {
       <UI.Checkbox aria-label="Checked" defaultChecked />
       <UI.Checkbox aria-label="Disabled" disabled />
       <UI.Checkbox aria-label="Invalid" aria-invalid />
+      <UI.Checkbox aria-label="Success" variant="success" defaultChecked />
     </Axis>
   )
 }

@@ -66,6 +66,8 @@ const style = stylex.create({
       ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.warning} ${token.errorRingOpacity}, transparent)`
     }
   },
+  info: { backgroundColor: token.primary, color: token.primaryForeground },
+  pending: { backgroundColor: token.muted, color: token.foreground },
   success: { backgroundColor: token.brand, color: token.brandForeground },
   partialSuccess: { backgroundColor: token.brandAccent, color: token.brandAccentForeground },
   outline: {
@@ -88,6 +90,8 @@ type Variant =
   | "secondary"
   | "destructive"
   | "warning"
+  | "info"
+  | "pending"
   | "success"
   | "partial-success"
   | "outline"
@@ -98,6 +102,8 @@ const variantStyle = {
   secondary: style.secondary,
   destructive: style.destructive,
   warning: style.warning,
+  info: style.info,
+  pending: style.pending,
   success: style.success,
   "partial-success": style.partialSuccess,
   outline: style.outline,

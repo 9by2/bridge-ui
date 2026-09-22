@@ -26,8 +26,12 @@ export default function Example() {
         </UI.PageAction>
       </UI.PageHeader>
       <UI.PageToolbar aria-label="Account filter">
-        <UI.Button variant="outline">All activity</UI.Button>
-        <UI.Button variant="ghost">Open access</UI.Button>
+        <UI.Tabs defaultValue="activity" className="w-full">
+          <UI.TabsList variant="line">
+            <UI.TabsTrigger value="activity">All activity</UI.TabsTrigger>
+            <UI.TabsTrigger value="access">Open access</UI.TabsTrigger>
+          </UI.TabsList>
+        </UI.Tabs>
       </UI.PageToolbar>
       <UI.PageContent>
         <UI.Card>

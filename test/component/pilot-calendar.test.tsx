@@ -38,6 +38,28 @@ test("calendar retains engine date selection and navigation", () => {
   expect(screen.getByText("October 2026")).toBeTruthy()
 })
 
+test("calendar keeps today identifiable when it is selected", () => {
+  const today = new Date()
+  render(<Calendar mode="single" defaultMonth={today} selected={today} />)
+  const selectedToday = document.querySelector<HTMLButtonElement>('[data-today="true"][data-selected="true"]')
+  expect(selectedToday).not.toBeNull()
+  expect(selectedToday?.dataset.today).toBe("true")
+  expect(selectedToday?.dataset.selected).toBe("true")
+})
+
+test("calendar exposes a continuous range composition", () => {
+  render(
+    <Calendar
+      mode="range"
+      defaultMonth={new Date(2026, 8, 1)}
+      selected={{ from: new Date(2026, 8, 22), to: new Date(2026, 8, 24) }}
+    />
+  )
+  expect(document.querySelectorAll('[data-range-start="true"]')).toHaveLength(1)
+  expect(document.querySelectorAll('[data-range-middle="true"]')).toHaveLength(1)
+  expect(document.querySelectorAll('[data-range-end="true"]')).toHaveLength(1)
+})
+
 test("calendar uses stable ISO day and avoids stealing unrelated focus", () => {
   const day = new CalendarDay(new Date(2026, 8, 15), new Date(2026, 8, 1))
   const { rerender } = render(

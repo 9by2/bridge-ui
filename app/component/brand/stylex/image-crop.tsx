@@ -1,10 +1,21 @@
 import * as stylex from "@stylexjs/stylex"
 import { useEffect, useRef, useState } from "react"
+import ReactCrop from "react-image-crop"
+import type { ReactCropProps } from "react-image-crop"
 
 import { Button } from "./button"
 import { token } from "./token.stylex"
 
 const style = stylex.create({
+  crop: {
+    display: "block",
+    width: "100%",
+    maxWidth: "100%",
+    textAlign: "center",
+    "--rc-border-color": token.foreground,
+    "--rc-focus-color": token.ring
+  },
+  cropRoot: { maxWidth: "100%" },
   root: { width: "100%", display: "flex", flexDirection: "column", gap: 12 },
   canvas: { maxHeight: "50dvh", width: "100%", touchAction: "none", objectFit: "contain" },
   label: { display: "block" },
@@ -22,7 +33,20 @@ const style = stylex.create({
   actions: { display: "flex", gap: 8 },
   status: { margin: 0 }
 })
-export function ImageCrop({
+export type ImageCropProps = ReactCropProps
+
+export function ImageCrop(props: ImageCropProps) {
+  return (
+    <div data-slot="image-crop" {...stylex.props(style.crop)}>
+      <ReactCrop
+        {...props}
+        className={[stylex.props(style.cropRoot).className, props.className].filter(Boolean).join(" ")}
+      />
+    </div>
+  )
+}
+
+export function ImageCropEditor({
   file,
   onApply,
   copy

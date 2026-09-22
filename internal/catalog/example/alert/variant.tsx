@@ -25,7 +25,7 @@ function Sample({ children, label }: { readonly children: ReactNode; readonly la
 export default function Example() {
   return (
     <Axis label="variant">
-      {(["default", "destructive"] as const).map((variant) => (
+      {(["default", "info", "success", "warning", "destructive"] as const).map((variant) => (
         <Sample key={variant} label={variant}>
           <UI.Alert variant={variant}>
             <UI.AlertTitle>{variant}</UI.AlertTitle>

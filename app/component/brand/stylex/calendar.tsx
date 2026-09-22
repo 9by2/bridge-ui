@@ -9,19 +9,23 @@ import { token } from "./token.stylex"
 const style = stylex.create({
   root: {
     width: "fit-content",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: token.border,
+    borderRadius: 12,
     backgroundColor: {
       default: token.background,
       ':is([data-slot="card-content"] *, [data-slot="popover-content"] *)': "transparent"
     },
-    padding: 8
+    padding: 16
   },
   months: {
     position: "relative",
     display: "flex",
     flexDirection: { default: "column", "@media (min-width: 768px)": "row" },
-    gap: 16
+    gap: "2.5em"
   },
-  month: { display: "flex", width: "100%", flexDirection: "column", gap: 16 },
+  month: { display: "flex", width: 252, flex: "0 0 252px", flexDirection: "column", gap: 12 },
   nav: {
     position: "absolute",
     left: 0,
@@ -36,7 +40,7 @@ const style = stylex.create({
   navButton: {
     width: 28,
     height: 28,
-    padding: 0,
+    padding: 4,
     userSelect: "none",
     opacity: { default: 1, ':is([aria-disabled="true"])': 0.5 }
   },
@@ -62,52 +66,48 @@ const style = stylex.create({
   },
   dropdownRoot: { position: "relative", borderRadius: 8 },
   dropdown: { position: "absolute", inset: 0, backgroundColor: token.background, opacity: 0 },
-  captionLabel: { fontWeight: 500, userSelect: "none", fontSize: 14, lineHeight: "20px" },
+  captionLabel: { fontWeight: 600, userSelect: "none", fontSize: 14, lineHeight: "20px" },
   captionDropdown: { display: "flex", alignItems: "center", gap: 4, borderRadius: 8 },
-  grid: { width: "100%", borderCollapse: "collapse" },
+  grid: { width: 252, borderCollapse: "collapse", tableLayout: "fixed" },
   weekdays: { display: "flex" },
   weekday: {
-    flex: 1,
-    borderRadius: 8,
+    width: 36,
+    flex: "0 0 36px",
     fontSize: "0.8rem",
     fontWeight: 400,
     color: token.mutedForeground,
     userSelect: "none"
   },
-  week: { marginTop: 8, display: "flex", width: "100%" },
+  week: { display: "flex", width: "100%" },
   weekHeader: { width: 28, userSelect: "none" },
   weekNumber: { fontSize: "0.8rem", color: token.mutedForeground, userSelect: "none" },
   day: {
     position: "relative",
-    aspectRatio: "1",
-    height: "100%",
-    width: "100%",
-    borderRadius: 8,
+    width: 36,
+    height: 36,
     padding: 0,
     textAlign: "center",
     userSelect: "none"
   },
   rangeStart: {
-    position: "relative",
     isolation: "isolate",
-    zIndex: 0,
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
-    backgroundColor: token.muted
+    backgroundImage: `linear-gradient(to right, transparent 50%, color-mix(in oklch, ${token.muted}, transparent 20%) 50%)`,
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "100% 32px"
   },
   rangeEnd: {
-    position: "relative",
     isolation: "isolate",
-    zIndex: 0,
-    borderTopRightRadius: 8,
-    borderBottomRightRadius: 8,
-    backgroundColor: token.muted
+    backgroundImage: `linear-gradient(to right, color-mix(in oklch, ${token.muted}, transparent 20%) 50%, transparent 50%)`,
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "100% 32px"
   },
-  middle: { borderRadius: 0 },
-  today: {
-    borderRadius: { default: 8, ':is([data-selected="true"])': 0 },
-    backgroundColor: token.muted,
-    color: token.foreground
+  middle: {
+    backgroundImage: `linear-gradient(color-mix(in oklch, ${token.muted}, transparent 20%), color-mix(in oklch, ${token.muted}, transparent 20%))`,
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "100% 32px"
   },
   outside: { color: token.mutedForeground },
   disabled: { color: token.mutedForeground, opacity: 0.5 },
@@ -125,18 +125,17 @@ const style = stylex.create({
   dayButton: {
     position: "relative",
     isolation: "isolate",
-    zIndex: 10,
+    zIndex: 1,
     display: "flex",
     boxSizing: "border-box",
-    aspectRatio: "1",
-    height: "auto",
-    width: "100%",
-    minWidth: 28,
+    height: "2.5em",
+    width: "2.5em",
     flexDirection: "column",
     gap: 4,
     borderWidth: 0,
-    borderRadius: 8,
-    padding: 0,
+    borderRadius: 6,
+    margin: "auto",
+    padding: 4,
     lineHeight: 1,
     fontFamily: "inherit",
     fontSize: 14,
@@ -146,8 +145,15 @@ const style = stylex.create({
     outline: "none",
     boxShadow: { default: "none", ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.ring}, transparent 50%)` }
   },
-  selected: { backgroundColor: token.primary, color: token.primaryForeground },
-  rangeMiddle: { borderRadius: 0, backgroundColor: token.muted, color: token.foreground }
+  selected: { backgroundColor: token.primary, color: token.primaryForeground, fontWeight: 600 },
+  rangeMiddle: { borderRadius: 0, backgroundColor: "transparent", color: token.foreground },
+  today: {
+    color: { default: token.highlight },
+    fontWeight: 600
+  },
+  selectedToday: {
+    color: { default: token.highlightForeground }
+  }
 })
 export function Calendar({
   className,
@@ -193,7 +199,7 @@ export function Calendar({
         range_start: `${defaults.range_start} ${stylex.props(style.rangeStart).className}`,
         range_middle: `${defaults.range_middle} ${stylex.props(style.middle).className}`,
         range_end: `${defaults.range_end} ${stylex.props(style.rangeEnd).className}`,
-        today: `${defaults.today} ${stylex.props(style.today).className}`,
+        today: defaults.today,
         outside: `${defaults.outside} ${stylex.props(style.outside).className}`,
         disabled: `${defaults.disabled} ${stylex.props(style.disabled).className}`,
         hidden: `${defaults.hidden} ${stylex.props(style.hidden).className}`,
@@ -250,11 +256,18 @@ export function CalendarDayButton({
       data-range-start={modifiers.range_start}
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
+      data-today={modifiers.today || undefined}
+      data-selected={modifiers.selected || undefined}
       {...props}
       className={[
         getDefaultClassNames().day,
-        stylex.props(style.dayButton, modifiers.selected && style.selected, modifiers.range_middle && style.rangeMiddle)
-          .className,
+        stylex.props(
+          style.dayButton,
+          modifiers.selected && style.selected,
+          modifiers.today && style.today,
+          modifiers.today && modifiers.selected && style.selectedToday,
+          modifiers.range_middle && style.rangeMiddle
+        ).className,
         className
       ]
         .filter(Boolean)

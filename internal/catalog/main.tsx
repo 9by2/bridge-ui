@@ -82,6 +82,8 @@ const description: Record<string, string> = {
     "Review the selected filename, then explicitly trigger a caller-owned upload callback. The demo reports the received file and size without sending a network request.",
   "drop-area/crop":
     "Preview a PNG or JPEG locally and adjust the center-square crop with zoom. Crop and upload creates a real 256x256 PNG File and passes it to the demo upload callback. No network request is made; preview resources are released on replacement or unmount.",
+  "image-crop/selection":
+    "Controlled ReactCrop selection with an aspect ratio, circular mask, rule-of-thirds guide, keyboard adjustment, and caller-owned crop state.",
   dot: "A dotted background with an icon and reset action.",
   icon: "An icon-led empty state with a primary action.",
   muted: "A quiet surface for an empty notification state.",

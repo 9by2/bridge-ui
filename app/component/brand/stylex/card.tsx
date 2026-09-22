@@ -27,6 +27,7 @@ const style = stylex.create({
   radiusNone: { borderRadius: 0 },
   radiusSm: { borderRadius: 8 },
   radiusLg: { borderRadius: 18 },
+  ghost: { backgroundColor: "transparent", boxShadow: "none" },
   top: { paddingTop: { default: 16, ":has(> img:first-child)": 0 } },
   small: {
     gap: 12,
@@ -89,13 +90,15 @@ export function Card({
   className,
   size = "default",
   radius = cardRadius.default,
+  variant = "default",
   ...props
-}: ComponentProps<"div"> & { radius?: CardRadius; size?: "default" | "sm" }) {
+}: ComponentProps<"div"> & { radius?: CardRadius; size?: "default" | "sm"; variant?: "default" | "ghost" }) {
   return (
     <div
       data-slot="card"
       data-size={size}
       data-radius={radius}
+      data-variant={variant}
       {...props}
       className={[
         stylex.props(
@@ -105,7 +108,8 @@ export function Card({
           size === "sm" && style.small,
           radius === cardRadius.none && style.radiusNone,
           radius === cardRadius.sm && style.radiusSm,
-          radius === cardRadius.lg && style.radiusLg
+          radius === cardRadius.lg && style.radiusLg,
+          variant === "ghost" && style.ghost
         ).className,
         className
       ]

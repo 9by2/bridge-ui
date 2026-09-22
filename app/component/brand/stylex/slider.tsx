@@ -1,5 +1,6 @@
 import { Slider as Primitive } from "@base-ui/react/slider"
 import * as stylex from "@stylexjs/stylex"
+import type { CSSProperties, ReactNode } from "react"
 
 import { token } from "./token.stylex"
 
@@ -27,7 +28,11 @@ const style = stylex.create({
     width: "100%"
   },
   verticalTrack: { height: "100%", width: 4 },
-  range: { backgroundColor: token.primary, userSelect: "none", height: "100%" },
+  range: {
+    backgroundColor: "var(--bridge-slider-range-color, var(--bridge-color-primary, currentColor))",
+    userSelect: "none",
+    height: "100%"
+  },
   verticalRange: { height: "auto", width: "100%" },
   thumb: {
     position: "relative",
@@ -39,8 +44,8 @@ const style = stylex.create({
     borderRadius: 9999,
     borderWidth: 1,
     borderStyle: "solid",
-    borderColor: token.ring,
-    backgroundColor: "white",
+    borderColor: "var(--bridge-slider-thumb-color, var(--bridge-color-ring, currentColor))",
+    backgroundColor: "var(--bridge-slider-thumb-background, white)",
     transitionProperty: "color, box-shadow",
     transitionDuration: "150ms",
     userSelect: "none",
@@ -54,9 +59,25 @@ const style = stylex.create({
     opacity: { default: 1, ":disabled": 0.5 }
   }
 })
-export function Slider({ className, defaultValue, value, min = 0, max = 100, ...props }: Primitive.Root.Props) {
+export function Slider({
+  className,
+  defaultValue,
+  value,
+  min = 0,
+  max = 100,
+  rangeColor,
+  thumbColor,
+  thumbContent,
+  ...props
+}: Primitive.Root.Props & { rangeColor?: string; thumbColor?: string; thumbContent?: ReactNode }) {
   const values = Array.isArray(value) ? value : Array.isArray(defaultValue) ? defaultValue : [min, max]
   const vertical = props.orientation === "vertical"
+  const inlineStyle: CSSProperties &
+    Record<"--bridge-slider-range-color" | "--bridge-slider-thumb-color", string | undefined> = {
+    "--bridge-slider-range-color": rangeColor,
+    "--bridge-slider-thumb-color": thumbColor,
+    ...props.style
+  }
   return (
     <Primitive.Root
       data-slot="slider"
@@ -64,6 +85,7 @@ export function Slider({ className, defaultValue, value, min = 0, max = 100, ...
       value={value}
       min={min}
       max={max}
+      style={inlineStyle}
       thumbAlignment="edge"
       {...props}
       className={(state) =>
@@ -82,7 +104,9 @@ export function Slider({ className, defaultValue, value, min = 0, max = 100, ...
           />
         </Primitive.Track>
         {values.map((_, index) => (
-          <Primitive.Thumb key={index} data-slot="slider-thumb" {...stylex.props(style.thumb)} />
+          <Primitive.Thumb key={index} data-slot="slider-thumb" {...stylex.props(style.thumb)}>
+            {thumbContent}
+          </Primitive.Thumb>
         ))}
       </Primitive.Control>
     </Primitive.Root>
