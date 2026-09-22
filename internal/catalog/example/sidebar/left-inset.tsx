@@ -29,7 +29,9 @@ export default function Example() {
         <header className="flex h-16 items-center gap-3 border-b px-6">
           <UI.SidebarTrigger />
           <div>
-            <h3 className="text-sm font-semibold">Left inset</h3>
+            <UI.Heading as={UI.WAIHeading.H3} className="text-sm font-semibold">
+              Left inset
+            </UI.Heading>
             <p className="text-xs text-muted-foreground">Navigation beside an inset content surface.</p>
           </div>
         </header>

@@ -59,7 +59,9 @@ export default function Example() {
           })}
         </UI.SettingsSidebar>
         <UI.SettingsContent aria-label={`${current.label} settings`}>
-          <h2 className="m-0 text-xl font-semibold">{current.label}</h2>
+          <UI.Heading as={UI.WAIHeading.H2} className="m-0 text-xl font-semibold">
+            {current.label}
+          </UI.Heading>
           <p className="mt-1 text-sm text-muted-foreground">Choose how the workspace works for you.</p>
           <div className="mt-5">
             <UI.SettingItem variant="inline">

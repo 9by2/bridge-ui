@@ -21,7 +21,9 @@ export default function Example() {
       <div className="grid gap-4 sm:grid-cols-2">
         {separatorExample.map(({ label, separator }) => (
           <section key={label} className="space-y-2">
-            <h3 className="text-sm font-semibold">{label}</h3>
+            <UI.Heading as={UI.WAIHeading.H3} className="text-sm font-semibold">
+              {label}
+            </UI.Heading>
             <UI.Breadcrumb>
               <UI.BreadcrumbList>
                 <UI.BreadcrumbItem>

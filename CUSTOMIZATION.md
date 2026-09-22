@@ -120,6 +120,8 @@ Use component props for intentional local exceptions, for example `<Card radius=
 
 `Heading`, `Label`, and `Body` provide the Cue semantic typography baseline. Heading uses the package heading family and highlight color; `Body` preserves Cue's compact `1.3` line height. Pass `as` to choose a semantic heading level, or omit it for an `h4`.
 
+Always use `Heading` for semantic document headings, including content displayed below a `PageHeader`. Do not add raw `h1` through `h6` elements or local heading font-family rules; select the correct semantic level through `WAIHeading` and use `className` only for local layout.
+
 ```tsx
 import { Body, Heading, WAIHeading } from "@bridge/ui"
 
@@ -133,7 +135,7 @@ export function AccountSummary() {
 }
 ```
 
-`Label` renders an inline `span`. All three primitives accept native element props and `className` for local layout.
+`TypographyLabel` renders an inline `span`; the direct `@bridge/ui/typography` module also exports Cue's `Label` name. All three primitives accept native element props and `className` for local layout.
 
 ## Input icons
 
