@@ -15,6 +15,7 @@
 - **ALWAYS** keep the active implementation spec under `plan/<proposal>/spec/`. Archive and sync it through [archive-plan](./.agents/skills/archive-plan/SKILL.md) after completion.
 - **ALWAYS** run the `bun fmt`, `bun lint`, `bun typecheck`, test, coverage, Storybook check, and package build required by ADHD before commit.
 - **ALWAYS** follow commit title pattern: `{{chore|feat|fix|release|...}}({{detail}}): {{short-commit-message}}` short up to 50 characters, additional detail in comment message.
+- **ALWAYS** add patch / minor changeset version when update / new component.
 - **ALWAYS** relentlessly implement it when user ask for implement. Never stop until fully finished. If decision needed, just ask right away.
 - **ALWAYS** provide full context with recommendation when asking question.
 - **ALWAYS** use `Bun.WebView` to inspect and verify UX before handoff to user. Evaluation evidence must store in `.eval/{{MMDD}}-{{task}}/` including screen capture, video recording, reproducing step, runner script and etc as needed.
