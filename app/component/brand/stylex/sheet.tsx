@@ -1,7 +1,8 @@
 import { Dialog as Primitive } from "@base-ui/react/dialog"
 import * as stylex from "@stylexjs/stylex"
 import { XIcon } from "lucide-react"
-import type { ComponentProps } from "react"
+import { useRef } from "react"
+import type { ComponentProps, CSSProperties, PointerEvent } from "react"
 
 import { Button } from "./button"
 import { Theme } from "./theme"
@@ -75,9 +76,33 @@ const style = stylex.create({
     borderTopWidth: 1,
     translate: { default: "none", ":is([data-starting-style], [data-ending-style])": "0 40px" }
   },
+  resizeHandle: {
+    position: "absolute",
+    zIndex: 1,
+    borderRadius: 999,
+    backgroundColor: token.border,
+    outline: "none",
+    ":focus-visible": { boxShadow: `0 0 0 2px ${token.ring}` }
+  },
+  resizeHandleHorizontal: { top: "50%", width: 6, height: 48, cursor: "col-resize", translate: "0 -50%" },
+  resizeHandleVertical: { left: "50%", width: 48, height: 6, cursor: "row-resize", translate: "-50% 0" },
+  resizeHandleLeft: { left: -3 },
+  resizeHandleRight: { right: -3 },
+  resizeHandleTop: { top: -3 },
+  resizeHandleBottom: { bottom: -3 },
   close: { position: "absolute", top: 12, right: 12 },
   icon: { width: 16, height: 16 },
-  header: { display: "flex", flexDirection: "column", gap: 2, padding: 16 },
+  viewport: { minHeight: 0, flex: 1, overflowY: "auto" },
+  header: {
+    position: "sticky",
+    top: 0,
+    zIndex: 1,
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
+    backgroundColor: token.background,
+    padding: 16
+  },
   footer: { marginTop: "auto", display: "flex", flexDirection: "column", gap: 8, padding: 16 },
   title: {
     margin: 0,
@@ -89,8 +114,26 @@ const style = stylex.create({
   },
   description: { margin: 0, fontSize: 14, lineHeight: "20px", color: token.mutedForeground }
 })
-export function Sheet(props: Primitive.Root.Props) {
-  return <Primitive.Root {...props} />
+const ResizeHandleEdgeBySide = {
+  right: style.resizeHandleLeft,
+  left: style.resizeHandleRight,
+  top: style.resizeHandleBottom,
+  bottom: style.resizeHandleTop
+} as const
+const ResizableSheetMaxByAxis = { horizontal: "80vw", vertical: "70vh" } as const
+export function Sheet({ onClose, onOpenChange, ...props }: Primitive.Root.Props & { onClose?: () => boolean | void }) {
+  return (
+    <Primitive.Root
+      {...props}
+      onOpenChange={(open, eventDetails) => {
+        if (!open && onClose?.() === false) {
+          eventDetails.cancel()
+          return
+        }
+        onOpenChange?.(open, eventDetails)
+      }}
+    />
+  )
 }
 export function SheetTrigger(props: Primitive.Trigger.Props) {
   return <Primitive.Trigger data-slot="sheet-trigger" {...props} />
@@ -101,10 +144,50 @@ export function SheetClose(props: Primitive.Close.Props) {
 export function SheetContent({
   className,
   children,
+  style: popupStyle,
   side = "right",
   showCloseButton = true,
+  resizable = false,
+  size,
+  onSizeChange,
+  maxWidth,
+  maxHeight,
   ...props
-}: Primitive.Popup.Props & { side?: "top" | "right" | "bottom" | "left"; showCloseButton?: boolean }) {
+}: Primitive.Popup.Props & {
+  side?: "top" | "right" | "bottom" | "left"
+  showCloseButton?: boolean
+  resizable?: boolean
+  size?: number
+  onSizeChange?: (size: number) => void
+  maxWidth?: CSSProperties["maxWidth"]
+  maxHeight?: CSSProperties["maxHeight"]
+}) {
+  const resizeAxis = side === "left" || side === "right" ? "horizontal" : "vertical"
+  const resizeStart = useRef<{ coordinate: number; dimension: number } | undefined>(undefined)
+  const handleEdge = ResizeHandleEdgeBySide[side]
+  const startResize = (event: PointerEvent<HTMLDivElement>) => {
+    const dimension =
+      resizeAxis === "horizontal"
+        ? event.currentTarget.parentElement?.clientWidth
+        : event.currentTarget.parentElement?.clientHeight
+    resizeStart.current = {
+      coordinate: resizeAxis === "horizontal" ? event.clientX : event.clientY,
+      dimension: size ?? dimension ?? 0
+    }
+    event.currentTarget.setPointerCapture?.(event.pointerId)
+  }
+  const resize = (event: PointerEvent<HTMLDivElement>) => {
+    if (!resizeStart.current) return
+    const coordinate = resizeAxis === "horizontal" ? event.clientX : event.clientY
+    const direction = side === "right" || side === "bottom" ? -1 : 1
+    const minimum = resizeAxis === "horizontal" ? 288 : 192
+    onSizeChange?.(
+      Math.max(minimum, resizeStart.current.dimension + (coordinate - resizeStart.current.coordinate) * direction)
+    )
+  }
+  const stopResize = () => {
+    resizeStart.current = undefined
+  }
   return (
     <Primitive.Portal data-slot="sheet-portal">
       <Theme>
@@ -112,7 +195,15 @@ export function SheetContent({
         <Primitive.Popup
           data-slot="sheet-content"
           data-side={side}
+          data-resizable={resizable || undefined}
+          data-resize-axis={resizable ? resizeAxis : undefined}
           {...props}
+          style={(state) => ({
+            ...(typeof popupStyle === "function" ? popupStyle(state) : popupStyle),
+            ...(resizeAxis === "horizontal"
+              ? { width: size, maxWidth: maxWidth ?? (resizable ? ResizableSheetMaxByAxis.horizontal : undefined) }
+              : { height: size, maxHeight: maxHeight ?? (resizable ? ResizableSheetMaxByAxis.vertical : undefined) })
+          })}
           className={(state) =>
             [
               stylex.props(style.popup, style[side]).className,
@@ -121,7 +212,12 @@ export function SheetContent({
               .filter(Boolean)
               .join(" ")
           }>
-          {children}
+          <div
+            data-slot="sheet-content-viewport"
+            data-testid="sheet-content-viewport"
+            {...stylex.props(style.viewport)}>
+            {children}
+          </div>
           {showCloseButton && (
             <Primitive.Close
               data-slot="sheet-close"
@@ -129,6 +225,23 @@ export function SheetContent({
               render={<Button variant="ghost" size="icon-sm" className={stylex.props(style.close).className} />}>
               <XIcon {...stylex.props(style.icon)} />
             </Primitive.Close>
+          )}
+          {resizable && (
+            <div
+              role="separator"
+              tabIndex={0}
+              aria-label={resizeAxis === "horizontal" ? "Resize width" : "Resize height"}
+              aria-orientation={resizeAxis === "horizontal" ? "vertical" : "horizontal"}
+              data-slot="sheet-resize-handle"
+              onPointerDown={startResize}
+              onPointerMove={resize}
+              onPointerUp={stopResize}
+              {...stylex.props(
+                style.resizeHandle,
+                style[resizeAxis === "horizontal" ? "resizeHandleHorizontal" : "resizeHandleVertical"],
+                handleEdge
+              )}
+            />
           )}
         </Primitive.Popup>
       </Theme>
