@@ -152,6 +152,10 @@
       "types": "./dist/component/brand/stylex/swim-lane-board.d.ts",
       "import": "./dist/component/brand/stylex/swim-lane-board.js"
     },
+    "./kanban": {
+      "types": "./dist/component/brand/stylex/kanban.d.ts",
+      "import": "./dist/component/brand/stylex/kanban.js"
+    },
     "./qr-code": {
       "types": "./dist/component/brand/stylex/qr-code.d.ts",
       "import": "./dist/component/brand/stylex/qr-code.js"
@@ -180,6 +184,9 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@fontsource-variable/geist": "^5.3.0",
     "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "@fontsource/sarabun": "^5.3.0",
