@@ -2,7 +2,7 @@
 
 ## Overview
 
-`SwimLaneBoard` derives its coordinate matrix from compound `Column`, `Lane`, `Cell`, and `Item` children. It owns only UI state and emits move intentions. StyleX uses Bridge semantic tokens so `Theme` supplies dark/light behavior.
+`SwimLaneBoard` derives its coordinate matrix from compound `Column`, `Lane`, `Cell`, and `Item` children. It owns only UI state and emits move intentions. When `onItemMove` is provided, dnd-kit sortable contexts register each item and coordinate; without the callback all sortable behavior is disabled. StyleX uses Bridge semantic tokens so `Theme` supplies dark/light behavior.
 
 ## Components
 
@@ -10,7 +10,7 @@
 | --------------------- | ------------------------------------------ | ------------------------------------------------ |
 | `SwimLaneBoard`       | Coordinates collapse state and move intent | `app/component/brand/stylex/swim-lane-board.tsx` |
 | `SwimLaneBoardColumn` | Status metadata and collapse control       | `app/component/brand/stylex/swim-lane-board.tsx` |
-| `SwimLaneBoardLane`   | Optional row grouping and collapse control | `app/component/brand/stylex/swim-lane-board.tsx` |
+| `SwimLaneBoardLane`   | Optional static row grouping               | `app/component/brand/stylex/swim-lane-board.tsx` |
 | `SwimLaneBoardCell`   | Coordinate-specific item collection        | `app/component/brand/stylex/swim-lane-board.tsx` |
 | `SwimLaneBoardItem`   | Draggable caller content and item identity | `app/component/brand/stylex/swim-lane-board.tsx` |
 
@@ -34,3 +34,4 @@
 | ------------------------------- | --------------------------------------------------------------------------------- |
 | CSS grid reflows after collapse | Each lane is an isolated row grid; compact columns use stable coordinate columns. |
 | Theme divergence                | Use `token` semantic colors exclusively; browser catalog covers light/dark.       |
+| DnD mutates caller state        | Emit one post-drop intent; never reorder caller children internally.              |

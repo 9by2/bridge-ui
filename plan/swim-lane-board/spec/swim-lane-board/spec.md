@@ -20,7 +20,15 @@ When direct `Cell` children are used, the board renders workflow header plus one
 
 ### REQ-003: Move intent
 
-Drop emits `onItemMove({ itemId, source, destination, sourceEvent: "pointer" })`. The package has no persistence or domain validation.
+When `onItemMove` is a function, sortable pointer and keyboard drag/drop emits `onItemMove({ itemId, source, destination, sourceEvent })` after drop. Omitting the callback disables drag/drop. The package has no persistence, optimistic mutation, or domain validation.
+
+Item `id` values must be unique within one board. Empty expanded cells remain valid drop targets.
+
+`SwimLaneBoardItem` must be a direct `SwimLaneBoardCell` child so the compound parser can derive its coordinate and sortable index. Presentation components may be nested inside the item.
+
+During pointer drag, the matrix and cell track sizes remain fixed. The source item stays as a non-scaling placeholder while a drag overlay follows the pointer.
+
+While an item is actively dragged, every entire expanded cell displays a dotted primary outline and acts as the coordinate drop target. The active cell retains its stronger target treatment, and the outline does not participate in layout or collision geometry.
 
 ### REQ-004: Theme
 
@@ -37,7 +45,7 @@ type SwimLaneBoardItemMoveIntent = {
   itemId: string
   source: { laneId?: string; columnId: string; index: number }
   destination: { laneId?: string; columnId: string; index: number }
-  sourceEvent: "pointer"
+  sourceEvent: "pointer" | "keyboard"
 }
 ```
 

@@ -6,6 +6,7 @@
 | DEC-002 | Move is an emitted UI intent       | accepted |
 | DEC-003 | Theme semantic tokens are required | accepted |
 | DEC-004 | Lane overflow remains row-local    | accepted |
+| DEC-005 | Move callback enables drag/drop    | accepted |
 
 ---
 
@@ -38,3 +39,11 @@
 **GIVEN** a lane coordinate contains more items than its configured `rowMaxHeight`
 **WHEN** the user scrolls that content
 **THEN** the coordinate scrolls independently while the board shell does not gain a vertical scrollbar and the column/lane headers remain sticky on their axes.
+
+---
+
+### DEC-005: Move callback enables drag/drop
+
+**GIVEN** a board may be read-only or interactive
+**WHEN** `onItemMove` is omitted
+**THEN** items expose no sortable drag capability; providing the function enables dnd-kit pointer and keyboard sorting and reports intent only after drop.

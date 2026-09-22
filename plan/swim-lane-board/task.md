@@ -11,11 +11,14 @@ Implementation order matters — complete top to bottom.
 
 - [x] Implement theme-token-driven compound component.
 - [x] Add stable export and minor changeset.
+- [x] Add failing optional sortable drag/drop tests.
+- [x] Replace native drag/drop with dnd-kit sortable intent handling.
 
 ## Integration
 
 - [x] Add catalog examples for lane and no-lane modes.
 - [x] Document the public contract in `CUSTOMIZATION.md`.
+- [x] Add sortable catalog and browser verification.
 
 ## Verification
 

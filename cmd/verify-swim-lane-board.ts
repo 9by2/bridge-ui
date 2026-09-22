@@ -154,11 +154,187 @@ try {
       await Bun.write(path.join(output, `${name}-${theme}-${width}.png`), await view.screenshot())
       report.push({ name, theme, width, state })
     }
+
+    await using defaultView = new Bun.WebView({
+      width: 1280,
+      height: 720,
+      backend: { type: "chrome", url: false, argv: ["--no-sandbox"] }
+    })
+    await defaultView.navigate("about:blank")
+    await defaultView.cdp("Page.navigate", { url: `${baseUrl}?preview&theme=${theme}#swim-lane-board/default` })
+    await ready(defaultView, '[data-slot="swim-lane-board"]')
+    const defaultMove = await defaultView.evaluate<{
+      column: unknown
+      row: unknown
+    }>(`(async () => {
+      let payload
+      window.alert = (value) => { payload = JSON.parse(value) }
+      const move = async (itemId, code) => {
+        payload = undefined
+        const item = document.querySelector('[data-item-id="' + itemId + '"]')
+        item.focus()
+        item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'Space' }))
+        await new Promise((resolve) => requestAnimationFrame(resolve))
+        const active = item.getAttribute('data-dragging')
+        item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code }))
+        await new Promise((resolve) => requestAnimationFrame(resolve))
+        const over = [...document.querySelectorAll('[data-over="true"]')].map((element) => element.closest('[data-slot="swim-lane-board-cell"]')?.getAttribute('aria-label'))
+        item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'Space' }))
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        return { payload, active, over }
+      }
+      return { column: await move('PLAT-184', 'ArrowRight') }
+    })()`)
+    assert.deepEqual(defaultMove.column, {
+      active: "true",
+      over: [],
+      payload: {
+        itemId: "PLAT-184",
+        source: { laneId: "api", columnId: "backlog", index: 0 },
+        destination: { laneId: "api", columnId: "progress", index: 0 },
+        sourceEvent: "keyboard"
+      }
+    })
+    await defaultView.cdp("Page.navigate", { url: `${baseUrl}?preview&theme=${theme}#swim-lane-board/default` })
+    await ready(defaultView, '[data-slot="swim-lane-board"]')
+    const rowMove = await defaultView.evaluate<unknown>(`(async () => {
+      let payload
+      window.alert = (value) => { payload = JSON.parse(value) }
+      const item = document.querySelector('[data-item-id="PLAT-176"]')
+      item.focus()
+      item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'Space' }))
+      await new Promise((resolve) => requestAnimationFrame(resolve))
+      const active = item.getAttribute('data-dragging')
+      item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'ArrowDown' }))
+      await new Promise((resolve) => requestAnimationFrame(resolve))
+      const over = [...document.querySelectorAll('[data-over="true"]')].map((element) => element.closest('[data-slot="swim-lane-board-cell"]')?.getAttribute('aria-label'))
+      item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'Space' }))
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      return { payload, active, over }
+    })()`)
+    assert.deepEqual(rowMove, {
+      active: "true",
+      over: [],
+      payload: {
+        itemId: "PLAT-176",
+        source: { laneId: "api", columnId: "progress", index: 0 },
+        destination: { laneId: "experience", columnId: "progress", index: 0 },
+        sourceEvent: "keyboard"
+      }
+    })
+    await defaultView.cdp("Page.navigate", { url: `${baseUrl}?preview&theme=${theme}#swim-lane-board/default` })
+    await ready(defaultView, '[data-slot="swim-lane-board"]')
+    const pointerSetup = await defaultView.evaluate<{
+      source: { x: number; y: number }
+      target: { x: number; y: number }
+      width: number[]
+    }>(`(() => {
+      window.__swimLaneBoardPayload = undefined
+      window.alert = (value) => { window.__swimLaneBoardPayload = JSON.parse(value) }
+      const source = document.querySelector('[data-item-id="PLAT-184"]').getBoundingClientRect()
+      const target = document.querySelector('[data-item-id="PLAT-176"]').getBoundingClientRect()
+      return {
+        source: { x: source.left + source.width / 2, y: source.top + source.height / 2 },
+        target: { x: target.left + target.width / 2, y: target.top + target.height / 2 },
+        width: [...document.querySelectorAll('[data-slot="swim-lane-board-cell"]')].map((cell) => cell.getBoundingClientRect().width)
+      }
+    })()`)
+    await defaultView.cdp("Input.dispatchMouseEvent", { type: "mouseMoved", ...pointerSetup.source })
+    await defaultView.cdp("Input.dispatchMouseEvent", {
+      type: "mousePressed",
+      ...pointerSetup.source,
+      button: "left",
+      buttons: 1,
+      clickCount: 1
+    })
+    for (const progress of [0.08, 0.25, 0.5, 0.75, 1]) {
+      await defaultView.cdp("Input.dispatchMouseEvent", {
+        type: "mouseMoved",
+        x: pointerSetup.source.x + (pointerSetup.target.x - pointerSetup.source.x) * progress,
+        y: pointerSetup.source.y + (pointerSetup.target.y - pointerSetup.source.y) * progress,
+        button: "left",
+        buttons: 1
+      })
+      await Bun.sleep(50)
+    }
+    const pointerDrag = await defaultView.evaluate<{ overlay: boolean; stable: boolean; dropZone: boolean }>(`(() => ({
+      overlay: Boolean(document.querySelector('[data-slot="swim-lane-board-item-overlay"]')),
+      stable: JSON.stringify([...document.querySelectorAll('[data-slot="swim-lane-board-cell"]')].map((cell) => cell.getBoundingClientRect().width)) === ${JSON.stringify(JSON.stringify(pointerSetup.width))},
+      dropZone: [...document.querySelectorAll('[data-slot="swim-lane-board-cell"]')].every((target) => target.getAttribute('data-drop-zone') === 'true' && getComputedStyle(target).outlineStyle === 'dotted')
+    }))()`)
+    await defaultView.cdp("Input.dispatchMouseEvent", {
+      type: "mouseReleased",
+      ...pointerSetup.target,
+      button: "left",
+      buttons: 0
+    })
+    await Bun.sleep(100)
+    const pointerPayload = await defaultView.evaluate<unknown>("window.__swimLaneBoardPayload")
+    assert.deepEqual(pointerDrag, { overlay: true, stable: true, dropZone: true })
+    assert.deepEqual(pointerPayload, {
+      itemId: "PLAT-184",
+      source: { laneId: "api", columnId: "backlog", index: 0 },
+      destination: { laneId: "api", columnId: "progress", index: 0 },
+      sourceEvent: "pointer"
+    })
+    report.push({
+      name: "default-move-intent",
+      theme,
+      width: 1280,
+      state: { ...defaultMove, row: rowMove, pointer: { drag: pointerDrag, payload: pointerPayload } }
+    })
+
+    await using view = new Bun.WebView({
+      width: 1280,
+      height: 720,
+      backend: { type: "chrome", url: false, argv: ["--no-sandbox"] }
+    })
+    await view.navigate("about:blank")
+    await view.cdp("Page.navigate", { url: `${baseUrl}?preview&theme=${theme}#swim-lane-board/sortable` })
+    await ready(view, '[data-slot="swim-lane-board"]')
+    const sortable = await view.evaluate<{
+      before: string[]
+      after: string[]
+      keyboard: boolean
+      overlap: boolean
+      payload: unknown
+    }>(`(async () => {
+      let payload
+      window.alert = (value) => { payload = JSON.parse(value) }
+      const item = [...document.querySelectorAll('[data-slot="swim-lane-board-item"]')].find((element) => element.textContent.includes('Second sortable item'))
+      const cells = [...document.querySelectorAll('[data-slot="swim-lane-board-cell"]')]
+      const read = () => cells.map((cell) => [...cell.querySelectorAll('[data-slot="swim-lane-board-item"]')].map((element) => element.textContent.trim()).join('|'))
+      const before = read()
+      item.focus()
+      item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'Space' }))
+      await new Promise((resolve) => requestAnimationFrame(resolve))
+      const keyboard = item.getAttribute('data-dragging') === 'true'
+      item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'ArrowRight' }))
+      await new Promise((resolve) => requestAnimationFrame(resolve))
+      item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'Space' }))
+      await new Promise((resolve) => setTimeout(resolve, 300))
+      const doneItem = [...cells[1].querySelectorAll('[data-slot="swim-lane-board-item"]')]
+      const box = doneItem.map((element) => element.getBoundingClientRect())
+      const overlap = box.some((candidate, index) => box.some((other, otherIndex) => index < otherIndex && candidate.bottom > other.top))
+      return { before, after: read(), keyboard, overlap, payload }
+    })()`)
+    assert.equal(sortable.keyboard, true)
+    assert.deepEqual(sortable.payload, {
+      itemId: "SORT-2",
+      source: { columnId: "todo", index: 1 },
+      destination: { columnId: "done", index: 0 },
+      sourceEvent: "keyboard"
+    })
+    assert.notDeepEqual(sortable.after, sortable.before)
+    assert.match(sortable.after[1] ?? "", /Second sortable item/)
+    assert.equal(sortable.overlap, false)
+    await Bun.write(path.join(output, `sortable-${theme}-1280.png`), await view.screenshot())
+    report.push({ name: "sortable", theme, width: 1280, state: sortable })
   }
   await Bun.write(path.join(output, "report.json"), JSON.stringify(report, null, 2))
   await Bun.write(
     path.join(output, "README.md"),
-    "# Swim lane board evidence\n\nRun `bun catalog:build && bun cmd/verify-swim-lane-board.ts`. Captures expanded, column-collapsed, dense-overflow, and no-lane desktop/mobile layouts in light and dark themes. Assertions cover single edge ownership, absent lane collapse controls, compact control hit targets, row scrolling, and sticky top/left headers.\n"
+    "# Swim lane board evidence\n\nRun `bun catalog:build && bun cmd/verify-swim-lane-board.ts`. Captures expanded, column-collapsed, dense-overflow, no-lane desktop/mobile, and keyboard-sortable layouts in light and dark themes. Assertions cover single edge ownership, absent lane collapse controls, compact control hit targets, row scrolling, sticky top/left headers, optional sortable activation, exact default-example alert payloads for column/lane moves, and post-drop movement.\n"
   )
   console.log(`Verified ${report.length} SwimLaneBoard Bun.WebView cases`)
 } finally {

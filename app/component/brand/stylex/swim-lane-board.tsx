@@ -1,12 +1,35 @@
+import {
+  DndContext,
+  DragOverlay,
+  KeyboardSensor,
+  PointerSensor,
+  closestCorners,
+  pointerWithin,
+  useDndContext,
+  useDroppable,
+  useSensor,
+  useSensors,
+  type CollisionDetection,
+  type DragEndEvent,
+  type DragStartEvent
+} from "@dnd-kit/core"
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy
+} from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
 import * as stylex from "@stylexjs/stylex"
 import {
   Children,
+  createContext,
   Fragment,
   isValidElement,
+  useContext,
   useState,
   type ComponentProps,
   type CSSProperties,
-  type DragEvent,
   type ReactElement,
   type ReactNode
 } from "react"
@@ -22,12 +45,31 @@ export type SwimLaneBoardItemMoveIntent = {
   itemId: string
   source: SwimLaneBoardCoordinate
   destination: SwimLaneBoardCoordinate
-  sourceEvent: "pointer"
+  sourceEvent: "pointer" | "keyboard"
 }
 type SwimLaneBoardRow = { id?: string; label: string; count: number; children: ReactNode }
+type SwimLaneBoardItemPosition = SwimLaneBoardCoordinate & { enabled: boolean }
+type SwimLaneBoardCellElementProps = ComponentProps<"div"> & {
+  "data-lane-id"?: string
+  "data-column-id": string
+}
+
+const itemPositionContext = createContext<SwimLaneBoardItemPosition>({ columnId: "", index: 0, enabled: false })
+const pointerDragContext = createContext(false)
+
+const pointerActivationConstraint = { distance: 8 }
+const coordinateCollision: CollisionDetection = (argument) =>
+  argument.pointerCoordinates ? pointerWithin(argument) : closestCorners(argument)
 
 function toCssLength(value: CSSProperties["maxHeight"]) {
   return typeof value === "number" ? `${value}px` : (value ?? "66vh")
+}
+
+function isCoordinate(value: unknown): value is SwimLaneBoardCoordinate {
+  if (typeof value !== "object" || value === null) return false
+  if (!("columnId" in value) || typeof value.columnId !== "string") return false
+  if (!("index" in value) || typeof value.index !== "number") return false
+  return !("laneId" in value) || value.laneId === undefined || typeof value.laneId === "string"
 }
 
 const style = stylex.create({
@@ -121,6 +163,7 @@ const style = stylex.create({
     display: "grid",
     alignContent: "start",
     gap: 8,
+    minWidth: 0,
     minHeight: 166,
     paddingTop: 10,
     paddingRight: 10,
@@ -135,7 +178,9 @@ const style = stylex.create({
   firstCell: { borderLeftWidth: 0 },
   item: {
     display: "block",
+    boxSizing: "border-box",
     width: "100%",
+    minWidth: 0,
     paddingTop: 10,
     paddingRight: 10,
     paddingBottom: 10,
@@ -151,6 +196,13 @@ const style = stylex.create({
     fontSize: 12,
     lineHeight: 1.4
   },
+  itemDragging: { opacity: 0.35, cursor: "grabbing" },
+  itemOverlay: { cursor: "grabbing", boxShadow: "0 14px 32px color-mix(in oklab, black 20%, transparent)" },
+  dropTarget: {
+    backgroundColor: `color-mix(in oklab, ${token.primary} 8%, ${token.card})`,
+    boxShadow: `inset 0 0 0 2px color-mix(in oklab, ${token.primary} 45%, transparent)`
+  },
+  dropZone: { outlineWidth: 1, outlineStyle: "dotted", outlineColor: token.primary, outlineOffset: -2 },
   collapsed: {
     position: "relative",
     display: "grid",
@@ -228,22 +280,63 @@ export function SwimLaneBoardCell(_: SwimLaneBoardCellProps) {
 }
 
 export type SwimLaneBoardItemProps = ComponentProps<"article"> & { id: string }
-export function SwimLaneBoardItem({ id, children, className, ...prop }: SwimLaneBoardItemProps) {
+function SortableSwimLaneBoardItem({ id, children, className, style: inlineStyle, ...prop }: SwimLaneBoardItemProps) {
+  const position = useContext(itemPositionContext)
+  const pointerDragging = useContext(pointerDragContext)
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id,
+    data: {
+      type: "item",
+      itemId: id,
+      coordinate: { laneId: position.laneId, columnId: position.columnId, index: position.index },
+      overlay: (
+        <article
+          data-slot="swim-lane-board-item-overlay"
+          data-item-id={id}
+          style={inlineStyle}
+          className={[stylex.props(style.item, style.itemOverlay).className, className].filter(Boolean).join(" ")}>
+          {children}
+        </article>
+      )
+    }
+  })
+
   return (
     <article
       {...prop}
-      draggable
+      {...attributes}
+      {...listeners}
+      ref={setNodeRef}
       data-slot="swim-lane-board-item"
       data-item-id={id}
-      onDragStart={(event) => {
-        const cell = event.currentTarget.closest<HTMLElement>("[data-swim-lane-board-cell]")
-        if (!cell) return
-        event.currentTarget.dataset.swimLaneBoardDragging = JSON.stringify({
-          laneId: cell.dataset.laneId || undefined,
-          columnId: cell.dataset.columnId,
-          index: 0
-        })
+      data-dragging={isDragging}
+      style={{
+        ...inlineStyle,
+        transform: isDragging && pointerDragging ? undefined : CSS.Translate.toString(transform),
+        transition
       }}
+      className={[stylex.props(style.item, isDragging && style.itemDragging).className, className]
+        .filter(Boolean)
+        .join(" ")}>
+      {children}
+    </article>
+  )
+}
+
+export function SwimLaneBoardItem({ id, children, className, ...prop }: SwimLaneBoardItemProps) {
+  const position = useContext(itemPositionContext)
+  if (position.enabled)
+    return (
+      <SortableSwimLaneBoardItem id={id} className={className} {...prop}>
+        {children}
+      </SortableSwimLaneBoardItem>
+    )
+
+  return (
+    <article
+      {...prop}
+      data-slot="swim-lane-board-item"
+      data-item-id={id}
       className={[stylex.props(style.item).className, className].filter(Boolean).join(" ")}>
       {children}
     </article>
@@ -253,6 +346,89 @@ export function SwimLaneBoardItem({ id, children, className, ...prop }: SwimLane
 function childByType<T>(children: ReactNode, type: unknown) {
   return Children.toArray(children).filter(
     (child): child is ReactElement<T> => isValidElement(child) && child.type === type
+  )
+}
+
+function SortableSwimLaneBoardCell({
+  coordinate,
+  itemIds,
+  children,
+  cellProps
+}: {
+  coordinate: Omit<SwimLaneBoardCoordinate, "index">
+  itemIds: string[]
+  children: ReactNode
+  cellProps: SwimLaneBoardCellElementProps
+}) {
+  const { active } = useDndContext()
+  const id = `swim-lane-board-cell:${coordinate.laneId ?? ""}:${coordinate.columnId}`
+  const { isOver, setNodeRef } = useDroppable({
+    id,
+    data: { type: "cell", coordinate: { ...coordinate, index: itemIds.length } }
+  })
+
+  return (
+    <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
+      <div
+        {...cellProps}
+        ref={setNodeRef}
+        data-slot="swim-lane-board-cell"
+        data-swim-lane-board-cell
+        data-over={isOver}
+        data-drop-zone={active !== null}
+        className={[
+          cellProps.className,
+          stylex.props(active !== null && style.dropZone, isOver && style.dropTarget).className
+        ]
+          .filter(Boolean)
+          .join(" ")}>
+        {children}
+      </div>
+    </SortableContext>
+  )
+}
+
+function InteractiveSwimLaneBoard({
+  children,
+  onDragEnd
+}: {
+  children: ReactNode
+  onDragEnd: (event: DragEndEvent) => void
+}) {
+  const [overlay, setOverlay] = useState<ReactNode>(null)
+  const [pointerDragging, setPointerDragging] = useState(false)
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: pointerActivationConstraint }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  )
+
+  const onDragStart = (event: DragStartEvent) => {
+    const pointer = !(event.activatorEvent instanceof KeyboardEvent)
+    setPointerDragging(pointer)
+    setOverlay(pointer ? (event.active.data.current?.overlay ?? null) : null)
+  }
+  const finishDrag = (event: DragEndEvent) => {
+    setOverlay(null)
+    setPointerDragging(false)
+    onDragEnd(event)
+  }
+  const cancelDrag = () => {
+    setOverlay(null)
+    setPointerDragging(false)
+  }
+
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={coordinateCollision}
+      onDragStart={onDragStart}
+      onDragCancel={cancelDrag}
+      onDragEnd={finishDrag}>
+      <pointerDragContext.Provider value={pointerDragging}>{children}</pointerDragContext.Provider>
+      <DragOverlay adjustScale={false} dropAnimation={null}>
+        {overlay}
+      </DragOverlay>
+    </DndContext>
   )
 }
 
@@ -279,6 +455,7 @@ export function SwimLaneBoard({
         : [])
   )
   const collapsedColumnIds = controlledColumnIds ?? uncontrolledColumnIds
+  const dragEnabled = typeof onItemMove === "function"
   const hasLane = lanes.length > 0
   const rows: SwimLaneBoardRow[] = hasLane
     ? lanes.map((lane) => ({
@@ -299,17 +476,28 @@ export function SwimLaneBoard({
     setValue(next)
     onChange?.(next)
   }
-  const onDrop = (event: DragEvent<HTMLElement>, destination: SwimLaneBoardCoordinate) => {
-    event.preventDefault()
-    const sourceElement = document.querySelector<HTMLElement>("[data-swim-lane-board-dragging]")
-    if (!sourceElement) return
-    onItemMove?.({
-      itemId: sourceElement.dataset.itemId ?? "",
-      source: JSON.parse(sourceElement.dataset.swimLaneBoardDragging ?? "{}"),
+  const onDragEnd = (event: DragEndEvent) => {
+    if (!onItemMove || !event.over) return
+    const activeData = event.active.data.current
+    const overData = event.over.data.current
+    if (activeData?.type !== "item" || (overData?.type !== "item" && overData?.type !== "cell")) return
+
+    const source = activeData.coordinate
+    const destination = overData.coordinate
+    if (!isCoordinate(source) || !isCoordinate(destination)) return
+    if (
+      source.laneId === destination.laneId &&
+      source.columnId === destination.columnId &&
+      source.index === destination.index
+    )
+      return
+
+    onItemMove({
+      itemId: String(event.active.id),
+      source,
       destination,
-      sourceEvent: "pointer"
+      sourceEvent: event.activatorEvent instanceof KeyboardEvent ? "keyboard" : "pointer"
     })
-    sourceElement.removeAttribute("data-swim-lane-board-dragging")
   }
   const renderCell = (
     cell: ReactElement<SwimLaneBoardCellProps> | undefined,
@@ -318,34 +506,47 @@ export function SwimLaneBoard({
     single = false,
     gridPosition?: { column: number; row: number }
   ) => {
-    const index = 0
     if (collapsedColumnIds.includes(columnId)) return null
+    const item = childByType<SwimLaneBoardItemProps>(cell?.props.children, SwimLaneBoardItem)
+    const itemIds = item.map((child) => child.props.id)
+    const content = Children.map(cell?.props.children, (child) => {
+      if (!isValidElement<SwimLaneBoardItemProps>(child) || child.type !== SwimLaneBoardItem) return child
+      const index = item.findIndex((candidate) => candidate.props.id === child.props.id)
+      return (
+        <itemPositionContext.Provider key={child.props.id} value={{ laneId, columnId, index, enabled: dragEnabled }}>
+          {child}
+        </itemPositionContext.Provider>
+      )
+    })
+    const key = `${laneId ?? "single"}-${columnId}`
+    const cellProps: SwimLaneBoardCellElementProps = {
+      "data-lane-id": laneId,
+      "data-column-id": columnId,
+      style: {
+        ...(gridPosition
+          ? { gridColumn: gridPosition.column, gridRow: gridPosition.row }
+          : single
+            ? { gridColumn: columns.findIndex((column) => column.props.id === columnId) + 1, gridRow: 2 }
+            : undefined),
+        maxHeight: rowMaxHeight
+      },
+      "aria-label": `${laneId ? `${lanes.find((lane) => lane.props.id === laneId)?.props.label} / ` : ""}${columns.find((column) => column.props.id === columnId)?.props.label}`,
+      className: stylex.props(
+        style.cell,
+        single && columns[0]?.props.id === columnId && style.firstCell,
+        gridPosition !== undefined && gridPosition.row > 2 && style.rowSeparator
+      ).className
+    }
+    if (dragEnabled)
+      return (
+        <SortableSwimLaneBoardCell key={key} coordinate={{ laneId, columnId }} itemIds={itemIds} cellProps={cellProps}>
+          {content}
+        </SortableSwimLaneBoardCell>
+      )
+
     return (
-      <div
-        key={`${laneId ?? "single"}-${columnId}`}
-        data-slot="swim-lane-board-cell"
-        data-swim-lane-board-cell
-        data-lane-id={laneId}
-        data-column-id={columnId}
-        style={{
-          ...(gridPosition
-            ? { gridColumn: gridPosition.column, gridRow: gridPosition.row }
-            : single
-              ? { gridColumn: columns.findIndex((column) => column.props.id === columnId) + 1, gridRow: 2 }
-              : undefined),
-          maxHeight: rowMaxHeight
-        }}
-        aria-label={`${laneId ? `${lanes.find((lane) => lane.props.id === laneId)?.props.label} / ` : ""}${columns.find((column) => column.props.id === columnId)?.props.label}`}
-        onDragOver={(event) => event.preventDefault()}
-        onDrop={(event) => onDrop(event, { laneId, columnId, index })}
-        className={
-          stylex.props(
-            style.cell,
-            single && columns[0]?.props.id === columnId && style.firstCell,
-            gridPosition !== undefined && gridPosition.row > 2 && style.rowSeparator
-          ).className
-        }>
-        {cell?.props.children}
+      <div key={key} {...cellProps} data-slot="swim-lane-board-cell" data-swim-lane-board-cell>
+        {content}
       </div>
     )
   }
@@ -392,7 +593,7 @@ export function SwimLaneBoard({
               +
             </button>
             <span className={stylex.props(style.columnName).className}>{column.props.label}</span>
-            <span className={stylex.props(style.badge).className}>{column.props.count} items</span>
+            <span className={stylex.props(style.badge).className}>{column.props.count}</span>
           </span>
         ) : (
           <>
@@ -412,7 +613,7 @@ export function SwimLaneBoard({
       </div>
     )
   }
-  return (
+  const board = (
     <section
       {...prop}
       aria-label={label}
@@ -477,4 +678,7 @@ export function SwimLaneBoard({
       )}
     </section>
   )
+
+  if (!dragEnabled) return board
+  return <InteractiveSwimLaneBoard onDragEnd={onDragEnd}>{board}</InteractiveSwimLaneBoard>
 }

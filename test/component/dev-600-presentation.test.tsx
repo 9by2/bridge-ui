@@ -196,33 +196,119 @@ test("swim lane board auto-collapses empty columns while lanes remain static", (
   expect(screen.queryByRole("button", { name: /Empty/ })).toBeNull()
 })
 
-test("swim lane board emits a pointer move intent without mutating caller data", () => {
+test("swim lane board keeps zero-count columns expanded when auto-collapse is disabled", () => {
+  render(
+    <SwimLaneBoard label="Board" autoCollapse="never">
+      <SwimLaneBoardColumn id="done" label="Done" count={0} />
+      <SwimLaneBoardCell columnId="done" />
+    </SwimLaneBoard>
+  )
+  expect(screen.getByRole("button", { name: "Collapse Done" }).getAttribute("aria-expanded")).toBe("true")
+})
+
+test("swim lane board reports controlled column collapse without mutating caller state", () => {
+  const change: string[][] = []
+  render(
+    <SwimLaneBoard
+      label="Board"
+      autoCollapse="never"
+      collapsedColumnIds={[]}
+      onCollapsedColumnIdsChange={(value) => change.push([...value])}>
+      <SwimLaneBoardColumn id="todo" label="Todo" count={1} />
+      <SwimLaneBoardCell columnId="todo">
+        <SwimLaneBoardItem id="item-1">Item one</SwimLaneBoardItem>
+      </SwimLaneBoardCell>
+    </SwimLaneBoard>
+  )
+  fireEvent.click(screen.getByRole("button", { name: "Collapse Todo" }))
+  expect(change).toEqual([["todo"]])
+  expect(screen.getByRole("button", { name: "Collapse Todo" })).not.toBeNull()
+})
+
+test("swim lane board expands an explicitly collapsed column and preserves caller content", () => {
+  const change: string[][] = []
+  render(
+    <SwimLaneBoard
+      label="Board"
+      autoCollapse="never"
+      defaultCollapsedColumnIds={["todo"]}
+      onCollapsedColumnIdsChange={(value) => change.push([...value])}
+      onItemMove={() => {}}>
+      <SwimLaneBoardColumn id="todo" label="Todo" count={1} />
+      <SwimLaneBoardCell columnId="todo">
+        <span>Cell helper</span>
+        <SwimLaneBoardItem id="item-1">Item one</SwimLaneBoardItem>
+      </SwimLaneBoardCell>
+    </SwimLaneBoard>
+  )
+  fireEvent.click(screen.getByRole("button", { name: "Expand Todo" }))
+  expect(change).toEqual([[]])
+  expect(screen.getByText("Cell helper")).not.toBeNull()
+  expect(screen.getByText("Item one")).not.toBeNull()
+})
+
+test("swim lane board enables sortable items only when a move callback is provided", () => {
+  const { rerender } = render(
+    <SwimLaneBoard label="Board" autoCollapse="never">
+      <SwimLaneBoardColumn id="todo" label="Todo" count={1} />
+      <SwimLaneBoardCell columnId="todo">
+        <SwimLaneBoardItem id="item-1">Item one</SwimLaneBoardItem>
+      </SwimLaneBoardCell>
+    </SwimLaneBoard>
+  )
+  expect(screen.getByText("Item one").closest("[data-slot=swim-lane-board-item]")?.getAttribute("tabindex")).toBeNull()
+
+  rerender(
+    <SwimLaneBoard label="Board" autoCollapse="never" onItemMove={() => {}}>
+      <SwimLaneBoardColumn id="todo" label="Todo" count={1} />
+      <SwimLaneBoardCell columnId="todo">
+        <SwimLaneBoardItem id="item-1">Item one</SwimLaneBoardItem>
+      </SwimLaneBoardCell>
+    </SwimLaneBoard>
+  )
+  expect(screen.getByText("Item one").closest("[data-slot=swim-lane-board-item]")?.getAttribute("tabindex")).toBe("0")
+})
+
+test("swim lane board exposes coordinate drop targets during keyboard dragging", () => {
+  render(
+    <SwimLaneBoard label="Board" autoCollapse="never" onItemMove={() => {}}>
+      <SwimLaneBoardColumn id="todo" label="Todo" count={2} />
+      <SwimLaneBoardColumn id="done" label="Done" count={1} />
+      <SwimLaneBoardLane id="active" label="Active" count={3}>
+        <SwimLaneBoardCell columnId="todo">
+          <SwimLaneBoardItem id="item-1">Item one</SwimLaneBoardItem>
+          <SwimLaneBoardItem id="item-2">Item two</SwimLaneBoardItem>
+        </SwimLaneBoardCell>
+        <SwimLaneBoardCell columnId="done">
+          <SwimLaneBoardItem id="item-3">Item three</SwimLaneBoardItem>
+        </SwimLaneBoardCell>
+      </SwimLaneBoardLane>
+    </SwimLaneBoard>
+  )
+  const item = screen.getByText("Item two").closest<HTMLElement>("[data-slot=swim-lane-board-item]")
+  item?.focus()
+  fireEvent.keyDown(item!, { code: "Space" })
+  expect(item?.getAttribute("data-dragging")).toBe("true")
+  const target = document.querySelectorAll("[data-slot=swim-lane-board-cell]")
+  expect(target).toHaveLength(2)
+  expect([...target].every((element) => element.getAttribute("data-drop-zone") === "true")).toBe(true)
+})
+
+test("swim lane board does not report a drop when the item did not move", () => {
   const move: unknown[] = []
   render(
     <SwimLaneBoard label="Board" autoCollapse="never" onItemMove={(intent) => move.push(intent)}>
       <SwimLaneBoardColumn id="todo" label="Todo" count={1} />
-      <SwimLaneBoardColumn id="done" label="Done" count={0} />
-      <SwimLaneBoardLane id="active" label="Active" count={1}>
-        <SwimLaneBoardCell columnId="todo">
-          <SwimLaneBoardItem id="item-1">Item one</SwimLaneBoardItem>
-        </SwimLaneBoardCell>
-        <SwimLaneBoardCell columnId="done" />
-      </SwimLaneBoardLane>
+      <SwimLaneBoardCell columnId="todo">
+        <SwimLaneBoardItem id="item-1">Item one</SwimLaneBoardItem>
+      </SwimLaneBoardCell>
     </SwimLaneBoard>
   )
-  const item = screen.getByText("Item one")
-  const target = screen.getByLabelText("Active / Done")
-  fireEvent.dragStart(item)
-  fireEvent.dragOver(target)
-  fireEvent.drop(target)
-  expect(move).toEqual([
-    {
-      itemId: "item-1",
-      source: { laneId: "active", columnId: "todo", index: 0 },
-      destination: { laneId: "active", columnId: "done", index: 0 },
-      sourceEvent: "pointer"
-    }
-  ])
+  const item = screen.getByText("Item one").closest<HTMLElement>("[data-slot=swim-lane-board-item]")
+  item?.focus()
+  fireEvent.keyDown(item!, { code: "Space" })
+  fireEvent.keyDown(item!, { code: "Space" })
+  expect(move).toEqual([])
 })
 
 test("responsive image renders without a source set and defaults alt to undefined", () => {
