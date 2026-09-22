@@ -522,6 +522,8 @@ export function SwimLaneBoard({
     const cellProps: SwimLaneBoardCellElementProps = {
       "data-lane-id": laneId,
       "data-column-id": columnId,
+      role: "group",
+      tabIndex: 0,
       style: {
         ...(gridPosition
           ? { gridColumn: gridPosition.column, gridRow: gridPosition.row }

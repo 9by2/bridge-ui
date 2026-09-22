@@ -1,7 +1,15 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, expect, test, vi } from "vitest"
 
-import { Kanban, KanbanBoard, KanbanColumn, KanbanColumnContent, KanbanItem, KanbanItemHandle } from "../../app"
+import {
+  Kanban,
+  KanbanBoard,
+  KanbanColumn,
+  KanbanColumnContent,
+  KanbanColumnHandle,
+  KanbanItem,
+  KanbanItemHandle
+} from "../../app"
 
 afterEach(cleanup)
 
@@ -72,4 +80,18 @@ test("kanban exposes every valid drop zone when item dragging starts", () => {
   expect(item?.getAttribute("data-dragging")).toBe("true")
   expect(screen.getByTestId("done-content").getAttribute("data-drop-zone")).toBe("true")
   expect(screen.getByTestId("done-content").getAttribute("data-drop-target")).toBe("false")
+})
+
+test("kanban exposes an accessible handle for sortable columns", () => {
+  render(
+    <Kanban value={value} onValueChange={vi.fn()} getItemValue={(task) => task.id}>
+      <KanbanBoard>
+        <KanbanColumn value="todo">
+          <KanbanColumnHandle>To do</KanbanColumnHandle>
+        </KanbanColumn>
+      </KanbanBoard>
+    </Kanban>
+  )
+
+  expect(screen.getByText("To do").getAttribute("data-slot")).toBe("kanban-column-handle")
 })
