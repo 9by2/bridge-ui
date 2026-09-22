@@ -185,3 +185,82 @@ import { Avatar, AvatarFallback, AvatarImage } from "@bridge/ui"
   <AvatarFallback>NW</AvatarFallback>
 </Avatar>
 ```
+
+## Component reference
+
+Use the catalog for complete states and examples. All components accept their documented native/primitive props and `className` for local layout. Use semantic props and compound children below; do not override private classes, `data-slot`, or generated source.
+
+### Actions and disclosure
+
+| Family                                             | Use supported customization for                                                          |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Accordion, Collapsible                             | Controlled `open` state; Trigger and Content composition.                                |
+| Alert, StickyAlert                                 | Semantic `variant`; action children.                                                     |
+| AlertDialog, Dialog, Drawer, Sheet                 | Controlled `open`; Trigger, Content, Header, Footer, Title, Description; `closeLabel`.   |
+| Button, ButtonGroup, Toggle, ToggleGroup           | `variant`, `size`, `disabled`; grouped selection state for ToggleGroup.                  |
+| DropdownMenu, ContextMenu, Menubar, NavigationMenu | Trigger, item, checkbox/radio, submenu composition; controlled open state where exposed. |
+| Popover, HoverCard, Tooltip                        | Trigger and Content composition; side/alignment/offset placement props.                  |
+| Command, Kbd                                       | Command input/list/group/item composition; `Kbd` renders keyboard labels.                |
+| Pagination                                         | Page, previous, next, and link composition; current-page semantics.                      |
+| WizardStep                                         | Step status and action children.                                                         |
+
+### Fields and selection
+
+| Family                                      | Use supported customization for                                                                     |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Checkbox, RadioGroup, Switch                | Controlled `checked`/`value`; label and description composition.                                    |
+| Combobox, MultiSelect, Select, NativeSelect | Controlled value/open state; option/item children; empty, clear, and search content where provided. |
+| Input, Textarea                             | `icon` only for decorative leading icons; `invalid`, `disabled`, and native field props.            |
+| InputGroup, InputOtp                        | Addon, button, text, and input composition; use InputGroup for interactive adornments.              |
+| Calendar                                    | Controlled selected value; locale, month, and disabled-date rules.                                  |
+| Slider                                      | Controlled value, range, min/max/step, and accessible label.                                        |
+| Field, Label                                | Label, description, error, and control composition.                                                 |
+| DropArea, Attachment                        | Accepted file rules, upload state, callbacks, previews, and action slots.                           |
+| Questionnaire                               | Question, answer, validation, and navigation composition.                                           |
+
+### Layout and navigation
+
+| Family                                        | Use supported customization for                                                                  |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| AspectRatio, Resizable, ScrollArea, Separator | Ratio, pane direction/default sizes, viewport behavior, and orientation.                         |
+| Card, TableFrame, Table                       | Card `radius`/`size`; table columns, rows, empty content, and density props where exposed.       |
+| Carousel                                      | Controlled slide API, orientation, and previous/next controls.                                   |
+| Page, ShellHeader, Sidebar                    | Page spacing/layout props; header slots; Sidebar provider, rail, trigger, and collapsible state. |
+| Tabs                                          | Controlled value; List, Trigger, and Content composition.                                        |
+| Breadcrumb                                    | Item/link/separator composition; custom separator children.                                      |
+| Direction                                     | `dir="ltr"` or `dir="rtl"` subtree direction.                                                    |
+| ResponsiveImage                               | Responsive source, alt text, loading, and aspect-ratio props.                                    |
+
+### Status, feedback, and display
+
+| Family                                        | Use supported customization for                                                      |
+| --------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Avatar, Badge, Marker, StatusStamp            | Size and semantic variant; Avatar image/fallback composition.                        |
+| Bubble, Message, MessageScroller              | Sender/status metadata, message actions, scroll/loading behavior.                    |
+| DataState, Empty, Skeleton, Spinner           | Loading, empty, error, retry, and custom action content.                             |
+| DetailItem, Item, SettingItem, Settings       | Label/value, icon, action, description, and grouped-item composition.                |
+| Progress, SuccessBurst                        | Progress value/status; completion animation trigger.                                 |
+| Toast, Sonner                                 | Toast provider/viewport and action composition; Sonner global options and toast API. |
+| TicketCard, TicketCover, ProductItem, Receipt | Semantic content slots, image/media, metadata, and action children.                  |
+| TimelineStep                                  | State, icon, title, description, and connector composition.                          |
+| UploadList, UploadPreview, UploadViewer       | File state, preview renderer, item actions, and download/remove callbacks.           |
+
+### Data, media, and utilities
+
+| Family                 | Use supported customization for                                          |
+| ---------------------- | ------------------------------------------------------------------------ |
+| Chart, TsChart         | Data, series/config, axes, tooltip/legend, and empty/loading content.    |
+| ImageCrop              | Source image, crop/aspect rules, output callback, and accessible labels. |
+| QrCode                 | Value, error-correction level, size, and foreground/background props.    |
+| FractalGlass, FlipText | Content, animation state, and reduced-motion-safe product behavior.      |
+| MessageScroller        | Scroll anchoring, loading state, and message children.                   |
+| Receipt                | Structured line items, totals, metadata, and print/product actions.      |
+
+### Foundation
+
+| Family                   | Use supported customization for                                                                                                     |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Theme                    | `mode`, `density`, and typed `theme` overrides; see Theme customization above.                                                      |
+| Typography               | `Heading as`, semantic `Body`/`Label`, and `className` for local layout.                                                            |
+| TypographyLabel          | Inline label primitive; use `Label` for form-label semantics.                                                                       |
+| Accessibility primitives | `Label`, `Kbd`, `Separator`, and `Direction` preserve package semantics; provide labels and text alternatives from the application. |
