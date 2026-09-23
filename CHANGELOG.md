@@ -1,5 +1,24 @@
 # @bridge/ui
 
+## 0.8.0
+
+### Minor Changes
+
+- 7faa682: Expose stable CSS override names for the brand palette in statically compiled component recipes.
+- 91c3edc: Add theme-aware MetricTile with required featured, standard and compact variants.
+- 7faa682: Derive owned StyleX palette, typography, and shape styling from shared theme variables instead of component-specific CSS variables while retaining semantic component props.
+
+### Patch Changes
+
+- c0df720: Source Cue Input's default control radius from the published stylesheet rather than an inline Theme default.
+- b809b3c: Use an em-based Cue control radius and standalone Input fallback while preserving Theme overrides.
+- 045bdd8: Restore Input's theme control-radius variable and match Cue's 8px control radius in Cue mode.
+- ed7cf26: Use relative em units for shared theme typography and radius scales.
+- 7faa682: Keep the accessible static image fallback when a FractalGlass WebGL texture request fails.
+- 4e0688f: Fixed `geometryToken` and `themeToken` in `token.stylex.ts`: both were plain JS object literals whose identical string values repeated across files (Button, Input, Textarea, Kanban, Dialog, Popover, Card, MetricTile, and more). The StyleX compiler folded these repeated literals into a shared internal CSS custom property but silently dropped its `:root` definition, so every consumer resolved `var(--xHASH)` to nothing — most visibly Button's border-radius rendering as `0px` with no inline padding in every Theme mode, including Cue. Both tokens now use `stylex.defineConsts()`, StyleX's documented API for cross-file shared constants, which emits the definition it references.
+- 9812868: Keep Kanban drag handlers aligned with committed props and preserve hook order across overlay rendering.
+- 35bef60: Improve owned component context stability and breadcrumb accessibility while retaining existing component APIs.
+
 ## 0.7.0
 
 ### Minor Changes
