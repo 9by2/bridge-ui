@@ -11,7 +11,7 @@ export const inputStyle = stylex.create({
     height: { default: 32, "::file-selector-button": 24 },
     width: "100%",
     minWidth: 0,
-    borderRadius: "var(--bridge-control-radius, 10px)",
+    borderRadius: "var(--bridge-control-radius, 0.625em)",
     borderWidth: { default: 1, "::file-selector-button": 0 },
     borderStyle: "solid",
     borderColor: {
