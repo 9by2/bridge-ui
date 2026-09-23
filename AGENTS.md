@@ -6,7 +6,7 @@
 - **ALWAYS** read [README.md](./README.md) for current project fact and command.
 - **ALWAYS** use native `git`. Never use GitButler unless the active branch is already `gitbutler/workspace`.
 - **ALWAYS** use singlular except variable name allowed to use plural.
-- **ALWAYS** work on non-main branch and PR to mani. The automated release branch remains automation-owned.
+- **ALWAYS** work on a non-`main` branch and open an MR/PR to `main`. `main` carries permanent Changesets RC pre-release mode — every merged changeset bumps an RC (`next`) automatically. Promotion to stable (`latest`) is a separate, explicit action: a human runs the manual `promote` CI job. The automated release-prep branch (`changeset-release/main`) remains automation-owned.
 - **ALWAYS** follow commit title pattern: `{{chore|feat|fix|...}}({{detail}}): {{short-commit-message}}` short up to 50 characters, additional detail in comment message.
 - **ALWAYS** follow branch pattern: `{{chore|feat|fix|...}}/{{detail}}` short up to 50 characters, additional detail in comment message.
 - **ALWAYS** use Bun as package manager and script runner.
