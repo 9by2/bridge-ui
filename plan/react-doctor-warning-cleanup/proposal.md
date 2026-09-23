@@ -59,3 +59,27 @@ Residual inventory after this round (47 warnings, re-verified against a fresh fu
 - 1 `iframe-missing-sandbox`, 1 `no-giant-component`: unchanged.
 
 0 `no-high-complexity-react-function` and 0 `insecure-crypto-risk` remain in this scan. The proposal remains active; continue independent fixes on the still-open buckets without hiding diagnostics.
+
+## Current Scan (2026-09-23, final)
+
+One more commit landed a real fix and every remaining bucket was re-verified with a fresh `why` check per diagnostic this session:
+
+- `164306f` "fix(doctor): extract vendored editable-event chart overlay components" — split vendored `EditableEventExample`'s toolbar and sr-only identity-list JSX into local `EventEditorToolbar`/`EventEditorIdentityList` components (pure markup move, zero behavior change). Resolved the sole `no-giant-component` finding. Verified with typecheck, lint, full unit suite, `catalog:build`, all 6 `catalog:test` browser suites, `boundary`, `verify:tree-shaking`, and a targeted manual `Bun.WebView` script confirming the date-edit interaction still updates the live summary and sr-only identity list.
+
+Full scan now: **46 warnings, 0 errors, score 80, 34 affected files**.
+
+Two additional fixes were attempted and reverted after concrete verification failures, confirming they remain genuinely blocked rather than unattempted:
+
+- `iframe-missing-sandbox` (`internal/catalog/preview.tsx`): tried a curated `sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock"` value. `allow-same-origin` combined with `allow-scripts` triggers a *second*, stricter warning (self-defeating sandbox). Dropping `allow-same-origin` breaks the ts-chart preview's cross-origin-restricted dynamic import, failing `render-pipeline.test.ts`'s Sankey chart assertion. The catalog previews itself at `/?preview#...` (same-origin, script-dependent, needs same-host dynamic imports for lazy chart bundles) — exactly the combination the rule flags as unsafe. Reverted cleanly; `catalog:test` confirmed green after revert.
+- `no-adjust-state-on-prop-change` (`image-crop.tsx`/`internal/pilot/image-crop.tsx`): re-confirmed via `why` — the flagged line is `setError(true)` inside a canvas-context-failure branch, not a prop-reset effect. Changing this would conceal a legitimate failure state, not fix a bug.
+
+Every remaining diagnostic was re-verified individually via `react-doctor why <file>:<line>` this session (not just re-run as a bucket count):
+
+- 20 `duplicate-jsx-subtree`: each of the 11 owned/pilot pairs confirmed to be exactly a 2-file, 2-copy mirror (the private `internal/pilot/*` comparison fixture intentionally mirrors the public `app/component/brand/stylex/*` runtime). The 9 catalog/vendored copies (5 sidebar examples + 4 vendored TanStack chart cases) are blocked by `plan/spec/catalog-contract/spec.md`'s "exact copyable source" requirement — each example must stay self-contained and copy-pasteable; extracting a shared helper would break that contract for consumers copying the example.
+- 9 `async-await-in-loop`: unchanged — ordered `Bun.WebView` navigation/assertion loops in `cmd/verify-*.ts`; parallelizing would race navigation.
+- 9 carousel findings (3 each `no-pass-data-to-parent`/`no-pass-live-state-to-parent`/`no-prop-callback-in-effect`) across generated/owned/pilot: re-confirmed via `why` on `app/component/shadcn/carousel.tsx:93`. `setApi` exposes the async-initialized Embla instance to code *outside* the `<Carousel>` tree (not a context-sharing case within the tree) — a documented public callback API with existing test coverage (`test/component/pilot-carousel.test.tsx`) asserting exactly this behavior. No context-based alternative preserves the same external-consumer contract.
+- 3 `prefer-tag-over-role`: `ItemGroup` (owned+pilot only — the generated `app/component/shadcn/item.tsx` never added `role="list"` in the first place, so this is a 2-file not 3-file finding) wraps composable `Item`/`ItemSeparator` children, not `li`/`hr`. `Item` is also used standalone outside `ItemGroup` (e.g. `upload-preview.tsx`), so a context-based `li` default for `Item` inside `ItemGroup` would still leave `ItemSeparator` as an invalid non-`li` child of a `ul`, since HTML permits only `<li>` (plus script/template) as direct `<ul>` children. Fixing this needs an accepted redesign (e.g., `ItemSeparator` rendering as `<li role="separator">` or restructuring composition), not attempted this session given the scope. Calendar `DaySlot` (`bridge-calendar.tsx:694`) unchanged — nested interactive drag/click/keyboard handlers can't be safely hosted by a native `<button>`.
+- 2 `no-array-index-as-key`: `Slider` thumbs (owned+pilot) — unchanged, positional min/max edge identity, not stable data.
+- 1 `iframe-missing-sandbox`, 1 (formerly 2) `no-adjust-state-on-prop-change`: see revert/re-confirm notes above.
+
+0 `no-high-complexity-react-function`, 0 `insecure-crypto-risk`, 0 `no-giant-component` remain. Every one of the 46 residual warnings has a specific, individually-verified blocker per DEC-001 rather than a bucket-level assumption. No diagnostics were hidden or suppressed; no generated Shadcn source was hand-edited outside the guarded refresh script.
