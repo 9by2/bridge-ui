@@ -84,6 +84,10 @@
       "types": "./dist/component/brand/ts-chart.d.ts",
       "import": "./dist/component/brand/ts-chart.js"
     },
+    "./color-picker": {
+      "types": "./dist/component/brand/stylex/color-picker.d.ts",
+      "import": "./dist/component/brand/stylex/color-picker.js"
+    },
     "./metric-tile": {
       "types": "./dist/component/brand/stylex/metric-tile.d.ts",
       "import": "./dist/component/brand/stylex/metric-tile.js"

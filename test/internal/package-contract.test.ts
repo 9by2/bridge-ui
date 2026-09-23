@@ -72,7 +72,15 @@ describe("package contract", () => {
     const entry = await Bun.file(path.join(root, "app/index.ts")).text()
     const manifest = await Bun.file(path.join(root, "package.json")).json()
 
-    for (const name of ["data-state", "table-frame", "timeline-step", "wizard-step", "fractal-glass", "qr-code"]) {
+    for (const name of [
+      "data-state",
+      "table-frame",
+      "timeline-step",
+      "wizard-step",
+      "fractal-glass",
+      "qr-code",
+      "color-picker"
+    ]) {
       expect(entry).toContain(`export * from "./component/brand/stylex/${name}"`)
       expect(manifest.exports[`./${name}`]).toEqual({
         types: `./dist/component/brand/stylex/${name}.d.ts`,

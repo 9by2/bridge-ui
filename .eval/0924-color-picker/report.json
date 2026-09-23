@@ -1,0 +1,46 @@
+[
+  {
+    "viewport": {
+      "name": "desktop",
+      "width": 1024,
+      "height": 900
+    },
+    "initial": {
+      "radio": 23,
+      "checked": "White",
+      "more": 1,
+      "overflow": false
+    },
+    "keyboard": "Slate",
+    "custom": {
+      "output": "#3366cc",
+      "checked": "#3366cc"
+    },
+    "focusBack": "color-picker-custom",
+    "variants": {
+      "overflow": false
+    }
+  },
+  {
+    "viewport": {
+      "name": "mobile",
+      "width": 390,
+      "height": 900
+    },
+    "initial": {
+      "radio": 23,
+      "checked": "White",
+      "more": 1,
+      "overflow": false
+    },
+    "keyboard": "Slate",
+    "custom": {
+      "output": "#3366cc",
+      "checked": "#3366cc"
+    },
+    "focusBack": "color-picker-custom",
+    "variants": {
+      "overflow": false
+    }
+  }
+]

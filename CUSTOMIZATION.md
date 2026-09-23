@@ -69,6 +69,28 @@ export function App() {
 
 `density` supports `bridgeDensity.compact`, `bridgeDensity.default`, and `bridgeDensity.comfortable`. It adjusts shared padding and layout gaps while retaining package control heights and focus behavior.
 
+## ColorPicker
+
+Circular swatch picker with radio semantics (arrow keys move selection). Each option is either `fill` (`color`) or `gradient` (`stop`, optional `shape` `linear` | `radial`, optional `angle`). A gradient defaults to `linear` at 135deg. With no `option` prop the system `colorPickerPreset.gradient` palette renders; pass `colorPickerPreset.fill` or your own list (mixed types allowed) to inject another palette. Option `label` is the accessible name — pass translated copy.
+
+Variants: `size` = `sm` | `md` (default) | `lg`; `layout` = `grid` (default, `column` default 6) | `row` (single horizontally scrollable line for toolbars). The trailing custom control opens a popover with a native color input and hex field; a valid `#rrggbb` emits `onValueChange(hex, fillOption)` and appears as a selected extra swatch. Hide it with `custom={false}`. Override copy with `customLabel`, `colorLabel`, `hexLabel`. Override the selected ring color with `--bridge-color-picker-ring`. `colorPickerBackground(option)` returns the CSS `background` for reuse in previews.
+
+```tsx
+import { ColorPicker, colorPickerPreset } from "@bridge/ui/color-picker"
+
+<ColorPicker aria-label="Background" size="lg" layout="grid" column={6} defaultValue="white" />
+<ColorPicker aria-label="Accent" size="sm" layout="row" option={colorPickerPreset.fill} custom={false} />
+<ColorPicker
+  aria-label="Brand"
+  option={[
+    { type: "fill", value: "ink", label: "Ink", color: "#111827" },
+    { type: "gradient", value: "glow", label: "Glow", stop: ["#fde68a", "#f97316"], shape: "radial" }
+  ]}
+  value={value}
+  onValueChange={(next) => setValue(next)}
+/>
+```
+
 ## MetricTile
 
 Select a required `variants` on every tile: `featured` for prominent metrics, `standard` for regular cards, or `compact` for dense summaries. There is no implicit variant. `label`, `value`, `description`, and `icon` are caller-supplied; pass formatted numbers and translated copy. `loading` requires caller-supplied `loadingLabel` to announce progress without rendering a stale value. The icon is decorative. The application owns grid spans, responsive layout, data, and any navigation; the tile itself is not clickable.
