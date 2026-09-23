@@ -30,6 +30,10 @@
   --bridge-layout-gap: var(--bridge-space-4);
 }
 
+[data-bridge-theme="cue"] {
+  --bridge-control-radius: 0.5em;
+}
+
 [data-pilot-theme="cue"] {
   color-scheme: dark;
   scrollbar-color: oklch(0.4 0 0) transparent;

@@ -377,7 +377,6 @@ function themeVariables(
     "--bridge-space-3": space[3],
     "--bridge-space-4": space[4],
     "--bridge-space-5": space[5],
-    "--bridge-control-radius": theme.radius?.control ?? (mode === themeMode.cue ? "0.5em" : "0.625rem"),
     "--bridge-control-radius-sm": theme.radius?.controlSmall ?? "0.5rem",
     "--bridge-surface-radius": theme.radius?.surface ?? "0.875rem",
     "--bridge-overlay-radius": theme.radius?.overlay ?? theme.radius?.surface ?? "0.875rem",
@@ -398,6 +397,7 @@ function themeVariables(
         ? "var(--bridge-space-5)"
         : "var(--bridge-space-4)"
   }
+  if (theme.radius?.control !== undefined) variables["--bridge-control-radius"] = theme.radius.control
   const { color } = theme
   if (color) {
     if (color.background) variables["--bridge-color-background"] = color.background

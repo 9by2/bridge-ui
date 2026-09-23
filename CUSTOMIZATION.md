@@ -239,7 +239,7 @@ export function AccountSummary() {
 
 ## Input icons
 
-In `mode="cue"`, Input uses a `0.5em` control radius relative to its own font size. `theme.radius.control` still overrides it; other modes retain their existing default.
+The published `@bridge/ui/style.css` sets Input's Cue control radius to `0.5em` relative to its own font size. `theme.radius.control` still overrides it; other modes use the stylesheet's default. Import the package stylesheet for these defaults.
 
 Use `Input`'s `icon` prop for a decorative leading icon. The icon is hidden from assistive technologies; use the input label or `aria-label` to provide its accessible name.
 

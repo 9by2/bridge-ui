@@ -25,7 +25,12 @@ test("Cue Input matches Cue control radius and respects Theme override", async (
       await page.view.evaluate<string>(
         `document.querySelector('.example-stage input[data-slot="input"]').closest('[data-bridge-theme]').style.getPropertyValue('--bridge-control-radius')`
       )
-    ).toBe("0.5em")
+    ).toBe("")
+    expect(
+      await page.view.evaluate<string>(
+        `getComputedStyle(document.querySelector('.example-stage input[data-slot="input"]').closest('[data-bridge-theme]')).getPropertyValue('--bridge-control-radius').trim()`
+      )
+    ).toBe(".5em")
     expect(
       await page.view.evaluate<string>(`(() => {
         const input = document.querySelector('.example-stage input[data-slot="input"]');
@@ -35,5 +40,11 @@ test("Cue Input matches Cue control radius and respects Theme override", async (
     ).toBe(width === 390 ? "4px" : "3.5px")
   }
   await Bun.write(".eval/0923-cue-input/screen.png", await page.view.screenshot({ encoding: "buffer", format: "png" }))
+  await page.goto("/?preview&theme=light#input/default")
+  await pollUntil(() =>
+    page.evaluate(
+      `() => getComputedStyle(document.querySelector('.example-stage input[data-slot="input"]')).borderRadius === '10px'`
+    )
+  )
   expect(page.errors).toEqual([])
 })
