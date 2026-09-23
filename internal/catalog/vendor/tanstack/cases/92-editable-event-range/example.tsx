@@ -9,7 +9,7 @@ import {
 import { editableEvents, initialEditableEventEnd } from './scenario'
 import type { ChartScene } from '@tanstack/charts'
 import type { HandleXChange } from '@tanstack/charts/interaction/handle'
-import type { FormEvent, KeyboardEvent, PointerEvent } from 'react'
+import type { FormEvent, KeyboardEvent, PointerEvent, RefObject } from 'react'
 import type { EditableEvent } from './scenario'
 
 export interface EditableState {
@@ -213,6 +213,157 @@ export interface ExampleChartInput {
   interactive?: boolean
 }
 
+function EventEditorToolbar({
+  end,
+  dateRef,
+  dateValue,
+  invalid,
+  minDate,
+  maxDate,
+  handleDateInput,
+  handleDateKeyDown,
+  handlePointerCancel,
+  commitEdit,
+}: {
+  end: Date
+  dateRef: RefObject<HTMLInputElement | null>
+  dateValue: string
+  invalid: boolean
+  minDate: string
+  maxDate: string
+  handleDateInput: (event: FormEvent<HTMLInputElement>) => void
+  handleDateKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void
+  handlePointerCancel: (event: PointerEvent<HTMLInputElement>) => void
+  commitEdit: () => void
+}) {
+  return (
+    <div
+      className="ts-conformance-event-toolbar"
+      role="group"
+      aria-label="Release event editor"
+      style={{
+        position: 'absolute',
+        top: 4,
+        left: 12,
+        right: 12,
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        gap: 8,
+        color: 'inherit',
+        pointerEvents: 'none',
+      }}
+    >
+      <output
+        className="ts-conformance-event-summary"
+        aria-live="polite"
+        aria-atomic="true"
+        style={{
+          boxSizing: 'border-box',
+          flex: '1 1 120px',
+          minWidth: 120,
+          minHeight: 44,
+          padding: '8px 10px',
+          border:
+            '1px solid color-mix(in srgb, currentColor 32%, transparent)',
+          borderRadius: 10,
+          display: 'flex',
+          alignItems: 'center',
+          background:
+            'color-mix(in srgb, var(--ts-chart-2, #f97316) 12%, Canvas)',
+          color: 'inherit',
+          font: '600 12px/1.25 system-ui, sans-serif',
+        }}
+      >
+        {editableSummaryText(end)}
+      </output>
+      <label
+        style={{
+          boxSizing: 'border-box',
+          flex: '0 1 140px',
+          minWidth: 128,
+          display: 'grid',
+          gap: 2,
+          color: 'inherit',
+          font: '600 11px/1.15 system-ui, sans-serif',
+          pointerEvents: 'auto',
+        }}
+      >
+        Release end
+        <input
+          ref={dateRef}
+          className="ts-conformance-event-date"
+          type="date"
+          required
+          min={minDate}
+          max={maxDate}
+          value={dateValue}
+          aria-label="Release end date input"
+          aria-invalid={invalid}
+          onInput={handleDateInput}
+          onBlur={() => {
+            if (!invalid) commitEdit()
+          }}
+          onKeyDown={handleDateKeyDown}
+          onPointerCancel={handlePointerCancel}
+          style={{
+            boxSizing: 'border-box',
+            width: '100%',
+            height: 44,
+            padding: '6px 8px',
+            border: `1px solid ${
+              invalid
+                ? '#dc2626'
+                : 'color-mix(in srgb, currentColor 32%, transparent)'
+            }`,
+            borderRadius: 8,
+            background:
+              'color-mix(in srgb, var(--ts-chart-2, #f97316) 12%, Canvas)',
+            color: 'inherit',
+            colorScheme: 'light dark',
+            font: '600 12px/1 system-ui, sans-serif',
+          }}
+        />
+      </label>
+      <span
+        className="ts-conformance-event-validation"
+        aria-live="polite"
+        hidden={!invalid}
+        style={{
+          flex: '1 0 100%',
+          color: '#dc2626',
+          font: '600 11px/1.2 system-ui, sans-serif',
+        }}
+      >
+        {invalid ? validationMessage : ''}
+      </span>
+    </div>
+  )
+}
+
+function EventEditorIdentityList({ descriptions }: { descriptions: string[] }) {
+  return (
+    <ul
+      className="ts-conformance-event-identities"
+      style={{
+        position: 'absolute',
+        width: 1,
+        height: 1,
+        padding: 0,
+        margin: -1,
+        overflow: 'hidden',
+        clipPath: 'inset(50%)',
+        whiteSpace: 'nowrap',
+      }}
+    >
+      {descriptions.map((description) => (
+        <li key={description}>{description}</li>
+      ))}
+    </ul>
+  )
+}
+
 export default function EditableEventExample({
   width = 640,
   height = 480,
@@ -412,125 +563,19 @@ export default function EditableEventExample({
           pointerEvents: 'none',
         }}
       >
-        <div
-          className="ts-conformance-event-toolbar"
-          role="group"
-          aria-label="Release event editor"
-          style={{
-            position: 'absolute',
-            top: 4,
-            left: 12,
-            right: 12,
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'flex-end',
-            justifyContent: 'flex-end',
-            gap: 8,
-            color: 'inherit',
-            pointerEvents: 'none',
-          }}
-        >
-          <output
-            className="ts-conformance-event-summary"
-            aria-live="polite"
-            aria-atomic="true"
-            style={{
-              boxSizing: 'border-box',
-              flex: '1 1 120px',
-              minWidth: 120,
-              minHeight: 44,
-              padding: '8px 10px',
-              border:
-                '1px solid color-mix(in srgb, currentColor 32%, transparent)',
-              borderRadius: 10,
-              display: 'flex',
-              alignItems: 'center',
-              background:
-                'color-mix(in srgb, var(--ts-chart-2, #f97316) 12%, Canvas)',
-              color: 'inherit',
-              font: '600 12px/1.25 system-ui, sans-serif',
-            }}
-          >
-            {editableSummaryText(state.end)}
-          </output>
-          <label
-            style={{
-              boxSizing: 'border-box',
-              flex: '0 1 140px',
-              minWidth: 128,
-              display: 'grid',
-              gap: 2,
-              color: 'inherit',
-              font: '600 11px/1.15 system-ui, sans-serif',
-              pointerEvents: 'auto',
-            }}
-          >
-            Release end
-            <input
-              ref={dateRef}
-              className="ts-conformance-event-date"
-              type="date"
-              required
-              min={minDate}
-              max={maxDate}
-              value={dateValue}
-              aria-label="Release end date input"
-              aria-invalid={invalid}
-              onInput={handleDateInput}
-              onBlur={() => {
-                if (!invalid) commitEdit()
-              }}
-              onKeyDown={handleDateKeyDown}
-              onPointerCancel={handlePointerCancel}
-              style={{
-                boxSizing: 'border-box',
-                width: '100%',
-                height: 44,
-                padding: '6px 8px',
-                border: `1px solid ${
-                  invalid
-                    ? '#dc2626'
-                    : 'color-mix(in srgb, currentColor 32%, transparent)'
-                }`,
-                borderRadius: 8,
-                background:
-                  'color-mix(in srgb, var(--ts-chart-2, #f97316) 12%, Canvas)',
-                color: 'inherit',
-                colorScheme: 'light dark',
-                font: '600 12px/1 system-ui, sans-serif',
-              }}
-            />
-          </label>
-          <span
-            className="ts-conformance-event-validation"
-            aria-live="polite"
-            hidden={!invalid}
-            style={{
-              flex: '1 0 100%',
-              color: '#dc2626',
-              font: '600 11px/1.2 system-ui, sans-serif',
-            }}
-          >
-            {invalid ? validationMessage : ''}
-          </span>
-        </div>
-        <ul
-          className="ts-conformance-event-identities"
-          style={{
-            position: 'absolute',
-            width: 1,
-            height: 1,
-            padding: 0,
-            margin: -1,
-            overflow: 'hidden',
-            clipPath: 'inset(50%)',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {eventDescriptions.map((description) => (
-            <li key={description}>{description}</li>
-          ))}
-        </ul>
+        <EventEditorToolbar
+          end={state.end}
+          dateRef={dateRef}
+          dateValue={dateValue}
+          invalid={invalid}
+          minDate={minDate}
+          maxDate={maxDate}
+          handleDateInput={handleDateInput}
+          handleDateKeyDown={handleDateKeyDown}
+          handlePointerCancel={handlePointerCancel}
+          commitEdit={commitEdit}
+        />
+        <EventEditorIdentityList descriptions={eventDescriptions} />
       </div>
     </div>
   )
