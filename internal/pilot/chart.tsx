@@ -171,7 +171,7 @@ export function ChartTooltipContent({
             const entry = getPayloadConfig(config, item, `${nameKey ?? item.name ?? item.dataKey ?? "value"}`)
             const indicatorColor = color ?? item.payload?.fill ?? item.color
             return (
-              <div key={index} {...stylex.props(style.row, indicator === "dot" && style.center)}>
+              <div key={item.graphicalItemId} {...stylex.props(style.row, indicator === "dot" && style.center)}>
                 {formatter && item.value !== undefined && item.name ? (
                   formatter(item.value, item.name, item, index, item.payload)
                 ) : (
@@ -229,10 +229,14 @@ export function ChartLegendContent({
         .join(" ")}>
       {payload
         .filter((item) => item.type !== "none")
-        .map((item, index) => {
+        .map((item) => {
           const entry = getPayloadConfig(config, item, `${nameKey ?? item.dataKey ?? "value"}`)
+          const legendKey =
+            (typeof item.dataKey === "string" || typeof item.dataKey === "number" ? item.dataKey : undefined) ??
+            item.value ??
+            "legend"
           return (
-            <div key={index} {...stylex.props(style.legendItem)}>
+            <div key={legendKey} {...stylex.props(style.legendItem)}>
               {entry?.icon && !hideIcon ? (
                 <entry.icon />
               ) : (

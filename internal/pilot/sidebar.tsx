@@ -10,7 +10,8 @@ import {
   useMemo,
   useState,
   type ComponentProps,
-  type CSSProperties
+  type CSSProperties,
+  type ReactNode
 } from "react"
 
 import { useIsMobile } from "../use-mobile"
@@ -340,6 +341,68 @@ export function SidebarProvider({
     </Context>
   )
 }
+function sidebarGapStyle(collapsed: boolean, collapsible: "offcanvas" | "icon" | "none", floating: boolean) {
+  return stylex.props(
+    style.gap,
+    collapsed && (collapsible === "offcanvas" ? style.gapOff : floating ? style.gapFloating : style.gapIcon)
+  )
+}
+function sidebarContainerClassName(
+  side: "left" | "right",
+  floating: boolean,
+  collapsed: boolean,
+  collapsible: "offcanvas" | "icon" | "none"
+) {
+  return stylex.props(
+    style.container,
+    side === "left" ? style.left : style.right,
+    floating && style.floating,
+    collapsed && collapsible === "offcanvas" && (side === "left" ? style.leftOff : style.rightOff),
+    collapsed && collapsible === "icon" && (floating ? style.iconFloating : style.gapIcon)
+  ).className
+}
+function StaticSidebar({ className, children, ...props }: ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="sidebar"
+      {...props}
+      className={[stylex.props(style.static).className, className].filter(Boolean).join(" ")}>
+      {children}
+    </div>
+  )
+}
+function MobileSidebar({
+  side,
+  dir,
+  openMobile,
+  setOpenMobile,
+  children
+}: {
+  side: "left" | "right"
+  dir: ComponentProps<"div">["dir"]
+  openMobile: boolean
+  setOpenMobile: (value: boolean) => void
+  children: ReactNode
+}) {
+  return (
+    <Sheet open={openMobile} onOpenChange={setOpenMobile}>
+      <SheetContent
+        dir={dir}
+        data-sidebar="sidebar"
+        data-slot="sidebar"
+        data-mobile="true"
+        side={side}
+        showCloseButton={false}
+        className={stylex.props(style.mobile).className}>
+        <SheetHeader className={stylex.props(style.hidden).className}>
+          <SheetTitle>Sidebar</SheetTitle>
+          <SheetDescription>Displays the mobile sidebar.</SheetDescription>
+        </SheetHeader>
+        <div {...stylex.props(style.inner)}>{children}</div>
+      </SheetContent>
+    </Sheet>
+  )
+}
 export function Sidebar({
   side = "left",
   variant = "sidebar",
@@ -356,31 +419,15 @@ export function Sidebar({
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
   if (collapsible === "none")
     return (
-      <div
-        data-slot="sidebar"
-        {...props}
-        className={[stylex.props(style.static).className, className].filter(Boolean).join(" ")}>
+      <StaticSidebar className={className} {...props}>
         {children}
-      </div>
+      </StaticSidebar>
     )
   if (isMobile)
     return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile}>
-        <SheetContent
-          dir={dir}
-          data-sidebar="sidebar"
-          data-slot="sidebar"
-          data-mobile="true"
-          side={side}
-          showCloseButton={false}
-          className={stylex.props(style.mobile).className}>
-          <SheetHeader className={stylex.props(style.hidden).className}>
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-          </SheetHeader>
-          <div {...stylex.props(style.inner)}>{children}</div>
-        </SheetContent>
-      </Sheet>
+      <MobileSidebar side={side} dir={dir} openMobile={openMobile} setOpenMobile={setOpenMobile}>
+        {children}
+      </MobileSidebar>
     )
   const collapsed = state === "collapsed"
   const floating = variant === "floating"
@@ -392,27 +439,12 @@ export function Sidebar({
       data-variant={variant}
       data-side={side}
       {...stylex.props(stylex.defaultMarker(), style.root)}>
-      <div
-        data-slot="sidebar-gap"
-        {...stylex.props(
-          style.gap,
-          collapsed && (collapsible === "offcanvas" ? style.gapOff : floating ? style.gapFloating : style.gapIcon)
-        )}
-      />
+      <div data-slot="sidebar-gap" {...sidebarGapStyle(collapsed, collapsible, floating)} />
       <div
         data-slot="sidebar-container"
         data-side={side}
         {...props}
-        className={[
-          stylex.props(
-            style.container,
-            side === "left" ? style.left : style.right,
-            floating && style.floating,
-            collapsed && collapsible === "offcanvas" && (side === "left" ? style.leftOff : style.rightOff),
-            collapsed && collapsible === "icon" && (floating ? style.iconFloating : style.gapIcon)
-          ).className,
-          className
-        ]
+        className={[sidebarContainerClassName(side, floating, collapsed, collapsible), className]
           .filter(Boolean)
           .join(" ")}>
         <div

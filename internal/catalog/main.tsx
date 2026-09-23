@@ -137,8 +137,288 @@ class PreviewBoundary extends Component<{ children: ReactNode }, { failed: boole
   }
 }
 
+function EmbeddedExample({
+  route,
+  name,
+  example,
+  entry,
+  dark,
+  selectedTheme
+}: {
+  route: string
+  name: string
+  example: string
+  entry: (typeof entries)[number] | undefined
+  dark: boolean
+  selectedTheme: string | null
+}) {
+  const Example = entry ? components[entry.path] : undefined
+  const fullPage = name === "shell-header" || (name === "sidebar" && example !== "menu-button")
+  const Stage = fullPage ? "div" : "main"
+  return (
+    <Stage className={`example-stage ${name === "shell-header" ? "shell-example-stage" : ""}`}>
+      {fullPage ? (
+        <header>
+          <h1 className="preview-heading">{title(name)}</h1>
+          <h2 className="preview-heading">{title(example)} example</h2>
+        </header>
+      ) : (
+        <>
+          <h1 className="preview-heading">{title(name)}</h1>
+          <h2 className="preview-heading">{title(example)} example</h2>
+        </>
+      )}
+      <PreviewBoundary key={route}>
+        <Suspense fallback={<p>Loading preview...</p>}>
+          {Example ? (
+            <Theme
+              mode={selectedTheme === "cue" || selectedTheme === "future" ? selectedTheme : dark ? "dark" : "light"}
+              style={{ display: "contents" }}>
+              <Example />
+            </Theme>
+          ) : (
+            <p role="alert">Example not found.</p>
+          )}
+        </Suspense>
+      </PreviewBoundary>
+    </Stage>
+  )
+}
+
+function CatalogSidebar({
+  menu,
+  query,
+  setQuery,
+  name
+}: {
+  menu: boolean
+  query: string
+  setQuery: (value: string) => void
+  name: string
+}) {
+  const normalizedQuery = query.toLowerCase().trim().replaceAll(" ", "-")
+  const matches = names.filter((value) => value.includes(normalizedQuery))
+  return (
+    <aside className={`catalog-sidebar ${menu ? "is-open" : ""}`}>
+      <label className="search-label" htmlFor="search">
+        Find a component
+      </label>
+      <input
+        id="search"
+        className="catalog-search"
+        type="search"
+        placeholder="Search component..."
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+      />
+      <div className="nav-caption">
+        COMPONENT <span>{names.length}</span>
+      </div>
+      <nav aria-label="Component">
+        {matches.map((value) => (
+          <a key={value} href={`#${value}/default`} aria-current={value === name ? "page" : undefined}>
+            {title(value)}
+            {value === name && <span aria-hidden="true">↗</span>}
+          </a>
+        ))}
+        {matches.length === 0 && <p className="empty-search">No match. Try another name.</p>}
+      </nav>
+      <div className="sidebar-foot">One library. Every interface.</div>
+    </aside>
+  )
+}
+
+function ChartOptionReference() {
+  return (
+    <section className="inline-example">
+      <h2>Chart option reference</h2>
+      <p>
+        Examples below cover chart families and common configurations, not every possible Recharts prop combination.
+      </p>
+      <dl className="chart-option-reference">
+        <dt>Container</dt>
+        <dd>
+          config, id, className, initialDimension (width and height), and standard div props. Set an explicit height for
+          responsive sizing.
+        </dd>
+        <dt>Series configuration</dt>
+        <dd>
+          Each data key supports label, icon, and either color or theme.light / theme.dark. Series use the generated
+          --color-key CSS variable.
+        </dd>
+        <dt>Tooltip content</dt>
+        <dd>
+          indicator: dot, line, dashed; hideLabel; hideIndicator; nameKey; labelKey; labelFormatter; formatter; color;
+          labelClassName; className. active, payload and label supply the displayed data.
+        </dd>
+        <dt>Tooltip behavior</dt>
+        <dd>
+          Recharts Tooltip controls active, defaultIndex, cursor, position, offset, trigger, shared, filterNull,
+          itemSorter, animation and portal. ChartTooltip passes through the upstream API.
+        </dd>
+        <dt>Legend content</dt>
+        <dd>
+          hideIcon, nameKey, payload, verticalAlign and className. ChartLegend passes through Recharts layout, align,
+          verticalAlign, iconType and formatter controls.
+        </dd>
+        <dt>Chart composition</dt>
+        <dd>
+          Data keys, axis type/domain/tick formatting, grid, reference line/area/dot, label, multiple series, stackId,
+          normalization, interpolation, stroke/fill, radius, margin, brush, synchronization, events and animation are
+          configured on Recharts primitives.
+        </dd>
+      </dl>
+      <p>
+        <a href="https://recharts.github.io/en-US/api/" target="_blank" rel="noreferrer">
+          Full Recharts API reference ↗
+        </a>
+      </p>
+    </section>
+  )
+}
+
+function ExampleSection({
+  item,
+  name,
+  preview
+}: {
+  item: (typeof entries)[number]
+  name: string
+  preview: (selected: string, label: string) => ReactNode
+}) {
+  const copy =
+    name === "attachment" && item.example === "media"
+      ? "Distinct image, video and file icons identify the attachment type alongside its filename and size."
+      : (chartInventory.cases.find((chart) => name === "ts-chart" && chart.id === item.example)?.intent ??
+        description[`${name}/${item.example}`] ??
+        description[item.example] ??
+        `Review the ${title(item.example).toLowerCase()} composition below.`)
+  const showSupportingSource = name === "ts-chart" && chartInventory.cases.some((chart) => chart.id === item.example)
+  return (
+    <section className="inline-example" key={item.path} aria-labelledby={`heading-${item.example}`}>
+      <h2 id={`heading-${item.example}`}>{title(item.example)}</h2>
+      <p>{copy}</p>
+      <div className="preview-card">{preview(item.example, `${title(name)} ${title(item.example)} preview`)}</div>
+      <Source load={sources[item.path] ?? (() => Promise.resolve("Source unavailable."))} />
+      {showSupportingSource && (
+        <details className="code-panel">
+          <summary>Supporting source</summary>
+          <p className="p-4 text-sm">
+            Vendored TanStack v0.16.0 example. Dataset source and attribution: internal/catalog/vendor/tanstack/data.
+            Supporting module is shown below.
+          </p>
+          {Object.entries(chartSupport)
+            .filter(([path]) => path.includes(`/cases/${item.example}/`))
+            .map(([path, load]) => (
+              <Source key={path} label={path.split("/").at(-1)} load={load} />
+            ))}
+        </details>
+      )}
+    </section>
+  )
+}
+
+function ComponentPage({
+  name,
+  entry,
+  choices,
+  mobile,
+  setMobile,
+  locale,
+  setLocale,
+  motion,
+  setMotion,
+  preview
+}: {
+  name: string
+  entry: (typeof entries)[number] | undefined
+  choices: (typeof entries)[number][]
+  mobile: boolean
+  setMobile: (value: boolean) => void
+  locale: string
+  setLocale: (value: string) => void
+  motion: boolean
+  setMotion: (value: boolean) => void
+  preview: (selected: string, label: string) => ReactNode
+}) {
+  if (!entry)
+    return (
+      <section>
+        <h1>Example not found</h1>
+        <a href="#button/default">Return to Button</a>
+      </section>
+    )
+  return (
+    <>
+      <div className="page-heading">
+        <div>
+          <div className="eyebrow">BUILD WITH BRIDGE</div>
+          <h1>{title(name)}</h1>
+          <p>Every available example, described and displayed below. No switching required.</p>
+        </div>
+        <a
+          className="upstream"
+          href={
+            name === "ts-chart" ? "https://tanstack.com/charts/latest" : `https://ui.shadcn.com/docs/components/${name}`
+          }
+          target="_blank"
+          rel="noreferrer">
+          {name === "ts-chart" ? "TanStack reference ↗" : "Shadcn reference ↗"}
+        </a>
+      </div>
+      <div className="workspace-toolbar">
+        <span>
+          {choices.length} example{choices.length === 1 ? "" : "s"} on this page
+        </span>
+        <div className="toolbar-action">
+          <button aria-pressed={mobile} onClick={() => setMobile(!mobile)}>
+            {mobile ? "Mobile" : "Desktop"}
+          </button>
+        </div>
+      </div>
+      <div className="preview-setting">
+        <span>
+          {locale === "th"
+            ? "ตัวอย่างคอมโพเนนต์ที่ใช้ร่วมกัน"
+            : "Interactive preview. Uses the public StyleX package component."}
+        </span>
+        <label>
+          <input type="checkbox" checked={motion} onChange={(event) => setMotion(event.target.checked)} /> Reduced
+          motion
+        </label>
+        <select aria-label="Language" value={locale} onChange={(event) => setLocale(event.target.value)}>
+          <option value="en">English</option>
+          <option value="th">Thai</option>
+        </select>
+      </div>
+      <div className="inline-example-list">
+        {name === "chart" && <ChartOptionReference />}
+        {choices.map((item) => (
+          <ExampleSection key={item.path} item={item} name={name} preview={preview} />
+        ))}
+      </div>
+      <section className="quick-start">
+        <div>
+          <div className="eyebrow">USE IN YOUR APPLICATION</div>
+          <h2>One import away.</h2>
+          <p>Install the private package from your company registry.</p>
+        </div>
+        <pre>
+          <code>{'import "@bridge/ui/style.css"\nimport * as UI from "@bridge/ui"'}</code>
+        </pre>
+      </section>
+      <footer className="page-footer">
+        <span>Bridge UI · Built on Base UI and Shadcn</span>
+        <span>
+          {choices.length} example{choices.length === 1 ? "" : "s"} available
+        </span>
+      </footer>
+    </>
+  )
+}
+
 function App() {
-  const [route, setRoute] = useState(location.hash.slice(1) || "button/default")
+  const [route, setRoute] = useState(() => location.hash.slice(1) || "button/default")
   const [query, setQuery] = useState("")
   const selectedTheme = new URLSearchParams(location.search).get("theme")
   const [dark, setDark] = useState(selectedTheme !== "light")
@@ -148,6 +428,8 @@ function App() {
   const [menu, setMenu] = useState(false)
   const params = new URLSearchParams(location.search)
   const embedded = params.has("preview")
+  const previewMotion = params.get("motion")
+  const previewLocale = params.get("lang")
   const [name = "button", example = "default"] = route.split("/")
   const entry = entries.find((item) => item.name === name && item.example === example)
   const choices = entries
@@ -163,45 +445,21 @@ function App() {
   }, [])
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark)
-    document.documentElement.dataset.motion = (embedded ? params.get("motion") === "reduced" : motion)
-      ? "reduced"
-      : "normal"
-    document.documentElement.lang = embedded ? (params.get("lang") ?? "en") : locale
+    document.documentElement.dataset.motion = (embedded ? previewMotion === "reduced" : motion) ? "reduced" : "normal"
+    document.documentElement.lang = embedded ? (previewLocale ?? "en") : locale
     document.title = `${title(name)} / Bridge UI`
-  }, [dark, motion, locale, name])
-  if (embedded) {
-    const Example = entry ? components[entry.path] : undefined
-    const fullPage = name === "shell-header" || (name === "sidebar" && example !== "menu-button")
-    const Stage = fullPage ? "div" : "main"
+  }, [dark, embedded, previewMotion, motion, previewLocale, locale, name])
+  if (embedded)
     return (
-      <Stage className={`example-stage ${name === "shell-header" ? "shell-example-stage" : ""}`}>
-        {fullPage ? (
-          <header>
-            <h1 className="preview-heading">{title(name)}</h1>
-            <h2 className="preview-heading">{title(example)} example</h2>
-          </header>
-        ) : (
-          <>
-            <h1 className="preview-heading">{title(name)}</h1>
-            <h2 className="preview-heading">{title(example)} example</h2>
-          </>
-        )}
-        <PreviewBoundary key={route}>
-          <Suspense fallback={<p>Loading preview...</p>}>
-            {Example ? (
-              <Theme
-                mode={selectedTheme === "cue" || selectedTheme === "future" ? selectedTheme : dark ? "dark" : "light"}
-                style={{ display: "contents" }}>
-                <Example />
-              </Theme>
-            ) : (
-              <p role="alert">Example not found.</p>
-            )}
-          </Suspense>
-        </PreviewBoundary>
-      </Stage>
+      <EmbeddedExample
+        route={route}
+        name={name}
+        example={example}
+        entry={entry}
+        dark={dark}
+        selectedTheme={selectedTheme}
+      />
     )
-  }
   const preview = (selected: string, label: string) => (
     <div className="preview-wrap" style={{ maxWidth: mobile ? 390 : undefined }}>
       <Preview
@@ -227,189 +485,23 @@ function App() {
           </button>
         </div>
       </header>
-      <aside className={`catalog-sidebar ${menu ? "is-open" : ""}`}>
-        <label className="search-label" htmlFor="search">
-          Find a component
-        </label>
-        <input
-          id="search"
-          className="catalog-search"
-          type="search"
-          placeholder="Search component..."
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-        />
-        <div className="nav-caption">
-          COMPONENT <span>{names.length}</span>
-        </div>
-        <nav aria-label="Component">
-          {names
-            .filter((value) => value.includes(query.toLowerCase().trim().replaceAll(" ", "-")))
-            .map((value) => (
-              <a key={value} href={`#${value}/default`} aria-current={value === name ? "page" : undefined}>
-                {title(value)}
-                {value === name && <span aria-hidden="true">↗</span>}
-              </a>
-            ))}
-          {!names.some((value) => value.includes(query.toLowerCase().trim().replaceAll(" ", "-"))) && (
-            <p className="empty-search">No match. Try another name.</p>
-          )}
-        </nav>
-        <div className="sidebar-foot">One library. Every interface.</div>
-      </aside>
+      <CatalogSidebar menu={menu} query={query} setQuery={setQuery} name={name} />
       <main className="catalog-main">
         <div className="breadcrumb">
           Library <span>/</span> Component <span>/</span> {title(name)}
         </div>
-        {entry ? (
-          <>
-            <div className="page-heading">
-              <div>
-                <div className="eyebrow">BUILD WITH BRIDGE</div>
-                <h1>{title(name)}</h1>
-                <p>Every available example, described and displayed below. No switching required.</p>
-              </div>
-              <a
-                className="upstream"
-                href={
-                  name === "ts-chart"
-                    ? "https://tanstack.com/charts/latest"
-                    : `https://ui.shadcn.com/docs/components/${name}`
-                }
-                target="_blank"
-                rel="noreferrer">
-                {name === "ts-chart" ? "TanStack reference ↗" : "Shadcn reference ↗"}
-              </a>
-            </div>
-            <div className="workspace-toolbar">
-              <span>
-                {choices.length} example{choices.length === 1 ? "" : "s"} on this page
-              </span>
-              <div className="toolbar-action">
-                <button aria-pressed={mobile} onClick={() => setMobile(!mobile)}>
-                  {mobile ? "Mobile" : "Desktop"}
-                </button>
-              </div>
-            </div>
-            <div className="preview-setting">
-              <span>
-                {locale === "th"
-                  ? "ตัวอย่างคอมโพเนนต์ที่ใช้ร่วมกัน"
-                  : "Interactive preview. Uses the public StyleX package component."}
-              </span>
-              <label>
-                <input type="checkbox" checked={motion} onChange={(event) => setMotion(event.target.checked)} /> Reduced
-                motion
-              </label>
-              <select aria-label="Language" value={locale} onChange={(event) => setLocale(event.target.value)}>
-                <option value="en">English</option>
-                <option value="th">Thai</option>
-              </select>
-            </div>
-            <div className="inline-example-list">
-              {name === "chart" && (
-                <section className="inline-example">
-                  <h2>Chart option reference</h2>
-                  <p>
-                    Examples below cover chart families and common configurations, not every possible Recharts prop
-                    combination.
-                  </p>
-                  <dl className="chart-option-reference">
-                    <dt>Container</dt>
-                    <dd>
-                      config, id, className, initialDimension (width and height), and standard div props. Set an
-                      explicit height for responsive sizing.
-                    </dd>
-                    <dt>Series configuration</dt>
-                    <dd>
-                      Each data key supports label, icon, and either color or theme.light / theme.dark. Series use the
-                      generated --color-key CSS variable.
-                    </dd>
-                    <dt>Tooltip content</dt>
-                    <dd>
-                      indicator: dot, line, dashed; hideLabel; hideIndicator; nameKey; labelKey; labelFormatter;
-                      formatter; color; labelClassName; className. active, payload and label supply the displayed data.
-                    </dd>
-                    <dt>Tooltip behavior</dt>
-                    <dd>
-                      Recharts Tooltip controls active, defaultIndex, cursor, position, offset, trigger, shared,
-                      filterNull, itemSorter, animation and portal. ChartTooltip passes through the upstream API.
-                    </dd>
-                    <dt>Legend content</dt>
-                    <dd>
-                      hideIcon, nameKey, payload, verticalAlign and className. ChartLegend passes through Recharts
-                      layout, align, verticalAlign, iconType and formatter controls.
-                    </dd>
-                    <dt>Chart composition</dt>
-                    <dd>
-                      Data keys, axis type/domain/tick formatting, grid, reference line/area/dot, label, multiple
-                      series, stackId, normalization, interpolation, stroke/fill, radius, margin, brush,
-                      synchronization, events and animation are configured on Recharts primitives.
-                    </dd>
-                  </dl>
-                  <p>
-                    <a href="https://recharts.github.io/en-US/api/" target="_blank" rel="noreferrer">
-                      Full Recharts API reference ↗
-                    </a>
-                  </p>
-                </section>
-              )}
-              {choices.map((item) => (
-                <section className="inline-example" key={item.path} aria-labelledby={`heading-${item.example}`}>
-                  <h2 id={`heading-${item.example}`}>{title(item.example)}</h2>
-                  <p>
-                    {name === "attachment" && item.example === "media"
-                      ? "Distinct image, video and file icons identify the attachment type alongside its filename and size."
-                      : (chartInventory.cases.find((chart) => name === "ts-chart" && chart.id === item.example)
-                          ?.intent ??
-                        description[`${name}/${item.example}`] ??
-                        description[item.example] ??
-                        `Review the ${title(item.example).toLowerCase()} composition below.`)}
-                  </p>
-                  <div className="preview-card">
-                    {preview(item.example, `${title(name)} ${title(item.example)} preview`)}
-                  </div>
-                  <Source load={sources[item.path] ?? (() => Promise.resolve("Source unavailable."))} />
-                  {name === "ts-chart" && chartInventory.cases.some((chart) => chart.id === item.example) && (
-                    <details className="code-panel">
-                      <summary>Supporting source</summary>
-                      <p className="p-4 text-sm">
-                        Vendored TanStack v0.16.0 example. Dataset source and attribution:
-                        internal/catalog/vendor/tanstack/data. Supporting module is shown below.
-                      </p>
-                      {Object.entries(chartSupport)
-                        .filter(([path]) => path.includes(`/cases/${item.example}/`))
-                        .map(([path, load]) => (
-                          <Source key={path} label={path.split("/").at(-1)} load={load} />
-                        ))}
-                    </details>
-                  )}
-                </section>
-              ))}
-            </div>
-            <section className="quick-start">
-              <div>
-                <div className="eyebrow">USE IN YOUR APPLICATION</div>
-                <h2>One import away.</h2>
-                <p>Install the private package from your company registry.</p>
-              </div>
-              <pre>
-                <code>{'import "@bridge/ui/style.css"\nimport * as UI from "@bridge/ui"'}</code>
-              </pre>
-            </section>
-            <footer className="page-footer">
-              <span>Bridge UI · Built on Base UI and Shadcn</span>
-              <span>
-                {choices.length} example{choices.length === 1 ? "" : "s"} available
-              </span>
-            </footer>
-          </>
-        ) : (
-          <section>
-            <h1>Example not found</h1>
-            <a href="#button/default">Return to Button</a>
-          </section>
-        )}
+        <ComponentPage
+          name={name}
+          entry={entry}
+          choices={choices}
+          mobile={mobile}
+          setMobile={setMobile}
+          locale={locale}
+          setLocale={setLocale}
+          motion={motion}
+          setMotion={setMotion}
+          preview={preview}
+        />
       </main>
     </div>
   )

@@ -2,7 +2,17 @@ import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import * as stylex from "@stylexjs/stylex"
 import { PanelLeftIcon } from "lucide-react"
-import { createContext, useContext, useEffect, useState, type ComponentProps, type CSSProperties } from "react"
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ComponentProps,
+  type CSSProperties,
+  type ReactNode
+} from "react"
 
 import { useIsMobile } from "../stylex-support/use-mobile"
 
@@ -226,7 +236,14 @@ const style = stylex.create({
     fontWeight: 500,
     fontVariantNumeric: "tabular-nums"
   },
-  skeleton: { display: "flex", height: 32, alignItems: "center", gap: 8, borderRadius: "var(--bridge-radius-8, 0.5em)", paddingInline: 8 },
+  skeleton: {
+    display: "flex",
+    height: 32,
+    alignItems: "center",
+    gap: 8,
+    borderRadius: "var(--bridge-radius-8, 0.5em)",
+    paddingInline: 8
+  },
   skeletonText: { height: 16, flex: 1 },
   sub: {
     marginInline: 14,
@@ -283,16 +300,19 @@ export function SidebarProvider({
   const [openMobile, setOpenMobile] = useState(false)
   const [internalOpen, setInternalOpen] = useState(defaultOpen)
   const open = controlled ?? internalOpen
-  const setOpen: SidebarContext["setOpen"] = (value) => {
-    const next = typeof value === "function" ? value(open) : value
-    if (onOpenChange) onOpenChange(next)
-    else setInternalOpen(next)
-    document.cookie = `sidebar_state=${next}; path=/; max-age=604800`
-  }
-  const toggleSidebar = () => {
+  const setOpen: SidebarContext["setOpen"] = useCallback(
+    (value) => {
+      const next = typeof value === "function" ? value(open) : value
+      if (onOpenChange) onOpenChange(next)
+      else setInternalOpen(next)
+      document.cookie = `sidebar_state=${next}; path=/; max-age=604800`
+    },
+    [open, onOpenChange]
+  )
+  const toggleSidebar = useCallback(() => {
     if (isMobile) setOpenMobile((value) => !value)
     else setOpen((value) => !value)
-  }
+  }, [isMobile, setOpen])
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
       if (event.key === "b" && (event.metaKey || event.ctrlKey)) {
@@ -302,23 +322,26 @@ export function SidebarProvider({
     }
     window.addEventListener("keydown", keydown)
     return () => window.removeEventListener("keydown", keydown)
-  })
+  }, [toggleSidebar])
   const variables: CSSProperties & Record<`--${string}`, string> = {
     "--sidebar-width": "16rem",
     "--sidebar-width-icon": "3rem",
     ...callerStyle
   }
+  const context = useMemo(
+    () => ({
+      state: open ? ("expanded" as const) : ("collapsed" as const),
+      open,
+      setOpen,
+      openMobile,
+      setOpenMobile,
+      isMobile,
+      toggleSidebar
+    }),
+    [open, setOpen, openMobile, isMobile, toggleSidebar]
+  )
   return (
-    <Context
-      value={{
-        state: open ? "expanded" : "collapsed",
-        open,
-        setOpen,
-        openMobile,
-        setOpenMobile,
-        isMobile,
-        toggleSidebar
-      }}>
+    <Context value={context}>
       <div
         data-slot="sidebar-wrapper"
         {...props}
@@ -327,6 +350,68 @@ export function SidebarProvider({
         {children}
       </div>
     </Context>
+  )
+}
+function sidebarGapStyle(collapsed: boolean, collapsible: "offcanvas" | "icon" | "none", floating: boolean) {
+  return stylex.props(
+    style.gap,
+    collapsed && (collapsible === "offcanvas" ? style.gapOff : floating ? style.gapFloating : style.gapIcon)
+  )
+}
+function sidebarContainerClassName(
+  side: "left" | "right",
+  floating: boolean,
+  collapsed: boolean,
+  collapsible: "offcanvas" | "icon" | "none"
+) {
+  return stylex.props(
+    style.container,
+    side === "left" ? style.left : style.right,
+    floating && style.floating,
+    collapsed && collapsible === "offcanvas" && (side === "left" ? style.leftOff : style.rightOff),
+    collapsed && collapsible === "icon" && (floating ? style.iconFloating : style.gapIcon)
+  ).className
+}
+function StaticSidebar({ className, children, ...props }: ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="sidebar"
+      {...props}
+      className={[stylex.props(style.static).className, className].filter(Boolean).join(" ")}>
+      {children}
+    </div>
+  )
+}
+function MobileSidebar({
+  side,
+  dir,
+  openMobile,
+  setOpenMobile,
+  children
+}: {
+  side: "left" | "right"
+  dir: ComponentProps<"div">["dir"]
+  openMobile: boolean
+  setOpenMobile: (value: boolean) => void
+  children: ReactNode
+}) {
+  return (
+    <Sheet open={openMobile} onOpenChange={setOpenMobile}>
+      <SheetContent
+        dir={dir}
+        data-sidebar="sidebar"
+        data-slot="sidebar"
+        data-mobile="true"
+        side={side}
+        showCloseButton={false}
+        className={stylex.props(style.mobile).className}>
+        <SheetHeader className={stylex.props(style.hidden).className}>
+          <SheetTitle>Sidebar</SheetTitle>
+          <SheetDescription>Displays the mobile sidebar.</SheetDescription>
+        </SheetHeader>
+        <div {...stylex.props(style.inner)}>{children}</div>
+      </SheetContent>
+    </Sheet>
   )
 }
 export function Sidebar({
@@ -345,31 +430,15 @@ export function Sidebar({
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
   if (collapsible === "none")
     return (
-      <div
-        data-slot="sidebar"
-        {...props}
-        className={[stylex.props(style.static).className, className].filter(Boolean).join(" ")}>
+      <StaticSidebar className={className} {...props}>
         {children}
-      </div>
+      </StaticSidebar>
     )
   if (isMobile)
     return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile}>
-        <SheetContent
-          dir={dir}
-          data-sidebar="sidebar"
-          data-slot="sidebar"
-          data-mobile="true"
-          side={side}
-          showCloseButton={false}
-          className={stylex.props(style.mobile).className}>
-          <SheetHeader className={stylex.props(style.hidden).className}>
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-          </SheetHeader>
-          <div {...stylex.props(style.inner)}>{children}</div>
-        </SheetContent>
-      </Sheet>
+      <MobileSidebar side={side} dir={dir} openMobile={openMobile} setOpenMobile={setOpenMobile}>
+        {children}
+      </MobileSidebar>
     )
   const collapsed = state === "collapsed"
   const floating = variant === "floating"
@@ -381,27 +450,12 @@ export function Sidebar({
       data-variant={variant}
       data-side={side}
       {...stylex.props(stylex.defaultMarker(), style.root)}>
-      <div
-        data-slot="sidebar-gap"
-        {...stylex.props(
-          style.gap,
-          collapsed && (collapsible === "offcanvas" ? style.gapOff : floating ? style.gapFloating : style.gapIcon)
-        )}
-      />
+      <div data-slot="sidebar-gap" {...sidebarGapStyle(collapsed, collapsible, floating)} />
       <div
         data-slot="sidebar-container"
         data-side={side}
         {...props}
-        className={[
-          stylex.props(
-            style.container,
-            side === "left" ? style.left : style.right,
-            floating && style.floating,
-            collapsed && collapsible === "offcanvas" && (side === "left" ? style.leftOff : style.rightOff),
-            collapsed && collapsible === "icon" && (floating ? style.iconFloating : style.gapIcon)
-          ).className,
-          className
-        ]
+        className={[sidebarContainerClassName(side, floating, collapsed, collapsible), className]
           .filter(Boolean)
           .join(" ")}>
         <div
