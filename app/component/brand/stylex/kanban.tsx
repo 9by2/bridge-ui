@@ -218,15 +218,14 @@ function Kanban<T>({
   // This breaks the cascade: columns change → callbacks recreate → DndContext re-registers → loop.
   const columnsRef = useRef(columns)
 
-  columnsRef.current = columns
-
   const getItemValueRef = useRef(getItemValue)
-
-  getItemValueRef.current = getItemValue
-
   const onMoveRef = useRef(onMove)
 
-  onMoveRef.current = onMove
+  useLayoutEffect(() => {
+    columnsRef.current = columns
+    getItemValueRef.current = getItemValue
+    onMoveRef.current = onMove
+  }, [columns, getItemValue, onMove])
 
   // Sensor config objects are stable module-level constants, so useSensors result is stable.
   const sensors = useSensors(
@@ -492,6 +491,7 @@ export interface KanbanColumnProps extends useRender.ComponentProps<"div"> {
 
 function KanbanColumn({ value, className, render, disabled, ...props }: KanbanColumnProps) {
   const isOverlay = useContext(IsOverlayContext)
+  const { activeId, isColumn } = useContext(KanbanContext)
 
   const {
     setNodeRef,
@@ -506,33 +506,6 @@ function KanbanColumn({ value, className, render, disabled, ...props }: KanbanCo
     animateLayoutChanges
   })
 
-  if (isOverlay) {
-    const defaultProps = {
-      "data-slot": "kanban-column",
-      "data-value": value,
-      "data-dragging": true,
-      className: joinClassName(stylex.props(style.column).className, className),
-      children: props.children
-    }
-
-    return (
-      <ColumnContext.Provider
-        value={{
-          attributes: undefined,
-          listeners: undefined,
-          isDragging: true,
-          disabled: false
-        }}>
-        {useRender({
-          defaultTagName: "div",
-          render,
-          props: mergeProps<"div">(defaultProps, props)
-        })}
-      </ColumnContext.Provider>
-    )
-  }
-
-  const { activeId, isColumn } = useContext(KanbanContext)
   const isColumnDragging = activeId ? isColumn(activeId) : false
 
   const inlineStyle: CSSProperties = {
@@ -540,27 +513,41 @@ function KanbanColumn({ value, className, render, disabled, ...props }: KanbanCo
     transform: CSS.Transform.toString(transform)
   }
 
-  const defaultProps = {
-    "data-slot": "kanban-column",
-    "data-value": value,
-    "data-dragging": isSortableDragging,
-    "data-disabled": disabled,
-    ref: setNodeRef,
-    style: inlineStyle,
-    className: joinClassName(
-      stylex.props(style.column, isSortableDragging && style.columnDragging, disabled && style.disabled).className,
-      className
-    ),
-    children: props.children
-  }
+  const defaultProps = isOverlay
+    ? {
+        "data-slot": "kanban-column",
+        "data-value": value,
+        "data-dragging": true,
+        className: joinClassName(stylex.props(style.column).className, className),
+        children: props.children
+      }
+    : {
+        "data-slot": "kanban-column",
+        "data-value": value,
+        "data-dragging": isSortableDragging,
+        "data-disabled": disabled,
+        ref: setNodeRef,
+        style: inlineStyle,
+        className: joinClassName(
+          stylex.props(style.column, isSortableDragging && style.columnDragging, disabled && style.disabled).className,
+          className
+        ),
+        children: props.children
+      }
+  const node = useRender({
+    defaultTagName: "div",
+    render,
+    props: mergeProps<"div">(defaultProps, props)
+  })
 
   return (
-    <ColumnContext.Provider value={{ attributes, listeners, isDragging: isColumnDragging, disabled }}>
-      {useRender({
-        defaultTagName: "div",
-        render,
-        props: mergeProps<"div">(defaultProps, props)
-      })}
+    <ColumnContext.Provider
+      value={
+        isOverlay
+          ? { attributes: undefined, listeners: undefined, isDragging: true, disabled: false }
+          : { attributes, listeners, isDragging: isColumnDragging, disabled }
+      }>
+      {node}
     </ColumnContext.Provider>
   )
 }
@@ -600,6 +587,7 @@ export interface KanbanItemProps extends useRender.ComponentProps<"div"> {
 
 function KanbanItem({ value, className, render, disabled, ...props }: KanbanItemProps) {
   const isOverlay = useContext(IsOverlayContext)
+  const { activeId, isColumn } = useContext(KanbanContext)
 
   const {
     setNodeRef,
@@ -614,27 +602,6 @@ function KanbanItem({ value, className, render, disabled, ...props }: KanbanItem
     animateLayoutChanges
   })
 
-  if (isOverlay) {
-    const defaultProps = {
-      "data-slot": "kanban-item",
-      "data-value": value,
-      "data-dragging": true,
-      className: joinClassName(stylex.props(style.item).className, className),
-      children: props.children
-    }
-
-    return (
-      <ItemContext.Provider value={{ listeners: undefined, isDragging: true, disabled: false }}>
-        {useRender({
-          defaultTagName: "div",
-          render,
-          props: mergeProps<"div">(defaultProps, props)
-        })}
-      </ItemContext.Provider>
-    )
-  }
-
-  const { activeId, isColumn } = useContext(KanbanContext)
   const isItemDragging = activeId ? !isColumn(activeId) : false
 
   const inlineStyle: CSSProperties = {
@@ -642,29 +609,43 @@ function KanbanItem({ value, className, render, disabled, ...props }: KanbanItem
     transform: CSS.Transform.toString(transform)
   }
 
-  const defaultProps = {
-    "data-slot": "kanban-item",
-    "data-value": value,
-    "data-dragging": isSortableDragging,
-    "data-disabled": disabled,
-    suppressHydrationWarning: true,
-    ref: setNodeRef,
-    style: inlineStyle,
-    ...attributes,
-    className: joinClassName(
-      stylex.props(style.item, isSortableDragging && style.itemDragging, disabled && style.disabled).className,
-      className
-    ),
-    children: props.children
-  }
+  const defaultProps = isOverlay
+    ? {
+        "data-slot": "kanban-item",
+        "data-value": value,
+        "data-dragging": true,
+        className: joinClassName(stylex.props(style.item).className, className),
+        children: props.children
+      }
+    : {
+        "data-slot": "kanban-item",
+        "data-value": value,
+        "data-dragging": isSortableDragging,
+        "data-disabled": disabled,
+        suppressHydrationWarning: true,
+        ref: setNodeRef,
+        style: inlineStyle,
+        ...attributes,
+        className: joinClassName(
+          stylex.props(style.item, isSortableDragging && style.itemDragging, disabled && style.disabled).className,
+          className
+        ),
+        children: props.children
+      }
+  const node = useRender({
+    defaultTagName: "div",
+    render,
+    props: mergeProps<"div">(defaultProps, props)
+  })
 
   return (
-    <ItemContext.Provider value={{ listeners, isDragging: isItemDragging, disabled }}>
-      {useRender({
-        defaultTagName: "div",
-        render,
-        props: mergeProps<"div">(defaultProps, props)
-      })}
+    <ItemContext.Provider
+      value={
+        isOverlay
+          ? { listeners: undefined, isDragging: true, disabled: false }
+          : { listeners, isDragging: isItemDragging, disabled }
+      }>
+      {node}
     </ItemContext.Provider>
   )
 }

@@ -227,7 +227,7 @@ export default function ActiveDonutMetric({
   height = 480,
   revision = 0,
 }: ExampleProps = {}) {
-  const input = { width, height, revision, preview: false, interactive: true }
+  const input = useMemo(() => ({ width, height, revision, preview: false, interactive: true }), [width, height, revision])
   const idPrefix = '123-active-donut-metric'
   const [activeId, setActiveId] = useState('chrome')
 
@@ -239,7 +239,7 @@ export default function ActiveDonutMetric({
 
   const focusedId = useRef<string | null>(null)
 
-  const renderer = useMemo(() => motion({ initial: !false }), [false])
+  const renderer = useMemo(() => motion({ initial: !false }), [])
 
   const definition = useMemo(
     () => activeDonutDefinition(input, activeId),

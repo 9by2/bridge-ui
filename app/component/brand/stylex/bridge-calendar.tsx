@@ -1000,7 +1000,7 @@ function MonthView({
   return (
     <div {...stylex.props(style.grid)}>
       {orderedWeekday(labels.weekday, weekStartsOn).map((label, index) => (
-        <div key={index} {...stylex.props(style.weekday)}>
+        <div key={(index + weekStartsOn) % 7} {...stylex.props(style.weekday)}>
           {label}
         </div>
       ))}

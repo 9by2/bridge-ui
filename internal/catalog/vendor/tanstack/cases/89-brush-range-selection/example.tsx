@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { TsChart as Chart } from "@bridge/ui"
 import { initialBrushRange, observedBrushDates, monthlyAaplRows } from './model'
 import { aapl } from '@tanstack/charts-data/aapl'
@@ -160,7 +160,9 @@ export default function BrushRangeExample({
 
   const stateRef = useRef(state)
 
-  stateRef.current = state
+  useLayoutEffect(() => {
+    stateRef.current = state
+  }, [state])
 
   const handleBrushChange = useCallback(
     (next: BrushRange<Date>, reason: BrushXChange<Date>) => {
@@ -210,7 +212,6 @@ export default function BrushRangeExample({
         />
       </div>
       <output
-        role="status"
         aria-live="polite"
         aria-label={status.ariaLabel}
         style={{

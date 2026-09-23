@@ -151,7 +151,7 @@ export default function ResourceTimelineExample({
   height = 480,
   revision = 0,
 }: ExampleProps = {}) {
-  const input = { width, height, revision, preview: false, interactive: true }
+  const input = useMemo(() => ({ width, height, revision, preview: false, interactive: true }), [width, height, revision])
   const idPrefix = '85-scrollable-resource-lanes'
   const viewportRef = useRef<HTMLDivElement>(null)
 
@@ -173,7 +173,9 @@ export default function ResourceTimelineExample({
     Readonly<Record<ResourceLane, number>>
   >({} as Record<ResourceLane, number>)
 
-  inputRef.current = input
+  useLayoutEffect(() => {
+    inputRef.current = input
+  }, [input])
 
   const rows = useMemo(() => resourceTasks(input.revision), [input.revision])
 

@@ -1,4 +1,4 @@
-import { forwardRef, memo, useCallback, useMemo, useRef, useState } from 'react'
+import { forwardRef, memo, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { TsChart as Chart } from "@bridge/ui"
 import type { KeyboardEvent } from 'react'
 import { formatFreeCursorValue } from './format'
@@ -293,7 +293,9 @@ export default function FreeCursorExample({
 
   const [state, setState] = useState(clearedCursor)
 
-  stateRef.current = state
+  useLayoutEffect(() => {
+    stateRef.current = state
+  }, [state])
 
   const accept = useCallback(
     (value: ContinuousCursorPosition<number, number> | null) => {

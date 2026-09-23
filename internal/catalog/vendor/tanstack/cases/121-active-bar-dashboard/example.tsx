@@ -181,7 +181,7 @@ export default function ActiveBarDashboard({
   height = 480,
   revision = 0,
 }: ExampleProps = {}) {
-  const input = { width, height, revision, preview: false, interactive: true }
+  const input = useMemo(() => ({ width, height, revision, preview: false, interactive: true }), [width, height, revision])
   const idPrefix = '121-active-bar-dashboard'
   const [metric, setMetric] = useState<DashboardMetric>('desktop')
 
@@ -195,7 +195,7 @@ export default function ActiveBarDashboard({
 
   const focusedId = useRef<string | null>(null)
 
-  const renderer = useMemo(() => motion({ initial: !false }), [false])
+  const renderer = useMemo(() => motion({ initial: !false }), [])
 
   const rows = dashboardRows(input.revision)
 

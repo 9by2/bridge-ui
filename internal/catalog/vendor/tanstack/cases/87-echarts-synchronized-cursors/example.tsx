@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { travelers } from '@tanstack/charts-data/travelers'
 import { TsChart as Chart } from "@bridge/ui"
 import { synchronizedCursorColors } from './colors'
@@ -31,7 +31,7 @@ function SummaryValue({
   value: string
 }) {
   return (
-    <label
+    <div
       style={{
         display: 'grid',
         gridTemplateColumns: '8px minmax(0, 1fr)',
@@ -75,7 +75,7 @@ function SummaryValue({
       >
         {value}
       </span>
-    </label>
+    </div>
   )
 }
 
@@ -242,7 +242,7 @@ export default function SynchronizedCursorsExample({
   height = 480,
   revision = 0,
 }: ExampleProps = {}) {
-  const input = { width, height, revision, preview: false, interactive: true }
+  const input = useMemo(() => ({ width, height, revision, preview: false, interactive: true }), [width, height, revision])
   const idPrefix = '87-echarts-synchronized-cursors'
   const chartFrameRef = useRef<HTMLDivElement>(null)
 
@@ -267,14 +267,17 @@ export default function SynchronizedCursorsExample({
 
   const [pinned, setPinned] = useState(false)
 
-  if (previousInputRef.current !== input) {
-    restoreDateRef.current = stateRef.current.date
-    previousInputRef.current = input
-  }
+  useLayoutEffect(() => {
+    if (previousInputRef.current !== input) {
+      restoreDateRef.current = stateRef.current.date
+      previousInputRef.current = input
+    }
+    inputRef.current = input
+  }, [input])
 
-  inputRef.current = input
-
-  stateRef.current = { date: focusedDate, pinned }
+  useLayoutEffect(() => {
+    stateRef.current = { date: focusedDate, pinned }
+  }, [focusedDate, pinned])
 
   const definition = useMemo(() => synchronizedCursorDefinition(input), [input])
 

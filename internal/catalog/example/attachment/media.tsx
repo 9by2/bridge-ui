@@ -7,7 +7,7 @@ export default function Example() {
     <div className="flex flex-wrap items-start gap-4">
       <UI.Attachment>
         <UI.AttachmentMedia variant="icon">
-          <ImageIcon role="img" aria-label="Image" />
+          <ImageIcon aria-hidden="true" />
         </UI.AttachmentMedia>
         <UI.AttachmentContent>
           <UI.AttachmentTitle>landscape.png</UI.AttachmentTitle>
@@ -16,7 +16,7 @@ export default function Example() {
       </UI.Attachment>
       <UI.Attachment>
         <UI.AttachmentMedia variant="icon">
-          <VideoIcon role="img" aria-label="Video" />
+          <VideoIcon aria-hidden="true" />
         </UI.AttachmentMedia>
         <UI.AttachmentContent>
           <UI.AttachmentTitle>walkthrough.mp4</UI.AttachmentTitle>
@@ -25,7 +25,7 @@ export default function Example() {
       </UI.Attachment>
       <UI.Attachment>
         <UI.AttachmentMedia variant="icon">
-          <FileIcon role="img" aria-label="File" />
+          <FileIcon aria-hidden="true" />
         </UI.AttachmentMedia>
         <UI.AttachmentContent>
           <UI.AttachmentTitle>design-system.pdf</UI.AttachmentTitle>

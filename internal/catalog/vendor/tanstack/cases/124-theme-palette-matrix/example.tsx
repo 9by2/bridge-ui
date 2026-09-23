@@ -150,7 +150,7 @@ export default function ThemePaletteMatrix({
       paletteTreatments.map((treatment) =>
         paletteMatrixDefinition(rows, treatment, false),
       ),
-    [false, rows],
+    [rows],
   )
 
   const renderer = useMemo(

@@ -2,7 +2,7 @@ import { cleanup, render, screen } from "@testing-library/react"
 import { afterEach, expect, test } from "vitest"
 
 import { Button } from "../../app/component/brand/stylex/button"
-import { Dialog, DialogContent } from "../../app/component/brand/stylex/dialog"
+import { Dialog, DialogContent, DialogTitle } from "../../app/component/brand/stylex/dialog"
 import {
   bridgeDensity,
   Theme,
@@ -64,7 +64,9 @@ test("Dialog portal receives the nearest resolved customization", async () => {
   render(
     <Theme theme={{ ...productTheme, ...dialogTheme }}>
       <Dialog defaultOpen>
-        <DialogContent>Theme-aware dialog</DialogContent>
+        <DialogContent>
+          <DialogTitle>Theme-aware dialog</DialogTitle>
+        </DialogContent>
       </Dialog>
     </Theme>
   )

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { TsChart as Chart } from "@bridge/ui"
 import type { AaplRow } from '@tanstack/charts-data/aapl'
 import type { ChartScene } from '@tanstack/charts'
@@ -171,7 +171,9 @@ export default function PlaybackExample({
 
   const stateRef = useRef(state)
 
-  stateRef.current = state
+  useLayoutEffect(() => {
+    stateRef.current = state
+  }, [state])
 
   const commitState = useCallback((next: PlaybackState) => {
     stateRef.current = next
@@ -357,7 +359,6 @@ export default function PlaybackExample({
       </div>
       <output
         className="ts-conformance-playback-announcement"
-        role="status"
         aria-live="polite"
         aria-atomic="true"
         style={{

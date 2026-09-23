@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { TsChart as Chart } from "@bridge/ui"
 import { initialZoomWindow } from './model'
 import type { AaplRow } from '@tanstack/charts-data/aapl'
@@ -151,7 +151,9 @@ export default function ZoomTimeWindowExample({
 
   const stateRef = useRef(state)
 
-  stateRef.current = state
+  useLayoutEffect(() => {
+    stateRef.current = state
+  }, [state])
 
   const handleZoomChange = useCallback(
     (next: ZoomXWindow<Date>, reason: ZoomXChange<Date>) => {
@@ -224,7 +226,6 @@ export default function ZoomTimeWindowExample({
       </div>
       <output
         data-conformance-zoom-status="true"
-        role="status"
         aria-live="polite"
         style={{
           position: 'absolute',

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { TsChart as Chart } from "@bridge/ui"
 import {
   clampEditableEventEnd,
@@ -218,7 +218,7 @@ export default function EditableEventExample({
   height = 480,
   revision = 0,
 }: ExampleProps = {}) {
-  const input = { width, height, revision, preview: false, interactive: true }
+  const input = useMemo(() => ({ width, height, revision, preview: false, interactive: true }), [width, height, revision])
   const idPrefix = '92-editable-event-range'
   const viewRef = useRef<HTMLDivElement>(null)
 
@@ -234,7 +234,9 @@ export default function EditableEventExample({
 
   const inputRef = useRef(input)
 
-  inputRef.current = input
+  useLayoutEffect(() => {
+    inputRef.current = input
+  }, [input])
 
   const [acceptedEnd, setAcceptedEnd] = useState(() =>
     cloneDate(initialEditableEventEnd),
@@ -255,7 +257,9 @@ export default function EditableEventExample({
 
   const stateRef = useRef(state)
 
-  stateRef.current = state
+  useLayoutEffect(() => {
+    stateRef.current = state
+  }, [state])
 
   const commitState = useCallback((next: EditableState) => {
     stateRef.current = next
@@ -428,7 +432,6 @@ export default function EditableEventExample({
         >
           <output
             className="ts-conformance-event-summary"
-            role="status"
             aria-live="polite"
             aria-atomic="true"
             style={{

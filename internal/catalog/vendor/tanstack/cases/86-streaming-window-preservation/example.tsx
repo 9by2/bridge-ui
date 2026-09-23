@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { defineChart, dot, lineY } from '@tanstack/charts'
 import { decorative } from '@tanstack/charts/mark/decorative'
 import { tooltip } from '@tanstack/charts/tooltip'
@@ -154,7 +154,9 @@ export default function StreamingExample({
 
   const stateRef = useRef({ rows, appended, viewport, viewportMode })
 
-  stateRef.current = { rows, appended, viewport, viewportMode }
+  useLayoutEffect(() => {
+    stateRef.current = { rows, appended, viewport, viewportMode }
+  }, [rows, appended, viewport, viewportMode])
 
   const chartHeight = Math.max(180, input.height - 78)
 
