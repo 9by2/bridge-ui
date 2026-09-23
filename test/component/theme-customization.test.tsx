@@ -89,7 +89,7 @@ test("density presets are finite public values", () => {
   expect(screen.getByTestId("theme").getAttribute("data-bridge-density")).toBe("comfortable")
 })
 
-test("Cue Theme selects the Cue Button semantic pair", () => {
+test("Cue Theme uses the shared color contract without Button-specific variables", () => {
   render(
     <Theme mode="cue" data-testid="theme">
       <Button>Continue</Button>
@@ -98,8 +98,8 @@ test("Cue Theme selects the Cue Button semantic pair", () => {
 
   const theme = screen.getByTestId("theme")
   expect(theme.getAttribute("data-bridge-theme")).toBe("cue")
-  expect(theme.style.getPropertyValue("--bridge-button-primary")).toBe("white")
-  expect(theme.style.getPropertyValue("--bridge-button-primary-foreground")).toBe("oklch(0.1776 0 0)")
+  expect(theme.style.getPropertyValue("--bridge-button-primary")).toBe("")
+  expect(theme.style.getPropertyValue("--bridge-button-primary-foreground")).toBe("")
 })
 
 test("Theme supports every documented semantic color override", () => {

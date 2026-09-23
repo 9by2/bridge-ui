@@ -2,7 +2,7 @@ import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import * as stylex from "@stylexjs/stylex"
 import { CheckIcon, XIcon } from "lucide-react"
-import { createContext, useContext, type ComponentProps } from "react"
+import { createContext, useContext, useMemo, type ComponentProps } from "react"
 
 import { token } from "./token.stylex"
 
@@ -109,7 +109,13 @@ const style = stylex.create({
     backgroundColor: token.destructive,
     color: token.destructiveForeground
   },
-  indicatorLine: { width: "100%", height: 6, borderWidth: 0, borderRadius: "var(--bridge-radius-999, 999em)", backgroundColor: token.border },
+  indicatorLine: {
+    width: "100%",
+    height: 6,
+    borderWidth: 0,
+    borderRadius: "var(--bridge-radius-999, 999em)",
+    backgroundColor: token.border
+  },
   indicatorLineCurrent: { backgroundColor: token.primary },
   indicatorLineCompleted: { backgroundColor: token.primary },
   indicatorLineError: { backgroundColor: token.destructive },
@@ -124,7 +130,12 @@ const style = stylex.create({
     lineHeight: 1.3,
     overflowWrap: "anywhere"
   },
-  description: { color: token.mutedForeground, fontSize: "var(--bridge-font-size-md, 0.8125em)", lineHeight: 1.5, overflowWrap: "anywhere" },
+  description: {
+    color: token.mutedForeground,
+    fontSize: "var(--bridge-font-size-md, 0.8125em)",
+    lineHeight: 1.5,
+    overflowWrap: "anywhere"
+  },
   counter: { color: token.mutedForeground, fontSize: "var(--bridge-font-size-sm, 0.75em)", lineHeight: 1.5 }
 })
 
@@ -141,8 +152,9 @@ export function WizardStep({
   tone = "hard",
   ...prop
 }: WizardStepProps) {
+  const context = useMemo(() => ({ orientation, variant, tone }), [orientation, variant, tone])
   return (
-    <Context value={{ orientation, variant, tone }}>
+    <Context value={context}>
       <div
         data-slot="wizard-step"
         data-orientation={orientation}
@@ -201,6 +213,21 @@ export type WizardStepIndicatorProps = ComponentProps<"div"> & {
   dot?: boolean
 }
 
+function indicatorClass(state: WizardStepState, tone: WizardStepTone, isDot: boolean, isLine: boolean) {
+  return stylex.props(
+    style.indicator,
+    isDot && style.indicatorDot,
+    isLine && style.indicatorLine,
+    !isLine && state === "completed" && style.indicatorCompleted,
+    !isLine && state === "current" && !isDot && (tone === "soft" ? style.indicatorCurrentSoft : style.indicatorCurrent),
+    !isLine && state === "current" && isDot && style.indicatorCurrentDot,
+    !isLine && state === "error" && style.indicatorError,
+    isLine && state === "completed" && style.indicatorLineCompleted,
+    isLine && state === "current" && style.indicatorLineCurrent,
+    isLine && state === "error" && style.indicatorLineError
+  ).className
+}
+
 export function WizardStepIndicator({
   className,
   state = "upcoming",
@@ -228,26 +255,7 @@ export function WizardStepIndicator({
       data-tone={inheritedTone}
       data-variant={context.variant}
       {...prop}
-      className={[
-        stylex.props(
-          style.indicator,
-          isDot && style.indicatorDot,
-          isLine && style.indicatorLine,
-          !isLine && state === "completed" && style.indicatorCompleted,
-          !isLine &&
-            state === "current" &&
-            !isDot &&
-            (inheritedTone === "soft" ? style.indicatorCurrentSoft : style.indicatorCurrent),
-          !isLine && state === "current" && isDot && style.indicatorCurrentDot,
-          !isLine && state === "error" && style.indicatorError,
-          isLine && state === "completed" && style.indicatorLineCompleted,
-          isLine && state === "current" && style.indicatorLineCurrent,
-          isLine && state === "error" && style.indicatorLineError
-        ).className,
-        className
-      ]
-        .filter(Boolean)
-        .join(" ")}>
+      className={[indicatorClass(state, inheritedTone, isDot, isLine), className].filter(Boolean).join(" ")}>
       {isDot || isLine ? null : icon}
     </div>
   )

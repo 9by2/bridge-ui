@@ -1,4 +1,4 @@
-import { createElement, useEffect, useRef } from "react"
+import { createElement, useEffect, useRef, useState } from "react"
 import {
   ClampToEdgeWrapping,
   LinearFilter,
@@ -140,9 +140,11 @@ export function FractalGlassRuntime({
   const edgePadding = edgePaddingProp ?? 0.12
   const mountRef = useRef<HTMLDivElement | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const [failedSrc, setFailedSrc] = useState<string | null>(null)
   const reducedMotion = useEffectReducedMotion()
 
   useEffect(() => {
+    if (failedSrc === imageSrc) return
     const element = mountRef.current
     if (!element) return
 
@@ -201,24 +203,31 @@ export function FractalGlassRuntime({
     } else {
       const loader = new TextureLoader()
       loader.crossOrigin = "anonymous"
-      loader.load(imageSrc, (texture) => {
-        /* v8 ignore if -- @preserve Both paths are covered; transformed sourcemap retains an empty branch location. */
-        if (disposed) {
-          texture.dispose()
-        } else {
-          uniforms.uTexture.value.dispose()
-          texture.minFilter = LinearFilter
-          texture.magFilter = LinearFilter
-          texture.wrapS = ClampToEdgeWrapping
-          texture.wrapT = ClampToEdgeWrapping
-          uniforms.uTexture.value = texture
-          uniforms.uTextureSize.value.set(
-            texture.image.naturalWidth || texture.image.width || 1920,
-            texture.image.naturalHeight || texture.image.height || 1080
-          )
-          renderer.render(scene, camera)
+      loader.load(
+        imageSrc,
+        (texture) => {
+          /* v8 ignore if -- @preserve Both paths are covered; transformed sourcemap retains an empty branch location. */
+          if (disposed) {
+            texture.dispose()
+          } else {
+            uniforms.uTexture.value.dispose()
+            texture.minFilter = LinearFilter
+            texture.magFilter = LinearFilter
+            texture.wrapS = ClampToEdgeWrapping
+            texture.wrapT = ClampToEdgeWrapping
+            uniforms.uTexture.value = texture
+            uniforms.uTextureSize.value.set(
+              texture.image.naturalWidth || texture.image.width || 1920,
+              texture.image.naturalHeight || texture.image.height || 1080
+            )
+            renderer.render(scene, camera)
+          }
+        },
+        undefined,
+        () => {
+          if (!disposed) setFailedSrc(imageSrc)
         }
-      })
+      )
     }
 
     const geometry = new PlaneGeometry(2, 2)
@@ -279,6 +288,7 @@ export function FractalGlassRuntime({
     }
   }, [
     imageSrc,
+    failedSrc,
     videoSrc,
     mediaType,
     stripesFrequency,
@@ -291,6 +301,7 @@ export function FractalGlassRuntime({
     reducedMotion
   ])
 
+  if (failedSrc === imageSrc) return null
   return createElement("div", {
     ref: mountRef,
     "data-slot": "fractal-glass-canvas",

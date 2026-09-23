@@ -20,3 +20,9 @@ test("generated, owned and lazy previews render without catalog fallback", async
   await page.goto("/#button/default")
   await expect(page.locator('iframe[src*="ts-chart"]')).toHaveCount(0)
 })
+
+test("embedded catalog applies its locale and motion setting", async () => {
+  await using page = await openPage()
+  await page.goto("/?preview&lang=th&motion=reduced#button/default")
+  await expect(page.locator("html[lang='th'][data-motion='reduced']")).toHaveCount(1)
+})

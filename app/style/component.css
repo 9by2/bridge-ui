@@ -1,4 +1,6 @@
+@import "@fontsource-variable/inter";
 @import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
 @import "@fontsource-variable/plus-jakarta-sans";
 @import "@fontsource/sarabun/400.css";
 @import "@fontsource/sarabun/500.css";
@@ -15,8 +17,6 @@
 
 /* Public customization defaults. Theme writes these values inline so nested themes and portals retain the nearest contract. */
 [data-bridge-theme] {
-  --bridge-space-1: 0.25rem;
-  --bridge-space-2: 0.5rem;
   --bridge-font-body: "Geist Variable", aktiv-grotesk, Sarabun, sans-serif;
   --bridge-font-heading: "Plus Jakarta Sans Variable", aktiv-grotesk, Sarabun, sans-serif;
   --bridge-font-number: InterVariable, Inter, sans-serif;
@@ -46,6 +46,8 @@
   --bridge-radius-26: 1.625em;
   --bridge-radius-999: 999em;
   --bridge-radius-9999: var(--bridge-pill-radius);
+  --bridge-space-1: 0.25rem;
+  --bridge-space-2: 0.5rem;
   --bridge-space-3: 0.75rem;
   --bridge-space-4: 1rem;
   --bridge-space-5: 1.5rem;

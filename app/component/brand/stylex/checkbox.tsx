@@ -31,7 +31,11 @@ const style = stylex.create({
     cursor: { default: "default", ":disabled": "not-allowed" }
   },
   checked: { borderColor: token.primary, backgroundColor: token.primary, color: token.primaryForeground },
-  success: { borderColor: token.brand, backgroundColor: token.brand, color: token.brandForeground },
+  success: {
+    borderColor: `var(--bridge-color-brand, ${token.brand})`,
+    backgroundColor: `var(--bridge-color-brand, ${token.brand})`,
+    color: `var(--bridge-color-brand-foreground, ${token.brandForeground})`
+  },
   invalidChecked: { borderColor: token.primary },
   invalid: {
     borderColor: token.invalidBorder,

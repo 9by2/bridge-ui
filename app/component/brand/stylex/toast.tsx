@@ -78,7 +78,11 @@ const style = stylex.create({
     opacity: { default: 1, ":is([data-behind])": 0, ":is([data-expanded])": 1 }
   },
   title: { fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", fontWeight: 500 },
-  description: { fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", color: themeToken.mutedForeground },
+  description: {
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px",
+    color: themeToken.mutedForeground
+  },
   action: { flexShrink: 0 },
   close: {
     position: { default: "relative", "::after": "absolute" },
@@ -88,7 +92,7 @@ const style = stylex.create({
     content: { "::after": '""' }
   },
   icon: { width: 16, height: 16, pointerEvents: "none", flexShrink: 0 },
-  success: { color: token.brand },
+  success: { color: `var(--bridge-color-brand, ${token.brand})` },
   warning: { color: token.warning },
   error: { color: token.errorText },
   loading: {
@@ -199,7 +203,7 @@ export function ToastAction({
 export function ToastClose({
   className,
   children,
-  render = <Button variant="ghost" size="icon-sm" />,
+  render = <Button variant="ghost" size="icon-sm" aria-label="Close toast" />,
   ...props
 }: Primitive.Close.Props) {
   return (

@@ -5,7 +5,15 @@ import { token } from "./token.stylex"
 
 const style = stylex.create({
   group: { display: "flex", minWidth: 0, flexDirection: "column", gap: 8 },
-  root: { position: "relative", display: "flex", width: "100%", minWidth: 0, gap: 8, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px" },
+  root: {
+    position: "relative",
+    display: "flex",
+    width: "100%",
+    minWidth: 0,
+    gap: 8,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px"
+  },
   end: { flexDirection: "row-reverse" },
   avatar: {
     display: "flex",

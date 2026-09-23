@@ -4,7 +4,7 @@ import type { ComponentProps } from "react"
 
 import { Button } from "./button"
 import { Theme } from "./theme"
-import { dialogToken, themeToken, token } from "./token.stylex"
+import { geometryToken, themeToken, token } from "./token.stylex"
 
 const enter = stylex.keyframes({ from: { opacity: 0, scale: "0.95" }, to: { opacity: 1, scale: "1" } })
 const fade = stylex.keyframes({ from: { opacity: 0 }, to: { opacity: 1 } })
@@ -39,11 +39,11 @@ const style = stylex.create({
     boxSizing: "border-box",
     width: "100%",
     maxWidth: { default: "calc(100% - 2rem)", "@media (min-width: 640px)": "24rem" },
-    gap: dialogToken["--bridge-layout-gap"],
-    borderRadius: dialogToken["--bridge-overlay-radius"],
-    backgroundColor: dialogToken["--bridge-color-dialog"],
-    color: dialogToken["--bridge-color-dialog-foreground"],
-    padding: dialogToken["--bridge-surface-padding"],
+    gap: geometryToken.layoutGap,
+    borderRadius: geometryToken.overlayRadius,
+    backgroundColor: `var(--bridge-color-dialog, ${token.card})`,
+    color: `var(--bridge-color-dialog-foreground, ${token.cardForeground})`,
+    padding: geometryToken.surfacePadding,
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%)`,
@@ -73,18 +73,29 @@ const style = stylex.create({
     flexDirection: { default: "column-reverse", "@media (min-width: 640px)": "row" },
     justifyContent: "flex-end",
     gap: 8,
-    marginInline: `calc(${dialogToken["--bridge-surface-padding"]} * -1)`,
-    marginBottom: `calc(${dialogToken["--bridge-surface-padding"]} * -1)`,
-    borderBottomLeftRadius: dialogToken["--bridge-overlay-radius"],
-    borderBottomRightRadius: dialogToken["--bridge-overlay-radius"],
+    marginInline: `calc(var(--bridge-surface-padding, 16px) * -1)`,
+    marginBottom: `calc(var(--bridge-surface-padding, 16px) * -1)`,
+    borderBottomLeftRadius: geometryToken.overlayRadius,
+    borderBottomRightRadius: geometryToken.overlayRadius,
     borderTopWidth: 1,
     borderTopStyle: "solid",
     borderTopColor: themeToken.border,
     backgroundColor: `color-mix(in oklch, ${themeToken.muted}, transparent 50%)`,
-    padding: dialogToken["--bridge-surface-padding"]
+    padding: geometryToken.surfacePadding
   },
-  title: { fontFamily: token.fontHeading, fontSize: "var(--bridge-font-size-lg, 1em)", lineHeight: 1, fontWeight: 500, margin: 0 },
-  description: { color: themeToken.mutedForeground, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", margin: 0 }
+  title: {
+    fontFamily: token.fontHeading,
+    fontSize: "var(--bridge-font-size-lg, 1em)",
+    lineHeight: 1,
+    fontWeight: 500,
+    margin: 0
+  },
+  description: {
+    color: themeToken.mutedForeground,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px",
+    margin: 0
+  }
 })
 export function Dialog(props: Primitive.Root.Props) {
   return <Primitive.Root {...props} />

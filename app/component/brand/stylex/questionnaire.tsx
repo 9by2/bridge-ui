@@ -38,7 +38,13 @@ const style = stylex.create({
     margin: 0,
     marginBottom: { default: 0, ':not(:has(~ [data-slot="questionnaire-description"]))': 16 }
   },
-  description: { margin: 0, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", textWrap: "pretty", color: token.mutedForeground },
+  description: {
+    margin: 0,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px",
+    textWrap: "pretty",
+    color: token.mutedForeground
+  },
   choices: { display: "grid", minWidth: 0, gap: 8 },
   choice: {
     position: "relative",
@@ -143,7 +149,12 @@ const style = stylex.create({
   muted: { color: token.mutedForeground },
   wrapper: { position: "relative", width: "100%", minWidth: 0 },
   input: { minHeight: { default: 44, "@media (min-width: 640px)": 0 } },
-  error: { marginTop: 8, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", color: token.errorText },
+  error: {
+    marginTop: 8,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px",
+    color: token.errorText
+  },
   actions: {
     display: "grid",
     minHeight: { default: 44, "@media (min-width: 640px)": 32 },

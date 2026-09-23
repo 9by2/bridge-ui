@@ -120,7 +120,7 @@ const style = stylex.create({
       ":is([data-active])": {
         default: token.foreground,
         [stylex.when.ancestor('[data-variant="line"]')]: token.primary,
-        [stylex.when.ancestor('[data-variant="link"]')]: token.brandText
+        [stylex.when.ancestor('[data-variant="link"]')]: `var(--bridge-color-brand-text, ${token.brandText})`
       }
     },
     transitionProperty: { default: "all", "::after": "opacity" },

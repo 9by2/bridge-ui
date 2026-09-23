@@ -66,7 +66,12 @@ const style = stylex.create({
   },
   dropdownRoot: { position: "relative", borderRadius: "var(--bridge-radius-8, 0.5em)" },
   dropdown: { position: "absolute", inset: 0, backgroundColor: token.background, opacity: 0 },
-  captionLabel: { fontWeight: 600, userSelect: "none", fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px" },
+  captionLabel: {
+    fontWeight: 600,
+    userSelect: "none",
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px"
+  },
   captionDropdown: { display: "flex", alignItems: "center", gap: 4, borderRadius: "var(--bridge-radius-8, 0.5em)" },
   grid: { width: 252, borderCollapse: "collapse", tableLayout: "fixed" },
   weekdays: { display: "flex" },

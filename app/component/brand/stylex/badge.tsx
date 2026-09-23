@@ -68,8 +68,14 @@ const style = stylex.create({
   },
   info: { backgroundColor: token.primary, color: token.primaryForeground },
   pending: { backgroundColor: token.muted, color: token.foreground },
-  success: { backgroundColor: token.brand, color: token.brandForeground },
-  partialSuccess: { backgroundColor: token.brandAccent, color: token.brandAccentForeground },
+  success: {
+    backgroundColor: `var(--bridge-color-brand, ${token.brand})`,
+    color: `var(--bridge-color-brand-foreground, ${token.brandForeground})`
+  },
+  partialSuccess: {
+    backgroundColor: `var(--bridge-color-brand-accent, ${token.brandAccent})`,
+    color: `var(--bridge-color-brand-accent-foreground, ${token.brandAccentForeground})`
+  },
   outline: {
     borderColor: token.border,
     color: { default: token.foreground, ":is(a):hover": token.mutedForeground },

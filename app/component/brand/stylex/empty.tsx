@@ -24,8 +24,20 @@ const style = stylex.create({
   header: { display: "flex", maxWidth: 384, flexDirection: "column", alignItems: "center", gap: 8 },
   media: { marginBottom: 8, display: "flex", flexShrink: 0, alignItems: "center", justifyContent: "center" },
   default: { backgroundColor: "transparent" },
-  icon: { width: 32, height: 32, borderRadius: "var(--bridge-radius-10, 0.625em)", backgroundColor: token.muted, color: token.foreground },
-  title: { fontFamily: "inherit", fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", fontWeight: 500, letterSpacing: "-0.025em" },
+  icon: {
+    width: 32,
+    height: 32,
+    borderRadius: "var(--bridge-radius-10, 0.625em)",
+    backgroundColor: token.muted,
+    color: token.foreground
+  },
+  title: {
+    fontFamily: "inherit",
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px",
+    fontWeight: 500,
+    letterSpacing: "-0.025em"
+  },
   description: { fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: 1.625, color: token.mutedForeground },
   content: {
     display: "flex",

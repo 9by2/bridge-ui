@@ -27,6 +27,7 @@ import {
   Fragment,
   isValidElement,
   useContext,
+  useMemo,
   useState,
   type ComponentProps,
   type CSSProperties,
@@ -55,6 +56,17 @@ type SwimLaneBoardCellElementProps = ComponentProps<"div"> & {
 }
 
 const itemPositionContext = createContext<SwimLaneBoardItemPosition>({ columnId: "", index: 0, enabled: false })
+
+function SwimLaneBoardPosition({
+  laneId,
+  columnId,
+  index,
+  enabled,
+  children
+}: SwimLaneBoardItemPosition & { children: ReactNode }) {
+  const position = useMemo(() => ({ laneId, columnId, index, enabled }), [laneId, columnId, index, enabled])
+  return <itemPositionContext.Provider value={position}>{children}</itemPositionContext.Provider>
+}
 const pointerDragContext = createContext(false)
 
 const pointerActivationConstraint = { distance: 8 }
@@ -465,7 +477,8 @@ export function SwimLaneBoard({
         children: lane.props.children
       }))
     : [{ id: undefined, label: "", count: 1, children: directCells }]
-  const template = `${hasLane ? "184px " : ""}${columns.map((column) => (collapsedColumnIds.includes(column.props.id) ? "48px" : "minmax(220px, 1fr)")).join(" ")}`
+  const collapsedId = new Set(collapsedColumnIds)
+  const template = `${hasLane ? "184px " : ""}${columns.map((column) => (collapsedId.has(column.props.id) ? "48px" : "minmax(220px, 1fr)")).join(" ")}`
   const toggle = (
     id: string,
     value: readonly string[],
@@ -513,9 +526,14 @@ export function SwimLaneBoard({
       if (!isValidElement<SwimLaneBoardItemProps>(child) || child.type !== SwimLaneBoardItem) return child
       const index = item.findIndex((candidate) => candidate.props.id === child.props.id)
       return (
-        <itemPositionContext.Provider key={child.props.id} value={{ laneId, columnId, index, enabled: dragEnabled }}>
+        <SwimLaneBoardPosition
+          key={child.props.id}
+          laneId={laneId}
+          columnId={columnId}
+          index={index}
+          enabled={dragEnabled}>
           {child}
-        </itemPositionContext.Provider>
+        </SwimLaneBoardPosition>
       )
     })
     const key = `${laneId ?? "single"}-${columnId}`

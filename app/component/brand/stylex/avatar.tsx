@@ -21,7 +21,13 @@ const style = stylex.create({
   },
   sm: { width: 24, height: 24 },
   lg: { width: 40, height: 40 },
-  image: { aspectRatio: "1", width: "100%", height: "100%", borderRadius: "var(--bridge-radius-9999, 9999em)", objectFit: "cover" },
+  image: {
+    aspectRatio: "1",
+    width: "100%",
+    height: "100%",
+    borderRadius: "var(--bridge-radius-9999, 9999em)",
+    objectFit: "cover"
+  },
   fallback: {
     display: "flex",
     width: "100%",

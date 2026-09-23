@@ -79,8 +79,6 @@ export function BreadcrumbPage({ className, ...props }: ComponentProps<"span">) 
   return (
     <span
       data-slot="breadcrumb-page"
-      role="link"
-      aria-disabled="true"
       aria-current="page"
       {...props}
       className={[stylex.props(style.page).className, className].filter(Boolean).join(" ")}

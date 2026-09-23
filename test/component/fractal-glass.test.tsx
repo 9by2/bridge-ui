@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react"
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { renderToString } from "react-dom/server"
 import { afterEach, expect, test, vi } from "vitest"
 
@@ -238,13 +238,31 @@ test("FractalGlass supports caller label and mounts the image shader when WebGL 
   const canvas = document.querySelector('[data-slot="fractal-glass-canvas"]') as HTMLDivElement
   expect(root.dataset.supported).toBe("true")
   expect(canvas.querySelector("canvas")).not.toBeNull()
-  expect(textureLoad).toHaveBeenCalledWith("https://example.test/hero.png", expect.any(Function))
+  expect(textureLoad).toHaveBeenCalledWith(
+    "https://example.test/hero.png",
+    expect.any(Function),
+    undefined,
+    expect.any(Function)
+  )
   expect(renderScene).toHaveBeenCalled()
   fireEvent.pointerMove(canvas, { clientX: 20, clientY: 20 })
   onResize([], {} as ResizeObserver)
   unmount()
   expect(cancelAnimationFrame).toHaveBeenCalledWith(17)
   expect(dispose).toHaveBeenCalled()
+})
+
+test("FractalGlass keeps its accessible fallback when the texture request fails", () => {
+  stubBrowser({ webgl: true })
+  let fail: ((error: Error) => void) | undefined
+  textureLoad.mockImplementation((_: string, __: unknown, ___: unknown, onError: (error: Error) => void) => {
+    fail = onError
+  })
+  render(<FractalGlass imageSrc="/unavailable.png" label="Unavailable artwork" />)
+  expect(fail).toBeDefined()
+  act(() => fail?.(new Error("Texture unavailable")))
+  expect(screen.getByRole("img", { name: "Unavailable artwork" })).toBeTruthy()
+  expect(document.querySelector('[data-slot="fractal-glass-canvas"]')).toBeNull()
 })
 
 test("FractalGlass handles zero-sized layout and missing image dimensions", () => {

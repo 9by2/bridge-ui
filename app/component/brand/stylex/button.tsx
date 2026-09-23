@@ -1,7 +1,7 @@
 import { Button as Primitive } from "@base-ui/react/button"
 import * as stylex from "@stylexjs/stylex"
 
-import { buttonToken, themeToken, token } from "./token.stylex"
+import { geometryToken, themeToken, token } from "./token.stylex"
 
 const style = stylex.create({
   press: { translate: { default: "none", ":active": "0 1px" } },
@@ -12,7 +12,7 @@ const style = stylex.create({
     alignItems: "center",
     justifyContent: "center",
     boxSizing: "border-box",
-    borderRadius: buttonToken["--bridge-button-radius"],
+    borderRadius: geometryToken.controlRadius,
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: { default: "transparent", ":focus-visible": token.ring },
@@ -39,10 +39,10 @@ const style = stylex.create({
   },
   default: {
     backgroundColor: {
-      default: buttonToken["--bridge-button-primary"],
-      ":hover": `color-mix(in oklch, ${buttonToken["--bridge-button-primary"]}, transparent 20%)`
+      default: `var(--bridge-color-primary, ${token.primary})`,
+      ":hover": `color-mix(in oklch, var(--bridge-color-primary, ${token.primary}), transparent 20%)`
     },
-    color: buttonToken["--bridge-button-primary-foreground"]
+    color: `var(--bridge-color-primary-foreground, ${token.primaryForeground})`
   },
   outline: {
     borderColor: token.outlineBorder,
@@ -95,8 +95,8 @@ const style = stylex.create({
   cta: {
     borderRadius: 0,
     backgroundImage: {
-      default: `linear-gradient(to right, ${token.brand}, ${token.brandAccent})`,
-      ":hover": `linear-gradient(to right, color-mix(in oklch, ${token.brand}, transparent 10%), color-mix(in oklch, ${token.brandAccent}, transparent 10%))`
+      default: `linear-gradient(to right, var(--bridge-color-brand, ${token.brand}), var(--bridge-color-brand-accent, ${token.brandAccent}))`,
+      ":hover": `linear-gradient(to right, color-mix(in oklch, var(--bridge-color-brand, ${token.brand}), transparent 10%), color-mix(in oklch, var(--bridge-color-brand-accent, ${token.brandAccent}), transparent 10%))`
     },
     color: token.highlight,
     fontFamily: token.fontHeading,
@@ -111,24 +111,24 @@ const style = stylex.create({
   }
 })
 const sizeStyle = stylex.create({
-  default: { height: 32, gap: 6, paddingInline: buttonToken["--bridge-button-padding-inline"] },
+  default: { height: 32, gap: 6, paddingInline: geometryToken.controlPaddingInline },
   xs: {
     height: 24,
     gap: 4,
     paddingInline: 8,
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
-    borderRadius: buttonToken["--bridge-button-radius-small"]
+    borderRadius: geometryToken.controlRadiusSmall
   },
   sm: {
     height: 28,
     gap: 4,
-    paddingInline: buttonToken["--bridge-button-padding-inline"],
+    paddingInline: geometryToken.controlPaddingInline,
     fontSize: "0.8rem",
     lineHeight: 1.5,
-    borderRadius: buttonToken["--bridge-button-radius-small"]
+    borderRadius: geometryToken.controlRadiusSmall
   },
-  lg: { height: 36, gap: 6, paddingInline: buttonToken["--bridge-button-padding-inline"] },
+  lg: { height: 36, gap: 6, paddingInline: geometryToken.controlPaddingInline },
   xl: { height: 44, gap: 6, paddingInline: 12, fontSize: "var(--bridge-font-size-xl, 1.125em)", lineHeight: "28px" },
   icon: { height: 32, width: 32, padding: 0 },
   "icon-xs": { height: 24, width: 24, padding: 0, borderRadius: "var(--bridge-radius-8, 0.5em)" },
@@ -174,6 +174,30 @@ export function buttonVariants({
     .join(" ")
 }
 
+function buttonClass(
+  variant: Variant | null,
+  size: Size | null,
+  inputGroupSize: "xs" | "sm" | "icon-xs" | "icon-sm" | null | undefined,
+  multiSelectTrigger: boolean | undefined,
+  invalid: boolean,
+  popup: boolean
+) {
+  const compiled = stylex.props(
+    style.root,
+    style.press,
+    variant && style[variant],
+    size && sizeStyle[size],
+    invalid && style.invalid,
+    popup && style.popupTrigger,
+    inputGroupSize !== undefined && groupStyle.base,
+    inputGroupSize === "xs" && groupStyle.xs,
+    inputGroupSize === "icon-xs" && groupStyle.iconXs,
+    inputGroupSize === "icon-sm" && groupStyle.iconSm,
+    multiSelectTrigger && multiSelectStyle.trigger
+  ).className
+  return ["pilot-button", size && `pilot-button-${size}`, compiled].filter(Boolean).join(" ")
+}
+
 export function Button({
   variant = "default",
   size = "default",
@@ -190,20 +214,7 @@ export function Button({
   const invalid = props["aria-invalid"] === true || props["aria-invalid"] === "true"
   const popup =
     props["aria-haspopup"] !== undefined && props["aria-haspopup"] !== false && props["aria-haspopup"] !== "false"
-  const compiled = stylex.props(
-    style.root,
-    style.press,
-    variant && style[variant],
-    size && sizeStyle[size],
-    invalid && style.invalid,
-    popup && style.popupTrigger,
-    inputGroupSize !== undefined && groupStyle.base,
-    inputGroupSize === "xs" && groupStyle.xs,
-    inputGroupSize === "icon-xs" && groupStyle.iconXs,
-    inputGroupSize === "icon-sm" && groupStyle.iconSm,
-    multiSelectTrigger && multiSelectStyle.trigger
-  ).className
-  const classes = ["pilot-button", size && `pilot-button-${size}`, compiled].filter(Boolean).join(" ")
+  const classes = buttonClass(variant, size, inputGroupSize, multiSelectTrigger, invalid, popup)
   return (
     <Primitive
       data-slot="button"

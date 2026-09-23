@@ -112,7 +112,12 @@ const style = stylex.create({
     fontWeight: 500,
     color: token.foreground
   },
-  description: { margin: 0, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", color: token.mutedForeground }
+  description: {
+    margin: 0,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px",
+    color: token.mutedForeground
+  }
 })
 const ResizeHandleEdgeBySide = {
   right: style.resizeHandleLeft,

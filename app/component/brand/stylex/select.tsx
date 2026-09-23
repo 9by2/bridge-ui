@@ -90,7 +90,13 @@ const style = stylex.create({
   },
   closed: { animationName: exit },
   aligned: { animationName: "none" },
-  label: { paddingInline: 6, paddingBlock: 4, fontSize: "var(--bridge-font-size-sm, 0.75em)", lineHeight: "16px", color: token.mutedForeground },
+  label: {
+    paddingInline: 6,
+    paddingBlock: 4,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
+    lineHeight: "16px",
+    color: token.mutedForeground
+  },
   item: {
     position: "relative",
     boxSizing: "border-box",

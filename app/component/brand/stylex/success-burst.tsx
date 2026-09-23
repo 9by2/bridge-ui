@@ -8,7 +8,7 @@ const style = stylex.create({
     width: 64,
     height: 64,
     borderRadius: "50%",
-    backgroundImage: `conic-gradient(from 0deg, transparent, ${token.brand}, transparent, ${token.brandAccent}, transparent)`,
+    backgroundImage: `conic-gradient(from 0deg, transparent, var(--bridge-color-brand, ${token.brand}), transparent, var(--bridge-color-brand-accent, ${token.brandAccent}), transparent)`,
     transform: "scale(.9)",
     transitionProperty: "transform",
     transitionDuration: "350ms",

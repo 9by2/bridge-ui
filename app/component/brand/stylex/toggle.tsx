@@ -32,7 +32,13 @@ export const toggleStyle = stylex.create({
     borderColor: { default: token.input, ":focus-visible": token.ring }
   },
   defaultSize: { height: 32, minWidth: 32, paddingInline: 10 },
-  sm: { height: 28, minWidth: 28, borderRadius: "var(--bridge-radius-8, 0.5em)", paddingInline: 10, fontSize: "0.8rem" },
+  sm: {
+    height: 28,
+    minWidth: 28,
+    borderRadius: "var(--bridge-radius-8, 0.5em)",
+    paddingInline: 10,
+    fontSize: "0.8rem"
+  },
   lg: { height: 36, minWidth: 36, paddingInline: 10 },
   invalid: {
     borderColor: token.invalidBorder,

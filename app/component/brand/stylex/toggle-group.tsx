@@ -1,7 +1,7 @@
 import { Toggle as Primitive } from "@base-ui/react/toggle"
 import { ToggleGroup as Group } from "@base-ui/react/toggle-group"
 import * as stylex from "@stylexjs/stylex"
-import { createContext, useContext } from "react"
+import { createContext, useContext, useMemo } from "react"
 
 import { toggleStyle } from "./toggle"
 
@@ -13,7 +13,13 @@ type Option = {
 }
 const Context = createContext<Option>({ variant: "default", size: "default", spacing: 2, orientation: "horizontal" })
 const style = stylex.create({
-  root: { display: "flex", width: "fit-content", flexDirection: "row", alignItems: "center", borderRadius: "var(--bridge-radius-10, 0.625em)" },
+  root: {
+    display: "flex",
+    width: "fit-content",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: "var(--bridge-radius-10, 0.625em)"
+  },
   small: { borderRadius: "var(--bridge-radius-8, 0.5em)" },
   vertical: { flexDirection: "column", alignItems: "stretch" },
   item: { flexShrink: 0, zIndex: { default: "auto", ":focus": 10, ":focus-visible": 10 } },
@@ -50,6 +56,7 @@ export function ToggleGroup({
   ...props
 }: Group.Props & Option) {
   const compiled = stylex.props(style.root, size === "sm" && style.small, orientation === "vertical" && style.vertical)
+  const context = useMemo(() => ({ variant, size, spacing, orientation }), [variant, size, spacing, orientation])
   return (
     <Group
       data-slot="toggle-group"
@@ -66,7 +73,7 @@ export function ToggleGroup({
       className={(state) =>
         [compiled.className, typeof className === "function" ? className(state) : className].filter(Boolean).join(" ")
       }>
-      <Context value={{ variant, size, spacing, orientation }}>{children}</Context>
+      <Context value={context}>{children}</Context>
     </Group>
   )
 }

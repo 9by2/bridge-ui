@@ -1,6 +1,6 @@
 import { Slider as Primitive } from "@base-ui/react/slider"
 import * as stylex from "@stylexjs/stylex"
-import type { CSSProperties, ReactNode } from "react"
+import type { ReactNode } from "react"
 
 import { token } from "./token.stylex"
 
@@ -29,7 +29,7 @@ const style = stylex.create({
   },
   verticalTrack: { height: "100%", width: 4 },
   range: {
-    backgroundColor: "var(--bridge-slider-range-color, var(--bridge-color-primary, currentColor))",
+    backgroundColor: `var(--bridge-color-primary, ${token.primary})`,
     userSelect: "none",
     height: "100%"
   },
@@ -44,8 +44,8 @@ const style = stylex.create({
     borderRadius: "var(--bridge-radius-9999, 9999em)",
     borderWidth: 1,
     borderStyle: "solid",
-    borderColor: "var(--bridge-slider-thumb-color, var(--bridge-color-ring, currentColor))",
-    backgroundColor: "var(--bridge-slider-thumb-background, white)",
+    borderColor: `var(--bridge-color-ring, ${token.ring})`,
+    backgroundColor: `var(--bridge-color-background, ${token.background})`,
     transitionProperty: "color, box-shadow",
     transitionDuration: "150ms",
     userSelect: "none",
@@ -72,12 +72,6 @@ export function Slider({
 }: Primitive.Root.Props & { rangeColor?: string; thumbColor?: string; thumbContent?: ReactNode }) {
   const values = Array.isArray(value) ? value : Array.isArray(defaultValue) ? defaultValue : [min, max]
   const vertical = props.orientation === "vertical"
-  const inlineStyle: CSSProperties &
-    Record<"--bridge-slider-range-color" | "--bridge-slider-thumb-color", string | undefined> = {
-    "--bridge-slider-range-color": rangeColor,
-    "--bridge-slider-thumb-color": thumbColor,
-    ...props.style
-  }
   return (
     <Primitive.Root
       data-slot="slider"
@@ -85,7 +79,6 @@ export function Slider({
       value={value}
       min={min}
       max={max}
-      style={inlineStyle}
       thumbAlignment="edge"
       {...props}
       className={(state) =>
@@ -101,10 +94,15 @@ export function Slider({
           <Primitive.Indicator
             data-slot="slider-range"
             {...stylex.props(style.range, vertical && style.verticalRange)}
+            style={rangeColor ? { backgroundColor: rangeColor } : undefined}
           />
         </Primitive.Track>
         {values.map((_, index) => (
-          <Primitive.Thumb key={index} data-slot="slider-thumb" {...stylex.props(style.thumb)}>
+          <Primitive.Thumb
+            key={index}
+            data-slot="slider-thumb"
+            {...stylex.props(style.thumb)}
+            style={thumbColor ? { borderColor: thumbColor } : undefined}>
             {thumbContent}
           </Primitive.Thumb>
         ))}

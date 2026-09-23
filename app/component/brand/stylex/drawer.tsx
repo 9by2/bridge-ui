@@ -1,6 +1,6 @@
 import { Drawer as Primitive } from "@base-ui/react/drawer"
 import * as stylex from "@stylexjs/stylex"
-import { createContext, useContext, type ComponentProps } from "react"
+import { createContext, useContext, useMemo, type ComponentProps } from "react"
 
 import { Theme } from "./theme"
 import { token } from "./token.stylex"
@@ -235,7 +235,14 @@ const style = stylex.create({
     justifyContent: "center",
     alignItems: "end"
   },
-  grip: { display: "block", flexShrink: 0, borderRadius: "var(--bridge-radius-9999, 9999em)", backgroundColor: token.muted, width: 96, height: 4 },
+  grip: {
+    display: "block",
+    flexShrink: 0,
+    borderRadius: "var(--bridge-radius-9999, 9999em)",
+    backgroundColor: token.muted,
+    width: 96,
+    height: 4
+  },
   header: {
     display: "flex",
     flexShrink: 0,
@@ -265,7 +272,13 @@ const style = stylex.create({
     fontWeight: 500,
     color: token.foreground
   },
-  description: { margin: 0, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", textWrap: "balance", color: token.mutedForeground }
+  description: {
+    margin: 0,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px",
+    textWrap: "balance",
+    color: token.mutedForeground
+  }
 })
 export function Drawer({
   modal = true,
@@ -274,9 +287,12 @@ export function Drawer({
   swipeDirection = "down",
   ...props
 }: Primitive.Root.Props & { showSwipeHandle?: boolean }) {
+  const context = useMemo(
+    () => ({ modal, showSwipeHandle, hasSnapPoints: snapPoints != null && snapPoints.length > 0, swipeDirection }),
+    [modal, showSwipeHandle, snapPoints, swipeDirection]
+  )
   return (
-    <Context
-      value={{ modal, showSwipeHandle, hasSnapPoints: snapPoints != null && snapPoints.length > 0, swipeDirection }}>
+    <Context value={context}>
       <Primitive.Root modal={modal} snapPoints={snapPoints} swipeDirection={swipeDirection} {...props} />
     </Context>
   )

@@ -31,8 +31,8 @@ const style = stylex.create({
     color: token.primary
   },
   success: {
-    borderColor: token.brand,
-    backgroundColor: `color-mix(in oklch, ${token.brand}, transparent 90%)`,
+    borderColor: `var(--bridge-color-brand, ${token.brand})`,
+    backgroundColor: `color-mix(in oklch, var(--bridge-color-brand, ${token.brand}), transparent 90%)`,
     color: token.foreground
   },
   warning: {

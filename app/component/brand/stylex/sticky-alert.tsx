@@ -22,7 +22,7 @@ const style = stylex.create({
   neutral: { borderColor: token.border, color: token.foreground },
   warning: { borderColor: token.warning, color: token.warning },
   destructive: { borderColor: token.destructive, color: token.destructive },
-  success: { borderColor: token.brand, color: token.foreground }
+  success: { borderColor: `var(--bridge-color-brand, ${token.brand})`, color: token.foreground }
 })
 export function StickyAlert({
   className,

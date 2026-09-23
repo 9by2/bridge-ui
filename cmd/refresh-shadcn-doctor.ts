@@ -36,12 +36,12 @@ const replacement: Record<string, Array<[string, string]>> = {
       "  })()"
     ],
     [
-      "            return (\n              <div\n                key={index}\n                className={cn(\n                  \"flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground\",",
-      "            return (\n              <div\n                key={item.graphicalItemId}\n                className={cn(\n                  \"flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground\","
+      '            return (\n              <div\n                key={index}\n                className={cn(\n                  "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",',
+      '            return (\n              <div\n                key={item.graphicalItemId}\n                className={cn(\n                  "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",'
     ],
     [
-      "          return (\n            <div\n              key={index}\n              className={cn(\n                \"flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground\"",
-      "          const legendKey =\n            (typeof item.dataKey === \"string\" || typeof item.dataKey === \"number\" ? item.dataKey : undefined) ??\n            item.value ??\n            \"legend\"\n\n          return (\n            <div\n              key={legendKey}\n              className={cn(\n                \"flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground\""
+      '          return (\n            <div\n              key={index}\n              className={cn(\n                "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"',
+      '          const legendKey =\n            (typeof item.dataKey === "string" || typeof item.dataKey === "number" ? item.dataKey : undefined) ??\n            item.value ??\n            "legend"\n\n          return (\n            <div\n              key={legendKey}\n              className={cn(\n                "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"'
     ]
   ],
   carousel: [

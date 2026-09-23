@@ -18,7 +18,12 @@ const style = stylex.create({
     fontWeight: 500,
     lineHeight: "1.375"
   },
-  error: { color: token.errorText, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", fontWeight: 400 },
+  error: {
+    color: token.errorText,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px",
+    fontWeight: 400
+  },
   list: {
     margin: 0,
     marginInlineStart: 16,
@@ -30,7 +35,12 @@ const style = stylex.create({
   },
   group: { display: "flex", flexDirection: "column", width: "100%", gap: 20, containerType: "inline-size" },
   content: { display: "flex", flexDirection: "column", flex: 1, gap: 2, lineHeight: "1.375" },
-  description: { color: token.mutedForeground, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "1.5", margin: 0 },
+  description: {
+    color: token.mutedForeground,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "1.5",
+    margin: 0
+  },
   set: {
     display: "flex",
     flexDirection: "column",

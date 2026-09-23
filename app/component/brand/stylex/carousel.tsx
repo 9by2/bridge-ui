@@ -1,7 +1,7 @@
 import * as stylex from "@stylexjs/stylex"
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
-import { createContext, useContext, useEffect, useState, type ComponentProps } from "react"
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ComponentProps } from "react"
 
 import { Button } from "./button"
 
@@ -67,8 +67,8 @@ export function Carousel({
   const [carouselRef, api] = useEmblaCarousel({ ...opts, axis: orientation === "horizontal" ? "x" : "y" }, plugins)
   const [canScrollPrev, setCanScrollPrev] = useState(false)
   const [canScrollNext, setCanScrollNext] = useState(false)
-  const scrollPrev = () => api?.scrollPrev()
-  const scrollNext = () => api?.scrollNext()
+  const scrollPrev = useCallback(() => api?.scrollPrev(), [api])
+  const scrollNext = useCallback(() => api?.scrollNext(), [api])
   useEffect(() => {
     if (api && setApi) setApi(api)
   }, [api, setApi])
@@ -86,8 +86,12 @@ export function Carousel({
       api.off("select", onSelect)
     }
   }, [api])
+  const context = useMemo(
+    () => ({ carouselRef, api, opts, orientation, scrollPrev, scrollNext, canScrollPrev, canScrollNext }),
+    [carouselRef, api, opts, orientation, scrollPrev, scrollNext, canScrollPrev, canScrollNext]
+  )
   return (
-    <Context value={{ carouselRef, api, opts, orientation, scrollPrev, scrollNext, canScrollPrev, canScrollNext }}>
+    <Context value={context}>
       <div
         onKeyDownCapture={(event) => {
           if (event.key === "ArrowLeft") {

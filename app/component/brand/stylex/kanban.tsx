@@ -539,17 +539,15 @@ function KanbanColumn({ value, className, render, disabled, ...props }: KanbanCo
     render,
     props: mergeProps<"div">(defaultProps, props)
   })
-
-  return (
-    <ColumnContext.Provider
-      value={
-        isOverlay
-          ? { attributes: undefined, listeners: undefined, isDragging: true, disabled: false }
-          : { attributes, listeners, isDragging: isColumnDragging, disabled }
-      }>
-      {node}
-    </ColumnContext.Provider>
+  const columnContext = useMemo(
+    () =>
+      isOverlay
+        ? { attributes: undefined, listeners: undefined, isDragging: true, disabled: false }
+        : { attributes, listeners, isDragging: isColumnDragging, disabled },
+    [isOverlay, attributes, listeners, isColumnDragging, disabled]
   )
+
+  return <ColumnContext.Provider value={columnContext}>{node}</ColumnContext.Provider>
 }
 
 export interface KanbanColumnHandleProps extends useRender.ComponentProps<"div"> {
@@ -637,17 +635,15 @@ function KanbanItem({ value, className, render, disabled, ...props }: KanbanItem
     render,
     props: mergeProps<"div">(defaultProps, props)
   })
-
-  return (
-    <ItemContext.Provider
-      value={
-        isOverlay
-          ? { listeners: undefined, isDragging: true, disabled: false }
-          : { listeners, isDragging: isItemDragging, disabled }
-      }>
-      {node}
-    </ItemContext.Provider>
+  const itemContext = useMemo(
+    () =>
+      isOverlay
+        ? { listeners: undefined, isDragging: true, disabled: false }
+        : { listeners, isDragging: isItemDragging, disabled },
+    [isOverlay, listeners, isItemDragging, disabled]
   )
+
+  return <ItemContext.Provider value={itemContext}>{node}</ItemContext.Provider>
 }
 
 export interface KanbanItemHandleProps extends useRender.ComponentProps<"div"> {

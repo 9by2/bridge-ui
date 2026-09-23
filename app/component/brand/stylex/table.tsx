@@ -78,7 +78,12 @@ const style = stylex.create({
     whiteSpace: "nowrap",
     paddingRight: { default: 8, ':has([role="checkbox"])': 0 }
   },
-  caption: { marginTop: 16, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", color: token.mutedForeground }
+  caption: {
+    marginTop: 16,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px",
+    color: token.mutedForeground
+  }
 })
 const tableDensity = { compact: "compact", standard: "standard" } as const
 type ValueOf<T> = T[keyof T]

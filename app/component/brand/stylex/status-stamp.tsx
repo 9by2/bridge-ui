@@ -44,11 +44,15 @@ const style = stylex.create({
   },
   inactive: { borderColor: token.border, backgroundColor: token.muted, color: token.foreground },
   partialSuccess: {
-    borderColor: token.brandAccent,
-    backgroundColor: token.brandAccent,
-    color: token.brandAccentForeground
+    borderColor: `var(--bridge-color-brand-accent, ${token.brandAccent})`,
+    backgroundColor: `var(--bridge-color-brand-accent, ${token.brandAccent})`,
+    color: `var(--bridge-color-brand-accent-foreground, ${token.brandAccentForeground})`
   },
-  success: { borderColor: token.brand, backgroundColor: token.brand, color: token.brandForeground },
+  success: {
+    borderColor: `var(--bridge-color-brand, ${token.brand})`,
+    backgroundColor: `var(--bridge-color-brand, ${token.brand})`,
+    color: `var(--bridge-color-brand-foreground, ${token.brandForeground})`
+  },
   warning: { borderColor: token.warning, color: token.warning },
   destructive: { borderColor: token.destructive, color: token.destructive }
 })

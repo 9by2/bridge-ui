@@ -29,7 +29,13 @@ const style = stylex.create({
     animationDuration: { default: "100ms", "@media (prefers-reduced-motion: reduce)": "0s" }
   },
   closed: { animationName: exit },
-  header: { display: "flex", flexDirection: "column", gap: 2, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px" },
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px"
+  },
   title: { fontFamily: token.fontHeading, fontWeight: 500, margin: 0 },
   description: { color: themeToken.mutedForeground, margin: 0 }
 })

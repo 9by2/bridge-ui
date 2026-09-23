@@ -31,7 +31,13 @@ const style = stylex.create({
     whiteSpace: "nowrap",
     borderWidth: 0
   },
-  popup: { top: "33.333333%", transform: "translate(-50%, 0)", overflow: "hidden", borderRadius: "var(--bridge-radius-14, 0.875em)", padding: 0 },
+  popup: {
+    top: "33.333333%",
+    transform: "translate(-50%, 0)",
+    overflow: "hidden",
+    borderRadius: "var(--bridge-radius-14, 0.875em)",
+    padding: 0
+  },
   wrapper: { padding: 4, paddingBottom: 0 },
   input: {
     width: "100%",
@@ -55,7 +61,12 @@ const style = stylex.create({
     outline: "none",
     scrollbarWidth: "none"
   },
-  empty: { paddingBlock: 24, textAlign: "center", fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px" },
+  empty: {
+    paddingBlock: 24,
+    textAlign: "center",
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px"
+  },
   group: { overflow: "hidden", padding: 4, color: token.foreground },
   heading: {
     display: "block",

@@ -161,9 +161,7 @@ test("multi select retains missing provider diagnostic and server composition", 
     renderToString(
       <MultiSelect>
         <MultiSelectTrigger asChild role="button">
-          <button role="button" aria-expanded={false}>
-            Custom
-          </button>
+          <button aria-expanded={false}>Custom</button>
         </MultiSelectTrigger>
       </MultiSelect>
     )

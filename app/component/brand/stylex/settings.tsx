@@ -4,6 +4,7 @@ import {
   createContext,
   isValidElement,
   useContext,
+  useMemo,
   useState,
   type ComponentProps,
   type MouseEvent
@@ -88,7 +89,7 @@ export function Settings({ className, ...props }: ComponentProps<"div">) {
 export function SettingsSidebar({ title, className, children, ...props }: ComponentProps<"nav"> & { title: string }) {
   const isMobile = useIsMobile()
   const [open, setOpen] = useState(false)
-  const context = { isMobile, closePicker: () => setOpen(false) }
+  const context = useMemo(() => ({ isMobile, closePicker: () => setOpen(false) }), [isMobile])
   const child = Children.toArray(children)
   const header = child.find((item) => isValidElement(item) && item.type === SettingsSidebarHeader)
   const navigation = child.filter((item) => item !== header)

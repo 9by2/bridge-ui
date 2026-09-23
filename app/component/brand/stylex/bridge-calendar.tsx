@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type ComponentProps,
@@ -319,7 +320,12 @@ const style = stylex.create({
     color: token.background,
     fontWeight: 600
   },
-  monthEventTime: { flexShrink: 0, color: token.foreground, fontSize: "var(--bridge-font-size-2xs, 0.625em)", fontVariantNumeric: "tabular-nums" },
+  monthEventTime: {
+    flexShrink: 0,
+    color: token.foreground,
+    fontSize: "var(--bridge-font-size-2xs, 0.625em)",
+    fontVariantNumeric: "tabular-nums"
+  },
   monthEventTitle: { overflow: "hidden", textOverflow: "ellipsis" },
   empty: {
     display: "flex",
@@ -506,7 +512,7 @@ export function BridgeCalendar({
     setDate(
       view === "week" ? addDay(date, amount * 7) : view === "month" ? addMonth(date, amount) : addDay(date, amount)
     )
-  const context = { view, date }
+  const context = useMemo(() => ({ view, date }), [view, date])
   const weekStart = startOfWeek(date, weekStartsOn)
   useEffect(() => {
     if (view !== "week" || !panelRef.current) return

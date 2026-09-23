@@ -40,7 +40,13 @@ const style = stylex.create({
     backgroundColor: { default: "transparent", ":is([data-highlighted])": token.accent },
     color: { default: token.foreground, ":is([data-highlighted])": token.accentForeground }
   },
-  label: { paddingInline: 8, paddingBlock: 6, fontSize: "var(--bridge-font-size-sm, 0.75em)", lineHeight: "16px", color: token.mutedForeground },
+  label: {
+    paddingInline: 8,
+    paddingBlock: 6,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
+    lineHeight: "16px",
+    color: token.mutedForeground
+  },
   empty: {
     display: { default: "none", [stylex.when.ancestor("[data-empty]")]: "flex" },
     width: "100%",
