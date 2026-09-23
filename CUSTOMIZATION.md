@@ -69,6 +69,18 @@ export function App() {
 
 `density` supports `bridgeDensity.compact`, `bridgeDensity.default`, and `bridgeDensity.comfortable`. It adjusts shared padding and layout gaps while retaining package control heights and focus behavior.
 
+## MetricTile
+
+Select a required `variants` on every tile: `featured` for prominent metrics, `standard` for regular cards, or `compact` for dense summaries. There is no implicit variant. `label`, `value`, `description`, and `icon` are caller-supplied; pass formatted numbers and translated copy. `loading` requires caller-supplied `loadingLabel` to announce progress without rendering a stale value. The icon is decorative. The application owns grid spans, responsive layout, data, and any navigation; the tile itself is not clickable.
+
+```tsx
+import { MetricTile } from "@bridge/ui/metric-tile"
+
+<MetricTile variants="featured" label="Revenue" value="฿204,215" description="Successful orders" />
+<MetricTile variants="standard" label="Orders" value="753" />
+<MetricTile variants="compact" label="Staff" value="7" />
+```
+
 ## Button
 
 `Button` uses Cue's complete control recipe in `mode="cue"`, including variants, sizes, focus treatment, disabled state, expanded outline and ghost states, icon spacing, and CTA gradient motion. Use `variant` and `size` to select that contract; use `className` only for product layout.

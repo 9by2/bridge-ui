@@ -84,6 +84,10 @@
       "types": "./dist/component/brand/ts-chart.d.ts",
       "import": "./dist/component/brand/ts-chart.js"
     },
+    "./metric-tile": {
+      "types": "./dist/component/brand/stylex/metric-tile.d.ts",
+      "import": "./dist/component/brand/stylex/metric-tile.js"
+    },
     "./drop-area": {
       "types": "./dist/component/brand/stylex/drop-area.d.ts",
       "import": "./dist/component/brand/stylex/drop-area.js"
