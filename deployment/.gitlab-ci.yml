@@ -21,6 +21,8 @@ stages:
 source:
   stage: verify
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_TITLE =~ /^chore: version package( \(rc\))?$/'
+      when: never
     - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
   script:
     - bun fmt --check
@@ -36,6 +38,8 @@ source:
 coverage:
   stage: verify
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_TITLE =~ /^chore: version package( \(rc\))?$/'
+      when: never
     - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
   script:
     - bun coverage:runtime

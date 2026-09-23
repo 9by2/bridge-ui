@@ -23,6 +23,7 @@ test("release automation runs after verification on protected default branch onl
   expect(ci).toContain('CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true"')
   expect(ci).toContain("INPUT_VERSION: bun release:version")
   expect(ci).toContain("INPUT_PUBLISH: bun release:publish")
+  expect(ci).toContain('INPUT_COMMIT: "chore: version package"')
   expect(ci).not.toContain("when: manual")
   const root = await Bun.file(".gitlab-ci.yml").text()
   expect(root).toContain('".changeset/**/*"')
@@ -31,7 +32,23 @@ test("release automation runs after verification on protected default branch onl
 test("child verification explicitly accepts an MR parent pipeline", async () => {
   const ci = await Bun.file("deployment/.gitlab-ci.yml").text()
   for (const job of ["source", "coverage"]) {
-    expect(ci).toContain(`${job}:\n  stage: verify\n  rules:\n    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'`)
+    expect(ci).toContain(`${job}:\n  stage: verify\n  rules:\n    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"`)
+    expect(ci).toContain(`    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'\n  script:`)
   }
   expect(ci).toContain('catalog:\n  stage: verify\n  rules:\n    - if: \'$CI_PIPELINE_SOURCE == "parent_pipeline"')
+})
+
+test("source and coverage skip the version-only release-automation merge commit on protected main", async () => {
+  const ci = await Bun.file("deployment/.gitlab-ci.yml").text()
+  const skipRule =
+    '$CI_PIPELINE_SOURCE == "parent_pipeline" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_TITLE =~ /^chore: version package( \\(rc\\))?$/'
+  for (const job of ["source", "coverage"]) {
+    expect(ci).toContain(`${job}:\n  stage: verify\n  rules:\n    - if: '${skipRule}'\n      when: never`)
+  }
+  // Skip condition title must stay in sync with the automation's actual commit title.
+  expect(ci).toContain('INPUT_COMMIT: "chore: version package"')
+  // The release MR's own merge-request pipeline is unaffected: its branch is never $CI_DEFAULT_BRANCH.
+  expect(ci).toContain("$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED")
+  // The release job's protected-branch gate is untouched by the fast path.
+  expect(ci).toContain("release:\n  stage: deploy\n  resource_group: package-release\n  variables:\n    GIT_DEPTH:")
 })
