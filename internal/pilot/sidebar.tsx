@@ -2,7 +2,16 @@ import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import * as stylex from "@stylexjs/stylex"
 import { PanelLeftIcon } from "lucide-react"
-import { createContext, useContext, useEffect, useState, type ComponentProps, type CSSProperties } from "react"
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ComponentProps,
+  type CSSProperties
+} from "react"
 
 import { useIsMobile } from "../use-mobile"
 
@@ -279,16 +288,19 @@ export function SidebarProvider({
   const [openMobile, setOpenMobile] = useState(false)
   const [internalOpen, setInternalOpen] = useState(defaultOpen)
   const open = controlled ?? internalOpen
-  const setOpen: SidebarContext["setOpen"] = (value) => {
-    const next = typeof value === "function" ? value(open) : value
-    if (onOpenChange) onOpenChange(next)
-    else setInternalOpen(next)
-    document.cookie = `sidebar_state=${next}; path=/; max-age=604800`
-  }
-  const toggleSidebar = () => {
+  const setOpen: SidebarContext["setOpen"] = useCallback(
+    (value) => {
+      const next = typeof value === "function" ? value(open) : value
+      if (onOpenChange) onOpenChange(next)
+      else setInternalOpen(next)
+      document.cookie = `sidebar_state=${next}; path=/; max-age=604800`
+    },
+    [open, onOpenChange]
+  )
+  const toggleSidebar = useCallback(() => {
     if (isMobile) setOpenMobile((value) => !value)
     else setOpen((value) => !value)
-  }
+  }, [isMobile, setOpen])
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
       if (event.key === "b" && (event.metaKey || event.ctrlKey)) {
@@ -298,23 +310,26 @@ export function SidebarProvider({
     }
     window.addEventListener("keydown", keydown)
     return () => window.removeEventListener("keydown", keydown)
-  })
+  }, [toggleSidebar])
   const variables: CSSProperties & Record<`--${string}`, string> = {
     "--sidebar-width": "16rem",
     "--sidebar-width-icon": "3rem",
     ...callerStyle
   }
+  const context = useMemo(
+    () => ({
+      state: open ? ("expanded" as const) : ("collapsed" as const),
+      open,
+      setOpen,
+      openMobile,
+      setOpenMobile,
+      isMobile,
+      toggleSidebar
+    }),
+    [open, setOpen, openMobile, isMobile, toggleSidebar]
+  )
   return (
-    <Context
-      value={{
-        state: open ? "expanded" : "collapsed",
-        open,
-        setOpen,
-        openMobile,
-        setOpenMobile,
-        isMobile,
-        toggleSidebar
-      }}>
+    <Context value={context}>
       <div
         data-slot="sidebar-wrapper"
         {...props}

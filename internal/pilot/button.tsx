@@ -139,6 +139,32 @@ export function buttonVariants({
     .join(" ")
 }
 
+function buttonClass(
+  variant: Variant | null,
+  size: Size | null,
+  inputGroupSize: "xs" | "sm" | "icon-xs" | "icon-sm" | null | undefined,
+  multiSelectTrigger: boolean | undefined,
+  expanded: boolean,
+  invalid: boolean,
+  popup: boolean
+) {
+  const compiled = stylex.props(
+    style.root,
+    style.press,
+    variant && style[variant],
+    size && sizeStyle[size],
+    expanded && (variant === "outline" ? style.outlineExpanded : variant === "ghost" && style.expanded),
+    invalid && style.invalid,
+    popup && style.popupTrigger,
+    inputGroupSize !== undefined && groupStyle.base,
+    inputGroupSize === "xs" && groupStyle.xs,
+    inputGroupSize === "icon-xs" && groupStyle.iconXs,
+    inputGroupSize === "icon-sm" && groupStyle.iconSm,
+    multiSelectTrigger && multiSelectStyle.trigger
+  ).className
+  return ["pilot-button", size && `pilot-button-${size}`, compiled].filter(Boolean).join(" ")
+}
+
 export function Button({
   variant = "default",
   size = "default",
@@ -155,22 +181,8 @@ export function Button({
   const invalid = props["aria-invalid"] === true || props["aria-invalid"] === "true"
   const popup =
     props["aria-haspopup"] !== undefined && props["aria-haspopup"] !== false && props["aria-haspopup"] !== "false"
-  const compiled = stylex.props(
-    style.root,
-    style.press,
-    variant && style[variant],
-    size && sizeStyle[size],
-    (props["aria-expanded"] === true || props["aria-expanded"] === "true") &&
-      (variant === "outline" ? style.outlineExpanded : variant === "ghost" && style.expanded),
-    invalid && style.invalid,
-    popup && style.popupTrigger,
-    inputGroupSize !== undefined && groupStyle.base,
-    inputGroupSize === "xs" && groupStyle.xs,
-    inputGroupSize === "icon-xs" && groupStyle.iconXs,
-    inputGroupSize === "icon-sm" && groupStyle.iconSm,
-    multiSelectTrigger && multiSelectStyle.trigger
-  ).className
-  const classes = ["pilot-button", size && `pilot-button-${size}`, compiled].filter(Boolean).join(" ")
+  const expanded = props["aria-expanded"] === true || props["aria-expanded"] === "true"
+  const classes = buttonClass(variant, size, inputGroupSize, multiSelectTrigger, expanded, invalid, popup)
   return (
     <Primitive
       data-slot="button"

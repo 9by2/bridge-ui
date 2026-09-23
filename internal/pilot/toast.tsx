@@ -199,7 +199,7 @@ export function ToastAction({
 export function ToastClose({
   className,
   children,
-  render = <Button variant="ghost" size="icon-sm" />,
+  render = <Button variant="ghost" size="icon-sm" aria-label="Close toast" />,
   ...props
 }: Primitive.Close.Props) {
   return (

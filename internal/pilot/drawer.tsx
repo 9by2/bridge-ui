@@ -1,6 +1,6 @@
 import { Drawer as Primitive } from "@base-ui/react/drawer"
 import * as stylex from "@stylexjs/stylex"
-import { createContext, useContext, type ComponentProps } from "react"
+import { createContext, useContext, useMemo, type ComponentProps } from "react"
 
 import { Theme } from "./theme"
 import { token } from "./token.stylex"
@@ -274,9 +274,12 @@ export function Drawer({
   swipeDirection = "down",
   ...props
 }: Primitive.Root.Props & { showSwipeHandle?: boolean }) {
+  const context = useMemo(
+    () => ({ modal, showSwipeHandle, hasSnapPoints: snapPoints != null && snapPoints.length > 0, swipeDirection }),
+    [modal, showSwipeHandle, snapPoints, swipeDirection]
+  )
   return (
-    <Context
-      value={{ modal, showSwipeHandle, hasSnapPoints: snapPoints != null && snapPoints.length > 0, swipeDirection }}>
+    <Context value={context}>
       <Primitive.Root modal={modal} snapPoints={snapPoints} swipeDirection={swipeDirection} {...props} />
     </Context>
   )

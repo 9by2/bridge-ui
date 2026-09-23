@@ -1,7 +1,7 @@
 import { Toggle as Primitive } from "@base-ui/react/toggle"
 import { ToggleGroup as Group } from "@base-ui/react/toggle-group"
 import * as stylex from "@stylexjs/stylex"
-import { createContext, useContext } from "react"
+import { createContext, useContext, useMemo } from "react"
 
 import { toggleStyle } from "./toggle"
 
@@ -50,6 +50,7 @@ export function ToggleGroup({
   ...props
 }: Group.Props & Option) {
   const compiled = stylex.props(style.root, size === "sm" && style.small, orientation === "vertical" && style.vertical)
+  const context = useMemo(() => ({ variant, size, spacing, orientation }), [variant, size, spacing, orientation])
   return (
     <Group
       data-slot="toggle-group"
@@ -66,7 +67,7 @@ export function ToggleGroup({
       className={(state) =>
         [compiled.className, typeof className === "function" ? className(state) : className].filter(Boolean).join(" ")
       }>
-      <Context value={{ variant, size, spacing, orientation }}>{children}</Context>
+      <Context value={context}>{children}</Context>
     </Group>
   )
 }

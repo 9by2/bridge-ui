@@ -7,6 +7,7 @@ import {
   use,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type ComponentPropsWithoutRef,
@@ -88,42 +89,54 @@ export function MultiSelect({
 }) {
   const [open, setOpen] = useState(false)
   const [internalValues, setInternalValues] = useState(() => new Set(values ?? defaultValues))
-  const selectedValues = values ? new Set(values) : internalValues
+  const selectedValues = useMemo(() => (values ? new Set(values) : internalValues), [values, internalValues])
   const [items, setItems] = useState<Map<string, ReactNode>>(() => new Map())
   const onItemAdded = useCallback((value: string, label: ReactNode) => {
     setItems((previous) => (previous.get(value) === label ? previous : new Map(previous).set(value, label)))
   }, [])
-  function toggleValue(value: string) {
-    const next = new Set(selectedValues)
-    if (next.has(value)) next.delete(value)
-    else next.add(value)
-    setInternalValues(next)
-    onValuesChange?.([...next])
-  }
-  function addNewItem(value: string) {
-    onItemAdded(value, value)
-    const next = new Set(selectedValues).add(value)
-    setInternalValues(next)
-    onValuesChange?.([...next])
-  }
-  function selectAll(keys: string[]) {
-    const next = new Set(keys.length > 0 && keys.every((key) => selectedValues.has(key)) ? [] : keys)
-    setInternalValues(next)
-    onValuesChange?.([...next])
-  }
+  const toggleValue = useCallback(
+    (value: string) => {
+      const next = new Set(selectedValues)
+      if (next.has(value)) next.delete(value)
+      else next.add(value)
+      setInternalValues(next)
+      onValuesChange?.([...next])
+    },
+    [selectedValues, onValuesChange]
+  )
+  const addNewItem = useCallback(
+    (value: string) => {
+      onItemAdded(value, value)
+      const next = new Set(selectedValues).add(value)
+      setInternalValues(next)
+      onValuesChange?.([...next])
+    },
+    [selectedValues, onItemAdded, onValuesChange]
+  )
+  const selectAll = useCallback(
+    (keys: string[]) => {
+      const next = new Set(keys.length > 0 && keys.every((key) => selectedValues.has(key)) ? [] : keys)
+      setInternalValues(next)
+      onValuesChange?.([...next])
+    },
+    [selectedValues, onValuesChange]
+  )
+  const context = useMemo(
+    () => ({
+      open,
+      selectedValues,
+      items,
+      toggleValue,
+      onItemAdded,
+      allowedNewItem,
+      allowedSelectAll,
+      addNewItem,
+      selectAll
+    }),
+    [open, selectedValues, items, toggleValue, onItemAdded, allowedNewItem, allowedSelectAll, addNewItem, selectAll]
+  )
   return (
-    <Context
-      value={{
-        open,
-        selectedValues,
-        items,
-        toggleValue,
-        onItemAdded,
-        allowedNewItem,
-        allowedSelectAll,
-        addNewItem,
-        selectAll
-      }}>
+    <Context value={context}>
       <Popover open={open} onOpenChange={setOpen} modal>
         {children}
       </Popover>

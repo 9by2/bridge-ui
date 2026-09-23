@@ -217,20 +217,19 @@ export default function FocusContextExample({
 
   const overviewSceneRef = useRef<ChartScene<AaplRow> | null>(null)
 
-  const windowRef = useRef(initialFocusContextWindow(focusContextDates))
+  const [window, setWindowState] = useState(() => initialFocusContextWindow(focusContextDates))
+  const windowRef = useRef(window)
 
   const brushStatusRef = useRef<BrushStatus>({
     dragging: false,
     outcome: 'idle',
   })
 
-  const [window, setWindowState] = useState(windowRef.current)
-
   const heights = viewHeights(input.height)
 
   const detailDefinition = useMemo(
     () => focusContextDetailDefinition(window),
-    [window.start, window.end, window.selected],
+    [window],
   )
 
   const chooseDate = useCallback((date: Date) => {
@@ -253,7 +252,7 @@ export default function FocusContextExample({
 
   const overviewDefinition = useMemo(
     () => focusContextOverviewDefinition(window, handleBrushChange),
-    [handleBrushChange, window.end, window.start],
+    [handleBrushChange, window],
   )
 
   return (

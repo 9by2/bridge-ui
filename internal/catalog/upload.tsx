@@ -102,7 +102,8 @@ export function UploadExample({
           }>
           <img
             src={url}
-            alt="Selected image preview"
+            alt={selected?.name ?? "Selected file"}
+            data-selected-preview=""
             className="size-full object-cover"
             style={{ transform: `scale(${mode === "crop" ? zoom : 1})` }}
           />
@@ -138,7 +139,7 @@ export function UploadExample({
                       label: `Preview ${file.name}`,
                       onClick: () =>
                         document
-                          .querySelector<HTMLImageElement>('img[alt="Selected image preview"]')
+                          .querySelector<HTMLImageElement>("img[data-selected-preview]")
                           ?.scrollIntoView({ block: "center" })
                     }
                   : undefined

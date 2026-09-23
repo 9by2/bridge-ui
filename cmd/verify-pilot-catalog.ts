@@ -19,18 +19,20 @@ try {
   })
   const frames = await view.cdp<{ frameTree: { childFrames?: Array<{ frame: { id: string } }> } }>("Page.getFrameTree")
   assert.equal(frames.frameTree.childFrames?.length, 2)
-  for (const frame of frames.frameTree.childFrames ?? []) {
-    const { executionContextId } = await view.cdp<{ executionContextId: number }>("Page.createIsolatedWorld", {
-      frameId: frame.frame.id,
-      worldName: "pilot-check"
+  await Promise.all(
+    (frames.frameTree.childFrames ?? []).map(async (frame) => {
+      const { executionContextId } = await view.cdp<{ executionContextId: number }>("Page.createIsolatedWorld", {
+        frameId: frame.frame.id,
+        worldName: "pilot-check"
+      })
+      const result = await view.cdp<{ result: { value: boolean } }>("Runtime.evaluate", {
+        contextId: executionContextId,
+        expression: "document.querySelector('h1')?.textContent === 'Pilot comparison'",
+        returnByValue: true
+      })
+      assert.equal(result.result.value, true)
     })
-    const result = await view.cdp<{ result: { value: boolean } }>("Runtime.evaluate", {
-      contextId: executionContextId,
-      expression: "document.querySelector('h1')?.textContent === 'Pilot comparison'",
-      returnByValue: true
-    })
-    assert.equal(result.result.value, true)
-  }
+  )
   await Bun.write(path.join(output, "catalog-ab.png"), await view.screenshot())
   const reports = []
   for (const mode of ["light", "dark"])

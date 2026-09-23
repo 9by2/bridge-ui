@@ -100,12 +100,13 @@ export function createExampleChart(
     },
   )
 }
+const monthDayFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  timeZone: 'UTC',
+})
 function formatMonthDay(value: string) {
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  }).format(new Date(value))
+  return monthDayFormatter.format(new Date(value))
 }
 function shadcnTheme() {
   return {

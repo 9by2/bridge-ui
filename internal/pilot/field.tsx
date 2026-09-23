@@ -94,7 +94,7 @@ export function FieldError({
       uniqueErrors[0]?.message
     ) : (
       <ul {...stylex.props(style.list)}>
-        {uniqueErrors.map((error, index) => error?.message && <li key={index}>{error.message}</li>)}
+        {uniqueErrors.map((error) => error?.message && <li key={error.message}>{error.message}</li>)}
       </ul>
     ))
   if (!content) return null

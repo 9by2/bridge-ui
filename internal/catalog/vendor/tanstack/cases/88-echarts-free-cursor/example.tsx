@@ -277,7 +277,8 @@ export default function FreeCursorExample({
 
   const sceneRef = useRef<ChartScene<CompleteCar, number, number>>(null)
 
-  const stateRef = useRef<CursorState>(clearedCursor())
+  const [initialState] = useState(clearedCursor)
+  const stateRef = useRef<CursorState>(initialState)
 
   const lastPositionRef = useRef<ContinuousCursorPosition<number, number>>({
     x: (freeCursorXDomain[0] + freeCursorXDomain[1]) / 2,
@@ -325,6 +326,10 @@ export default function FreeCursorExample({
     },
     [accept],
   )
+  const handleRender = useCallback((scene: ChartScene<CompleteCar, number, number>) => {
+    sceneRef.current = scene
+    renderCountRef.current += 1
+  }, [])
 
   const visible =
     state.visible && state.xValue !== null && state.yValue !== null
@@ -424,10 +429,7 @@ export default function FreeCursorExample({
           idPrefix={idPrefix}
           accepted={accepted}
           onChange={handleCursorChange}
-          onRender={(scene) => {
-            sceneRef.current = scene
-            renderCountRef.current += 1
-          }}
+          onRender={handleRender}
         />
       </div>
     </div>

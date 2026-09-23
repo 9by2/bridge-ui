@@ -182,7 +182,7 @@ export default function MotionUpdatesExample({
 
   const renderer = useMemo(() => motion(), [replayCount])
 
-  const rows = stages[stage] ?? stages[0] ?? []
+  const rows = useMemo(() => stages[stage] ?? stages[0] ?? [], [stage])
 
   const definition = useMemo(
     () => motionUpdatesDefinition(rows, settings),

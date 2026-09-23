@@ -42,7 +42,8 @@ test("breadcrumb retains navigation semantics and caller separator", () => {
     </Breadcrumb>
   )
   expect(screen.getByRole("navigation").getAttribute("aria-label")).toBe("breadcrumb")
-  expect(screen.getByRole("link", { name: "Current" }).getAttribute("aria-current")).toBe("page")
+  expect(screen.getByText("Current").getAttribute("aria-current")).toBe("page")
+  expect(screen.queryByRole("link", { name: "Current" })).toBeNull()
   expect(screen.getByText("/")).toBeTruthy()
   expect(screen.getByTestId("dot-separator")).toBeTruthy()
 })

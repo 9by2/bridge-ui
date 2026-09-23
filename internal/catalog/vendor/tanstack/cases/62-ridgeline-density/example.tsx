@@ -19,9 +19,10 @@ const colors = ['#2563eb', '#0d9488', '#d97706']
 
 export const createExampleChart = (input: ChartOptions) => {
   const seasons = ridgeSeasons(input.revision)
+  const selectedSeasons = new Set(seasons)
   const episodes = simpsons.filter(
     (row): row is RatedEpisode =>
-      isRatedEpisode(row) && seasons.includes(row.season),
+      isRatedEpisode(row) && selectedSeasons.has(row.season),
   )
   const bins = binX(episodes, {
     value: 'imdb_rating',

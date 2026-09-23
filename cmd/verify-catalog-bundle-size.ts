@@ -19,10 +19,11 @@ assert.ok(
   `Catalog entry ${entryAsset} exceeds 500 kB (${entrySize} B)`
 )
 
-const oversizedLazyAsset = []
-for (const name of await readdir(CatalogBundleConfig.ASSET_DIRECTORY)) {
-  if (!name.endsWith(".js") || name === entryAsset) continue
-  const size = (await stat(path.join(CatalogBundleConfig.ASSET_DIRECTORY, name))).size
-  if (size > CatalogBundleConfig.MAXIMUM_LAZY_ASSET_BYTE) oversizedLazyAsset.push({ name, size })
-}
+const oversizedLazyAsset = (
+  await Promise.all(
+    (await readdir(CatalogBundleConfig.ASSET_DIRECTORY))
+      .filter((name) => name.endsWith(".js") && name !== entryAsset)
+      .map(async (name) => ({ name, size: (await stat(path.join(CatalogBundleConfig.ASSET_DIRECTORY, name))).size }))
+  )
+).filter(({ size }) => size > CatalogBundleConfig.MAXIMUM_LAZY_ASSET_BYTE)
 assert.deepEqual(oversizedLazyAsset, [], "Catalog lazy JavaScript assets exceed 900 kB")

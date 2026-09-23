@@ -62,9 +62,10 @@ function funnelPoint(
   }
 }
 
+const compactNumberFormatter = new Intl.NumberFormat('en-US', {
+  notation: 'compact',
+  maximumFractionDigits: 1,
+})
 function compactNumber(value: number): string {
-  return new Intl.NumberFormat('en-US', {
-    notation: 'compact',
-    maximumFractionDigits: 1,
-  }).format(value)
+  return compactNumberFormatter.format(value)
 }

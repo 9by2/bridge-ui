@@ -26,9 +26,15 @@ export const verifyComponentInventory = Effect.fn("ComponentInventory.verify")(f
   const rows = [...matrix.matchAll(/^\|\s+((?:shadcn|brand)\/[^\s|]+)\s+\|/gm)]
     .map((match) => match[1])
     .filter((name): name is string => name !== undefined)
-  const missing = source.filter((name) => !rows.includes(name))
-  const extra = rows.filter((name) => !source.includes(name))
-  const duplicate = rows.filter((name, index) => rows.indexOf(name) !== index)
+  const sourceName = new Set(source)
+  const rowName = new Set<string>()
+  const extra = rows.filter((name) => !sourceName.has(name))
+  const duplicate = rows.filter((name) => {
+    if (rowName.has(name)) return true
+    rowName.add(name)
+    return false
+  })
+  const missing = source.filter((name) => !rowName.has(name))
   if (missing.length || extra.length || duplicate.length)
     return yield* Effect.fail(new ComponentInventoryError({ missing, extra, duplicate }))
   return { count: source.length }

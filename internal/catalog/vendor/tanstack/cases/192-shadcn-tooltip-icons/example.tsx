@@ -59,10 +59,9 @@ export function createExampleChart() {
     },
   )
 }
+const weekdayFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'short' })
 function formatWeekday(value: string) {
-  return new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(
-    new Date(value),
-  )
+  return weekdayFormatter.format(new Date(value))
 }
 function shadcnTheme() {
   return {

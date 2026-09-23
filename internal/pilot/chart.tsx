@@ -1,5 +1,13 @@
 import * as stylex from "@stylexjs/stylex"
-import { createContext, useContext, useId, type ComponentProps, type ComponentType, type ReactNode } from "react"
+import {
+  createContext,
+  useContext,
+  useId,
+  useMemo,
+  type ComponentProps,
+  type ComponentType,
+  type ReactNode
+} from "react"
 import * as Recharts from "recharts"
 import type { TooltipValueType } from "recharts"
 
@@ -69,8 +77,9 @@ export function ChartContainer({
 }) {
   const uniqueId = useId()
   const chartId = `chart-${id ?? uniqueId.replace(/:/g, "")}`
+  const context = useMemo(() => ({ config }), [config])
   return (
-    <Context value={{ config }}>
+    <Context value={context}>
       <div
         data-slot="chart"
         data-chart={chartId}

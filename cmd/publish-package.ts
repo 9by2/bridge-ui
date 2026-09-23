@@ -46,7 +46,7 @@ export async function publishPackage(dependency: PublishDependency = {}): Promis
   const { CI_API_V4_URL, CI_PROJECT_ID, CI_JOB_TOKEN } = env
   if (!CI_API_V4_URL || !CI_PROJECT_ID || !CI_JOB_TOKEN) throw new Error("GitLab job context required")
   const registry = `${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/`
-  if (new URL(registry).protocol !== "https:") throw new Error("HTTPS registry required")
+  if (URL.parse(registry)?.protocol !== "https:") throw new Error("HTTPS registry required")
   const response = await fetchRegistry(`${registry}${encodeURIComponent(manifest.name)}`, {
     headers: { "JOB-TOKEN": CI_JOB_TOKEN }
   })

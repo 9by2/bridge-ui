@@ -22,9 +22,10 @@ export function toggleLegendSeries(
   seriesId: LegendSeriesId,
 ): readonly LegendSeriesId[] {
   const visible = visibleSeries.includes(seriesId)
+  const visibleId = new Set(visibleSeries)
   return legendSeries
     .map((series) => series.id)
-    .filter((id) => (id === seriesId ? !visible : visibleSeries.includes(id)))
+    .filter((id) => (id === seriesId ? !visible : visibleId.has(id)))
 }
 
 export function legendRows(

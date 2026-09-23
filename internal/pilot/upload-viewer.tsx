@@ -17,6 +17,29 @@ const style = stylex.create({
   pdf: { height: "55dvh", width: "100%", borderWidth: 0 },
   link: { textDecorationLine: "underline" }
 })
+
+function ViewerMedia({
+  source,
+  media,
+  fallback,
+  onError
+}: {
+  source: { name: string; type: string; url: string }
+  media: boolean
+  fallback: string
+  onError: () => void
+}) {
+  if (media && source.type.startsWith("image/"))
+    return <img {...stylex.props(style.media, style.image)} src={source.url} alt={source.name} onError={onError} />
+  if (media && source.type.startsWith("video/"))
+    return <video {...stylex.props(style.media)} src={source.url} controls aria-label={source.name} onError={onError} />
+  if (media && source.type.startsWith("audio/"))
+    return <audio {...stylex.props(style.audio)} src={source.url} controls aria-label={source.name} onError={onError} />
+  if (media && source.type === "application/pdf")
+    return <iframe {...stylex.props(style.pdf)} src={source.url} title={source.name} sandbox="" />
+  return <p role="status">{fallback}</p>
+}
+
 export function UploadViewer({
   open,
   onOpenChange,
@@ -42,34 +65,7 @@ export function UploadViewer({
       <DialogContent showCloseButton={false} finalFocus={finalFocus} className={stylex.props(style.popup).className}>
         <DialogTitle className={stylex.props(style.title).className}>{source.name}</DialogTitle>
         <DialogDescription>{source.description ?? source.type}</DialogDescription>
-        {media && source.type.startsWith("image/") ? (
-          <img
-            {...stylex.props(style.media, style.image)}
-            src={source.url}
-            alt={source.name}
-            onError={() => setFailedUrl(source.url)}
-          />
-        ) : media && source.type.startsWith("video/") ? (
-          <video
-            {...stylex.props(style.media)}
-            src={source.url}
-            controls
-            aria-label={source.name}
-            onError={() => setFailedUrl(source.url)}
-          />
-        ) : media && source.type.startsWith("audio/") ? (
-          <audio
-            {...stylex.props(style.audio)}
-            src={source.url}
-            controls
-            aria-label={source.name}
-            onError={() => setFailedUrl(source.url)}
-          />
-        ) : media && source.type === "application/pdf" ? (
-          <iframe {...stylex.props(style.pdf)} src={source.url} title={source.name} sandbox="" />
-        ) : (
-          <p role="status">{fallback}</p>
-        )}
+        <ViewerMedia source={source} media={media} fallback={fallback} onError={() => setFailedUrl(source.url)} />
         {source.type === "application/pdf" && <p>{fallback}</p>}
         {safe && (
           <a

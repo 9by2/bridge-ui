@@ -25,7 +25,6 @@ const style = stylex.create({
 export function Pagination({ className, ...props }: ComponentProps<"nav">) {
   return (
     <nav
-      role="navigation"
       aria-label="pagination"
       data-slot="pagination"
       {...props}
