@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   dashboardTableRows,
   filterDashboardData,
@@ -138,10 +138,6 @@ export function ShadcnDashboard({ ChartRenderer, input }: DashboardProps) {
     input.width < 768 ? '7d' : '90d',
   )
   const chartData = useMemo(() => filterDashboardData(range), [range])
-
-  useEffect(() => {
-    if (input.width < 768) setRange('7d')
-  }, [input.width])
 
   return (
     <div

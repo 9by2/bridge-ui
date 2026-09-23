@@ -291,7 +291,11 @@ export function modeLabel(mode: MorphMode) {
   return mode[0]!.toUpperCase() + mode.slice(1)
 }
 
-export default function GeometryMorphExample({
+export default function GeometryMorphExample(props: ExampleProps = {}) {
+  return <GeometryMorphView key={props.revision ?? 0} {...props} />
+}
+
+function GeometryMorphView({
   width = 640,
   height = 480,
   revision = 0,
@@ -359,12 +363,6 @@ export default function GeometryMorphExample({
     setReplayCount((value) => value + 1)
     setAnnouncement('')
   }
-
-  useEffect(() => {
-    clearTimer()
-    setMode(modeForRevision(input.revision))
-    setAnnouncement('')
-  }, [input.revision])
 
   useEffect(() => () => clearTimer(), [])
 

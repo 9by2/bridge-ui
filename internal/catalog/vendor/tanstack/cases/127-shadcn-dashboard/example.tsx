@@ -187,6 +187,6 @@ export interface ExampleProps {
 
 export default function Example({ width = 1024, height = 768 }: ExampleProps) {
   return (
-    <ShadcnDashboard ChartRenderer={DashboardChart} input={{ width, height }} />
+    <ShadcnDashboard key={width < 768 ? 'mobile' : 'desktop'} ChartRenderer={DashboardChart} input={{ width, height }} />
   )
 }

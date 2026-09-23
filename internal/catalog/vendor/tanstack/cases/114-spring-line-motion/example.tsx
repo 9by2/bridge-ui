@@ -66,7 +66,11 @@ export function springLineMotionDefinition(
   })
 }
 
-export default function SpringLineMotionExample({
+export default function SpringLineMotionExample(props: ExampleProps = {}) {
+  return <SpringLineMotionView key={props.revision ?? 0} {...props} />
+}
+
+function SpringLineMotionView({
   width = 640,
   height = 480,
   revision = 0,
@@ -135,12 +139,6 @@ export default function SpringLineMotionExample({
     setReplayCount((value) => value + 1)
     setAnnouncement('')
   }
-
-  useEffect(() => {
-    clearTimer()
-    setStage(Math.abs(input.revision) % springLineStages.length)
-    setAnnouncement('')
-  }, [input.revision])
 
   useEffect(() => () => clearTimer(), [])
 

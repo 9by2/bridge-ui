@@ -99,7 +99,11 @@ export function definitionMotionDefinition(
   })
 }
 
-export default function DefinitionMotionExample({
+export default function DefinitionMotionExample(props: ExampleProps = {}) {
+  return <DefinitionMotionView key={props.revision ?? 0} {...props} />
+}
+
+function DefinitionMotionView({
   width = 640,
   height = 480,
   revision = 0,
@@ -165,12 +169,6 @@ export default function DefinitionMotionExample({
     setReplayCount((value) => value + 1)
     setAnnouncement('')
   }
-
-  useEffect(() => {
-    clearTimer()
-    setStage(Math.abs(input.revision) % definitionMotionStages.length)
-    setAnnouncement('')
-  }, [input.revision])
 
   useEffect(() => () => clearTimer(), [])
 

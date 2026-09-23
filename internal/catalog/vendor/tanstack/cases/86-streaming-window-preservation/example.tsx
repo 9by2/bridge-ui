@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { defineChart, dot, lineY } from '@tanstack/charts'
 import { decorative } from '@tanstack/charts/mark/decorative'
 import { tooltip } from '@tanstack/charts/tooltip'
@@ -122,7 +122,11 @@ export interface ExampleProps {
   revision?: number
 }
 
-export default function StreamingExample({
+export default function StreamingExample(props: ExampleProps = {}) {
+  return <StreamingView key={props.revision ?? 0} {...props} />
+}
+
+function StreamingView({
   width = 640,
   height = 480,
   revision = 0,
@@ -171,10 +175,6 @@ export default function StreamingExample({
     viewportMode,
     announcement,
   })
-
-  useEffect(() => {
-    setAnnouncement('')
-  }, [input.revision])
 
   const append = () => {
     const nextAppended = appended + 1

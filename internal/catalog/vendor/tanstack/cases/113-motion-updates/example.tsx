@@ -151,7 +151,11 @@ export function springRegime(settings: UpdateSettings) {
   return 'critical'
 }
 
-export default function MotionUpdatesExample({
+export default function MotionUpdatesExample(props: ExampleProps = {}) {
+  return <MotionUpdatesView key={props.revision ?? 0} {...props} />
+}
+
+function MotionUpdatesView({
   width = 640,
   height = 480,
   revision = 0,
@@ -225,12 +229,6 @@ export default function MotionUpdatesExample({
     setReplayCount((value) => value + 1)
     setAnnouncement('')
   }
-
-  useEffect(() => {
-    clearTimer()
-    setStage(Math.abs(input.revision) % stages.length)
-    setAnnouncement('')
-  }, [input.revision])
 
   useEffect(() => () => clearTimer(), [])
 
