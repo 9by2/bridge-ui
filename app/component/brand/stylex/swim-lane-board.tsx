@@ -99,7 +99,7 @@ const style = stylex.create({
     paddingLeft: 14,
     color: token.mutedForeground,
     backgroundColor: token.card,
-    fontSize: 10,
+    fontSize: "var(--bridge-font-size-2xs, 0.625em)",
     fontWeight: 800,
     letterSpacing: "0.08em",
     textTransform: "uppercase",
@@ -129,18 +129,18 @@ const style = stylex.create({
   },
   firstColumn: { borderLeftWidth: 0 },
   laneColumn: { minHeight: 92 },
-  columnName: { color: token.cardForeground, fontSize: 12, fontWeight: 700 },
+  columnName: { color: token.cardForeground, fontSize: "var(--bridge-font-size-sm, 0.75em)", fontWeight: 700 },
   toggle: {
     float: "right",
     width: 24,
     height: 24,
     padding: 0,
     borderWidth: 0,
-    borderRadius: 6,
+    borderRadius: "var(--bridge-radius-6, 0.375em)",
     backgroundColor: "transparent",
     color: token.mutedForeground,
     cursor: "pointer",
-    fontSize: 18,
+    fontSize: "var(--bridge-font-size-xl, 1.125em)",
     lineHeight: 1
   },
   lane: {
@@ -158,7 +158,7 @@ const style = stylex.create({
     backgroundColor: token.card
   },
   rowSeparator: { borderTopWidth: 1, borderTopStyle: "solid", borderTopColor: token.border },
-  laneName: { color: token.cardForeground, fontSize: 12, fontWeight: 700 },
+  laneName: { color: token.cardForeground, fontSize: "var(--bridge-font-size-sm, 0.75em)", fontWeight: 700 },
   cell: {
     display: "grid",
     alignContent: "start",
@@ -193,7 +193,7 @@ const style = stylex.create({
     boxShadow: "0 1px 2px color-mix(in oklab, black 6%, transparent)",
     color: token.cardForeground,
     cursor: "grab",
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: 1.4
   },
   itemDragging: { opacity: 0.35, cursor: "grabbing" },
@@ -230,11 +230,11 @@ const style = stylex.create({
     height: 24,
     padding: 0,
     borderWidth: 0,
-    borderRadius: 6,
+    borderRadius: "var(--bridge-radius-6, 0.375em)",
     backgroundColor: "transparent",
     color: token.mutedForeground,
     cursor: "pointer",
-    fontSize: 16,
+    fontSize: "var(--bridge-font-size-lg, 1em)",
     lineHeight: 1
   },
   badge: {
@@ -249,7 +249,7 @@ const style = stylex.create({
     borderRadius: token.shapePill,
     backgroundColor: token.secondary,
     color: token.secondaryForeground,
-    fontSize: 11,
+    fontSize: "var(--bridge-font-size-xs, 0.6875em)",
     fontWeight: 700
   }
 })

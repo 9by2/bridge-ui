@@ -12,14 +12,14 @@ const style = stylex.create({
     width: "100%",
     alignItems: "center",
     overflowX: "hidden",
-    borderRadius: 9999,
+    borderRadius: "var(--bridge-radius-9999, 9999em)",
     backgroundColor: token.muted
   },
   indicator: { height: "100%", backgroundColor: token.primary, transitionProperty: "all", transitionDuration: "150ms" },
-  label: { fontSize: 14, lineHeight: "20px", fontWeight: 500 },
+  label: { fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", fontWeight: 500 },
   value: {
     marginLeft: "auto",
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     color: token.mutedForeground,
     fontVariantNumeric: "tabular-nums"

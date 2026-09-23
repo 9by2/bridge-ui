@@ -129,7 +129,7 @@ const style = stylex.create({
     flexDirection: "column",
     backgroundColor: token.background,
     color: token.foreground,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     transitionProperty: "transform, height, opacity, filter",
     transitionDuration: {
@@ -235,7 +235,7 @@ const style = stylex.create({
     justifyContent: "center",
     alignItems: "end"
   },
-  grip: { display: "block", flexShrink: 0, borderRadius: 9999, backgroundColor: token.muted, width: 96, height: 4 },
+  grip: { display: "block", flexShrink: 0, borderRadius: "var(--bridge-radius-9999, 9999em)", backgroundColor: token.muted, width: 96, height: 4 },
   header: {
     display: "flex",
     flexShrink: 0,
@@ -260,12 +260,12 @@ const style = stylex.create({
   title: {
     margin: 0,
     fontFamily: "inherit",
-    fontSize: 16,
+    fontSize: "var(--bridge-font-size-lg, 1em)",
     lineHeight: "24px",
     fontWeight: 500,
     color: token.foreground
   },
-  description: { margin: 0, fontSize: 14, lineHeight: "20px", textWrap: "balance", color: token.mutedForeground }
+  description: { margin: 0, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", textWrap: "balance", color: token.mutedForeground }
 })
 export function Drawer({
   modal = true,

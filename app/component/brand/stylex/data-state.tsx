@@ -50,7 +50,7 @@ const style = stylex.create({
     maxWidth: 640,
     color: token.foreground,
     fontFamily: token.fontHeading,
-    fontSize: 18,
+    fontSize: "var(--bridge-font-size-xl, 1.125em)",
     fontWeight: 600,
     lineHeight: 1.4,
     overflowWrap: "anywhere"
@@ -59,7 +59,7 @@ const style = stylex.create({
     margin: 0,
     maxWidth: 640,
     color: token.mutedForeground,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: 1.55,
     overflowWrap: "anywhere"
   },

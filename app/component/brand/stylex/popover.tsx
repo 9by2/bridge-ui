@@ -20,7 +20,7 @@ const style = stylex.create({
     borderRadius: geometryToken.overlayRadius,
     backgroundColor: themeToken.popover,
     padding: geometryToken.surfacePadding,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     color: themeToken.popoverForeground,
     boxShadow: `0 0 0 1px color-mix(in oklch, ${themeToken.foreground}, transparent 90%), 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%)`,
@@ -29,7 +29,7 @@ const style = stylex.create({
     animationDuration: { default: "100ms", "@media (prefers-reduced-motion: reduce)": "0s" }
   },
   closed: { animationName: exit },
-  header: { display: "flex", flexDirection: "column", gap: 2, fontSize: 14, lineHeight: "20px" },
+  header: { display: "flex", flexDirection: "column", gap: 2, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px" },
   title: { fontFamily: token.fontHeading, fontWeight: 500, margin: 0 },
   description: { color: themeToken.mutedForeground, margin: 0 }
 })

@@ -94,7 +94,7 @@ const style = stylex.create({
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: token.border,
-    borderRadius: 8,
+    borderRadius: "var(--bridge-radius-8, 0.5em)",
     paddingInline: 10,
     backgroundColor: token.background,
     color: token.foreground,
@@ -117,12 +117,12 @@ const style = stylex.create({
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: token.border,
-    borderRadius: 10,
+    borderRadius: "var(--bridge-radius-10, 0.625em)",
     overflow: "auto"
   },
   scheduled: { display: "flex", flexDirection: "column", gap: 16, padding: 16 },
   group: { display: "flex", flexDirection: "column", gap: 8 },
-  date: { margin: 0, fontSize: 14, fontWeight: 600 },
+  date: { margin: 0, fontSize: "var(--bridge-font-size-base, 0.875em)", fontWeight: 600 },
   event: {
     display: "flex",
     width: "100%",
@@ -133,7 +133,7 @@ const style = stylex.create({
     borderLeftWidth: 4,
     borderLeftStyle: "solid",
     borderLeftColor: token.border,
-    borderRadius: 4,
+    borderRadius: "var(--bridge-radius-4, 0.25em)",
     padding: 10,
     backgroundColor: token.muted,
     color: token.foreground,
@@ -143,7 +143,7 @@ const style = stylex.create({
   success: { borderLeftColor: token.primary },
   warning: { borderLeftColor: token.warning },
   danger: { borderLeftColor: token.destructive },
-  meta: { color: token.foreground, fontSize: 12 },
+  meta: { color: token.foreground, fontSize: "var(--bridge-font-size-sm, 0.75em)" },
   grid: { display: "grid", gridTemplateColumns: "repeat(7, minmax(7rem, 1fr))", minWidth: 700 },
   weekday: {
     padding: 8,
@@ -151,7 +151,7 @@ const style = stylex.create({
     borderBottomStyle: "solid",
     borderBottomColor: token.border,
     color: token.mutedForeground,
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     textAlign: "center"
   },
   day: {
@@ -171,7 +171,7 @@ const style = stylex.create({
   },
   outside: { color: token.foreground, backgroundColor: token.muted },
   holiday: { backgroundColor: token.secondary },
-  dayNumber: { fontSize: 12, fontWeight: 600 },
+  dayNumber: { fontSize: "var(--bridge-font-size-sm, 0.75em)", fontWeight: 600 },
   dayButton: {
     alignSelf: "flex-start",
     borderWidth: 0,
@@ -186,7 +186,7 @@ const style = stylex.create({
   holidayText: {
     overflow: "hidden",
     color: token.secondaryForeground,
-    fontSize: 11,
+    fontSize: "var(--bridge-font-size-xs, 0.6875em)",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap"
   },
@@ -244,7 +244,7 @@ const style = stylex.create({
     paddingTop: 4,
     paddingRight: 8,
     color: token.mutedForeground,
-    fontSize: 11,
+    fontSize: "var(--bridge-font-size-xs, 0.6875em)",
     textAlign: "end"
   },
   weekDay: {
@@ -299,12 +299,12 @@ const style = stylex.create({
     borderLeftWidth: 2,
     borderLeftStyle: "solid",
     borderLeftColor: token.border,
-    borderRadius: 3,
+    borderRadius: "var(--bridge-radius-3, 0.1875em)",
     paddingBlock: 2,
     paddingInline: 4,
     backgroundColor: token.muted,
     color: token.foreground,
-    fontSize: 11,
+    fontSize: "var(--bridge-font-size-xs, 0.6875em)",
     lineHeight: "14px",
     textAlign: "start",
     whiteSpace: "nowrap"
@@ -319,7 +319,7 @@ const style = stylex.create({
     color: token.background,
     fontWeight: 600
   },
-  monthEventTime: { flexShrink: 0, color: token.foreground, fontSize: 10, fontVariantNumeric: "tabular-nums" },
+  monthEventTime: { flexShrink: 0, color: token.foreground, fontSize: "var(--bridge-font-size-2xs, 0.625em)", fontVariantNumeric: "tabular-nums" },
   monthEventTitle: { overflow: "hidden", textOverflow: "ellipsis" },
   empty: {
     display: "flex",

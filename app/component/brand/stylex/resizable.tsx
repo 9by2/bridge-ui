@@ -29,7 +29,7 @@ const style = stylex.create({
     height: 24,
     width: 4,
     flexShrink: 0,
-    borderRadius: 10,
+    borderRadius: "var(--bridge-radius-10, 0.625em)",
     backgroundColor: token.border,
     rotate: { default: "0deg", [stylex.when.ancestor('[aria-orientation="horizontal"]')]: "90deg" }
   }

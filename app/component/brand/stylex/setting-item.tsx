@@ -24,9 +24,9 @@ const style = stylex.create({
     borderBottomColor: token.border
   },
   inline: { gap: 16, paddingBlock: 14 },
-  title: { margin: 0, color: token.foreground, fontFamily: token.fontHeading, fontSize: 16, fontWeight: 600 },
+  title: { margin: 0, color: token.foreground, fontFamily: token.fontHeading, fontSize: "var(--bridge-font-size-lg, 1em)", fontWeight: 600 },
   inlineTitle: { fontWeight: 400 },
-  description: { margin: 0, color: token.mutedForeground, fontSize: 14, lineHeight: 1.5 },
+  description: { margin: 0, color: token.mutedForeground, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: 1.5 },
   action: { gridColumn: 2, gridRow: "1 / span 2", minWidth: 0, overflowWrap: "anywhere", textAlign: "right" }
 })
 const classes = (own: string | undefined, value?: string) => [own, value].filter(Boolean).join(" ")

@@ -28,7 +28,7 @@ const style = stylex.create({
     gap: 16,
     backgroundColor: token.background,
     backgroundClip: "padding-box",
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     color: token.foreground,
     boxShadow: "0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%)",
@@ -79,7 +79,7 @@ const style = stylex.create({
   resizeHandle: {
     position: "absolute",
     zIndex: 1,
-    borderRadius: 999,
+    borderRadius: "var(--bridge-radius-999, 999em)",
     backgroundColor: token.border,
     outline: "none",
     ":focus-visible": { boxShadow: `0 0 0 2px ${token.ring}` }
@@ -107,12 +107,12 @@ const style = stylex.create({
   title: {
     margin: 0,
     fontFamily: "inherit",
-    fontSize: 16,
+    fontSize: "var(--bridge-font-size-lg, 1em)",
     lineHeight: "24px",
     fontWeight: 500,
     color: token.foreground
   },
-  description: { margin: 0, fontSize: 14, lineHeight: "20px", color: token.mutedForeground }
+  description: { margin: 0, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", color: token.mutedForeground }
 })
 const ResizeHandleEdgeBySide = {
   right: style.resizeHandleLeft,

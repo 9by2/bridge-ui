@@ -12,7 +12,7 @@ const style = stylex.create({
     width: "100%",
     minWidth: 0,
     appearance: "none",
-    borderRadius: 10,
+    borderRadius: "var(--bridge-radius-10, 0.625em)",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: { default: token.input, ":focus-visible": token.ring },
@@ -22,7 +22,7 @@ const style = stylex.create({
     paddingLeft: 10,
     fontFamily: "inherit",
     color: token.foreground,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     transitionProperty: "color, background-color, border-color",
     transitionDuration: "150ms",
@@ -32,7 +32,7 @@ const style = stylex.create({
     cursor: { default: "default", ":disabled": "not-allowed" },
     boxShadow: { default: "none", ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.ring}, transparent 50%)` }
   },
-  small: { height: 28, borderRadius: 8, paddingBlock: 2 },
+  small: { height: 28, borderRadius: "var(--bridge-radius-8, 0.5em)", paddingBlock: 2 },
   invalid: {
     borderColor: token.invalidBorder,
     boxShadow: `0 0 0 3px color-mix(in oklch, ${token.destructive} ${token.errorRingOpacity}, transparent)`

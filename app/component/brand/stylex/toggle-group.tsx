@@ -13,8 +13,8 @@ type Option = {
 }
 const Context = createContext<Option>({ variant: "default", size: "default", spacing: 2, orientation: "horizontal" })
 const style = stylex.create({
-  root: { display: "flex", width: "fit-content", flexDirection: "row", alignItems: "center", borderRadius: 10 },
-  small: { borderRadius: 8 },
+  root: { display: "flex", width: "fit-content", flexDirection: "row", alignItems: "center", borderRadius: "var(--bridge-radius-10, 0.625em)" },
+  small: { borderRadius: "var(--bridge-radius-8, 0.5em)" },
   vertical: { flexDirection: "column", alignItems: "stretch" },
   item: { flexShrink: 0, zIndex: { default: "auto", ":focus": 10, ":focus-visible": 10 } },
   joined: {

@@ -12,7 +12,7 @@ const style = stylex.create({
     flexWrap: "wrap",
     alignItems: "center",
     gap: 6,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     overflowWrap: "break-word",
     color: token.mutedForeground,

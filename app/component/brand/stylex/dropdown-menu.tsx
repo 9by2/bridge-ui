@@ -19,7 +19,7 @@ export const menuStyle = stylex.create({
     transformOrigin: "var(--transform-origin)",
     overflowX: "hidden",
     overflowY: "auto",
-    borderRadius: 10,
+    borderRadius: "var(--bridge-radius-10, 0.625em)",
     backgroundColor: token.background,
     padding: 4,
     color: token.foreground,
@@ -37,7 +37,7 @@ export const menuStyle = stylex.create({
   label: {
     paddingInline: 6,
     paddingBlock: 4,
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     fontWeight: 500,
     color: token.mutedForeground
@@ -49,10 +49,10 @@ export const menuStyle = stylex.create({
     cursor: "default",
     alignItems: "center",
     gap: 6,
-    borderRadius: 8,
+    borderRadius: "var(--bridge-radius-8, 0.5em)",
     paddingInline: 6,
     paddingBlock: 4,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     outline: "2px solid transparent",
     outlineOffset: 2,
@@ -96,7 +96,7 @@ export const menuStyle = stylex.create({
   separator: { marginInline: -4, marginBlock: 4, height: 1, backgroundColor: token.border },
   shortcut: {
     marginLeft: "auto",
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     letterSpacing: "0.1em",
     color: { default: token.mutedForeground, [stylex.when.ancestor(":focus")]: token.accentForeground }

@@ -77,8 +77,8 @@ const style = stylex.create({
     transitionTimingFunction: "cubic-bezier(0.22,1,0.36,1)",
     opacity: { default: 1, ":is([data-behind])": 0, ":is([data-expanded])": 1 }
   },
-  title: { fontSize: 14, lineHeight: "20px", fontWeight: 500 },
-  description: { fontSize: 14, lineHeight: "20px", color: themeToken.mutedForeground },
+  title: { fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", fontWeight: 500 },
+  description: { fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", color: themeToken.mutedForeground },
   action: { flexShrink: 0 },
   close: {
     position: { default: "relative", "::after": "absolute" },

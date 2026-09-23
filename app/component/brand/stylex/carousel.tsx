@@ -32,7 +32,7 @@ const style = stylex.create({
   item: { boxSizing: "border-box", minWidth: 0, flexShrink: 0, flexGrow: 0, flexBasis: "100%" },
   horizontalItem: { paddingLeft: 16 },
   verticalItem: { paddingTop: 16 },
-  button: { position: "absolute", touchAction: "manipulation", borderRadius: 9999 },
+  button: { position: "absolute", touchAction: "manipulation", borderRadius: "var(--bridge-radius-9999, 9999em)" },
   previous: { top: 0, bottom: 0, left: -48, marginBlock: "auto" },
   next: { top: 0, bottom: 0, right: -48, marginBlock: "auto" },
   previousVertical: { top: -48, left: "50%", translate: "-50% 0", rotate: "90deg" },

@@ -20,7 +20,7 @@ const style = stylex.create({
     minWidth: 0,
     aspectRatio: "16 / 9",
     justifyContent: "center",
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px"
   },
   tooltip: {
@@ -28,14 +28,14 @@ const style = stylex.create({
     minWidth: 128,
     alignItems: "start",
     gap: 6,
-    borderRadius: 10,
+    borderRadius: "var(--bridge-radius-10, 0.625em)",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: `color-mix(in oklch, ${token.border}, transparent 50%)`,
     backgroundColor: token.background,
     paddingInline: 10,
     paddingBlock: 6,
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     boxShadow: "0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%)"
   },
@@ -43,7 +43,7 @@ const style = stylex.create({
   grid: { display: "grid", gap: 6 },
   row: { display: "flex", width: "100%", flexWrap: "wrap", alignItems: "stretch", gap: 8 },
   center: { alignItems: "center" },
-  indicator: { flexShrink: 0, borderRadius: 2, borderStyle: "solid", borderWidth: 0 },
+  indicator: { flexShrink: 0, borderRadius: "var(--bridge-radius-2, 0.125em)", borderStyle: "solid", borderWidth: 0 },
   dot: { height: 10, width: 10 },
   line: { width: 4 },
   dashed: { width: 0, borderWidth: 1.5, borderStyle: "dashed" },
@@ -56,7 +56,7 @@ const style = stylex.create({
   top: { paddingBottom: 12 },
   bottom: { paddingTop: 12 },
   legendItem: { display: "flex", alignItems: "center", gap: 6 },
-  legendDot: { width: 8, height: 8, flexShrink: 0, borderRadius: 2 }
+  legendDot: { width: 8, height: 8, flexShrink: 0, borderRadius: "var(--bridge-radius-2, 0.125em)" }
 })
 function useChart() {
   const context = useContext(Context)

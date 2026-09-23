@@ -18,7 +18,7 @@ const style = stylex.create({
     padding: 24,
     textAlign: "center",
     cursor: { default: "pointer", ':is([aria-disabled="true"])': "not-allowed" },
-    borderRadius: 14,
+    borderRadius: "var(--bridge-radius-14, 0.875em)",
     borderWidth: 1,
     borderStyle: "dashed",
     borderColor: {

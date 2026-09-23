@@ -14,7 +14,7 @@ const style = stylex.create({
     height: 16,
     flexShrink: 0,
     padding: 0,
-    borderRadius: 9999,
+    borderRadius: "var(--bridge-radius-9999, 9999em)",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: { default: token.input, ":focus-visible": token.ring },
@@ -37,7 +37,7 @@ const style = stylex.create({
     width: 8,
     height: 8,
     transform: "translate(-50%, -50%)",
-    borderRadius: 9999,
+    borderRadius: "var(--bridge-radius-9999, 9999em)",
     backgroundColor: token.primaryForeground
   }
 })

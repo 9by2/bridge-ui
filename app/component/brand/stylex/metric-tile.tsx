@@ -40,7 +40,7 @@ const style = stylex.create({
   header: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 },
   label: {
     fontFamily: token.fontHeading,
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     fontWeight: 700,
     letterSpacing: "0.08em",
     textTransform: "uppercase",
@@ -59,15 +59,15 @@ const style = stylex.create({
   },
   value: {
     fontFamily: token.fontNumber,
-    fontSize: 36,
+    fontSize: "var(--bridge-font-size-5xl, 2.25em)",
     fontWeight: 600,
     lineHeight: 1.15,
     fontVariantNumeric: "tabular-nums",
     overflowWrap: "anywhere"
   },
-  featuredValue: { fontSize: 52 },
-  compactValue: { fontSize: 28 },
-  description: { marginTop: 8, fontSize: 14, color: themeToken.mutedForeground }
+  featuredValue: { fontSize: "var(--bridge-font-size-6xl, 3.25em)" },
+  compactValue: { fontSize: "var(--bridge-font-size-4xl, 1.75em)" },
+  description: { marginTop: 8, fontSize: "var(--bridge-font-size-base, 0.875em)", color: themeToken.mutedForeground }
 })
 
 export function MetricTile({

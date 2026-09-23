@@ -60,7 +60,7 @@ const style = stylex.create({
     outline: "none",
     boxShadow: { default: "none", ":focus-visible": `0 0 0 3px color-mix(in oklch, ${token.ring}, transparent 50%)` }
   },
-  connector: { boxSizing: "border-box", flexShrink: 0, borderRadius: 2 },
+  connector: { boxSizing: "border-box", flexShrink: 0, borderRadius: "var(--bridge-radius-2, 0.125em)" },
   connectorHorizontal: {
     flex: "1 1 auto",
     minWidth: 24,
@@ -92,7 +92,7 @@ const style = stylex.create({
     borderColor: token.border,
     backgroundColor: token.background,
     color: token.mutedForeground,
-    fontSize: 13,
+    fontSize: "var(--bridge-font-size-md, 0.8125em)",
     fontWeight: 600
   },
   indicatorDot: { width: 10, height: 10, borderWidth: 0, backgroundColor: token.border },
@@ -109,7 +109,7 @@ const style = stylex.create({
     backgroundColor: token.destructive,
     color: token.destructiveForeground
   },
-  indicatorLine: { width: "100%", height: 6, borderWidth: 0, borderRadius: 999, backgroundColor: token.border },
+  indicatorLine: { width: "100%", height: 6, borderWidth: 0, borderRadius: "var(--bridge-radius-999, 999em)", backgroundColor: token.border },
   indicatorLineCurrent: { backgroundColor: token.primary },
   indicatorLineCompleted: { backgroundColor: token.primary },
   indicatorLineError: { backgroundColor: token.destructive },
@@ -124,8 +124,8 @@ const style = stylex.create({
     lineHeight: 1.3,
     overflowWrap: "anywhere"
   },
-  description: { color: token.mutedForeground, fontSize: 13, lineHeight: 1.5, overflowWrap: "anywhere" },
-  counter: { color: token.mutedForeground, fontSize: 12, lineHeight: 1.5 }
+  description: { color: token.mutedForeground, fontSize: "var(--bridge-font-size-md, 0.8125em)", lineHeight: 1.5, overflowWrap: "anywhere" },
+  counter: { color: token.mutedForeground, fontSize: "var(--bridge-font-size-sm, 0.75em)", lineHeight: 1.5 }
 })
 
 export type WizardStepProps = ComponentProps<"div"> & {

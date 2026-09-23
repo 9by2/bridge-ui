@@ -12,7 +12,7 @@ const style = stylex.create({
   group: {
     display: "flex",
     alignItems: "center",
-    borderRadius: 10,
+    borderRadius: "var(--bridge-radius-10, 0.625em)",
     borderColor: { default: token.input, ':has([aria-invalid="true"])': token.destructive },
     boxShadow: {
       default: "none",
@@ -33,7 +33,7 @@ const style = stylex.create({
     borderLeftWidth: { default: 0, ":first-child": 1 },
     borderStyle: "solid",
     borderColor: { default: token.input, ':is([aria-invalid="true"])': token.destructive },
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     transitionProperty: "all",
     transitionDuration: "150ms",

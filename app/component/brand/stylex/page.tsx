@@ -58,7 +58,7 @@ const style = stylex.create({
     marginBottom: 0,
     marginLeft: 0,
     color: token.mutedForeground,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: 1.55
   },
   action: {

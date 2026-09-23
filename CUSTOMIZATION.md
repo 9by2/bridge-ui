@@ -202,6 +202,8 @@ Other components retain their existing public props and default geometry until t
 
 Supported color keys are `background`, `foreground`, `primary`, `primaryForeground`, `surface`, `surfaceForeground`, `dialog`, `dialogForeground`, `popover`, `popoverForeground`, `border`, `input`, `muted`, `mutedForeground`, and `ring`. Bridge UI supplies accessible defaults; a custom palette remains responsible for adequate text and focus contrast.
 
+The shared `--bridge-font-size-{2xs,xs,sm,md,base,lg,xl,2xl,3xl,4xl,5xl,6xl}` and `--bridge-radius-{2,3,4,6,8,10,11,12,14,18,26,999,9999}` scales default to `em` units. Font-size `em` follows the parent font size; radius `em` follows the component font size. `--bridge-pill-radius` and `--bridge-surface-radius` also have `em` fallbacks in owned recipes. Set these variables on a theme ancestor to customize them.
+
 Use component props for intentional local exceptions, for example `<Card radius="none" />`. Do not rely on StyleX class names, `pilot-*` classes, or undocumented `data-slot` selectors as a customization API.
 
 ## Page layout

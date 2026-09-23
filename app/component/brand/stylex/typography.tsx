@@ -19,10 +19,10 @@ type HeadingProps = ComponentProps<"h1"> & { as?: WAIHeading }
 
 const style = stylex.create({
   heading: { color: token.highlight, fontFamily: token.fontHeading },
-  h1: { fontSize: 36 },
-  h2: { fontSize: 24 },
-  h3: { fontSize: 20 },
-  h4: { fontSize: 18 },
+  h1: { fontSize: "var(--bridge-font-size-5xl, 2.25em)" },
+  h2: { fontSize: "var(--bridge-font-size-3xl, 1.5em)" },
+  h3: { fontSize: "var(--bridge-font-size-2xl, 1.25em)" },
+  h4: { fontSize: "var(--bridge-font-size-xl, 1.125em)" },
   body: { lineHeight: 1.3 }
 })
 

@@ -6,7 +6,7 @@ const style = stylex.create({
     display: "flex",
     alignItems: "center",
     gap: 8,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: 1,
     fontWeight: 500,
     userSelect: "none",

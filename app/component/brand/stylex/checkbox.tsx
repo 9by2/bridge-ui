@@ -15,7 +15,7 @@ const style = stylex.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 0,
-    borderRadius: 4,
+    borderRadius: "var(--bridge-radius-4, 0.25em)",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: { default: token.input, ":focus-visible": token.ring },

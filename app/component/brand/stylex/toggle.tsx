@@ -10,11 +10,11 @@ export const toggleStyle = stylex.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 4,
-    borderRadius: 10,
+    borderRadius: "var(--bridge-radius-10, 0.625em)",
     borderWidth: 0,
     fontFamily: "inherit",
     color: token.foreground,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     fontWeight: 500,
     whiteSpace: "nowrap",
@@ -32,7 +32,7 @@ export const toggleStyle = stylex.create({
     borderColor: { default: token.input, ":focus-visible": token.ring }
   },
   defaultSize: { height: 32, minWidth: 32, paddingInline: 10 },
-  sm: { height: 28, minWidth: 28, borderRadius: 8, paddingInline: 10, fontSize: "0.8rem" },
+  sm: { height: 28, minWidth: 28, borderRadius: "var(--bridge-radius-8, 0.5em)", paddingInline: 10, fontSize: "0.8rem" },
   lg: { height: 36, minWidth: 36, paddingInline: 10 },
   invalid: {
     borderColor: token.invalidBorder,

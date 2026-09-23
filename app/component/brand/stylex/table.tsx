@@ -29,7 +29,7 @@ const style = stylex.create({
     paddingBlock: 8,
     paddingInline: 12,
     color: token.mutedForeground,
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: 1.5,
     overflowWrap: "anywhere"
   },
@@ -37,7 +37,7 @@ const style = stylex.create({
   table: {
     width: "100%",
     captionSide: "bottom",
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     borderCollapse: "collapse",
     textIndent: 0
@@ -78,7 +78,7 @@ const style = stylex.create({
     whiteSpace: "nowrap",
     paddingRight: { default: 8, ':has([role="checkbox"])': 0 }
   },
-  caption: { marginTop: 16, fontSize: 14, lineHeight: "20px", color: token.mutedForeground }
+  caption: { marginTop: 16, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", color: token.mutedForeground }
 })
 const tableDensity = { compact: "compact", standard: "standard" } as const
 type ValueOf<T> = T[keyof T]

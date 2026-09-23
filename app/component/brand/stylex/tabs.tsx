@@ -65,7 +65,7 @@ const style = stylex.create({
     width: "fit-content",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 10,
+    borderRadius: "var(--bridge-radius-10, 0.625em)",
     padding: 3,
     color: token.mutedForeground,
     height: { default: 32, [stylex.when.ancestor('[data-orientation="vertical"]')]: "fit-content" },
@@ -158,7 +158,7 @@ const style = stylex.create({
     }
   },
   verticalTrigger: { width: "100%", justifyContent: "start" },
-  content: { flex: 1, fontSize: 14, lineHeight: "20px", outline: "none" }
+  content: { flex: 1, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", outline: "none" }
 })
 export function Tabs({ className, orientation = "horizontal", ...props }: Primitive.Root.Props) {
   return (

@@ -74,7 +74,7 @@ const style = stylex.create({
     width: "100%",
     translate: "-50% -50%",
     gap: 16,
-    borderRadius: 14,
+    borderRadius: "var(--bridge-radius-14, 0.875em)",
     backgroundColor: token.background,
     color: token.foreground,
     padding: 16,
@@ -126,21 +126,21 @@ const style = stylex.create({
     height: 40,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 8,
+    borderRadius: "var(--bridge-radius-8, 0.5em)",
     backgroundColor: token.muted
   },
   desktopMedia: { gridRow: { default: "auto", "@media (min-width: 640px)": "span 2 / span 2" } },
   title: {
     margin: 0,
     fontFamily: "inherit",
-    fontSize: 16,
+    fontSize: "var(--bridge-font-size-lg, 1em)",
     lineHeight: "24px",
     fontWeight: 500,
     letterSpacing: "0.0094em"
   },
   description: {
     margin: 0,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     textWrap: { default: "balance", "@media (min-width: 768px)": "pretty" },
     color: token.mutedForeground

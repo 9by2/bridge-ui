@@ -5,7 +5,7 @@ import { token } from "./token.stylex"
 
 const style = stylex.create({
   group: { display: "flex", minWidth: 0, flexDirection: "column", gap: 8 },
-  root: { position: "relative", display: "flex", width: "100%", minWidth: 0, gap: 8, fontSize: 14, lineHeight: "20px" },
+  root: { position: "relative", display: "flex", width: "100%", minWidth: 0, gap: 8, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px" },
   end: { flexDirection: "row-reverse" },
   avatar: {
     display: "flex",
@@ -16,7 +16,7 @@ const style = stylex.create({
     justifyContent: "center",
     alignSelf: "end",
     overflow: "hidden",
-    borderRadius: 9999,
+    borderRadius: "var(--bridge-radius-9999, 9999em)",
     backgroundColor: token.muted,
     translate: { default: "none", [stylex.when.ancestor(':has([data-slot="message-footer"])')]: "0 -32px" }
   },
@@ -34,7 +34,7 @@ const style = stylex.create({
     minWidth: 0,
     alignItems: "center",
     paddingInline: { default: 12, [stylex.when.ancestor(':has([data-variant="ghost"])')]: 0 },
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     fontWeight: 500,
     color: token.mutedForeground,

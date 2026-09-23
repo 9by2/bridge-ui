@@ -6,7 +6,7 @@ import { token } from "./token.stylex"
 const pulse = stylex.keyframes({ "50%": { opacity: 0.5 } })
 const style = stylex.create({
   root: {
-    borderRadius: 8,
+    borderRadius: "var(--bridge-radius-8, 0.5em)",
     backgroundColor: token.muted,
     animationName: pulse,
     animationDuration: "2s",

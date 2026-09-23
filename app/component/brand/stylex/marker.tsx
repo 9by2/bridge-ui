@@ -14,7 +14,7 @@ const style = stylex.create({
     alignItems: "center",
     gap: 8,
     textAlign: "left",
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     color: { default: token.mutedForeground, ":is(a):hover": token.foreground },
     textDecorationLine: { default: "none", ":is(a)": "underline" },

@@ -18,7 +18,7 @@ const style = stylex.create({
     borderColor: { default: "transparent", ":focus-visible": token.ring },
     backgroundClip: "padding-box",
     fontFamily: "inherit",
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     fontWeight: 500,
     lineHeight: "20px",
     whiteSpace: "nowrap",
@@ -116,7 +116,7 @@ const sizeStyle = stylex.create({
     height: 24,
     gap: 4,
     paddingInline: 8,
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     borderRadius: buttonToken["--bridge-button-radius-small"]
   },
@@ -129,16 +129,16 @@ const sizeStyle = stylex.create({
     borderRadius: buttonToken["--bridge-button-radius-small"]
   },
   lg: { height: 36, gap: 6, paddingInline: buttonToken["--bridge-button-padding-inline"] },
-  xl: { height: 44, gap: 6, paddingInline: 12, fontSize: 18, lineHeight: "28px" },
+  xl: { height: 44, gap: 6, paddingInline: 12, fontSize: "var(--bridge-font-size-xl, 1.125em)", lineHeight: "28px" },
   icon: { height: 32, width: 32, padding: 0 },
-  "icon-xs": { height: 24, width: 24, padding: 0, borderRadius: 8 },
-  "icon-sm": { height: 28, width: 28, padding: 0, borderRadius: 8 },
+  "icon-xs": { height: 24, width: 24, padding: 0, borderRadius: "var(--bridge-radius-8, 0.5em)" },
+  "icon-sm": { height: 28, width: 28, padding: 0, borderRadius: "var(--bridge-radius-8, 0.5em)" },
   "icon-lg": { height: 36, width: 36, padding: 0 }
 })
 const groupStyle = stylex.create({
-  base: { fontSize: 14, lineHeight: "20px", gap: 8, boxShadow: "none" },
-  xs: { height: 24, gap: 4, borderRadius: 11, paddingInline: 6 },
-  iconXs: { height: 24, width: 24, borderRadius: 11, padding: 0 },
+  base: { fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", gap: 8, boxShadow: "none" },
+  xs: { height: 24, gap: 4, borderRadius: "var(--bridge-radius-11, 0.6875em)", paddingInline: 6 },
+  iconXs: { height: 24, width: 24, borderRadius: "var(--bridge-radius-11, 0.6875em)", padding: 0 },
   iconSm: { height: 32, width: 32, padding: 0 }
 })
 const multiSelectStyle = stylex.create({

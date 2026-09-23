@@ -15,7 +15,7 @@ const style = stylex.create({
     height: "100%",
     flexDirection: "column",
     overflow: "hidden",
-    borderRadius: 14,
+    borderRadius: "var(--bridge-radius-14, 0.875em)",
     backgroundColor: token.background,
     padding: 4,
     color: token.foreground
@@ -31,11 +31,11 @@ const style = stylex.create({
     whiteSpace: "nowrap",
     borderWidth: 0
   },
-  popup: { top: "33.333333%", transform: "translate(-50%, 0)", overflow: "hidden", borderRadius: 14, padding: 0 },
+  popup: { top: "33.333333%", transform: "translate(-50%, 0)", overflow: "hidden", borderRadius: "var(--bridge-radius-14, 0.875em)", padding: 0 },
   wrapper: { padding: 4, paddingBottom: 0 },
   input: {
     width: "100%",
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     fontFamily: "inherit",
     color: "inherit",
@@ -55,13 +55,13 @@ const style = stylex.create({
     outline: "none",
     scrollbarWidth: "none"
   },
-  empty: { paddingBlock: 24, textAlign: "center", fontSize: 14, lineHeight: "20px" },
+  empty: { paddingBlock: 24, textAlign: "center", fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px" },
   group: { overflow: "hidden", padding: 4, color: token.foreground },
   heading: {
     display: "block",
     paddingInline: 8,
     paddingBlock: 6,
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     fontWeight: 500,
     color: token.mutedForeground
@@ -76,7 +76,7 @@ const style = stylex.create({
     borderRadius: { default: 6, ':is([data-slot="dialog-content"] *)': 10 },
     paddingInline: 8,
     paddingBlock: 6,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     outline: "2px solid transparent",
     outlineOffset: 2,
@@ -95,7 +95,7 @@ const style = stylex.create({
   },
   shortcut: {
     marginLeft: "auto",
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     letterSpacing: "0.1em",
     color: { default: token.mutedForeground, [stylex.when.ancestor('[data-selected="true"]')]: token.foreground }

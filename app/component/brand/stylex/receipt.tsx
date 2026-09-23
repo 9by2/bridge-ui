@@ -13,7 +13,7 @@ const style = stylex.create({
     paddingBlock: 8
   },
   separator: { borderBottomWidth: 1, borderBottomStyle: "dashed", borderBottomColor: token.border },
-  detail: { color: token.mutedForeground, fontSize: 14, lineHeight: 1.5 }
+  detail: { color: token.mutedForeground, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: 1.5 }
 })
 const className = (value: string | undefined, own: string | undefined) => [own, value].filter(Boolean).join(" ")
 export function Receipt({ className: value, ...prop }: ComponentProps<"dl">) {

@@ -88,7 +88,7 @@ const style = stylex.create({
       bottom: 12,
       left: 12,
       color: themeToken.mutedForeground,
-      fontSize: 11,
+      fontSize: "var(--bridge-font-size-xs, 0.6875em)",
       fontWeight: 700,
       textAlign: "center",
       pointerEvents: "none"

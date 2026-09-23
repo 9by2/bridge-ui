@@ -31,7 +31,7 @@ const style = stylex.create({
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
     fontFamily: "inherit",
-    fontSize: 20,
+    fontSize: "var(--bridge-font-size-2xl, 1.25em)",
     lineHeight: "28px",
     fontWeight: 600,
     color: token.foreground

@@ -28,7 +28,7 @@ const style = stylex.create({
     height: 32,
     alignItems: "center",
     gap: 2,
-    borderRadius: 10,
+    borderRadius: "var(--bridge-radius-10, 0.625em)",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: token.border,
@@ -37,10 +37,10 @@ const style = stylex.create({
   trigger: {
     display: "flex",
     alignItems: "center",
-    borderRadius: 6,
+    borderRadius: "var(--bridge-radius-6, 0.375em)",
     paddingInline: 6,
     paddingBlock: 2,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     fontFamily: "inherit",
     fontWeight: 500,
@@ -63,7 +63,7 @@ const style = stylex.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  label: { fontSize: 14, lineHeight: "20px" },
+  label: { fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px" },
   sub: { minWidth: 128 }
 })
 export function Menubar({ className, ...props }: Bar.Props) {

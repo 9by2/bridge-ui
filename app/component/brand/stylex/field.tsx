@@ -14,11 +14,11 @@ const style = stylex.create({
     width: "fit-content",
     alignItems: "center",
     gap: 8,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     fontWeight: 500,
     lineHeight: "1.375"
   },
-  error: { color: token.errorText, fontSize: 14, lineHeight: "20px", fontWeight: 400 },
+  error: { color: token.errorText, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", fontWeight: 400 },
   list: {
     margin: 0,
     marginInlineStart: 16,
@@ -30,7 +30,7 @@ const style = stylex.create({
   },
   group: { display: "flex", flexDirection: "column", width: "100%", gap: 20, containerType: "inline-size" },
   content: { display: "flex", flexDirection: "column", flex: 1, gap: 2, lineHeight: "1.375" },
-  description: { color: token.mutedForeground, fontSize: 14, lineHeight: "1.5", margin: 0 },
+  description: { color: token.mutedForeground, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "1.5", margin: 0 },
   set: {
     display: "flex",
     flexDirection: "column",
@@ -40,9 +40,9 @@ const style = stylex.create({
     margin: 0,
     padding: 0
   },
-  legend: { marginBottom: 6, padding: 0, fontWeight: 500, fontSize: 16 },
-  legendLabel: { fontSize: 14 },
-  separator: { position: "relative", marginBlock: -8, height: 20, fontSize: 14 },
+  legend: { marginBottom: 6, padding: 0, fontWeight: 500, fontSize: "var(--bridge-font-size-lg, 1em)" },
+  legendLabel: { fontSize: "var(--bridge-font-size-base, 0.875em)" },
+  separator: { position: "relative", marginBlock: -8, height: 20, fontSize: "var(--bridge-font-size-base, 0.875em)" },
   line: { position: "absolute", top: "50%", width: "100%", height: 1, backgroundColor: token.border },
   separatorContent: {
     position: "relative",

@@ -2,8 +2,8 @@ import * as stylex from "@stylexjs/stylex"
 
 export const token = stylex.defineVars({
   colorScheme: "light",
-  shapeSurface: "14px",
-  shapePill: "9999px",
+  shapeSurface: "var(--bridge-surface-radius, 0.875em)",
+  shapePill: "var(--bridge-pill-radius, 9999em)",
   fontBody: "'Geist Variable', aktiv-grotesk, Sarabun, sans-serif",
   fontHeading: "'Plus Jakarta Sans Variable', aktiv-grotesk, Sarabun, sans-serif",
   fontNumber: "InterVariable, Inter, sans-serif",
@@ -104,8 +104,8 @@ export const themeToken = {
 export const geometryToken = {
   controlRadius: "var(--bridge-control-radius, 10px)",
   controlRadiusSmall: "var(--bridge-control-radius-sm, 8px)",
-  surfaceRadius: "var(--bridge-surface-radius, 14px)",
-  overlayRadius: "var(--bridge-overlay-radius, var(--bridge-surface-radius, 14px))",
+  surfaceRadius: "var(--bridge-surface-radius, 0.875em)",
+  overlayRadius: "var(--bridge-overlay-radius, var(--bridge-surface-radius, 0.875em))",
   controlPaddingInline: "var(--bridge-control-padding-inline, 10px)",
   controlPaddingBlock: "var(--bridge-control-padding-block, 4px)",
   surfacePadding: "var(--bridge-surface-padding, 16px)",

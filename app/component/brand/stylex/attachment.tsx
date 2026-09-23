@@ -16,7 +16,7 @@ const style = stylex.create({
     minWidth: 0,
     flexShrink: 0,
     flexWrap: "wrap",
-    borderRadius: 14,
+    borderRadius: "var(--bridge-radius-14, 0.875em)",
     borderWidth: 1,
     borderStyle: { default: "solid", ':is([data-state="idle"])': "dashed" },
     borderColor: {
@@ -35,7 +35,7 @@ const style = stylex.create({
   },
   default: {
     gap: 8,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     paddingInline: {
       default: 0,
@@ -46,7 +46,7 @@ const style = stylex.create({
   },
   sm: {
     gap: 10,
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     paddingInline: {
       default: 0,
@@ -57,8 +57,8 @@ const style = stylex.create({
   },
   xs: {
     gap: 6,
-    borderRadius: 10,
-    fontSize: 12,
+    borderRadius: "var(--bridge-radius-10, 0.625em)",
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     paddingInline: {
       default: 0,
@@ -115,7 +115,7 @@ const style = stylex.create({
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     color: {
       default: token.mutedForeground,

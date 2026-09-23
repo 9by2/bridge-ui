@@ -44,7 +44,7 @@ const style = stylex.create({
     backgroundColor: dialogToken["--bridge-color-dialog"],
     color: dialogToken["--bridge-color-dialog-foreground"],
     padding: dialogToken["--bridge-surface-padding"],
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%)`,
     outline: "none"
@@ -83,8 +83,8 @@ const style = stylex.create({
     backgroundColor: `color-mix(in oklch, ${themeToken.muted}, transparent 50%)`,
     padding: dialogToken["--bridge-surface-padding"]
   },
-  title: { fontFamily: token.fontHeading, fontSize: 16, lineHeight: 1, fontWeight: 500, margin: 0 },
-  description: { color: themeToken.mutedForeground, fontSize: 14, lineHeight: "20px", margin: 0 }
+  title: { fontFamily: token.fontHeading, fontSize: "var(--bridge-font-size-lg, 1em)", lineHeight: 1, fontWeight: 500, margin: 0 },
+  description: { color: themeToken.mutedForeground, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", margin: 0 }
 })
 export function Dialog(props: Primitive.Root.Props) {
   return <Primitive.Root {...props} />

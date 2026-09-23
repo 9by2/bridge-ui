@@ -31,7 +31,7 @@ const style = stylex.create({
     borderTopColor: "transparent"
   },
   vertical: { height: "100%", width: 10, borderLeftWidth: 1, borderLeftStyle: "solid", borderLeftColor: "transparent" },
-  thumb: { position: "relative", flex: 1, borderRadius: 9999, backgroundColor: token.border }
+  thumb: { position: "relative", flex: 1, borderRadius: "var(--bridge-radius-9999, 9999em)", backgroundColor: token.border }
 })
 export function ScrollArea({ className, children, ...props }: Primitive.Root.Props) {
   return (

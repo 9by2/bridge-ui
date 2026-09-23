@@ -20,13 +20,13 @@ const style = stylex.create({
     backgroundColor: themeToken.surface,
     paddingBlock: { default: geometryToken.surfacePadding, ':has([data-slot="card-footer"])': 0 },
     color: themeToken.surfaceForeground,
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%)`
   },
   radiusNone: { borderRadius: 0 },
-  radiusSm: { borderRadius: 8 },
-  radiusLg: { borderRadius: 18 },
+  radiusSm: { borderRadius: "var(--bridge-radius-8, 0.5em)" },
+  radiusLg: { borderRadius: "var(--bridge-radius-18, 1.125em)" },
   ghost: { backgroundColor: "transparent", boxShadow: "none" },
   top: { paddingTop: { default: 16, ":has(> img:first-child)": 0 } },
   small: {
@@ -62,7 +62,7 @@ const style = stylex.create({
     lineHeight: 1.375,
     fontWeight: 500
   },
-  description: { fontSize: 14, lineHeight: "20px", color: token.mutedForeground },
+  description: { fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", color: token.mutedForeground },
   action: { gridColumnStart: 2, gridRow: "1 / span 2", alignSelf: "start", justifySelf: "end" },
   footer: {
     display: "flex",

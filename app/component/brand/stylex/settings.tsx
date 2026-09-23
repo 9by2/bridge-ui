@@ -60,7 +60,7 @@ const style = stylex.create({
     minHeight: 36,
     alignItems: "center",
     borderWidth: 0,
-    borderRadius: 8,
+    borderRadius: "var(--bridge-radius-8, 0.5em)",
     backgroundColor: {
       default: "transparent",
       ":hover": token.accent,
@@ -70,7 +70,7 @@ const style = stylex.create({
     color: token.foreground,
     paddingInline: 10,
     fontFamily: "inherit",
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     fontWeight: { default: 400, ':is([aria-current="page"])': 600 },
     textAlign: "left",
     outline: "none",

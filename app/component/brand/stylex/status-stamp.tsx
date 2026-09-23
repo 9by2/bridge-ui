@@ -26,7 +26,7 @@ const style = stylex.create({
     paddingInline: 10,
     paddingBlock: 4,
     fontFamily: token.fontHeading,
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     fontWeight: 700,
     letterSpacing: "0.08em",
     textTransform: "uppercase"

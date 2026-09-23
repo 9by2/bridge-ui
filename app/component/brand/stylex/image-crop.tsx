@@ -22,7 +22,7 @@ const style = stylex.create({
   input: { display: "block", width: "100%" },
   select: {
     marginLeft: 8,
-    borderRadius: 4,
+    borderRadius: "var(--bridge-radius-4, 0.25em)",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: token.border,

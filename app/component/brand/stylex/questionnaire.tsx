@@ -13,7 +13,7 @@ const style = stylex.create({
     minHeight: "1lh",
     width: "fit-content",
     minWidth: "14ch",
-    fontSize: 12,
+    fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     fontWeight: 500,
     color: token.mutedForeground,
@@ -31,14 +31,14 @@ const style = stylex.create({
   },
   title: {
     fontFamily: "inherit",
-    fontSize: 16,
+    fontSize: "var(--bridge-font-size-lg, 1em)",
     lineHeight: 1.375,
     fontWeight: 500,
     textWrap: "pretty",
     margin: 0,
     marginBottom: { default: 0, ':not(:has(~ [data-slot="questionnaire-description"]))': 16 }
   },
-  description: { margin: 0, fontSize: 14, lineHeight: "20px", textWrap: "pretty", color: token.mutedForeground },
+  description: { margin: 0, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", textWrap: "pretty", color: token.mutedForeground },
   choices: { display: "grid", minWidth: 0, gap: 8 },
   choice: {
     position: "relative",
@@ -48,7 +48,7 @@ const style = stylex.create({
     cursor: { default: "pointer", ":is([data-disabled])": "not-allowed" },
     alignItems: "start",
     gap: 10,
-    borderRadius: 10,
+    borderRadius: "var(--bridge-radius-10, 0.625em)",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: {
@@ -65,7 +65,7 @@ const style = stylex.create({
     paddingInline: 12,
     paddingBlock: 10,
     textAlign: "start",
-    fontSize: 14,
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     transitionProperty: "color, background-color, border-color",
     transitionDuration: "150ms",
@@ -110,7 +110,7 @@ const style = stylex.create({
     display: { default: "none", [stylex.when.ancestor(':is([data-checked][data-type="radio"])')]: "block" },
     width: 8,
     height: 8,
-    borderRadius: 9999,
+    borderRadius: "var(--bridge-radius-9999, 9999em)",
     backgroundColor: token.primaryForeground
   },
   check: {
@@ -129,13 +129,13 @@ const style = stylex.create({
     translate: "0 1.8px",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 8,
+    borderRadius: "var(--bridge-radius-8, 0.5em)",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: token.input,
     backgroundColor: token.background,
     fontFamily: "monospace",
-    fontSize: 10,
+    fontSize: "var(--bridge-font-size-2xs, 0.625em)",
     lineHeight: 1,
     fontWeight: 500,
     color: token.mutedForeground
@@ -143,7 +143,7 @@ const style = stylex.create({
   muted: { color: token.mutedForeground },
   wrapper: { position: "relative", width: "100%", minWidth: 0 },
   input: { minHeight: { default: 44, "@media (min-width: 640px)": 0 } },
-  error: { marginTop: 8, fontSize: 14, lineHeight: "20px", color: token.errorText },
+  error: { marginTop: 8, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", color: token.errorText },
   actions: {
     display: "grid",
     minHeight: { default: 44, "@media (min-width: 640px)": 32 },
