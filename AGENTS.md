@@ -6,7 +6,9 @@
 - **ALWAYS** read [README.md](./README.md) for current project fact and command.
 - **ALWAYS** use native `git`. Never use GitButler unless the active branch is already `gitbutler/workspace`.
 - **ALWAYS** use singlular except variable name allowed to use plural.
-- **ALWAYS** work directly on `main`; do not create a development branch. The automated release branch remains automation-owned.
+- **ALWAYS** work on non-main branch and PR to mani. The automated release branch remains automation-owned.
+- **ALWAYS** follow commit title pattern: `{{chore|feat|fix|...}}({{detail}}): {{short-commit-message}}` short up to 50 characters, additional detail in comment message.
+- **ALWAYS** follow branch pattern: `{{chore|feat|fix|...}}/{{detail}}` short up to 50 characters, additional detail in comment message.
 - **ALWAYS** use Bun as package manager and script runner.
 - **ALWAYS** use declarative config like `const AppConfig = { BASE_URL: "base-url" } as const`.
 - **ALWAYS** define constant and type via `ValueOf<typeof ...>`.
