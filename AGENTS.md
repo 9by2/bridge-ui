@@ -25,6 +25,7 @@
 - **ALWAYS** retain catalog, accessibility, package, tree-shaking, client, SSR, and Bun.WebView verification as separate required gate.
 - **ALWAYS** test an interactive component through its public contract, not its internal implementation path.
 - **ALWAYS** add targeted regression test for a fixed defect.
+- **ALWAYS** make sure to fully satisfies [/react-doctor](./.agents/skills/react-doctor/SKILL.md)
 - **ALWAYS** document how to use each modules in [CUSTOMIZATION.md](./CUSTOMIZATION.md).
 
 - **NEVER** manually edit `app/component/shadcn/`. Add or refresh generated source only through the Shadcn CLI with Bun.
