@@ -4,88 +4,73 @@ export const token = stylex.defineVars({
   colorScheme: "light",
   shapeSurface: "var(--bridge-surface-radius, 0.875em)",
   shapePill: "var(--bridge-pill-radius, 9999em)",
-  fontBody: "'Geist Variable', aktiv-grotesk, Sarabun, sans-serif",
-  fontHeading: "'Plus Jakarta Sans Variable', aktiv-grotesk, Sarabun, sans-serif",
-  fontNumber: "InterVariable, Inter, sans-serif",
-  highlight: "oklch(0.145 0 0)",
-  highlightForeground: "oklch(1 0 0)",
-  brand: "oklch(0.8874 0.182 166.87)",
-  brandForeground: "oklch(0.145 0 0)",
-  brandText: "oklch(0.45 0.14 166.87)",
-  brandAccent: "oklch(0.500137 0.29406 284.0716)",
-  brandAccentForeground: "oklch(1 0 0)",
-  warning: "oklch(0.58 0.1793 34.97)",
-  warningForeground: "oklch(1 0 0)",
-  card: "oklch(1 0 0)",
-  cardForeground: "oklch(0.145 0 0)",
-  popover: "oklch(1 0 0)",
-  popoverForeground: "oklch(0.145 0 0)",
-  sidebar: "oklch(0.985 0 0)",
-  sidebarForeground: "oklch(0.145 0 0)",
-  sidebarPrimary: "oklch(0.205 0 0)",
-  sidebarPrimaryForeground: "oklch(0.985 0 0)",
-  sidebarAccent: "oklch(0.97 0 0)",
-  sidebarAccentForeground: "oklch(0.205 0 0)",
-  sidebarBorder: "oklch(0.922 0 0)",
-  sidebarRing: "oklch(0.708 0 0)",
-  accent: "oklch(0.97 0 0)",
-  accentForeground: "oklch(0.205 0 0)",
+  fontBody: "var(--bridge-font-body, 'Geist Variable', aktiv-grotesk, Sarabun, sans-serif)",
+  fontHeading: "var(--bridge-font-heading, 'Plus Jakarta Sans Variable', aktiv-grotesk, Sarabun, sans-serif)",
+  fontNumber: "var(--bridge-font-number, InterVariable, Inter, sans-serif)",
+  highlight: `var(--bridge-color-highlight, oklch(0.145 0 0))`,
+  highlightForeground: `var(--bridge-color-highlight-foreground, oklch(1 0 0))`,
+  brand: `var(--bridge-color-brand, oklch(0.8874 0.182 166.87))`,
+  brandForeground: `var(--bridge-color-brand-foreground, oklch(0.145 0 0))`,
+  brandText: `var(--bridge-color-brand-text, oklch(0.45 0.14 166.87))`,
+  brandAccent: `var(--bridge-color-brand-accent, oklch(0.500137 0.29406 284.0716))`,
+  brandAccentForeground: `var(--bridge-color-brand-accent-foreground, oklch(1 0 0))`,
+  warning: `var(--bridge-color-warning, oklch(0.58 0.1793 34.97))`,
+  warningForeground: `var(--bridge-color-warning-foreground, oklch(1 0 0))`,
+  card: `var(--bridge-color-surface, oklch(1 0 0))`,
+  cardForeground: `var(--bridge-color-surface-foreground, oklch(0.145 0 0))`,
+  popover: `var(--bridge-color-popover, oklch(1 0 0))`,
+  popoverForeground: `var(--bridge-color-popover-foreground, oklch(0.145 0 0))`,
+  sidebar: `var(--bridge-color-sidebar, oklch(0.985 0 0))`,
+  sidebarForeground: `var(--bridge-color-sidebar-foreground, oklch(0.145 0 0))`,
+  sidebarPrimary: `var(--bridge-color-sidebar-primary, oklch(0.205 0 0))`,
+  sidebarPrimaryForeground: `var(--bridge-color-sidebar-primary-foreground, oklch(0.985 0 0))`,
+  sidebarAccent: `var(--bridge-color-sidebar-accent, oklch(0.97 0 0))`,
+  sidebarAccentForeground: `var(--bridge-color-sidebar-accent-foreground, oklch(0.205 0 0))`,
+  sidebarBorder: `var(--bridge-color-sidebar-border, oklch(0.922 0 0))`,
+  sidebarRing: `var(--bridge-color-sidebar-ring, oklch(0.708 0 0))`,
+  accent: `var(--bridge-color-accent, oklch(0.97 0 0))`,
+  accentForeground: `var(--bridge-color-accent-foreground, oklch(0.205 0 0))`,
   tabInactive: "oklch(0.145 0 0 / 60%)",
-  tabActiveBackground: "oklch(1 0 0)",
-  tabActiveBorder: "transparent",
-  footerBorder: "oklch(0.922 0 0)",
-  switchOff: "oklch(0.922 0 0)",
-  switchThumb: "oklch(1 0 0)",
-  switchThumbOn: "oklch(1 0 0)",
+  tabActiveBackground: `var(--bridge-color-accent, oklch(1 0 0))`,
+  tabActiveBorder: `var(--bridge-color-border, transparent)`,
+  footerBorder: `var(--bridge-color-border, oklch(0.922 0 0))`,
+  switchOff: `var(--bridge-color-input, oklch(0.922 0 0))`,
+  switchThumb: `var(--bridge-color-background, oklch(1 0 0))`,
+  switchThumbOn: `var(--bridge-color-background, oklch(1 0 0))`,
   errorRingOpacity: "20%",
   outlineExpanded: "oklch(0.97 0 0)",
-  errorText: "oklch(0.5489 0.1841 25.69)",
-  destructiveText: "oklch(0.5489 0.1841 25.69)",
+  errorText: `var(--bridge-color-destructive-text, oklch(0.5489 0.1841 25.69))`,
+  destructiveText: `var(--bridge-color-destructive-text, oklch(0.5489 0.1841 25.69))`,
   inputBackground: "transparent",
-  inputDisabled: "oklch(0.922 0 0 / 50%)",
-  invalidBorder: "oklch(0.5489 0.1841 25.69)",
-  outlineFocus: "oklch(0.708 0 0)",
-  outlineHover: "oklch(0.97 0 0)",
-  ghostHover: "oklch(0.97 0 0)",
+  inputDisabled: `var(--bridge-color-input, oklch(0.922 0 0 / 50%))`,
+  invalidBorder: `var(--bridge-color-destructive, oklch(0.5489 0.1841 25.69))`,
+  outlineFocus: `var(--bridge-color-ring, oklch(0.708 0 0))`,
+  outlineHover: `var(--bridge-color-accent, oklch(0.97 0 0))`,
+  ghostHover: `var(--bridge-color-accent, oklch(0.97 0 0))`,
   destructiveHoverOpacity: "20%",
-  outlineBackground: "oklch(1 0 0)",
-  outlineBorder: "oklch(0.922 0 0)",
+  outlineBackground: `var(--bridge-color-background, oklch(1 0 0))`,
+  outlineBorder: `var(--bridge-color-border, oklch(0.922 0 0))`,
   destructiveOpacity: "10%",
-  background: "oklch(1 0 0)",
-  foreground: "oklch(0.145 0 0)",
-  primary: "oklch(0.205 0 0)",
-  primaryForeground: "oklch(0.985 0 0)",
-  secondary: "oklch(0.2178 0 0)",
-  secondaryForeground: "oklch(0.985 0 0)",
-  muted: "oklch(0.97 0 0)",
-  mutedForeground: "oklch(0.556 0 0)",
-  border: "oklch(0.922 0 0)",
-  input: "oklch(0.922 0 0)",
-  ring: "oklch(0.708 0 0)",
-  destructive: "oklch(0.5489 0.1841 25.69)",
-  destructiveForeground: "oklch(1 0 0)"
+  background: `var(--bridge-color-background, oklch(1 0 0))`,
+  foreground: `var(--bridge-color-foreground, oklch(0.145 0 0))`,
+  primary: `var(--bridge-color-primary, oklch(0.205 0 0))`,
+  primaryForeground: `var(--bridge-color-primary-foreground, oklch(0.985 0 0))`,
+  secondary: `var(--bridge-color-secondary, oklch(0.2178 0 0))`,
+  secondaryForeground: `var(--bridge-color-secondary-foreground, oklch(0.985 0 0))`,
+  muted: `var(--bridge-color-muted, oklch(0.97 0 0))`,
+  mutedForeground: `var(--bridge-color-muted-foreground, oklch(0.556 0 0))`,
+  border: `var(--bridge-color-border, oklch(0.922 0 0))`,
+  input: `var(--bridge-color-input, oklch(0.922 0 0))`,
+  ring: `var(--bridge-color-ring, oklch(0.708 0 0))`,
+  destructive: `var(--bridge-color-destructive, oklch(0.5489 0.1841 25.69))`,
+  destructiveForeground: `var(--bridge-color-destructive-foreground, oklch(1 0 0))`
 })
 
-/** Literal names retain the documented Theme override seam after StyleX compilation. */
-export const buttonToken = stylex.defineVars({
-  "--bridge-button-primary": "oklch(0.205 0 0)",
-  "--bridge-button-primary-foreground": "oklch(0.985 0 0)",
-  "--bridge-button-radius": "10px",
-  "--bridge-button-radius-small": "8px",
-  "--bridge-button-padding-inline": "10px"
-})
-
-/** Dialog needs literal Theme variables after StyleX static compilation. */
-export const dialogToken = stylex.defineVars({
-  "--bridge-color-dialog": "oklch(1 0 0)",
-  "--bridge-color-dialog-foreground": "oklch(0.145 0 0)",
-  "--bridge-overlay-radius": "14px",
-  "--bridge-surface-padding": "16px",
-  "--bridge-layout-gap": "16px"
-})
-
-/** Public CSS variable bridge used by statically compiled component recipes. */
-export const themeToken = {
+// `defineConsts` (not a plain object) so StyleX's cross-file constant folding emits a
+// single shared `:root` custom-property definition instead of silently referencing an
+// undefined `var(--xHASH)` — see `geometryToken` below for the full explanation. This
+// token is consumed from many files (Input, Dialog, Popover, Card, MetricTile, and more).
+export const themeToken = stylex.defineConsts({
   background: `var(--bridge-color-background, ${token.background})`,
   foreground: `var(--bridge-color-foreground, ${token.foreground})`,
   primary: `var(--bridge-color-primary, ${token.primary})`,
@@ -99,9 +84,14 @@ export const themeToken = {
   muted: `var(--bridge-color-muted, ${token.muted})`,
   mutedForeground: `var(--bridge-color-muted-foreground, ${token.mutedForeground})`,
   ring: `var(--bridge-color-ring, ${token.ring})`
-} as const
+})
 
-export const geometryToken = {
+// `defineConsts` (not a plain object) so StyleX's cross-file constant folding emits a
+// single shared `:root` custom-property definition instead of silently referencing an
+// undefined `var(--xHASH)` — a plain-object literal that repeats across files (e.g.
+// Button, Textarea, Kanban) gets folded into a shared internal variable whose
+// definition is dropped, producing `border-radius: var(--xHASH)` with no fallback.
+export const geometryToken = stylex.defineConsts({
   controlRadius: "var(--bridge-control-radius, 10px)",
   controlRadiusSmall: "var(--bridge-control-radius-sm, 8px)",
   surfaceRadius: "var(--bridge-surface-radius, 0.875em)",
@@ -110,4 +100,4 @@ export const geometryToken = {
   controlPaddingBlock: "var(--bridge-control-padding-block, 4px)",
   surfacePadding: "var(--bridge-surface-padding, 16px)",
   layoutGap: "var(--bridge-layout-gap, 16px)"
-} as const
+})
