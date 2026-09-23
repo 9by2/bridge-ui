@@ -27,6 +27,7 @@
 - **ALWAYS** add targeted regression test for a fixed defect.
 - **ALWAYS** make sure to fully satisfies [/react-doctor](./.agents/skills/react-doctor/SKILL.md)
 - **ALWAYS** document how to use each modules in [CUSTOMIZATION.md](./CUSTOMIZATION.md).
+- **ALWAYS** design `variants` for each component. Keep asking what this component may use in many usecases by composing into different container, child under others, or other child under it.
 
 - **NEVER** manually edit `app/component/shadcn/`. Add or refresh generated source only through the Shadcn CLI with Bun.
 - **NEVER** implement consumer migration in this repository.
@@ -62,17 +63,17 @@
 
 Start by naming the protected behavior and selecting the cheapest reliable seam.
 
-| Behavior                              | Preferred seam            | Good test                                                                               | Avoid                            |
-| ------------------------------------- | ------------------------- | --------------------------------------------------------------------------------------- | -------------------------------- |
-| Catalog example exists and compiles   | Static inventory/build    | Verify the example is registered and `bun catalog:build` compiles it                    | Open every example in WebView    |
-| Component validates invalid input     | Component/public API      | Enter invalid value and assert exposed invalid/error state                              | Assert destructive border class  |
-| Quantity cannot pass configured bound | Component/public API      | Click increment and `expect(button).toBeDisabled()` at maximum                          | Assert disabled opacity          |
-| Dialog restores focus after close     | Browser                   | Open dialog, close it, assert trigger is focused                                        | Assert portal wrapper DOM shape  |
-| Menu skips hidden focus guard         | Browser regression        | Navigate by keyboard and assert a menu item receives focus                              | Assert focus-guard width/padding |
-| Mobile composition remains usable     | Browser                   | Set mobile viewport and assert no document overflow                                     | Assert exact sidebar width       |
-| Theme token keeps readable contrast   | Browser accessibility     | Audit a representative semantic archetype in each distinct theme                        | Axe-audit every visual fixture   |
-| Lazy chart releases preview resource  | Browser diagnostic        | Navigate away and assert preview iframe is removed; use memory probe for lifecycle work | Heap-test every routine change   |
-| Documented visual geometry            | Browser visual/regression | Assert the accepted ratio or use a curated screenshot baseline                          | Assert incidental pixel padding  |
+| Behavior                              | Preferred seam            | Good test                                                                               | Avoid                                                                                                                     |
+| ------------------------------------- | ------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Catalog example exists and compiles   | Static inventory/build    | Verify the example is registered and `bun catalog:build` compiles it                    | Open every example in WebView                                                                                             |
+| Component validates invalid input     | Component/public API      | Enter invalid value and assert exposed invalid/error state                              | Assert destructive border class                                                                                           |
+| Quantity cannot pass configured bound | Component/public API      | Click increment and `expect(button).toBeDisabled()` at maximum                          | Assert disabled opacity, `expect(button).toBe(...)`, `expect(button).toHaveStyle(...)`, `expect(button).toHaveClass(...)` |
+| Dialog restores focus after close     | Browser                   | Open dialog, close it, assert trigger is focused                                        | Assert portal wrapper DOM shape                                                                                           |
+| Menu skips hidden focus guard         | Browser regression        | Navigate by keyboard and assert a menu item receives focus                              | Assert focus-guard width/padding                                                                                          |
+| Mobile composition remains usable     | Browser                   | Set mobile viewport and assert no document overflow                                     | Assert exact sidebar width                                                                                                |
+| Theme token keeps readable contrast   | Browser accessibility     | Audit a representative semantic archetype in each distinct theme                        | Axe-audit every visual fixture                                                                                            |
+| Lazy chart releases preview resource  | Browser diagnostic        | Navigate away and assert preview iframe is removed; use memory probe for lifecycle work | Heap-test every routine change                                                                                            |
+| Documented visual geometry            | Browser visual/regression | Assert the accepted ratio or use a curated screenshot baseline                          | Assert incidental pixel padding                                                                                           |
 
 ```ts
 // Component seam: public behavior, not styling.

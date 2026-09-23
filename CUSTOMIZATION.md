@@ -202,7 +202,38 @@ Other components retain their existing public props and default geometry until t
 
 Supported color keys are `background`, `foreground`, `primary`, `primaryForeground`, `surface`, `surfaceForeground`, `dialog`, `dialogForeground`, `popover`, `popoverForeground`, `border`, `input`, `muted`, `mutedForeground`, and `ring`. Bridge UI supplies accessible defaults; a custom palette remains responsible for adequate text and focus contrast.
 
-The shared `--bridge-font-size-{2xs,xs,sm,md,base,lg,xl,2xl,3xl,4xl,5xl,6xl}` and `--bridge-radius-{2,3,4,6,8,10,11,12,14,18,26,999,9999}` scales default to `em` units. Font-size `em` follows the parent font size; radius `em` follows the component font size. `--bridge-pill-radius` and `--bridge-surface-radius` also have `em` fallbacks in owned recipes. Set these variables on a theme ancestor to customize them.
+Owned StyleX recipes use shared semantic CSS colors. In addition to the `Theme` color keys above, CSS hosts can set `--bridge-color-secondary`, `--bridge-color-secondary-foreground`, `--bridge-color-accent`, `--bridge-color-accent-foreground`, `--bridge-color-destructive`, `--bridge-color-destructive-foreground`, `--bridge-color-warning`, `--bridge-color-warning-foreground`, and the `--bridge-color-sidebar*` family. `--bridge-color-highlight*` and `--bridge-color-brand*` cover brand-specific states. Unset colors retain the selected light, dark, cue, or future mode fallback. Supply readable foreground pairs with each custom surface.
+
+Fonts use `--bridge-font-body`, `--bridge-font-heading`, `--bridge-font-number`, and `--bridge-font-size-{2xs,xs,sm,md,base,lg,xl,2xl,3xl,4xl,5xl,6xl}`. Shared shape variables include the semantic control/surface/overlay radii above, `--bridge-pill-radius`, and `--bridge-radius-{2,3,4,6,8,10,11,12,14,18,26,999,9999}` for recipe details. The default font and radius scales use `em` so they respond to font sizing; font-size `em` is relative to the parent, while radius `em` is relative to the component's own font size. The defaults are declared in `@bridge/ui/style.css`; override them on an ancestor of the target component. Intentionally square or circular shapes remain explicit.
+
+Slider defaults to the shared primary, ring, and background colors; its `rangeColor` and `thumbColor` props remain available for intentional local exceptions. Do not set `--bridge-button-*` or `--bridge-slider-*`: those component-specific CSS override names are not part of the contract.
+
+For a CSS-only brand hotfix, set `--bridge-color-brand`, `--bridge-color-brand-foreground`, `--bridge-color-brand-text`, `--bridge-color-brand-accent`, and `--bridge-color-brand-accent-foreground` on the Theme root or a descendant. Unset names fall back to the selected mode's palette. These variables affect owned brand recipes (success states, link tabs, CTA gradients); supply foreground pairs with adequate contrast. Do not target generated StyleX names.
+
+```css
+.partner-region {
+  --bridge-color-brand: #087f60;
+  --bridge-color-brand-foreground: white;
+  --bridge-color-brand-text: #086147;
+  --bridge-color-brand-accent: #673ab7;
+  --bridge-color-brand-accent-foreground: white;
+}
+```
+
+### Changing brand colors in this repo
+
+To change the canonical palette, edit the `brand`, `brandForeground`, `brandText`, `brandAccent`, and `brandAccentForeground` defaults in `app/component/brand/stylex/token.stylex.ts` **and** the corresponding light, dark, cue, and future mode values in `app/component/brand/stylex/theme.tsx`. Mode values override the token defaults; changing only the token file does not update every mode.
+
+For a temporary package-wide CSS hotfix instead, add stable public variables to `app/style/component.css` (the source of `@bridge/ui/style.css`). Target all modes with `[data-bridge-theme]`, or only one mode with `[data-bridge-theme="cue"]`:
+
+```css
+[data-bridge-theme="cue"] {
+  --bridge-color-brand: #087f60;
+  --bridge-color-brand-foreground: white;
+}
+```
+
+This affects Bridge UI brand recipes within that Theme without editing generated StyleX variables. Set the matching foreground and accent variables above when the new palette needs them; check contrast in every affected mode. `app/style/global.css` is catalog-only and is not published.
 
 Use component props for intentional local exceptions, for example `<Card radius="none" />`. Do not rely on StyleX class names, `pilot-*` classes, or undocumented `data-slot` selectors as a customization API.
 
