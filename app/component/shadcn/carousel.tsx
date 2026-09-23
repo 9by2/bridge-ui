@@ -105,9 +105,7 @@ function Carousel({
     }
   }, [api, onSelect])
 
-  return (
-    <CarouselContext.Provider
-      value={{
+  const context = React.useMemo(() => ({
         carouselRef,
         api: api,
         opts,
@@ -117,8 +115,10 @@ function Carousel({
         scrollNext,
         canScrollPrev,
         canScrollNext,
-      }}
-    >
+      }), [carouselRef, api, opts, orientation, scrollPrev, scrollNext, canScrollPrev, canScrollNext])
+
+  return (
+    <CarouselContext.Provider value={context}>
       <div
         onKeyDownCapture={handleKeyDown}
         className={cn("relative", className)}
