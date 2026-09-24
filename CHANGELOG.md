@@ -1,5 +1,11 @@
 # @bridge/ui
 
+## 0.9.0-rc.1
+
+### Patch Changes
+
+- 1f50a36: Document the Typography heading font stack for mixed Thai/English content: Latin renders in Plus Jakarta Sans and Thai in `aktiv-grotesk`, which consumers load through their own Adobe Fonts kit (Sarabun remains the fallback). The catalog now loads the Adobe Fonts kit and its Typography example mixes Thai and English.
+
 ## 0.9.0-rc.0
 
 ### Minor Changes

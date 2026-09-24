@@ -5,6 +5,7 @@
     "@bridge/ui": "0.8.1"
   },
   "changesets": [
-    "color-picker"
+    "color-picker",
+    "typography-thai-example"
   ]
 }
