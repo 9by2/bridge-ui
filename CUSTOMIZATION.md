@@ -123,7 +123,7 @@ import { MetricTile } from "@bridge/ui/metric-tile"
 
 ## RateCard
 
-`RateCard` presents one priced offer. Select a required `variants` for the use case: `row` for managed rate lists (title, status, detail, price and edit action on one wrapping line), `card` for bookable or selectable services, and `plan` for comparable tiers with a larger price and feature list. There is no implicit variant. `highlight` marks the recommended option and exposes `data-highlight`; pair it with `RateCardHighlight` copy such as "Most popular".
+`RateCard` presents one priced offer. Select a required `variants` for the use case: `row` for managed rate lists (title, status, detail, price and edit action on one wrapping line), `card` for bookable or selectable services, `plan` for comparable tiers with a larger price and feature list, and `inline` for a frameless summary inside another control such as a `SelectTrigger` or `SelectItem`. `inline` renders only phrasing `span` elements, is not a landmark or heading, truncates the title, and inherits the host control accessible name. There is no implicit variant. `highlight` marks the recommended option and exposes `data-highlight`; pair it with `RateCardHighlight` copy such as "Most popular".
 
 Compose only the parts you need: `RateCardHeader`, `RateCardTitle` (defaults to `h3`; use `render={<h2 />}` to match the outline), `RateCardHighlight`, `RateCardContent`, `RateCardDescription`, `RateCardPrice` (`prefix`, `amount`, `period`), `RateCardDetail` with `RateCardDetailItem label`, `RateCardFeatureList` with `RateCardFeature icon`, and `RateCardAction`. The article is named by its title unless `aria-label` or `aria-labelledby` is supplied. Feature icons are decorative.
 
@@ -140,6 +140,13 @@ import { RateCard, RateCardAction, RateCardFeature, RateCardFeatureList, RateCar
   <RateCardPrice amount="฿1,500" period="/ hour" />
   <RateCardAction><Button variant="outline" size="sm">Edit</Button></RateCardAction>
 </RateCard>
+
+<SelectTrigger>
+  <RateCard variants="inline">
+    <RateCardHeader><RateCardTitle>Festival</RateCardTitle><Badge variant="info">BMA</Badge></RateCardHeader>
+    <RateCardPrice amount="฿250,000" period="60 min" />
+  </RateCard>
+</SelectTrigger>
 
 <RateCard variants="plan" highlight>
   <RateCardHighlight>Most popular</RateCardHighlight>

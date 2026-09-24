@@ -17,7 +17,8 @@ import { geometryToken, themeToken, token } from "./token.stylex"
 export const rateCardVariant = {
   row: "row",
   card: "card",
-  plan: "plan"
+  plan: "plan",
+  inline: "inline"
 } as const
 
 type ValueOf<T> = T[keyof T]
@@ -60,6 +61,17 @@ const style = stylex.create({
     rowGap: 12
   },
   plan: { gap: 20, padding: 24 },
+  inline: {
+    flexGrow: 1,
+    gap: 4,
+    alignItems: "flex-start",
+    padding: 0,
+    borderWidth: 0,
+    borderRadius: 0,
+    backgroundColor: "transparent",
+    color: "inherit",
+    textAlign: "start"
+  },
   highlight: {
     borderColor: themeToken.primary,
     boxShadow: `0 0 0 1px ${themeToken.primary}`
@@ -75,6 +87,15 @@ const style = stylex.create({
     overflowWrap: "anywhere"
   },
   planTitle: { fontSize: "var(--bridge-font-size-xl, 1.125em)" },
+  inlineHeader: { flexWrap: "nowrap", gap: 6, maxWidth: "100%" },
+  inlineTitle: {
+    fontFamily: "inherit",
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    fontWeight: 500,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
+  },
   highlightLabel: {
     alignSelf: "flex-start",
     display: "inline-flex",
@@ -118,6 +139,14 @@ const style = stylex.create({
     fontVariantNumeric: "tabular-nums",
     overflowWrap: "anywhere"
   },
+  inlinePrice: { flexWrap: "nowrap", columnGap: 8, color: themeToken.mutedForeground },
+  inlinePriceAmount: {
+    fontSize: "var(--bridge-font-size-4xl, 1.875em)",
+    fontWeight: 300,
+    lineHeight: 1,
+    letterSpacing: "-0.02em"
+  },
+  inlinePricePeriod: { fontSize: "var(--bridge-font-size-sm, 0.75em)" },
   planPriceAmount: { fontSize: "var(--bridge-font-size-5xl, 2.25em)", fontWeight: 700 },
   pricePeriod: { fontSize: "var(--bridge-font-size-base, 0.875em)", color: themeToken.mutedForeground },
   detail: { display: "flex", flexDirection: "column", gap: 6, margin: 0 },
@@ -177,55 +206,65 @@ export function RateCard({
 }: RateCardProps) {
   const titleId = useId()
   const [registeredTitleId, registerTitle] = useState<string | undefined>()
-  const labelledBy = ariaLabelledBy ?? (ariaLabel ? undefined : registeredTitleId)
+  const inline = variants === rateCardVariant.inline
+  const labelledBy = inline ? ariaLabelledBy : (ariaLabelledBy ?? (ariaLabel ? undefined : registeredTitleId))
   const context = useMemo(() => ({ variants, titleId, registerTitle }), [variants, titleId])
+  const rootProp = {
+    ...prop,
+    "aria-label": ariaLabel,
+    "aria-labelledby": labelledBy,
+    "data-slot": "rate-card",
+    "data-variants": variants,
+    "data-highlight": highlight || undefined,
+    className: classes(
+      stylex.props(
+        style.root,
+        variants === rateCardVariant.row && style.row,
+        variants === rateCardVariant.plan && style.plan,
+        inline && style.inline,
+        highlight && style.highlight
+      ).className,
+      className
+    ),
+    children
+  }
   return (
-    <RateCardContext value={context}>
-      <article
-        {...prop}
-        aria-label={ariaLabel}
-        aria-labelledby={labelledBy}
-        data-slot="rate-card"
-        data-variants={variants}
-        data-highlight={highlight || undefined}
-        className={classes(
-          stylex.props(
-            style.root,
-            variants === rateCardVariant.row && style.row,
-            variants === rateCardVariant.plan && style.plan,
-            highlight && style.highlight
-          ).className,
-          className
-        )}>
-        {children}
-      </article>
-    </RateCardContext>
+    <RateCardContext value={context}>{inline ? <span {...rootProp} /> : <article {...rootProp} />}</RateCardContext>
   )
 }
 
 export function RateCardHeader({ className, ...prop }: ComponentProps<"div">) {
-  return (
-    <div data-slot="rate-card-header" {...prop} className={classes(stylex.props(style.header).className, className)} />
-  )
+  const inline = useRateCard()?.variants === rateCardVariant.inline
+  const headerProp = {
+    "data-slot": "rate-card-header",
+    ...prop,
+    className: classes(stylex.props(style.header, inline && style.inlineHeader).className, className)
+  }
+  return inline ? <span {...headerProp} /> : <div {...headerProp} />
 }
 
 export function RateCardTitle({ className, render, id, ...prop }: useRender.ComponentProps<"h3">) {
   const context = useRateCard()
+  const inline = context?.variants === rateCardVariant.inline
   const resolvedId = id ?? context?.titleId
   const register = context?.registerTitle
   useEffect(() => {
-    if (!register) return
+    if (!register || inline) return
     register(resolvedId)
     return () => register(undefined)
-  }, [register, resolvedId])
+  }, [register, resolvedId, inline])
   return useRender({
     defaultTagName: "h3",
-    render,
+    render: render ?? (inline ? <span /> : undefined),
     props: mergeProps<"h3">(
       {
         id: resolvedId,
         className: classes(
-          stylex.props(style.title, context?.variants === rateCardVariant.plan && style.planTitle).className,
+          stylex.props(
+            style.title,
+            context?.variants === rateCardVariant.plan && style.planTitle,
+            inline && style.inlineTitle
+          ).className,
           className
         )
       },
@@ -260,13 +299,12 @@ export function RateCardContent({ className, ...prop }: ComponentProps<"div">) {
 }
 
 export function RateCardDescription({ className, ...prop }: ComponentProps<"p">) {
-  return (
-    <p
-      data-slot="rate-card-description"
-      {...prop}
-      className={classes(stylex.props(style.description).className, className)}
-    />
-  )
+  const descriptionProp = {
+    "data-slot": "rate-card-description",
+    ...prop,
+    className: classes(stylex.props(style.description).className, className)
+  }
+  return useRateCard()?.variants === rateCardVariant.inline ? <span {...descriptionProp} /> : <p {...descriptionProp} />
 }
 
 export type RateCardPriceProps = Omit<ComponentProps<"div">, "children"> & {
@@ -277,23 +315,32 @@ export type RateCardPriceProps = Omit<ComponentProps<"div">, "children"> & {
 
 export function RateCardPrice({ amount, period, prefix, className, ...prop }: RateCardPriceProps) {
   const variants = useRateCard()?.variants
-  return (
-    <div
-      data-slot="rate-card-price"
-      {...prop}
-      className={classes(
-        stylex.props(style.price, variants === rateCardVariant.row && style.rowPrice).className,
-        className
-      )}>
+  const inline = variants === rateCardVariant.inline
+  const priceProp = {
+    "data-slot": "rate-card-price",
+    ...prop,
+    className: classes(
+      stylex.props(style.price, variants === rateCardVariant.row && style.rowPrice, inline && style.inlinePrice)
+        .className,
+      className
+    )
+  }
+  const content = (
+    <>
       {prefix && <span {...stylex.props(style.pricePrefix)}>{prefix}</span>}
       <span
         data-slot="rate-card-price-amount"
-        {...stylex.props(style.priceAmount, variants === rateCardVariant.plan && style.planPriceAmount)}>
+        {...stylex.props(
+          style.priceAmount,
+          variants === rateCardVariant.plan && style.planPriceAmount,
+          inline && style.inlinePriceAmount
+        )}>
         {amount}
       </span>
-      {period && <span {...stylex.props(style.pricePeriod)}>{period}</span>}
-    </div>
+      {period && <span {...stylex.props(style.pricePeriod, inline && style.inlinePricePeriod)}>{period}</span>}
+    </>
   )
+  return inline ? <span {...priceProp}>{content}</span> : <div {...priceProp}>{content}</div>
 }
 
 export function RateCardDetail({ className, ...prop }: ComponentProps<"dl">) {

@@ -40,3 +40,11 @@
 **GIVEN** react-doctor flags constructed context values
 **WHEN** RateCard provides variant and title registration
 **THEN** the value is memoized on `variants` and `titleId`; the state setter is stable.
+
+---
+
+### DEC-006: Inline variant from bridge-web queue form
+
+**GIVEN** bridge-web `RateCardMinimalInfo` renders title, BMA/UPC badges, light large price and duration inside a Select trigger and item
+**WHEN** RateCard is used inside an interactive control
+**THEN** `variants="inline"` renders phrasing-only `span` elements without frame, article or heading semantics so the host control keeps valid content and its own accessible name.

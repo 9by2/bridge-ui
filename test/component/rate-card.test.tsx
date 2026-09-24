@@ -15,6 +15,7 @@ import {
   RateCardPrice,
   RateCardTitle
 } from "../../app/component/brand/stylex/rate-card"
+import { Select, SelectContent, SelectItem, SelectTrigger } from "../../app/component/brand/stylex/select"
 
 afterEach(cleanup)
 
@@ -116,6 +117,31 @@ test("highlighted plan exposes highlight state and ribbon copy for consumer styl
   expect(card.getAttribute("data-highlight")).toBe("true")
   expect(screen.getByText("Most popular")).toBeDefined()
   expect(within(card).getByRole("button", { name: "Choose Pro" })).toBeDefined()
+})
+
+test("inline rate card stays phrasing content so it can name a select trigger", () => {
+  render(
+    <Select defaultValue="festival">
+      <SelectTrigger>
+        <RateCard variants="inline">
+          <RateCardHeader>
+            <RateCardTitle>Festival</RateCardTitle>
+            <span>BMA</span>
+          </RateCardHeader>
+          <RateCardPrice amount="฿250,000" period="60 min" />
+        </RateCard>
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="festival">Festival</SelectItem>
+      </SelectContent>
+    </Select>
+  )
+  const trigger = screen.getByRole("combobox")
+  expect(trigger.textContent).toContain("Festival")
+  expect(trigger.textContent).toContain("฿250,000")
+  expect(within(trigger).queryByRole("article")).toBeNull()
+  expect(within(trigger).queryByRole("heading")).toBeNull()
+  expect(trigger.querySelector('[data-slot="rate-card"]')?.getAttribute("data-variants")).toBe("inline")
 })
 
 test("parts render outside a rate card without throwing so they compose into other containers", () => {

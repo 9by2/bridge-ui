@@ -6,7 +6,7 @@
 
 ## Summary
 
-`RateCard` is a noninteractive compound presentation of a priced offer. The root requires `variants: "row" | "card" | "plan"` and accepts optional `highlight`. Parts: `RateCardHeader`, `RateCardTitle`, `RateCardHighlight`, `RateCardContent`, `RateCardDescription`, `RateCardPrice`, `RateCardDetail`, `RateCardDetailItem`, `RateCardFeatureList`, `RateCardFeature`, `RateCardAction`. Consumers pass localized copy, formatted amounts and interactive children.
+`RateCard` is a noninteractive compound presentation of a priced offer. The root requires `variants: "row" | "card" | "plan" | "inline"` and accepts optional `highlight`. Parts: `RateCardHeader`, `RateCardTitle`, `RateCardHighlight`, `RateCardContent`, `RateCardDescription`, `RateCardPrice`, `RateCardDetail`, `RateCardDetailItem`, `RateCardFeatureList`, `RateCardFeature`, `RateCardAction`. Consumers pass localized copy, formatted amounts and interactive children.
 
 ## Requirements
 
@@ -39,6 +39,14 @@ The article is labelled by `RateCardTitle` unless `aria-label` or `aria-labelled
 
 Every variant and `highlight` appear by name in catalog and CUSTOMIZATION.md. `data-variants` and `data-highlight` are exposed for consumer styling.
 
+### REQ-006 Inline variant
+
+`inline` renders a frameless phrasing-only summary (`span` root, header, title, price, description) so it can sit inside interactive controls such as `SelectTrigger` and `SelectItem`. It exposes no article or heading role and does not set its own accessible name.
+
+**Acceptance:**
+
+- [x] Inside a Select trigger the combobox text contains title and price; no article or heading role is exposed.
+
 ### REQ-005 Title level
 
 `RateCardTitle` defaults to `h3` and accepts `render` to change heading level.
@@ -46,7 +54,7 @@ Every variant and `highlight` appear by name in catalog and CUSTOMIZATION.md. `d
 ## Schema / API
 
 ```ts
-type RateCardVariant = "row" | "card" | "plan"
+type RateCardVariant = "row" | "card" | "plan" | "inline"
 type RateCardProps = ComponentProps<"article"> & { variants: RateCardVariant; highlight?: boolean }
 type RateCardPriceProps = Omit<ComponentProps<"div">, "children"> & {
   amount: ReactNode
