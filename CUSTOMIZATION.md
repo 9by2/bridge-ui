@@ -357,6 +357,74 @@ export function Report() {
 }
 ```
 
+### Density and width
+
+`density` sets padding and `width` sets max-width and centering. They are independent.
+
+| `density` (`PageDensity`) | Padding                        |
+| ------------------------- | ------------------------------ |
+| `default`                 | 24 top / 44 inline / 48 bottom |
+| `compact`                 | 16 all sides                   |
+| `comfortable`             | 24 all sides                   |
+| `none`                    | 0                              |
+
+| `width` (`PageWidth`) | Layout                                   |
+| --------------------- | ---------------------------------------- |
+| omitted / `full`      | 100% (unchanged default)                 |
+| `content`             | centered, max 80rem (list, dashboard)    |
+| `form`                | centered, max 48rem (settings, form)     |
+| `editor`              | full width, zero inline padding (canvas) |
+
+```tsx
+import { Page, PageDensity, PageWidth } from "@bridge/ui/page"
+
+;<Page width={PageWidth.content} density={PageDensity.compact}>
+  …
+</Page>
+```
+
+Add responsive gutters with `isDynamicPadding`, or with product layout CSS through `className`.
+
+#### Migration: `spacing` → `density`
+
+`spacing` is deprecated. It still works and takes the same values. `density` wins when both are passed, and `data-spacing` plus `data-density` both carry the resolved value. `spacing` will be removed in the next major.
+
+```diff
+- <Page spacing="compact">
++ <Page density="compact">
+```
+
+### Header slot and form action
+
+```tsx
+<PageHeader>
+  <PageHeading>
+    <PageEyebrow>Studio</PageEyebrow>
+    <PageTitle>Schedule</PageTitle>
+    <PageMeta>12 event · Updated 5 minutes ago</PageMeta>
+  </PageHeading>
+  <PageAction>…</PageAction>
+  <PageFilter role="search" aria-label="Schedule filter">…</PageFilter>
+</PageHeader>
+
+<PageFormAction sticky align={PageFormActionAlign.end}>
+  <Button variant="outline">Cancel</Button>
+  <Button type="submit">Save</Button>
+</PageFormAction>
+```
+
+`PageFilter` takes a full header row. `PageFormAction` `align` is `start` | `end` (default) | `between`. With `sticky`, the row pins to the bottom of the nearest scroll container.
+
+### DataState retry
+
+```tsx
+<DataState variant="error" onRetry={refetch} retryLabel={t("retry")}>
+  <DataStateTitle>{t("loadFailed")}</DataStateTitle>
+</DataState>
+```
+
+With `onRetry`, an outline `Button` renders inside `DataStateAction` after `children`. `retryLabel` defaults to `"Retry"`; pass translated copy from the app.
+
 ## Typography
 
 `Heading`, `Label`, and `Body` provide the Cue semantic typography baseline. Heading uses the package heading family and highlight color; `Body` preserves Cue's compact `1.3` line height. Pass `as` to choose a semantic heading level, or omit it for an `h4`.

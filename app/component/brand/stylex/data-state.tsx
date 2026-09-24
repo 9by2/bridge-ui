@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex"
-import type { ComponentProps } from "react"
+import type { ComponentProps, ReactNode } from "react"
 
+import { Button } from "./button"
 import { token } from "./token.stylex"
 
 const dataStateVariant = {
@@ -72,9 +73,23 @@ const style = stylex.create({
   }
 })
 
-export type DataStateProps = ComponentProps<"section"> & { variant?: DataStateVariant }
+export type DataStateProps = ComponentProps<"section"> & {
+  variant?: DataStateVariant
+  /** Renders a standard retry `Button` inside `DataStateAction` after `children`. */
+  onRetry?: () => void
+  /** Retry button content. Default `"Retry"`; pass translated copy from the application. */
+  retryLabel?: ReactNode
+}
 
-export function DataState({ className, role, variant = "neutral", ...prop }: DataStateProps) {
+export function DataState({
+  className,
+  role,
+  variant = "neutral",
+  onRetry,
+  retryLabel = "Retry",
+  children,
+  ...prop
+}: DataStateProps) {
   const alert = variant === "error" || variant === "permission"
   return (
     <section
@@ -93,8 +108,16 @@ export function DataState({ className, role, variant = "neutral", ...prop }: Dat
         className
       ]
         .filter(Boolean)
-        .join(" ")}
-    />
+        .join(" ")}>
+      {children}
+      {onRetry ? (
+        <DataStateAction>
+          <Button type="button" variant="outline" onClick={onRetry}>
+            {retryLabel}
+          </Button>
+        </DataStateAction>
+      ) : null}
+    </section>
   )
 }
 

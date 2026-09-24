@@ -19,11 +19,12 @@ Implementation order matters — complete top to bottom. Each group is one stack
 
 ## P1-1 — `feat/page-density`
 
-- [ ] failing test: `spacing` alone resolves as before, `density` overrides, default unchanged, `data-density`
-- [ ] `PageDensity`, `PageWidth`, `density`, `width`
-- [ ] `PageEyebrow`, `PageMeta`, `PageFilter`, `PageFormAction` (`sticky`)
-- [ ] `DataState` `onRetry` + `retryLabel` (test: click calls `onRetry`)
-- [ ] catalog, `CUSTOMIZATION.md` migration note, changeset, gates, commit
+- [x] failing test: `spacing` alone resolves as before, `density` overrides, default unchanged, `data-density`
+- [x] `PageDensity`, `PageWidth`, `density`, `width`
+- [x] `PageEyebrow`, `PageMeta`, `PageFilter`, `PageFormAction` (`sticky`)
+- [x] `DataState` `onRetry` + `retryLabel` (test: click calls `onRetry`)
+- [x] catalog, `CUSTOMIZATION.md` migration note, changeset, gates, commit
+- [x] WebView regression: `content` width style key collided with PageContent style; renamed and guarded in `test/browser/responsive.test.ts`
 
 ## P1-3 — `feat/upload-validation`
 
