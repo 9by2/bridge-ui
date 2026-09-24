@@ -130,9 +130,11 @@ describe("package contract", () => {
         const publicName =
           file.endsWith("stylex/sonner.js") && name === "Toaster"
             ? "SonnerToaster"
-            : file.endsWith("stylex/typography.js") && name === "Label"
-              ? "TypographyLabel"
-              : name
+            : file.endsWith("stylex/sonner.js") && name === "toast"
+              ? "sonnerToast"
+              : file.endsWith("stylex/typography.js") && name === "Label"
+                ? "TypographyLabel"
+                : name
         expect(entry[publicName], `${file}: ${name}`).toBe(value)
       }
     }

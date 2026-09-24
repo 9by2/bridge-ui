@@ -172,6 +172,14 @@
       "types": "./dist/component/brand/stylex/kanban.d.ts",
       "import": "./dist/component/brand/stylex/kanban.js"
     },
+    "./sonner": {
+      "types": "./dist/component/brand/stylex/sonner.d.ts",
+      "import": "./dist/component/brand/stylex/sonner.js"
+    },
+    "./spinner": {
+      "types": "./dist/component/brand/stylex/spinner.d.ts",
+      "import": "./dist/component/brand/stylex/spinner.js"
+    },
     "./qr-code": {
       "types": "./dist/component/brand/stylex/qr-code.d.ts",
       "import": "./dist/component/brand/stylex/qr-code.js"

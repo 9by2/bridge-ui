@@ -167,6 +167,38 @@ import { RateCard, RateCardAction, RateCardFeature, RateCardFeatureList, RateCar
 </Button>
 ```
 
+## Which toaster?
+
+The package ships two toast engines. Pair each imperative function with its own toaster; mixing them renders nothing.
+
+| Engine  | Mount                                                   | Call                                                          |
+| ------- | ------------------------------------------------------- | ------------------------------------------------------------- |
+| Sonner  | `SonnerToaster` (or `Toaster` from `@bridge/ui/sonner`) | `sonnerToast.success()` (or `toast` from `@bridge/ui/sonner`) |
+| Base UI | `Toaster` / `ToastProvider`                             | `toast.add()` (root `toast`)                                  |
+
+```tsx
+import { SonnerToaster, sonnerToast } from "@bridge/ui"
+// or: import { Toaster, toast } from "@bridge/ui/sonner"
+
+export function Shell() {
+  return <SonnerToaster />
+}
+
+sonnerToast.success("Saved")
+```
+
+Import Sonner through the package, not `sonner` directly, so the call and the toaster share one Sonner instance.
+
+## Spinner
+
+`Spinner` accepts `size` (`SpinnerSize`: `sm` 12px, `default` 16px, `lg` 24px). It always renders `role="status"`; pass `aria-label` for context.
+
+```tsx
+import { Spinner, SpinnerSize } from "@bridge/ui/spinner"
+
+;<Spinner size={SpinnerSize.lg} aria-label="Loading report" />
+```
+
 ## Sheet
 
 Set `resizable` on `SheetContent` to show a centered pointer drag handle on the sheet edge facing the application. Supply `size` and `onSizeChange` from the consuming composition; the component neither stores nor persists dimensions. Left and right sheets resize horizontally and default to `maxWidth="80vw"`; top and bottom sheets resize vertically and default to `maxHeight="70vh"`. Pass the matching prop to override that maximum.

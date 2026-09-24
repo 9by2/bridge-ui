@@ -7,6 +7,14 @@ import { themeMode, useBridgeTheme, useThemeMode } from "./theme"
 import { geometryToken, themeToken, token } from "./token.stylex"
 
 /**
+ * Sonner imperative API (`toast.success`, `toast.error`, `toast.promise`, …).
+ *
+ * Engine: Sonner. Pair with this module's `Toaster` (root: `SonnerToaster`).
+ * Root re-export name: `sonnerToast`. Calls render nothing under the Base UI `Toaster`.
+ */
+export { toast } from "sonner"
+
+/**
  * DEC-009: Sonner reads the nearest Bridge `Theme` mode instead of an external
  * provider. `light` maps to Sonner light; `dark`, `cue`, and `future` map to Sonner
  * dark, since all three are dark-scheme semantic layers.
@@ -26,6 +34,10 @@ const style = stylex.create({
     animationPlayState: { default: "running", "@media (prefers-reduced-motion: reduce)": "paused" }
   }
 })
+/**
+ * Themed Sonner toaster. Mount once per app; pairs with `toast` from this module
+ * (root: `sonnerToast`). Root re-export name: `SonnerToaster`.
+ */
 export function Toaster({ theme, ...props }: ToasterProps) {
   const mode = useThemeMode()
   const bridgeTheme = useBridgeTheme()
