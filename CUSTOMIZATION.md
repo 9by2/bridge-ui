@@ -308,6 +308,8 @@ export function AccountSummary() {
 }
 ```
 
+Heading font stack is `"Plus Jakarta Sans Variable", aktiv-grotesk, Sarabun, sans-serif`. Plus Jakarta Sans has no Thai glyph, so mixed Thai/English headings render Latin in Plus Jakarta Sans and Thai in `aktiv-grotesk`. The package does not bundle `aktiv-grotesk` (Adobe Fonts); the consumer app must load its own Adobe Fonts kit, e.g. `<link rel="stylesheet" href="https://use.typekit.net/<kitId>.css" />`. Without it, Thai falls back to Sarabun.
+
 `TypographyLabel` renders an inline `span`; the direct `@bridge/ui/typography` module also exports Cue's `Label` name. All three primitives accept native element props and `className` for local layout.
 
 ## Input icons
