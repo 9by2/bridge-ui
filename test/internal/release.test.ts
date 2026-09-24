@@ -61,12 +61,12 @@ test("main carries permanent RC pre-release mode", async () => {
   expect(pre.tag).toBe("rc")
 })
 
-test("promote is a manual job gated identically to release, and publishes stable from the current RC", async () => {
+test("promote is a manual job gated identically to release, and prepares a stable release MR", async () => {
   const ci = await Bun.file("deployment/.gitlab-ci.yml").text()
   expect(ci).toContain(
-    "promote:\n  stage: deploy\n  resource_group: package-release\n  rules:\n    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == \"true\"'\n      when: manual"
+    'promote:\n  stage: deploy\n  resource_group: package-release\n  variables:\n    GIT_DEPTH: "0"\n  rules:\n    - if: \'$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true"\'\n      when: manual'
   )
   expect(ci).toContain("- bun run release:promote")
   const manifest = await Bun.file("package.json").json()
-  expect(manifest.scripts["release:promote"]).toBe("bun run build && bun cmd/promote-release.ts")
+  expect(manifest.scripts["release:promote"]).toBe("bun cmd/promote-release.ts")
 })
