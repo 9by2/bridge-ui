@@ -2,7 +2,7 @@ import { Radio } from "@base-ui/react/radio"
 import { RadioGroup } from "@base-ui/react/radio-group"
 import * as stylex from "@stylexjs/stylex"
 import { MoreHorizontalIcon, PlusIcon, Trash2Icon } from "lucide-react"
-import { useId, useState, type CSSProperties, type ReactNode } from "react"
+import { useCallback, useId, useMemo, useState, type CSSProperties, type ReactNode } from "react"
 
 import { Button } from "./button"
 import {
@@ -139,7 +139,7 @@ const style = stylex.create({
   moreIconMd: { width: 20, height: 20 },
   moreIconLg: { width: 24, height: 24 },
   panel: { width: 288, maxWidth: "calc(100vw - 32px)" },
-  grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, alignItems: "end" },
+  grid2: { display: "grid", gridTemplateColumns: "1fr auto", gap: 12, alignItems: "end" },
   inline: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 },
   preview: {
     height: 32,
@@ -173,10 +173,6 @@ export type ColorPickerLabel = {
   custom: string
   color: string
   hex: string
-  kind: string
-  linear: string
-  radial: string
-  conic: string
   repeating: string
   angle: string
   shape: string
@@ -192,10 +188,6 @@ export const colorPickerDefaultLabel: ColorPickerLabel = {
   custom: "Custom color",
   color: "Color",
   hex: "Hex",
-  kind: "Type",
-  linear: "Linear",
-  radial: "Radial",
-  conic: "Conic",
   repeating: "Repeating",
   angle: "Angle",
   shape: "Shape",
@@ -211,10 +203,10 @@ type OptionOf<Mode extends ColorPickerMode> = Mode extends typeof colorPickerMod
   ? ColorPickerFillOption
   : ColorPickerGradientOption
 
-export type ColorPickerProps<Mode extends ColorPickerMode = ColorPickerMode> = {
+type ColorPickerBaseProps<Mode extends ColorPickerMode> = {
   /** Required. The composing layer declares whether this picker edits a fill or a gradient. */
   mode: Mode
-  /** Swatch list. Defaults to `colorPickerPreset[mode]`. */
+  /** Swatch list. Defaults to the system preset for the declared mode (and gradient kind). */
   option?: readonly OptionOf<Mode>[]
   /** Selected option `value`, or the CSS string emitted for a custom color / gradient. */
   value?: string
@@ -237,6 +229,16 @@ export type ColorPickerProps<Mode extends ColorPickerMode = ColorPickerMode> = {
   "aria-labelledby"?: string
   "aria-describedby"?: string
 }
+
+export type ColorPickerFillProps = ColorPickerBaseProps<typeof colorPickerMode.fill>
+export type ColorPickerGradientProps = ColorPickerBaseProps<typeof colorPickerMode.gradient> & {
+  /**
+   * Required. The composing layer declares which CSS gradient function this picker authors.
+   * Swatches and values of another kind are not rendered; the editor never changes kind.
+   */
+  kind: ColorPickerGradientKind
+}
+export type ColorPickerProps = ColorPickerFillProps | ColorPickerGradientProps
 
 type EditorProps<Option extends ColorPickerOption> = {
   current: Option | null
@@ -305,17 +307,16 @@ function editorStop(stop: readonly ColorPickerStop[]): EditorStop[] {
   })
 }
 
-const initialGradient: ColorPickerGradientOption = {
-  type: "gradient",
-  value: "",
-  label: "",
-  stop: ["#000000", "#ffffff"]
-}
+const initialStop: readonly ColorPickerStop[] = ["#000000", "#ffffff"]
 
-function GradientEditor({ current, label, onCommit }: EditorProps<ColorPickerGradientOption>) {
+function GradientEditor({
+  kind,
+  current,
+  label,
+  onCommit
+}: EditorProps<ColorPickerGradientOption> & { kind: ColorPickerGradientKind }) {
   const id = useId()
-  const base = current ?? initialGradient
-  const kind = base.kind ?? colorPickerGradientKind.linear
+  const base: ColorPickerGradientOption = current ?? { type: "gradient", value: "", label: "", kind, stop: initialStop }
   const stop = editorStop(base.stop)
   // Stops have no identity in CSS. Keep an id per row that survives edits, adds and removes while the editor is open.
   const [stopKey, setStopKey] = useState(() => stop.map(() => stopIdCounter.next()))
@@ -327,15 +328,19 @@ function GradientEditor({ current, label, onCommit }: EditorProps<ColorPickerGra
       ? ColorPickerConfig.DEFAULT_ANGLE.conic
       : ColorPickerConfig.DEFAULT_ANGLE.linear)
 
-  function commit(patch: Partial<ColorPickerGradientOption>) {
-    const draft: ColorPickerGradientOption = { type: "gradient", value: "", label: "", kind, stop, ...patch }
-    if (draft.kind === colorPickerGradientKind.radial) {
-      draft.shape = patch.shape ?? base.shape ?? ColorPickerConfig.DEFAULT_SHAPE
-      delete draft.angle
-    } else {
-      draft.angle = patch.angle ?? (patch.kind === undefined ? angle : undefined)
+  function commit(patch: Partial<Pick<ColorPickerGradientOption, "stop" | "angle" | "shape" | "repeating">>) {
+    const draft: ColorPickerGradientOption = {
+      type: "gradient",
+      value: "",
+      label: "",
+      kind,
+      stop,
+      repeating: base.repeating ?? false,
+      ...(kind === colorPickerGradientKind.radial
+        ? { shape: base.shape ?? ColorPickerConfig.DEFAULT_SHAPE }
+        : { angle }),
+      ...patch
     }
-    draft.repeating = patch.repeating ?? base.repeating ?? false
     const css = colorPickerBackground(draft)
     onCommit({ ...draft, value: css, label: css })
   }
@@ -360,23 +365,6 @@ function GradientEditor({ current, label, onCommit }: EditorProps<ColorPickerGra
     <>
       <div aria-hidden="true" {...stylex.props(style.preview)} style={{ background: colorPickerBackground(base) }} />
       <div {...stylex.props(style.grid2)}>
-        <div {...stylex.props(style.field)}>
-          <Label htmlFor={`${id}-kind`}>{label.kind}</Label>
-          <NativeSelect
-            id={`${id}-kind`}
-            value={kind}
-            onChange={(event) =>
-              commit({
-                kind: Object.values(colorPickerGradientKind).find((item) => item === event.target.value)
-              })
-            }>
-            {Object.values(colorPickerGradientKind).map((item) => (
-              <NativeSelectOption key={item} value={item}>
-                {label[item]}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </div>
         {kind === colorPickerGradientKind.radial ? (
           <div {...stylex.props(style.field)}>
             <Label htmlFor={`${id}-shape`}>{label.shape}</Label>
@@ -409,14 +397,16 @@ function GradientEditor({ current, label, onCommit }: EditorProps<ColorPickerGra
             />
           </div>
         )}
-      </div>
-      <div {...stylex.props(style.inline)}>
-        <Label htmlFor={`${id}-repeating`}>{label.repeating}</Label>
-        <Switch
-          id={`${id}-repeating`}
-          checked={base.repeating ?? false}
-          onCheckedChange={(checked) => commit({ repeating: checked })}
-        />
+        <div {...stylex.props(style.field)}>
+          <Label htmlFor={`${id}-repeating`}>{label.repeating}</Label>
+          <div {...stylex.props(style.inline)}>
+            <Switch
+              id={`${id}-repeating`}
+              checked={base.repeating ?? false}
+              onCheckedChange={(checked) => commit({ repeating: checked })}
+            />
+          </div>
+        </div>
       </div>
       <ul {...stylex.props(style.stopList)}>
         {stop.map((item, index) => (
@@ -500,6 +490,7 @@ type PickerProps<Option extends ColorPickerOption> = Omit<
   option: readonly Option[]
   onValueChange?: (value: string, option: Option) => void
   label: ColorPickerLabel
+  "data-kind"?: ColorPickerGradientKind
   parse: (value: string) => Option | null
   Editor: (props: EditorProps<Option>) => ReactNode
 }
@@ -590,16 +581,37 @@ function parseFill(value: string): ColorPickerFillOption | null {
   const option = colorPickerParse(value)
   return option?.type === colorPickerMode.fill ? option : null
 }
-function parseGradient(value: string): ColorPickerGradientOption | null {
-  const option = colorPickerParse(value)
-  return option?.type === colorPickerMode.gradient ? option : null
+
+function gradientKindOf(option: ColorPickerGradientOption) {
+  return option.kind ?? colorPickerGradientKind.linear
+}
+
+/** System gradient palette re-declared for a gradient kind. */
+export function colorPickerGradientPreset(kind: ColorPickerGradientKind): ColorPickerGradientOption[] {
+  return colorPickerPreset.gradient.map((item) => ({ ...item, kind }))
+}
+
+function GradientPicker({ kind, option, ...props }: ColorPickerGradientProps & { label: ColorPickerLabel }) {
+  const list = useMemo(
+    () => (option ?? colorPickerGradientPreset(kind)).filter((item) => gradientKindOf(item) === kind),
+    [option, kind]
+  )
+  const parse = (value: string) => {
+    const parsed = colorPickerParse(value)
+    return parsed?.type === colorPickerMode.gradient && gradientKindOf(parsed) === kind ? parsed : null
+  }
+  const Editor = useCallback(
+    (editor: EditorProps<ColorPickerGradientOption>) => <GradientEditor {...editor} kind={kind} />,
+    [kind]
+  )
+  return <Picker {...props} data-kind={kind} option={list} parse={parse} Editor={Editor} />
 }
 
 /**
- * Swatch picker. `mode` is required: the composing layer decides whether the payload is a fill or a gradient
- * and maps its own data shape into `option` / `value`.
+ * Swatch picker. `mode` is required, and gradient mode also requires `kind`: the composing layer decides the payload
+ * shape and CSS gradient function, then maps its own data into `option` / `value`.
  */
-export function ColorPicker(props: ColorPickerProps<"fill"> | ColorPickerProps<"gradient">) {
+export function ColorPicker(props: ColorPickerProps) {
   const label = { ...colorPickerDefaultLabel, ...props.label }
   if (props.mode === colorPickerMode.fill)
     return (
@@ -611,13 +623,5 @@ export function ColorPicker(props: ColorPickerProps<"fill"> | ColorPickerProps<"
         Editor={FillEditor}
       />
     )
-  return (
-    <Picker
-      {...props}
-      label={label}
-      option={props.option ?? colorPickerPreset.gradient}
-      parse={parseGradient}
-      Editor={GradientEditor}
-    />
-  )
+  return <GradientPicker {...props} label={label} />
 }

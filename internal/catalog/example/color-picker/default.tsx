@@ -6,6 +6,7 @@ export default function Example() {
       <Label id="color-picker-background">Background</Label>
       <ColorPicker
         mode="gradient"
+        kind="linear"
         aria-labelledby="color-picker-background"
         size="lg"
         layout="grid"

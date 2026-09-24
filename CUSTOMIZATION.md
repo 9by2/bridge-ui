@@ -71,23 +71,30 @@ export function App() {
 
 ## ColorPicker
 
-Circular swatch picker with radio semantics (arrow keys move selection). `mode` is **required** — the composing layer decides whether its payload is a `fill` or a `gradient`, maps that payload into `option` / `value`, and the picker renders and edits only that mode. There is no inferred mode.
+Circular swatch picker with radio semantics (arrow keys move selection). The composing layer declares **everything structural**; the component never infers it:
 
-- `mode="fill"`: options are `{ type: "fill", value, label, color }`. Custom editor = native color input + hex field. Emits `#rrggbb`.
-- `mode="gradient"`: options are `{ type: "gradient", value, label, stop, kind?, angle?, shape?, repeating? }`.
-  - `kind`: `linear` (default, `angle` default 135) | `radial` (`shape` `circle` default | `ellipse`) | `conic` (`angle` = `from` angle, default 0).
-  - `repeating: true` uses `repeating-*-gradient`.
-  - `stop`: color string or `{ color, position }` (percentage). Minimum two.
-  - Custom editor: type, angle or shape, repeating, and a stop list (color, position, add, remove). Emits the CSS string, for example `repeating-conic-gradient(from 45deg, #f97316 0%, #facc15 100%)`.
+- `mode` (required): `fill` | `gradient`.
+- `kind` (required when `mode="gradient"`): `linear` | `radial` | `conic`, i.e. the CSS gradient function this surface authors.
 
-`onValueChange(value, option)` returns the swatch `value` for a preset, or the CSS string for a custom color or gradient, along with the structured option. Persist the string; passing it back as `value` renders it as a selected extra swatch and reopens it in the editor (`colorPickerParse`). A value that belongs to the other mode is ignored. Without `option`, the system `colorPickerPreset[mode]` renders.
+The composition transforms its payload into that shape and injects it as `option` / `value`. Swatches and values of another mode or kind are not rendered, and the editor never switches kind.
 
-Variants: `size` = `sm` | `md` (default) | `lg`; `layout` = `grid` (default, `column` default 6) | `row` (single horizontally scrollable line). `custom={false}` hides the editor. Override any copy with `label` (see `colorPickerDefaultLabel`; stop labels are functions of the 1-based index). Override the selected ring color with `--bridge-color-picker-ring`. `colorPickerBackground(option)` returns the CSS `background` for previews.
+| Mode / kind       | Option                                             | Editor                                           | Emits                          |
+| ----------------- | -------------------------------------------------- | ------------------------------------------------ | ------------------------------ |
+| `fill`            | `{ type: "fill", value, label, color }`            | color wheel, hex                                 | `#rrggbb`                      |
+| `gradient` linear | `{ type: "gradient", value, label, stop, angle? }` | angle (default 135), repeating, stops            | `linear-gradient(45deg, …)`    |
+| `gradient` radial | `{ type: "gradient", value, label, stop, shape? }` | `circle` (default) / `ellipse`, repeating, stops | `radial-gradient(circle, …)`   |
+| `gradient` conic  | `{ type: "gradient", value, label, stop, angle? }` | from angle (default 0), repeating, stops         | `conic-gradient(from 0deg, …)` |
+
+`stop` is a color string or `{ color, position }` (percentage), with at least two. The stop editor edits color and position and adds or removes stops. `repeating: true` uses `repeating-*-gradient`. A gradient option without `kind` counts as `linear`.
+
+`onValueChange(value, option)` returns the swatch `value` for a preset, or the CSS string for a custom color or gradient, with the structured option. Persist the string; passing it back as `value` renders a selected extra swatch and reopens it in the editor (`colorPickerParse`). Without `option`, the system preset renders: `colorPickerPreset.fill`, or `colorPickerGradientPreset(kind)` for gradients.
+
+Variants: `size` = `sm` | `md` (default) | `lg`; `layout` = `grid` (default, `column` default 6) | `row` (single horizontally scrollable line). `custom={false}` hides the editor. Override copy with `label` (see `colorPickerDefaultLabel`; stop labels are functions of the 1-based index). Override the selected ring color with `--bridge-color-picker-ring`. `colorPickerBackground(option)` returns the CSS `background` for previews.
 
 ```tsx
 import { ColorPicker, type ColorPickerGradientOption } from "@bridge/ui/color-picker"
 
-// Product payload -> explicit mode + option shape.
+// Composition: this surface is a linear banner. Map the product payload into that shape.
 const option: ColorPickerGradientOption[] = theme.map((item) => ({
   type: "gradient",
   value: item.id,
@@ -97,7 +104,8 @@ const option: ColorPickerGradientOption[] = theme.map((item) => ({
   stop: [item.from, item.to]
 }))
 
-<ColorPicker mode="gradient" aria-label={t("background")} option={option} value={value} onValueChange={setValue} />
+<ColorPicker mode="gradient" kind="linear" aria-label={t("banner")} option={option} value={value} onValueChange={save} />
+<ColorPicker mode="gradient" kind="conic" aria-label={t("ring")} />
 <ColorPicker mode="fill" aria-label={t("text")} size="sm" layout="row" custom={false} />
 ```
 

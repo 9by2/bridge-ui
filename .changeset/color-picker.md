@@ -2,4 +2,4 @@
 "@bridge/ui": minor
 ---
 
-Add ColorPicker with a required composition-declared `mode` (`fill` | `gradient`), injectable system presets, and a custom editor. The gradient editor authors linear, radial and conic CSS gradients (angle, shape, repeating, positioned stops) and emits the CSS string with `colorPickerParse` round-trip. Includes `size` / `layout` variants.
+Add ColorPicker. The composing layer declares a required `mode` (`fill` | `gradient`) and, for gradients, a required `kind` (`linear` | `radial` | `conic`). Includes injectable system presets (`colorPickerPreset.fill`, `colorPickerGradientPreset(kind)`), a custom editor (hex for fill; angle or shape, repeating and positioned stops for gradient) that emits the CSS string with a `colorPickerParse` round-trip, and `size` / `layout` variants.

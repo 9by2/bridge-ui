@@ -82,16 +82,20 @@ for (const viewport of [
   const focusBack = await view.evaluate<string | null>(`document.activeElement?.getAttribute('data-slot') ?? null`)
   assert.equal(focusBack, "color-picker-custom")
 
-  // 3b. Gradient editor: switch kind to conic, toggle repeating, add a stop.
+  // 3b. Gradient editor (composition declares kind): no kind switch; edit angle, repeating, add stop.
   await open(view, "color-picker/gradient")
-  await view.evaluate(`document.querySelector('[data-slot="color-picker-custom"]').click()`)
-  await ready(view, '[data-slot="color-picker-editor"] select')
+  const kinds = await view.evaluate<string[]>(`Array.from(document.querySelectorAll('[data-slot="color-picker"]')).map((el) => el.getAttribute('data-kind'))`)
+  assert.deepEqual(kinds, ["linear", "radial", "conic"])
+  await view.evaluate(`document.querySelector('[data-kind="conic"] [data-slot="color-picker-custom"]').click()`)
+  await ready(view, '[data-slot="color-picker-editor"] input[type="number"]')
+  const hasKindControl = await view.evaluate<boolean>(`Array.from(document.querySelectorAll('[data-slot="color-picker-editor"] label')).some((el) => el.textContent === 'Type')`)
+  assert.equal(hasKindControl, false)
   await view.evaluate(`(() => {
-    const select = document.querySelector('[data-slot="color-picker-editor"] select')
-    const setter = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value').set
-    setter.call(select, 'conic')
-    select.dispatchEvent(new Event('change', { bubbles: true }))
+    const input = document.querySelector('[data-slot="color-picker-editor"] input[type="number"]')
+    input.focus()
+    input.select()
   })()`)
+  await view.type("90")
   await Bun.sleep(100)
   await view.evaluate(`document.querySelector('[data-slot="color-picker-editor"] [role="switch"]').click()`)
   await Bun.sleep(100)
@@ -99,14 +103,15 @@ for (const viewport of [
   await Bun.sleep(200)
   const gradient = await view.evaluate<{ output: string | undefined; checked: string | null; stop: number; panelFits: boolean }>(`(() => {
     const panel = document.querySelector('[data-slot="color-picker-editor"]').getBoundingClientRect()
+    const root = document.querySelector('[data-kind="conic"]')
     return {
-      output: document.querySelector('output')?.textContent ?? undefined,
-      checked: document.querySelector('[role="radio"][aria-checked="true"]')?.getAttribute('aria-label') ?? null,
+      output: root.parentElement.querySelector('output')?.textContent ?? undefined,
+      checked: root.querySelector('[role="radio"][aria-checked="true"]')?.getAttribute('aria-label') ?? null,
       stop: document.querySelectorAll('[data-slot="color-picker-editor"] li').length,
       panelFits: panel.left >= 0 && panel.right <= window.innerWidth
     }
   })()`)
-  assert.equal(gradient.output, "repeating-conic-gradient(from 0deg, #f97316 0%, #facc15 100%, #facc15 100%)")
+  assert.equal(gradient.output, "repeating-conic-gradient(from 90deg, #f97316 0%, #facc15 100%, #facc15 100%)")
   assert.equal(gradient.checked, gradient.output)
   assert.equal(gradient.stop, 3)
   assert.equal(gradient.panelFits, true)
