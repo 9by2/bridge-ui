@@ -303,6 +303,29 @@ const labels: BridgeCalendarLabels = {
 
 Use `view` and `date` with `onViewChange` and `onDateChange` for controlled state; use `defaultView` and `defaultDate` otherwise. `period` formats the displayed period and receives the visible week range in week view. Events and holidays use generic `id`, `title`, `start`, and `end` fields. Set `allDay` for full-day events: these render in a separate week lane and as compact inverted month pills prefixed with `[ALL DAY]`, without a time prefix. Set `weekStartsOn` from `0` through `6` to select the first displayed weekday. Map queue status, location, translated event copy, fetching, mutations, and authorization in the application before rendering. Use `renderEvent` or `renderEmpty` when the default generic presentation is insufficient.
 
+### Event color, muted and holiday
+
+```tsx
+const events: BridgeCalendarEvent[] = [
+  { id: "a", title: "Launch", start, end, color: statusColor[queue.status] }, // any CSS color; overrides tone
+  { id: "b", title: "Cancelled", start, end, muted: true } // de-emphasised; still activatable
+]
+
+<BridgeCalendar
+  events={events}
+  holidays={[{ id: "h", title: t("harvest"), meta: t("officeClosed"), start, end }]}
+  renderHoliday={(holiday, { view, date }) => <HolidayBadge holiday={holiday} date={date} />}
+  onEventActivate={(event) => openEvent(event.id)}
+  onSlotDrop={(slot) => scheduleQueueItem(slot)}
+  labels={labels}
+/>
+```
+
+- `color` is applied through `--bridge-calendar-event-color`. `renderEvent` output can read the same property.
+- `renderHoliday` runs once per intersected day in week and month views. By default holidays show `title` and `meta`.
+- In month view, the day under an external HTML draggable gets `data-drop-target="true"` and a dashed highlight. The highlight clears on leave, drop or `dragend`, and `onSlotDrop` fires on drop.
+- `onEventActivate` covers pointer click and keyboard Enter/Space. Map both the old `onEventClick` and `onEventOpen` to it. Disabled events never activate.
+
 ### Supported P0 components
 
 The global theme contract currently applies to these owned components:

@@ -77,6 +77,8 @@ const description: Record<string, string> = {
   "page/header-slot":
     "Compose PageEyebrow, PageTitle, PageMeta and a full-row PageFilter inside PageHeader, with a DataState retry below.",
   "page/form": "A form page (width form, density compact) ending in a sticky PageFormAction with Cancel and Save.",
+  "bridge-calendar/parity":
+    "Custom event color, muted cancelled event, renderHoliday with holiday meta, and month drag-hover: drag the chip over a day to highlight it, drop to report a slot. Enter on a focused event activates it.",
   "upload-list/validation":
     "Composable validation (type, 2 MB, four files) with inline role=alert issues, grid thumbnail layout, empty slot and a change/issue event log. No toast is fired by the component.",
   "upload-list/single":

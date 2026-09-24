@@ -8,6 +8,8 @@ import {
   useRef,
   useState,
   type ComponentProps,
+  type CSSProperties,
+  type DragEvent,
   type KeyboardEvent,
   type ReactNode
 } from "react"
@@ -44,8 +46,13 @@ export type BridgeCalendarEvent = {
   icon?: ReactNode
   allDay?: boolean
   disabled?: boolean
+  /** Any CSS color. Overrides `tone` through `--bridge-calendar-event-color`. */
+  color?: string
+  /** De-emphasise a past or cancelled event. Still activatable unless `disabled`. */
+  muted?: boolean
 }
-export type BridgeCalendarHoliday = { id: string; title: ReactNode; start: Date; end: Date }
+export type BridgeCalendarHoliday = { id: string; title: ReactNode; start: Date; end: Date; meta?: ReactNode }
+export type BridgeCalendarHolidayContext = { view: BridgeCalendarView; date: Date }
 export type BridgeCalendarLabels = {
   previous: string
   next: string
@@ -71,8 +78,11 @@ export type BridgeCalendarProps = {
   action?: ReactNode
   renderEvent?: (event: BridgeCalendarEvent, context: BridgeCalendarEventContext) => ReactNode
   renderEmpty?: () => ReactNode
+  /** Replaces default holiday content in week and month views, once per intersected day. */
+  renderHoliday?: (holiday: BridgeCalendarHoliday, context: BridgeCalendarHolidayContext) => ReactNode
   onViewChange?: (view: BridgeCalendarView) => void
   onDateChange?: (date: Date) => void
+  /** Pointer click and keyboard Enter/Space on an event. Replaces `onEventClick` + `onEventOpen`. */
   onEventActivate?: (event: BridgeCalendarEvent) => void
   onSlotSelect?: (selection: BridgeCalendarSlotSelection) => void
   onSlotDrop?: (selection: BridgeCalendarSlotSelection) => void
@@ -139,6 +149,15 @@ const style = stylex.create({
     backgroundColor: token.muted,
     color: token.foreground,
     textAlign: "start"
+  },
+  colored: { borderLeftColor: "var(--bridge-calendar-event-color)" },
+  muted: { opacity: 0.55, textDecorationLine: "line-through" },
+  dropTarget: {
+    outlineWidth: 2,
+    outlineStyle: "dashed",
+    outlineColor: token.ring,
+    outlineOffset: -2,
+    backgroundColor: token.accent
   },
   info: { borderLeftColor: token.ring },
   success: { borderLeftColor: token.primary },
@@ -314,6 +333,11 @@ const style = stylex.create({
   monthEventSuccess: { borderLeftColor: token.primary },
   monthEventWarning: { borderLeftColor: token.warning },
   monthEventDanger: { borderLeftColor: token.destructive },
+  monthEventColored: { borderLeftColor: "var(--bridge-calendar-event-color)" },
+  monthEventAllDayColored: {
+    backgroundColor: "var(--bridge-calendar-event-color)",
+    color: "#fff"
+  },
   monthEventAllDay: {
     borderLeftWidth: 0,
     backgroundColor: token.foreground,
@@ -379,6 +403,30 @@ function defaultSelection(day: Date): BridgeCalendarSlotSelection {
   return { start, end: new Date(start.getTime() + 3_600_000) }
 }
 
+function eventColorStyle(event: BridgeCalendarEvent): CSSProperties | undefined {
+  if (!event.color) return undefined
+  const variable: CSSProperties & Record<`--${string}`, string> = { "--bridge-calendar-event-color": event.color }
+  return variable
+}
+
+function HolidayContent({
+  holiday,
+  context,
+  renderHoliday
+}: {
+  holiday: BridgeCalendarHoliday
+  context: BridgeCalendarHolidayContext
+  renderHoliday?: BridgeCalendarProps["renderHoliday"]
+}) {
+  if (renderHoliday) return <>{renderHoliday(holiday, context)}</>
+  return (
+    <>
+      <span {...stylex.props(style.holidayText)}>{holiday.title}</span>
+      {holiday.meta ? <span {...stylex.props(style.holidayText)}>{holiday.meta}</span> : null}
+    </>
+  )
+}
+
 function EventItem({
   event,
   context,
@@ -396,17 +444,23 @@ function EventItem({
       type="button"
       disabled={event.disabled}
       aria-label={typeof event.title === "string" ? event.title : undefined}
+      data-muted={event.muted || undefined}
+      style={eventColorStyle(event)}
       onClick={(clickEvent) => {
         clickEvent.stopPropagation()
         onActivate?.(event)
       }}
-      {...stylex.props(
-        style.event,
-        event.tone === "info" && style.info,
-        event.tone === "success" && style.success,
-        event.tone === "warning" && style.warning,
-        event.tone === "danger" && style.danger
-      )}>
+      className={
+        stylex.props(
+          style.event,
+          event.tone === "info" && style.info,
+          event.tone === "success" && style.success,
+          event.tone === "warning" && style.warning,
+          event.tone === "danger" && style.danger,
+          Boolean(event.color) && style.colored,
+          event.muted && style.muted
+        ).className
+      }>
       {event.icon}
       {event.title}
       {event.meta ? <span {...stylex.props(style.meta)}>{event.meta}</span> : null}
@@ -434,18 +488,24 @@ function MonthEventItem({
       type="button"
       disabled={event.disabled}
       aria-label={typeof event.title === "string" ? event.title : undefined}
+      data-muted={event.muted || undefined}
+      style={eventColorStyle(event)}
       onClick={(clickEvent) => {
         clickEvent.stopPropagation()
         onActivate?.(event)
       }}
-      {...stylex.props(
-        style.monthEvent,
-        event.allDay && style.monthEventAllDay,
-        event.tone === "info" && style.monthEventInfo,
-        event.tone === "success" && style.monthEventSuccess,
-        event.tone === "warning" && style.monthEventWarning,
-        event.tone === "danger" && style.monthEventDanger
-      )}>
+      className={
+        stylex.props(
+          style.monthEvent,
+          event.allDay && style.monthEventAllDay,
+          event.tone === "info" && style.monthEventInfo,
+          event.tone === "success" && style.monthEventSuccess,
+          event.tone === "warning" && style.monthEventWarning,
+          event.tone === "danger" && style.monthEventDanger,
+          Boolean(event.color) && (event.allDay ? style.monthEventAllDayColored : style.monthEventColored),
+          event.muted && style.muted
+        ).className
+      }>
       {event.allDay ? null : <span {...stylex.props(style.monthEventTime)}>{time}</span>}
       <span {...stylex.props(style.monthEventTitle)}>
         {event.allDay ? "[ALL DAY] " : null}
@@ -466,6 +526,7 @@ export function BridgeCalendar({
   action,
   renderEvent,
   renderEmpty,
+  renderHoliday,
   onViewChange,
   onDateChange,
   onEventActivate,
@@ -552,6 +613,7 @@ export function BridgeCalendar({
         holidays={holidays}
         labels={labels}
         renderEvent={renderEventItem}
+        renderHoliday={renderHoliday}
         onSlotSelect={onSlotSelect}
         weekStartsOn={weekStartsOn}
       />
@@ -562,6 +624,7 @@ export function BridgeCalendar({
         holidays={holidays}
         labels={labels}
         renderEvent={renderMonthEventItem}
+        renderHoliday={renderHoliday}
         onSlotSelect={selected}
         onSlotDrop={(next) => onSlotDrop?.(defaultSelection(next))}
         weekStartsOn={weekStartsOn}
@@ -814,6 +877,7 @@ function WeekView({
   holidays,
   labels,
   renderEvent,
+  renderHoliday,
   onSlotSelect,
   weekStartsOn
 }: {
@@ -822,6 +886,7 @@ function WeekView({
   holidays: readonly BridgeCalendarHoliday[]
   labels: BridgeCalendarLabels
   renderEvent: (event: BridgeCalendarEvent) => ReactNode
+  renderHoliday?: BridgeCalendarProps["renderHoliday"]
   onSlotSelect?: (selection: BridgeCalendarSlotSelection) => void
   weekStartsOn: number
 }) {
@@ -880,9 +945,12 @@ function WeekView({
               <span {...stylex.props(style.dayNumber)}>{weekday[index]}</span>
               <span>{day.getDate()}</span>
               {holiday.map((item) => (
-                <span key={item.id} {...stylex.props(style.holidayText)}>
-                  {item.title}
-                </span>
+                <HolidayContent
+                  key={item.id}
+                  holiday={item}
+                  context={{ view: bridgeCalendarView.week, date: day }}
+                  renderHoliday={renderHoliday}
+                />
               ))}
             </div>
           )
@@ -983,6 +1051,7 @@ function MonthView({
   holidays,
   labels,
   renderEvent,
+  renderHoliday,
   onSlotSelect,
   onSlotDrop,
   weekStartsOn
@@ -992,6 +1061,7 @@ function MonthView({
   holidays: readonly BridgeCalendarHoliday[]
   labels: BridgeCalendarLabels
   renderEvent: (event: BridgeCalendarEvent) => ReactNode
+  renderHoliday?: BridgeCalendarProps["renderHoliday"]
   onSlotSelect: (date: Date) => void
   onSlotDrop: (date: Date) => void
   weekStartsOn: number
@@ -1003,6 +1073,17 @@ function MonthView({
   const days = Array.from({ length: Math.round((end.getTime() - start.getTime()) / 86_400_000) + 1 }, (_, index) =>
     addDay(start, index)
   )
+  const [dropTarget, setDropTarget] = useState<string | null>(null)
+  useEffect(() => {
+    if (!dropTarget) return
+    const clear = () => setDropTarget(null)
+    document.addEventListener("dragend", clear)
+    document.addEventListener("drop", clear)
+    return () => {
+      document.removeEventListener("dragend", clear)
+      document.removeEventListener("drop", clear)
+    }
+  }, [dropTarget])
   return (
     <div {...stylex.props(style.grid)}>
       {orderedWeekday(labels.weekday, weekStartsOn).map((label, index) => (
@@ -1014,17 +1095,37 @@ function MonthView({
         const dayEvents = events.filter((item) => overlapsDay(item.start, item.end, day))
         const dayHolidays = holidays.filter((item) => overlapsDay(item.start, item.end, day))
         const outside = day.getMonth() !== date.getMonth()
+        const key = formatKey(day)
+        const isDropTarget = dropTarget === key
         return (
           <MonthDaySlot
-            key={formatKey(day)}
+            key={key}
             date={day}
             onSelectDay={onSlotSelect}
-            onDrop={onSlotDrop}
-            {...stylex.props(style.day, outside && style.outside, dayHolidays.length > 0 && style.holiday)}>
+            onDrop={(value) => {
+              setDropTarget(null)
+              onSlotDrop(value)
+            }}
+            onDragEnter={() => setDropTarget(key)}
+            onDragLeave={(event: DragEvent<HTMLDivElement>) => {
+              const next = event.relatedTarget
+              if (next instanceof Node && event.currentTarget.contains(next)) return
+              setDropTarget((current) => (current === key ? null : current))
+            }}
+            data-drop-target={isDropTarget || undefined}
+            {...stylex.props(
+              style.day,
+              outside && style.outside,
+              dayHolidays.length > 0 && style.holiday,
+              isDropTarget && style.dropTarget
+            )}>
             {dayHolidays.map((item) => (
-              <span key={item.id} {...stylex.props(style.holidayText)}>
-                {item.title}
-              </span>
+              <HolidayContent
+                key={item.id}
+                holiday={item}
+                context={{ view: bridgeCalendarView.month, date: day }}
+                renderHoliday={renderHoliday}
+              />
             ))}
             {dayEvents.slice(0, 3).map(renderEvent)}
             {dayEvents.length > 3 ? (

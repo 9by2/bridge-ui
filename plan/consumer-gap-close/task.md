@@ -36,9 +36,10 @@ Implementation order matters — complete top to bottom. Each group is one stack
 
 ## P1-2 — `feat/calendar-parity`
 
-- [ ] failing tests: `color` exposed through custom property, `muted` state, `renderHoliday` + holiday `meta`, activation by click + keyboard
-- [ ] browser test: month drag-hover highlight set while dragging over and cleared after drop/leave
-- [ ] implementation, spec extension, catalog, `CUSTOMIZATION.md`, changeset, gates, commit
+- [x] failing tests: `color` exposed through custom property, `muted` state, `renderHoliday` + holiday `meta`, activation by click + keyboard
+- [x] browser test: month drag-hover highlight set while dragging over and cleared after drop/leave
+- [x] implementation, spec extension, catalog, `CUSTOMIZATION.md`, changeset, gates, commit
+- [x] Browser drag-hover test added to compact gate (`cmd/run-catalog-test.ts`); CDP real-drag evidence
 
 ## P1-4 — `chore/icon-slot-audit`
 
