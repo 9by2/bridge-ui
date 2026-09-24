@@ -43,9 +43,10 @@ Implementation order matters — complete top to bottom. Each group is one stack
 
 ## P1-4 — `chore/icon-slot-audit`
 
-- [ ] audit table in spec; fix non-conforming slot
-- [ ] catalog example with neutral inline-SVG mark in `Button`, `ItemMedia`, `MetricTile`
-- [ ] `CUSTOMIZATION.md` note, changeset if fix, gates, commit
+- [x] audit table in spec; fix non-conforming slot
+- [x] catalog example with neutral inline-SVG mark in `Button`, `ItemMedia`, `MetricTile`
+- [x] `CUSTOMIZATION.md` note, changeset if fix, gates, commit
+- [x] Fixed MetricTile/DataStateMedia/EmptyMedia/SettingsNavItem unsized SVG (DEC-011); browser guard in responsive suite
 
 ## P2 — `feat/prose-and-misc`
 

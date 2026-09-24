@@ -199,6 +199,32 @@ import { Spinner, SpinnerSize } from "@bridge/ui/spinner"
 ;<Spinner size={SpinnerSize.lg} aria-label="Loading report" />
 ```
 
+## Icon slot
+
+Brand and third-party icons live in the consumer; pass them through icon slots. The package ships no brand, social, streaming or logo glyph.
+
+Every icon slot accepts any `ReactNode`. Author an icon as an SVG with a `viewBox`, `currentColor`, and no fixed `width`/`height`; the slot then sizes it and gives it the slot's text color.
+
+| Slot                                                                                           | Size for an unsized SVG |
+| ---------------------------------------------------------------------------------------------- | ----------------------- |
+| `Button` children                                                                              | 16px (sm 14, xs 12)     |
+| `ItemMedia`, `MarkerIcon`, `SidebarMenuButton`, `SettingsNavItem`, `EmptyMedia variant="icon"` | 16px                    |
+| `Badge` children                                                                               | 12px                    |
+| `MetricTile icon`                                                                              | 18px                    |
+| `DataStateMedia`                                                                               | 24px                    |
+
+```tsx
+// bridge-web brand-icon registry
+export function YoutubeMark(props: SVGProps<SVGSVGElement>) {
+  return <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>…fill="currentColor"…</svg>
+}
+
+<Button><YoutubeMark />Connect</Button>
+<MetricTile label="Subscribers" value="12.4k" icon={<YoutubeMark />} />
+```
+
+To override the slot size, pass a `size-*` class or an explicit `width`/`height` (lucide `size`).
+
 ## Upload validation and issue
 
 `UploadList` validates, reports and renders. It never toasts or shows global feedback; the app decides how to surface issues.

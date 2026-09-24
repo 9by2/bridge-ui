@@ -7,6 +7,7 @@ bun cmd/run-catalog-test.ts ./.eval/0924-consumer-gap-close/p0-runner.test.ts
 bun cmd/run-catalog-test.ts ./.eval/0924-consumer-gap-close/p1-page-runner.test.ts
 bun cmd/run-catalog-test.ts ./.eval/0924-consumer-gap-close/p1-upload-runner.test.ts
 bun cmd/run-catalog-test.ts ./.eval/0924-consumer-gap-close/p1-calendar-runner.test.ts
+bun cmd/run-catalog-test.ts ./.eval/0924-consumer-gap-close/p1-icon-probe.test.ts
 ```
 
 ## P0
@@ -48,3 +49,17 @@ Finding: first run measured `content` max-width `none` — its StyleX key collid
 | 390px | no document overflow | runner assertion |
 
 Finding: the first mobile run overflowed at 806px because the catalog example's CSS grid auto column took the calendar's min-content width. The example was fixed with a flex column; the component is unchanged (`bridge-calendar/month` was already contained).
+
+## P1-4 Icon slot
+
+Audit: `#item/custom-icon` renders a neutral SVG with no intrinsic size and `currentColor` in every slot, then measures it.
+
+| Slot | Before | After |
+| --- | --- | --- |
+| MetricTile icon | 34×34 (filled box) | 18×18 |
+| DataStateMedia | filled box | 24×24 |
+| EmptyMedia icon | 32×32 (filled box) | 16×16 |
+| SettingsNavItem | unsized | 16×16 + 8px gap |
+| Button / ItemMedia / Marker / Badge / Sidebar | ok | unchanged |
+
+Explicitly sized lucide icons in `#metric-tile/variants` stay at 18px. Evidence: `p1-icon-slot.png`.

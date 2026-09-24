@@ -72,3 +72,9 @@
 **GIVEN** a validator may return an issue without `file` (e.g. `minFiles`)
 **WHEN** files are selected one at a time toward a minimum
 **THEN** file-bound issues reject their file; file-less issues are reported through `onIssue` / inline display but never block accepted files. Blocking would make an incremental minimum unreachable. The consumer enforces minimums at submit.
+
+### DEC-011: Unsized consumer SVG is sized by its slot
+
+**GIVEN** consumer brand marks are often inline SVGs with only a `viewBox`
+**WHEN** they are placed in `MetricTile.icon`, `DataStateMedia`, `EmptyMedia` (icon) or `SettingsNavItem`
+**THEN** the slot sizes them (18 / 24 / 16 / 16px) through adapter CSS matching `svg:not([class*="size-"]):not([width])`, mirroring the existing Button/Item contract; explicitly sized icons keep their size.

@@ -79,6 +79,8 @@ const description: Record<string, string> = {
   "page/form": "A form page (width form, density compact) ending in a sticky PageFormAction with Cancel and Save.",
   "bridge-calendar/parity":
     "Custom event color, muted cancelled event, renderHoliday with holiday meta, and month drag-hover: drag the chip over a day to highlight it, drop to report a slot. Enter on a focused event activates it.",
+  "item/custom-icon":
+    "A neutral inline-SVG placeholder mark (no intrinsic size, currentColor) passed into Button, ItemMedia, MetricTile, Marker, Badge, SidebarMenuButton, SettingsNavItem, DataStateMedia and EmptyMedia. Brand icons live in the consumer.",
   "upload-list/validation":
     "Composable validation (type, 2 MB, four files) with inline role=alert issues, grid thumbnail layout, empty slot and a change/issue event log. No toast is fired by the component.",
   "upload-list/single":
