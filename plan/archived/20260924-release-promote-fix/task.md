@@ -1,7 +1,7 @@
 # Tasks: Release Promote Fix
 
 - [x] Reproduce incident and target behavior with the real Changesets CLI
-- [x] Failing tests: stable MR create/update, already-published guard, no-pending skip, step failure abort, repaired state
+- [x] Failing tests: stable MR create/update, already-published guard, no-pending skip, step failure abort
 - [x] Real-engine test: skipped RC, skipped stable, no-RC promote
 - [x] Implement `cmd/promote-release.ts`
 - [x] Repair `.changeset/pre.json` base 0.9.0, remove shipped `color-picker`, `package.json` 0.9.0
