@@ -59,18 +59,18 @@ for (const viewport of [
   )
   assert.equal(keyboard, "Slate")
 
-  // 3. Custom popover commits valid hex.
-  await open(view, "color-picker/custom")
+  // 3. Fill editor commits valid hex.
+  await open(view, "color-picker/fill")
   await view.evaluate(`document.querySelector('[data-slot="color-picker-custom"]').click()`)
-  await ready(view, '[data-slot="popover-content"] input:not([type="color"])')
+  await ready(view, '[data-slot="color-picker-editor"] input:not([type="color"])')
   await view.evaluate(`(() => {
-    const input = document.querySelector('[data-slot="popover-content"] input:not([type="color"])')
+    const input = document.querySelector('[data-slot="color-picker-editor"] input:not([type="color"])')
     input.focus()
     input.select()
   })()`)
   await view.type("#3366cc")
   await Bun.sleep(150)
-  await Bun.write(path.join(output, `custom-open-${viewport.name}.png`), await view.screenshot())
+  await Bun.write(path.join(output, `fill-editor-${viewport.name}.png`), await view.screenshot())
   const custom = await view.evaluate<{ output: string | undefined; checked: string | null }>(`(() => ({
     output: document.querySelector('output')?.textContent ?? undefined,
     checked: document.querySelector('[role="radio"][aria-checked="true"]')?.getAttribute('aria-label') ?? null
@@ -82,6 +82,37 @@ for (const viewport of [
   const focusBack = await view.evaluate<string | null>(`document.activeElement?.getAttribute('data-slot') ?? null`)
   assert.equal(focusBack, "color-picker-custom")
 
+  // 3b. Gradient editor: switch kind to conic, toggle repeating, add a stop.
+  await open(view, "color-picker/gradient")
+  await view.evaluate(`document.querySelector('[data-slot="color-picker-custom"]').click()`)
+  await ready(view, '[data-slot="color-picker-editor"] select')
+  await view.evaluate(`(() => {
+    const select = document.querySelector('[data-slot="color-picker-editor"] select')
+    const setter = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value').set
+    setter.call(select, 'conic')
+    select.dispatchEvent(new Event('change', { bubbles: true }))
+  })()`)
+  await Bun.sleep(100)
+  await view.evaluate(`document.querySelector('[data-slot="color-picker-editor"] [role="switch"]').click()`)
+  await Bun.sleep(100)
+  await view.evaluate(`Array.from(document.querySelectorAll('[data-slot="color-picker-editor"] button')).find((b) => b.textContent.includes('Add stop')).click()`)
+  await Bun.sleep(200)
+  const gradient = await view.evaluate<{ output: string | undefined; checked: string | null; stop: number; panelFits: boolean }>(`(() => {
+    const panel = document.querySelector('[data-slot="color-picker-editor"]').getBoundingClientRect()
+    return {
+      output: document.querySelector('output')?.textContent ?? undefined,
+      checked: document.querySelector('[role="radio"][aria-checked="true"]')?.getAttribute('aria-label') ?? null,
+      stop: document.querySelectorAll('[data-slot="color-picker-editor"] li').length,
+      panelFits: panel.left >= 0 && panel.right <= window.innerWidth
+    }
+  })()`)
+  assert.equal(gradient.output, "repeating-conic-gradient(from 0deg, #f97316 0%, #facc15 100%, #facc15 100%)")
+  assert.equal(gradient.checked, gradient.output)
+  assert.equal(gradient.stop, 3)
+  assert.equal(gradient.panelFits, true)
+  await Bun.write(path.join(output, `gradient-editor-${viewport.name}.png`), await view.screenshot())
+  await view.press("Escape")
+
   // 4. Variants and states; row layout must not overflow document.
   await open(view, "color-picker/variants")
   const variants = await view.evaluate<{ overflow: boolean }>(`({ overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth })`)
@@ -90,7 +121,7 @@ for (const viewport of [
   await open(view, "color-picker/states")
   await Bun.write(path.join(output, `states-${viewport.name}.png`), await view.screenshot())
 
-  report.push({ viewport, initial, keyboard, custom, focusBack, variants })
+  report.push({ viewport, initial, keyboard, custom, focusBack, gradient, variants })
 }
 
 await Bun.write(path.join(output, "report.json"), JSON.stringify(report, null, 2))

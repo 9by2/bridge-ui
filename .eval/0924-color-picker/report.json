@@ -17,6 +17,12 @@
       "checked": "#3366cc"
     },
     "focusBack": "color-picker-custom",
+    "gradient": {
+      "output": "repeating-conic-gradient(from 0deg, #f97316 0%, #facc15 100%, #facc15 100%)",
+      "checked": "repeating-conic-gradient(from 0deg, #f97316 0%, #facc15 100%, #facc15 100%)",
+      "stop": 3,
+      "panelFits": true
+    },
     "variants": {
       "overflow": false
     }
@@ -39,6 +45,12 @@
       "checked": "#3366cc"
     },
     "focusBack": "color-picker-custom",
+    "gradient": {
+      "output": "repeating-conic-gradient(from 0deg, #f97316 0%, #facc15 100%, #facc15 100%)",
+      "checked": "repeating-conic-gradient(from 0deg, #f97316 0%, #facc15 100%, #facc15 100%)",
+      "stop": 3,
+      "panelFits": true
+    },
     "variants": {
       "overflow": false
     }

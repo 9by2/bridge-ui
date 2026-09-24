@@ -1,19 +1,19 @@
-import { ColorPicker, colorPickerPreset, Theme } from "@bridge/ui"
+import { ColorPicker, Theme } from "@bridge/ui"
 
 export default function Example() {
   return (
     <div style={{ display: "grid", gap: 24 }}>
-      <ColorPicker aria-label="Disabled" size="md" option={colorPickerPreset.fill} defaultValue="green" disabled />
-      <ColorPicker aria-label="Without custom" size="md" option={colorPickerPreset.fill} custom={false} />
+      <ColorPicker mode="fill" aria-label="Disabled" defaultValue="green" disabled />
+      <ColorPicker mode="fill" aria-label="Without custom" custom={false} />
+      <ColorPicker mode="fill" aria-label="Custom fill selected" defaultValue="#ff00aa" />
       <ColorPicker
-        aria-label="Custom value selected"
-        size="md"
-        option={colorPickerPreset.fill}
-        defaultValue="#ff00aa"
+        mode="gradient"
+        aria-label="Custom gradient selected"
+        defaultValue="repeating-radial-gradient(circle, #f43f5e 0%, #6366f1 20%)"
       />
       <Theme mode="dark">
         <div style={{ padding: 16, background: "#141414" }}>
-          <ColorPicker aria-label="Dark" size="md" defaultValue="electric" />
+          <ColorPicker mode="gradient" aria-label="Dark" defaultValue="electric" />
         </div>
       </Theme>
     </div>

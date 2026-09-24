@@ -71,24 +71,34 @@ export function App() {
 
 ## ColorPicker
 
-Circular swatch picker with radio semantics (arrow keys move selection). Each option is either `fill` (`color`) or `gradient` (`stop`, optional `shape` `linear` | `radial`, optional `angle`). A gradient defaults to `linear` at 135deg. With no `option` prop the system `colorPickerPreset.gradient` palette renders; pass `colorPickerPreset.fill` or your own list (mixed types allowed) to inject another palette. Option `label` is the accessible name — pass translated copy.
+Circular swatch picker with radio semantics (arrow keys move selection). `mode` is **required** — the composing layer decides whether its payload is a `fill` or a `gradient`, maps that payload into `option` / `value`, and the picker renders and edits only that mode. There is no inferred mode.
 
-Variants: `size` = `sm` | `md` (default) | `lg`; `layout` = `grid` (default, `column` default 6) | `row` (single horizontally scrollable line for toolbars). The trailing custom control opens a popover with a native color input and hex field; a valid `#rrggbb` emits `onValueChange(hex, fillOption)` and appears as a selected extra swatch. Hide it with `custom={false}`. Override copy with `customLabel`, `colorLabel`, `hexLabel`. Override the selected ring color with `--bridge-color-picker-ring`. `colorPickerBackground(option)` returns the CSS `background` for reuse in previews.
+- `mode="fill"`: options are `{ type: "fill", value, label, color }`. Custom editor = native color input + hex field. Emits `#rrggbb`.
+- `mode="gradient"`: options are `{ type: "gradient", value, label, stop, kind?, angle?, shape?, repeating? }`.
+  - `kind`: `linear` (default, `angle` default 135) | `radial` (`shape` `circle` default | `ellipse`) | `conic` (`angle` = `from` angle, default 0).
+  - `repeating: true` uses `repeating-*-gradient`.
+  - `stop`: color string or `{ color, position }` (percentage). Minimum two.
+  - Custom editor: type, angle or shape, repeating, and a stop list (color, position, add, remove). Emits the CSS string, for example `repeating-conic-gradient(from 45deg, #f97316 0%, #facc15 100%)`.
+
+`onValueChange(value, option)` returns the swatch `value` for a preset, or the CSS string for a custom color or gradient, along with the structured option. Persist the string; passing it back as `value` renders it as a selected extra swatch and reopens it in the editor (`colorPickerParse`). A value that belongs to the other mode is ignored. Without `option`, the system `colorPickerPreset[mode]` renders.
+
+Variants: `size` = `sm` | `md` (default) | `lg`; `layout` = `grid` (default, `column` default 6) | `row` (single horizontally scrollable line). `custom={false}` hides the editor. Override any copy with `label` (see `colorPickerDefaultLabel`; stop labels are functions of the 1-based index). Override the selected ring color with `--bridge-color-picker-ring`. `colorPickerBackground(option)` returns the CSS `background` for previews.
 
 ```tsx
-import { ColorPicker, colorPickerPreset } from "@bridge/ui/color-picker"
+import { ColorPicker, type ColorPickerGradientOption } from "@bridge/ui/color-picker"
 
-<ColorPicker aria-label="Background" size="lg" layout="grid" column={6} defaultValue="white" />
-<ColorPicker aria-label="Accent" size="sm" layout="row" option={colorPickerPreset.fill} custom={false} />
-<ColorPicker
-  aria-label="Brand"
-  option={[
-    { type: "fill", value: "ink", label: "Ink", color: "#111827" },
-    { type: "gradient", value: "glow", label: "Glow", stop: ["#fde68a", "#f97316"], shape: "radial" }
-  ]}
-  value={value}
-  onValueChange={(next) => setValue(next)}
-/>
+// Product payload -> explicit mode + option shape.
+const option: ColorPickerGradientOption[] = theme.map((item) => ({
+  type: "gradient",
+  value: item.id,
+  label: t(item.nameKey),
+  kind: "linear",
+  angle: 135,
+  stop: [item.from, item.to]
+}))
+
+<ColorPicker mode="gradient" aria-label={t("background")} option={option} value={value} onValueChange={setValue} />
+<ColorPicker mode="fill" aria-label={t("text")} size="sm" layout="row" custom={false} />
 ```
 
 ## MetricTile

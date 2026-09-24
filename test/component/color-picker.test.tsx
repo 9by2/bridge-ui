@@ -1,143 +1,317 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import { useState } from "react"
 import { afterEach, expect, test, vi } from "vitest"
 
 import {
   ColorPicker,
   colorPickerBackground,
+  colorPickerParse,
   colorPickerPreset,
-  type ColorPickerOption
+  type ColorPickerFillOption,
+  type ColorPickerGradientOption
 } from "../../app/component/brand/stylex/color-picker"
 
 afterEach(cleanup)
 
-const option: ColorPickerOption[] = [
+const fillOption: ColorPickerFillOption[] = [
   { type: "fill", value: "ink", label: "Ink", color: "#111827" },
-  { type: "gradient", value: "dawn", label: "Dawn", stop: ["#f97316", "#facc15"] }
+  { type: "fill", value: "sun", label: "Sun", color: "#facc15" }
+]
+const gradientOption: ColorPickerGradientOption[] = [
+  { type: "gradient", value: "dawn", label: "Dawn", stop: ["#f97316", "#facc15"] },
+  { type: "gradient", value: "dusk", label: "Dusk", stop: ["#1e3a8a", "#db2777"], kind: "radial" }
 ]
 
-test("uncontrolled picker selects a swatch by pointer and reports the chosen option", () => {
+async function openEditor(name = "Custom color") {
+  fireEvent.click(screen.getByRole("button", { name }))
+  return within(await screen.findByRole("dialog"))
+}
+
+// ---------- value helper ----------
+
+test("background serializes fill and every CSS gradient function", () => {
+  expect(colorPickerBackground({ type: "fill", value: "a", label: "A", color: "#fff" })).toBe("#fff")
+  const base = { type: "gradient", value: "g", label: "G" } as const
+  expect(colorPickerBackground({ ...base, stop: ["red", "blue"] })).toBe("linear-gradient(135deg, red, blue)")
+  expect(colorPickerBackground({ ...base, stop: ["red", { color: "blue", position: 40 }], angle: 90 })).toBe(
+    "linear-gradient(90deg, red, blue 40%)"
+  )
+  expect(colorPickerBackground({ ...base, stop: [{ color: "red" }, "blue"], kind: "radial" })).toBe(
+    "radial-gradient(circle, red, blue)"
+  )
+  expect(colorPickerBackground({ ...base, stop: ["red", "blue"], kind: "radial", shape: "ellipse" })).toBe(
+    "radial-gradient(ellipse, red, blue)"
+  )
+  expect(colorPickerBackground({ ...base, stop: ["red", "blue"], kind: "conic" })).toBe(
+    "conic-gradient(from 0deg, red, blue)"
+  )
+  expect(colorPickerBackground({ ...base, stop: ["red", "blue"], kind: "conic", angle: 45, repeating: true })).toBe(
+    "repeating-conic-gradient(from 45deg, red, blue)"
+  )
+})
+
+test("parse round-trips emitted CSS so a persisted value reopens as structured data", () => {
+  for (const css of [
+    "linear-gradient(90deg, #ff0000 0%, #0000ff 100%)",
+    "repeating-radial-gradient(ellipse, #ff0000 0%, #0000ff 20%)",
+    "conic-gradient(from 45deg, #ff0000 0%, #00ff00 50%, #0000ff 100%)"
+  ]) {
+    const option = colorPickerParse(css)
+    expect(option?.type).toBe("gradient")
+    expect(option && colorPickerBackground(option)).toBe(css)
+  }
+  expect(colorPickerParse("linear-gradient(rgb(0 0 0), #fff)")).toMatchObject({
+    kind: "linear",
+    stop: [{ color: "rgb(0 0 0)" }, { color: "#fff" }]
+  })
+  expect(colorPickerParse("#ABCDEF")).toEqual({ type: "fill", value: "#ABCDEF", label: "#ABCDEF", color: "#abcdef" })
+  expect(colorPickerParse("url(a.png)")).toBeNull()
+  expect(colorPickerParse("linear-gradient(90deg, red)")).toBeNull()
+})
+
+// ---------- fill mode ----------
+
+test("fill picker selects a swatch by pointer and reports the chosen option", () => {
   const onValueChange = vi.fn()
-  render(<ColorPicker aria-label="Background" option={option} defaultValue="ink" onValueChange={onValueChange} />)
-  expect(screen.getByRole("radiogroup", { name: "Background" })).toBeDefined()
+  render(
+    <ColorPicker mode="fill" aria-label="Text" option={fillOption} defaultValue="ink" onValueChange={onValueChange} />
+  )
+  expect(screen.getByRole("radiogroup", { name: "Text" })).toBeDefined()
   expect(screen.getByRole("radio", { name: "Ink" }).getAttribute("aria-checked")).toBe("true")
-  fireEvent.click(screen.getByRole("radio", { name: "Dawn" }))
-  expect(screen.getByRole("radio", { name: "Dawn" }).getAttribute("aria-checked")).toBe("true")
-  expect(screen.getByRole("radio", { name: "Ink" }).getAttribute("aria-checked")).toBe("false")
-  expect(onValueChange).toHaveBeenCalledWith("dawn", option[1])
+  fireEvent.click(screen.getByRole("radio", { name: "Sun" }))
+  expect(screen.getByRole("radio", { name: "Sun" }).getAttribute("aria-checked")).toBe("true")
+  expect(onValueChange).toHaveBeenCalledWith("sun", fillOption[1])
 })
 
 test("controlled picker only moves selection when its owner updates value", () => {
   const onValueChange = vi.fn()
   const { rerender } = render(
-    <ColorPicker aria-label="Background" option={option} value="ink" onValueChange={onValueChange} />
+    <ColorPicker mode="fill" aria-label="Text" option={fillOption} value="ink" onValueChange={onValueChange} />
   )
-  fireEvent.click(screen.getByRole("radio", { name: "Dawn" }))
-  expect(onValueChange).toHaveBeenCalledWith("dawn", option[1])
+  fireEvent.click(screen.getByRole("radio", { name: "Sun" }))
+  expect(onValueChange).toHaveBeenCalledWith("sun", fillOption[1])
   expect(screen.getByRole("radio", { name: "Ink" }).getAttribute("aria-checked")).toBe("true")
-  rerender(<ColorPicker aria-label="Background" option={option} value="dawn" onValueChange={onValueChange} />)
-  expect(screen.getByRole("radio", { name: "Dawn" }).getAttribute("aria-checked")).toBe("true")
+  rerender(<ColorPicker mode="fill" aria-label="Text" option={fillOption} value="sun" onValueChange={onValueChange} />)
+  expect(screen.getByRole("radio", { name: "Sun" }).getAttribute("aria-checked")).toBe("true")
 })
 
-test("picker renders the system gradient preset when no option list is injected", () => {
-  render(<ColorPicker aria-label="Background" custom={false} />)
+test("each mode falls back to its own system preset", () => {
+  render(<ColorPicker mode="fill" aria-label="Fill" custom={false} />)
+  expect(screen.getAllByRole("radio")).toHaveLength(colorPickerPreset.fill.length)
+  cleanup()
+  render(<ColorPicker mode="gradient" aria-label="Gradient" custom={false} />)
   expect(screen.getAllByRole("radio")).toHaveLength(colorPickerPreset.gradient.length)
   expect(screen.queryByRole("button")).toBeNull()
 })
 
-test("background helper defaults gradient to linear and supports fill, radial and custom angle", () => {
-  expect(colorPickerBackground({ type: "fill", value: "a", label: "A", color: "#fff" })).toBe("#fff")
-  expect(colorPickerBackground({ type: "gradient", value: "b", label: "B", stop: ["red", "blue"] })).toBe(
-    "linear-gradient(135deg, red, blue)"
-  )
-  expect(colorPickerBackground({ type: "gradient", value: "c", label: "C", stop: ["red", "blue"], angle: 90 })).toBe(
-    "linear-gradient(90deg, red, blue)"
-  )
-  expect(
-    colorPickerBackground({ type: "gradient", value: "d", label: "D", stop: ["red", "blue"], shape: "radial" })
-  ).toBe("radial-gradient(circle, red, blue)")
-})
-
-function Controlled({ onValueChange }: { onValueChange: (value: string, option: ColorPickerOption) => void }) {
+function ControlledFill({ onValueChange }: { onValueChange: (value: string) => void }) {
   const [value, setValue] = useState("ink")
   return (
     <ColorPicker
-      aria-label="Background"
-      option={option}
+      mode="fill"
+      aria-label="Text"
+      option={fillOption}
       value={value}
-      customLabel="Pick custom"
-      hexLabel="Hex code"
-      colorLabel="Color wheel"
-      onValueChange={(next, chosen) => {
+      label={{ custom: "Pick custom", hex: "Hex code", color: "Color wheel" }}
+      onValueChange={(next) => {
         setValue(next)
-        onValueChange(next, chosen)
+        onValueChange(next)
       }}
     />
   )
 }
 
-test("custom hex commits only a valid color and shows it as the selected trailing swatch", async () => {
+test("fill editor commits only a valid hex and shows it as the selected trailing swatch", async () => {
   const onValueChange = vi.fn()
-  render(<Controlled onValueChange={onValueChange} />)
-  fireEvent.click(screen.getByRole("button", { name: "Pick custom" }))
-  const hex = await screen.findByRole("textbox", { name: "Hex code" })
+  render(<ControlledFill onValueChange={onValueChange} />)
+  const editor = await openEditor("Pick custom")
+  const hex = editor.getByRole("textbox", { name: "Hex code" })
 
   fireEvent.change(hex, { target: { value: "#12" } })
   expect(hex.getAttribute("aria-invalid")).toBe("true")
   expect(onValueChange).not.toHaveBeenCalled()
 
   fireEvent.change(hex, { target: { value: "#3366CC" } })
-  expect(hex.getAttribute("aria-invalid")).toBe("false")
-  expect(onValueChange).toHaveBeenLastCalledWith("#3366cc", {
-    type: "fill",
-    value: "#3366cc",
-    label: "#3366cc",
-    color: "#3366cc"
-  })
-  await waitFor(() => expect(screen.getByRole("radio", { name: "#3366cc" }).getAttribute("aria-checked")).toBe("true"))
-  expect(screen.getByRole("radio", { name: "Ink" }).getAttribute("aria-checked")).toBe("false")
+  expect(onValueChange).toHaveBeenLastCalledWith("#3366cc")
+  expect(screen.getByRole("radio", { name: "#3366cc" }).getAttribute("aria-checked")).toBe("true")
 })
 
-test("native color input commits the chosen color", async () => {
+test("fill editor color wheel commits the chosen color", async () => {
   const onValueChange = vi.fn()
-  render(<Controlled onValueChange={onValueChange} />)
-  fireEvent.click(screen.getByRole("button", { name: "Pick custom" }))
-  const wheel = await screen.findByLabelText("Color wheel")
-  fireEvent.input(wheel, { target: { value: "#00ff00" } })
-  expect(onValueChange).toHaveBeenLastCalledWith("#00ff00", expect.objectContaining({ type: "fill", color: "#00ff00" }))
+  render(<ControlledFill onValueChange={onValueChange} />)
+  const editor = await openEditor("Pick custom")
+  fireEvent.input(editor.getByLabelText("Color wheel"), { target: { value: "#00ff00" } })
+  expect(onValueChange).toHaveBeenLastCalledWith("#00ff00")
+})
+
+test("fill editor without a selection starts from black and commits the first valid hex", async () => {
+  const onValueChange = vi.fn()
+  render(<ColorPicker mode="fill" aria-label="Text" option={fillOption} onValueChange={onValueChange} />)
+  const editor = await openEditor()
+  expect(editor.getByLabelText<HTMLInputElement>("Color").value).toBe("#000000")
+  fireEvent.change(editor.getByRole("textbox", { name: "Hex" }), { target: { value: "ff8800" } })
+  expect(onValueChange).toHaveBeenLastCalledWith("#ff8800", expect.objectContaining({ type: "fill", color: "#ff8800" }))
 })
 
 test("callback-free picker submits the selected swatch through its form name", () => {
   const { container } = render(
     <form>
-      <ColorPicker aria-label="Background" option={option} name="background" defaultValue="ink" custom={false} />
+      <ColorPicker mode="fill" aria-label="Text" option={fillOption} name="text" defaultValue="ink" custom={false} />
     </form>
   )
-  fireEvent.click(screen.getByRole("radio", { name: "Dawn" }))
+  fireEvent.click(screen.getByRole("radio", { name: "Sun" }))
   const form = container.querySelector("form")
   expect(form).not.toBeNull()
-  expect(new FormData(form ?? undefined).get("background")).toBe("dawn")
-})
-
-test("reopening the custom panel shows the current custom color", async () => {
-  render(
-    <ColorPicker
-      aria-label="Background"
-      option={option}
-      defaultValue="#abcdef"
-      customLabel="Pick custom"
-      hexLabel="Hex"
-    />
-  )
-  expect(screen.getByRole("radio", { name: "#abcdef" }).getAttribute("aria-checked")).toBe("true")
-  fireEvent.click(screen.getByRole("button", { name: "Pick custom" }))
-  expect((await screen.findByRole<HTMLInputElement>("textbox", { name: "Hex" })).value).toBe("#abcdef")
+  expect(new FormData(form ?? undefined).get("text")).toBe("sun")
 })
 
 test("disabled picker blocks swatch and custom interaction", () => {
   const onValueChange = vi.fn()
-  render(<ColorPicker aria-label="Background" option={option} disabled onValueChange={onValueChange} />)
-  fireEvent.click(screen.getByRole("radio", { name: "Dawn" }))
+  render(<ColorPicker mode="fill" aria-label="Text" option={fillOption} disabled onValueChange={onValueChange} />)
+  fireEvent.click(screen.getByRole("radio", { name: "Sun" }))
   expect(onValueChange).not.toHaveBeenCalled()
   expect(screen.getByRole("button", { name: "Custom color" }).hasAttribute("disabled")).toBe(true)
+})
+
+// ---------- gradient mode ----------
+
+function ControlledGradient({ initial, onValueChange }: { initial: string; onValueChange: (value: string) => void }) {
+  const [value, setValue] = useState(initial)
+  return (
+    <ColorPicker
+      mode="gradient"
+      aria-label="Background"
+      option={gradientOption}
+      value={value}
+      onValueChange={(next, option) => {
+        expect(option.type).toBe("gradient")
+        setValue(next)
+        onValueChange(next)
+      }}
+    />
+  )
+}
+
+test("gradient editor starts from the selected swatch and switches between CSS gradient functions", async () => {
+  const onValueChange = vi.fn()
+  render(<ControlledGradient initial="dawn" onValueChange={onValueChange} />)
+  const editor = await openEditor()
+
+  fireEvent.change(editor.getByLabelText("Type"), { target: { value: "radial" } })
+  expect(onValueChange).toHaveBeenLastCalledWith("radial-gradient(circle, #f97316 0%, #facc15 100%)")
+
+  fireEvent.change(editor.getByLabelText("Shape"), { target: { value: "ellipse" } })
+  expect(onValueChange).toHaveBeenLastCalledWith("radial-gradient(ellipse, #f97316 0%, #facc15 100%)")
+
+  fireEvent.change(editor.getByLabelText("Type"), { target: { value: "conic" } })
+  expect(onValueChange).toHaveBeenLastCalledWith("conic-gradient(from 0deg, #f97316 0%, #facc15 100%)")
+
+  fireEvent.change(editor.getByLabelText("Angle"), { target: { value: "45" } })
+  expect(onValueChange).toHaveBeenLastCalledWith("conic-gradient(from 45deg, #f97316 0%, #facc15 100%)")
+
+  fireEvent.click(editor.getByRole("switch", { name: "Repeating" }))
+  expect(onValueChange).toHaveBeenLastCalledWith("repeating-conic-gradient(from 45deg, #f97316 0%, #facc15 100%)")
+
+  fireEvent.change(editor.getByLabelText("Type"), { target: { value: "linear" } })
+  expect(onValueChange).toHaveBeenLastCalledWith("repeating-linear-gradient(135deg, #f97316 0%, #facc15 100%)")
+
+  expect(
+    screen
+      .getByRole("radio", { name: "repeating-linear-gradient(135deg, #f97316 0%, #facc15 100%)" })
+      .getAttribute("aria-checked")
+  ).toBe("true")
+})
+
+test("gradient editor edits, adds and removes color stops but keeps at least two", async () => {
+  const onValueChange = vi.fn()
+  render(
+    <ControlledGradient initial="linear-gradient(90deg, #ff0000 0%, #0000ff 100%)" onValueChange={onValueChange} />
+  )
+  const editor = await openEditor()
+  expect(editor.getByRole("button", { name: "Remove stop 1" }).hasAttribute("disabled")).toBe(true)
+
+  fireEvent.input(editor.getByLabelText("Stop 2 color"), { target: { value: "#00ff00" } })
+  expect(onValueChange).toHaveBeenLastCalledWith("linear-gradient(90deg, #ff0000 0%, #00ff00 100%)")
+
+  fireEvent.change(editor.getByLabelText("Stop 2 position"), { target: { value: "60" } })
+  expect(onValueChange).toHaveBeenLastCalledWith("linear-gradient(90deg, #ff0000 0%, #00ff00 60%)")
+
+  fireEvent.change(editor.getByLabelText("Stop 2 position"), { target: { value: "" } })
+  fireEvent.change(editor.getByLabelText("Angle"), { target: { value: "" } })
+  expect(onValueChange).toHaveBeenCalledTimes(2)
+
+  fireEvent.click(editor.getByRole("button", { name: "Add stop" }))
+  expect(onValueChange).toHaveBeenLastCalledWith("linear-gradient(90deg, #ff0000 0%, #00ff00 60%, #00ff00 100%)")
+
+  fireEvent.click(editor.getByRole("button", { name: "Remove stop 1" }))
+  expect(onValueChange).toHaveBeenLastCalledWith("linear-gradient(90deg, #00ff00 60%, #00ff00 100%)")
+})
+
+test("gradient editor without a selection starts from a neutral two-stop linear gradient", async () => {
+  const onValueChange = vi.fn()
+  render(<ColorPicker mode="gradient" aria-label="Background" option={gradientOption} onValueChange={onValueChange} />)
+  const editor = await openEditor()
+  fireEvent.click(editor.getByRole("switch", { name: "Repeating" }))
+  expect(onValueChange).toHaveBeenLastCalledWith(
+    "repeating-linear-gradient(135deg, #000000 0%, #ffffff 100%)",
+    expect.objectContaining({ kind: "linear", repeating: true })
+  )
+})
+
+test("gradient editor opens a radial swatch with its implicit shape and a hex-safe stop color", async () => {
+  const onValueChange = vi.fn()
+  render(
+    <ColorPicker
+      mode="gradient"
+      aria-label="Background"
+      option={[{ type: "gradient", value: "mist", label: "Mist", kind: "radial", stop: ["rgb(0 0 0)", "#ffffff"] }]}
+      defaultValue="mist"
+      onValueChange={onValueChange}
+    />
+  )
+  const editor = await openEditor()
+  expect(editor.getByLabelText<HTMLSelectElement>("Shape").value).toBe("circle")
+  // Native color inputs only accept hex, so a non-hex stop starts from black instead of breaking the editor.
+  expect(editor.getByLabelText<HTMLInputElement>("Stop 1 color").value).toBe("#000000")
+  fireEvent.change(editor.getByLabelText("Type"), { target: { value: "linear" } })
+  expect(onValueChange).toHaveBeenLastCalledWith("linear-gradient(135deg, #000000 0%, #ffffff 100%)", expect.anything())
+})
+
+test("gradient editor keeps working when its owner replaces the value with more stops while open", async () => {
+  const onValueChange = vi.fn()
+  const two = "linear-gradient(90deg, #ff0000 0%, #0000ff 100%)"
+  const three = "linear-gradient(90deg, #ff0000 0%, #00ff00 50%, #0000ff 100%)"
+  const { rerender } = render(
+    <ColorPicker
+      mode="gradient"
+      aria-label="Background"
+      option={gradientOption}
+      value={two}
+      onValueChange={onValueChange}
+    />
+  )
+  const editor = await openEditor()
+  rerender(
+    <ColorPicker
+      mode="gradient"
+      aria-label="Background"
+      option={gradientOption}
+      value={three}
+      onValueChange={onValueChange}
+    />
+  )
+  expect(editor.getAllByRole("listitem")).toHaveLength(3)
+  fireEvent.input(editor.getByLabelText("Stop 3 color"), { target: { value: "#ffffff" } })
+  expect(onValueChange).toHaveBeenLastCalledWith(
+    "linear-gradient(90deg, #ff0000 0%, #00ff00 50%, #ffffff 100%)",
+    expect.anything()
+  )
+})
+
+test("a value from the other mode is not rendered as a custom swatch", () => {
+  render(<ColorPicker mode="gradient" aria-label="Background" option={gradientOption} value="#ff0000" />)
+  expect(screen.getAllByRole("radio")).toHaveLength(gradientOption.length)
+  cleanup()
+  render(<ColorPicker mode="fill" aria-label="Text" option={fillOption} value="linear-gradient(red, blue)" />)
+  expect(screen.getAllByRole("radio")).toHaveLength(fillOption.length)
 })
