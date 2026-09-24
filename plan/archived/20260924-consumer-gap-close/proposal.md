@@ -1,7 +1,7 @@
 # Consumer Gap Close
 
 **Proposal:** `consumer-gap-close`
-**Status:** in-progress
+**Status:** done
 **Phase:** [ADHD.md](../../ADHD.md) — Build Order 7 "Stabilize the package"
 
 ## Problem
@@ -32,10 +32,10 @@ The `bridge-web` migration audit ([artifact](https://artifact.9by2.workers.dev/a
 
 ## Success Criteria
 
-- [ ] Every workstream ships test-first public-contract coverage, catalog example, `CUSTOMIZATION.md` section and changeset.
-- [ ] Root and subpath exports verified by `verify:package` and `verify:tree-shaking`.
-- [ ] All AGENTS.md gates green; runtime coverage ≥ 90%.
-- [ ] Bun.WebView evidence stored in `.eval/0924-consumer-gap-close/`.
+- [x] Every workstream ships test-first public-contract coverage, catalog example, `CUSTOMIZATION.md` section and changeset.
+- [x] Root and subpath exports verified by `verify:package` and `verify:tree-shaking`.
+- [x] All AGENTS.md gates green; runtime coverage ≥ 90%.
+- [x] Bun.WebView evidence stored in `.eval/0924-consumer-gap-close/`.
 
 ## Specs
 

@@ -58,7 +58,7 @@ Implementation order matters — complete top to bottom. Each group is one stack
 
 ## Verification
 
-- [ ] Bun.WebView evidence in `.eval/0924-consumer-gap-close/`
-- [ ] All specs in `spec/` reviewed against implementation
-- [ ] Archive proposal and sync spec (archive-plan)
-- [ ] Final report: exports, before → after API table, deprecations, consumer migration note
+- [x] Bun.WebView evidence in `.eval/0924-consumer-gap-close/`
+- [x] All specs in `spec/` reviewed against implementation (calendar extension merged into canonical spec)
+- [x] Archive proposal and sync spec (archive-plan)
+- [x] Final report: exports, before → after API table, deprecations, consumer migration note
