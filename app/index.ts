@@ -1,5 +1,6 @@
 export * from "./component/brand/stylex/detail-item"
 export * from "./component/brand/stylex/metric-tile"
+export * from "./component/brand/stylex/rate-card"
 export * from "./component/brand/stylex/color-picker"
 export * from "./component/brand/stylex/product-item"
 export * from "./component/brand/stylex/receipt"
