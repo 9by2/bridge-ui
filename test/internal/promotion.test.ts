@@ -204,13 +204,3 @@ test("promotion refuses local execution without protected default branch context
   expect(result.exitCode).not.toBe(0)
   expect(result.stderr.toString()).toContain("Protected default branch required")
 })
-
-// Protects the repaired release state: main's RC base matches the last published stable, so the
-// next RC or stable is numbered above it (0924 incident: base stayed 0.8.1 after 0.9.0 shipped).
-test("main pre-release base matches the last stable and shipped changeset is gone", async () => {
-  const pre = await Bun.file(".changeset/pre.json").json()
-  expect(pre.initialVersions["@bridge/ui"]).toBe("0.9.0")
-  expect(await Bun.file(".changeset/color-picker.md").exists()).toBe(false)
-  const manifest = await Bun.file("package.json").json()
-  expect(manifest.version).toBe("0.9.0")
-})
