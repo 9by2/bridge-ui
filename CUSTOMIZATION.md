@@ -537,6 +537,60 @@ Heading font stack is `"Plus Jakarta Sans Variable", aktiv-grotesk, Sarabun, san
 
 `TypographyLabel` renders an inline `span`; the direct `@bridge/ui/typography` module also exports Cue's `Label` name. All three primitives accept native element props and `className` for local layout.
 
+### Prose set
+
+`Lead`, `Muted`, `Small`, `Large`, `Blockquote`, `InlineCode` and `List` (`ordered` renders `ol`) cover long-form copy. Each renders a native semantic element and takes native props. They inherit the body font stack, so mixed Thai + English renders consistently. For prose tables, reuse `Table`.
+
+```tsx
+import { Blockquote, InlineCode, Lead, List } from "@bridge/ui/typography"
+
+<Lead>สรุป release ประจำสัปดาห์</Lead>
+<List ordered><li>Open a branch</li><li>Write the test first</li></List>
+<Blockquote>Ship small.</Blockquote>
+Run <InlineCode>bun test</InlineCode>
+```
+
+## ResponsiveImage fallback and placeholder
+
+```tsx
+<ResponsiveImage
+  src={cover}
+  alt={t("venueCover")}
+  fallbackSrc="/image/cover-fallback.png" // used once after the first error, never retried
+  placeholder={{ blurDataUrl }} // blurred background until load
+/>
+```
+
+A fallback drops `sourceSet`, so the browser actually loads it. A new `src` resets both states. `decorative` still forces `alt=""` and `aria-hidden`.
+
+## ShellHeader action injection
+
+Routes publish header actions without prop drilling:
+
+```tsx
+// shell
+;<ShellHeaderActionProvider>
+  <ShellHeader>
+    <ShellHeaderTitle>{title}</ShellHeaderTitle>
+    <ShellHeaderActionSlot />
+  </ShellHeader>
+  <Outlet />
+</ShellHeaderActionProvider>
+
+// any descendant route
+useShellHeaderAction(<Button size="sm">{t("newEvent")}</Button>)
+```
+
+The most recently mounted publisher wins. Unmounting clears its action, and the slot renders nothing when empty. Outside a provider the hook does nothing. Memoize the node (`useMemo`) if it is expensive to create.
+
+## Third-party type re-export
+
+Import these from `@bridge/ui` instead of depending on the third-party package directly:
+
+- `DateRange` and `Matcher` (react-day-picker), next to `Calendar`.
+- `Crop`, `PercentCrop` and `PixelCrop` (react-image-crop), next to `ImageCrop`.
+- `MultiSelectSeparator` separates `MultiSelectGroup` blocks.
+
 ## Input icons
 
 The published `@bridge/ui/style.css` sets Input's Cue control radius to `0.5em` relative to its own font size. `theme.radius.control` still overrides it; other modes use the stylesheet's default. Import the package stylesheet for these defaults.

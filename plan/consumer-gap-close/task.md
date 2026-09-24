@@ -50,11 +50,11 @@ Implementation order matters — complete top to bottom. Each group is one stack
 
 ## P2 — `feat/prose-and-misc`
 
-- [ ] P2-1 prose typography set + `./typography` subpath + catalog
-- [ ] P2-2 `ResponsiveImage` `fallbackSrc` (test: swap once, no loop) + blur `placeholder`
-- [ ] P2-3 `ShellHeaderActionProvider`, `useShellHeaderAction`, `ShellHeaderActionSlot` (test: set, render, clear on unmount)
-- [ ] P2-4 `DateRange`/`Matcher`, `MultiSelectSeparator`, `PercentCrop`/`PixelCrop`
-- [ ] catalog, `CUSTOMIZATION.md`, changeset, gates, commit
+- [x] P2-1 prose typography set + `./typography` subpath + catalog
+- [x] P2-2 `ResponsiveImage` `fallbackSrc` (test: swap once, no loop) + blur `placeholder`
+- [x] P2-3 `ShellHeaderActionProvider`, `useShellHeaderAction`, `ShellHeaderActionSlot` (test: set, render, clear on unmount)
+- [x] P2-4 `DateRange`/`Matcher`, `MultiSelectSeparator`, `PercentCrop`/`PixelCrop`
+- [x] catalog, `CUSTOMIZATION.md`, changeset, gates, commit
 
 ## Verification
 

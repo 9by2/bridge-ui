@@ -34,6 +34,7 @@ const style = stylex.create({
   status: { margin: 0 }
 })
 export type ImageCropProps = ReactCropProps
+export type { Crop, PercentCrop, PixelCrop } from "react-image-crop"
 
 export function ImageCrop(props: ImageCropProps) {
   return (

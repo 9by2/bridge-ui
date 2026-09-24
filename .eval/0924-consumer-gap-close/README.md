@@ -8,6 +8,7 @@ bun cmd/run-catalog-test.ts ./.eval/0924-consumer-gap-close/p1-page-runner.test.
 bun cmd/run-catalog-test.ts ./.eval/0924-consumer-gap-close/p1-upload-runner.test.ts
 bun cmd/run-catalog-test.ts ./.eval/0924-consumer-gap-close/p1-calendar-runner.test.ts
 bun cmd/run-catalog-test.ts ./.eval/0924-consumer-gap-close/p1-icon-probe.test.ts
+bun cmd/run-catalog-test.ts ./.eval/0924-consumer-gap-close/p2-runner.test.ts
 ```
 
 ## P0
@@ -63,3 +64,12 @@ Audit: `#item/custom-icon` renders a neutral SVG with no intrinsic size and `cur
 | Button / ItemMedia / Marker / Badge / Sidebar | ok | unchanged |
 
 Explicitly sized lucide icons in `#metric-tile/variants` stay at 18px. Evidence: `p1-icon-slot.png`.
+
+## P2
+
+| Step | Expected | Evidence |
+| --- | --- | --- |
+| `#typography/prose` light/dark, 390px | Thai/English prose, ordered list, no overflow | `p2-prose-*.png` |
+| `#responsive-image/fallback` (real 404) | `data-fallback`, fallback SVG loaded | `p2-image-fallback.png` |
+| `#shell-header/action`: Schedule → Report → No action | header shows "New event" → "Export" → no slot | `p2-shell-action-schedule.png` |
+| `#multi-select/separator` open | `command-separator` between groups | `p2-multi-select-separator.png` |
