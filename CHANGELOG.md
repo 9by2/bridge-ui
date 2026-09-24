@@ -1,5 +1,51 @@
 # @bridge/ui
 
+## 0.9.0-rc.3
+
+### Minor Changes
+
+- 827c93b: Add `BridgeCalendar` event color, muted state, holiday render and month drag-hover.
+
+  - `BridgeCalendarEvent` `color` (any CSS color, exposed as `--bridge-calendar-event-color`, overrides `tone`) and `muted`.
+  - `BridgeCalendarHoliday` `meta` and `renderHoliday(holiday, { view, date })`.
+  - Month days show a drop-target highlight (`data-drop-target`) while an external draggable is over them. It clears on leave, drop or `dragend`.
+  - `onEventActivate` is documented as the mapping for both click and keyboard open.
+
+- 1aa2d34: Add `Page` density, width, header slot and form action, and `DataState` retry.
+
+  - `Page` `density` (`PageDensity`: `compact`, `default`, `comfortable`, `none`) is the canonical padding prop. `data-density` is added.
+  - **Deprecated:** `Page` `spacing`. It stays a working alias with the same values; `density` wins when both are set, and `data-spacing` keeps emitting. Migrate `spacing="x"` → `density="x"`. Removal is planned for the next major.
+  - `Page` `width` (`PageWidth`: `full`, `content` 80rem, `form` 48rem, `editor` edge-to-edge) controls max-width only.
+  - New `PageEyebrow`, `PageMeta`, `PageFilter` header slots and `PageFormAction` (`align`, `sticky`).
+  - `DataState` `onRetry` + `retryLabel` render a standard retry button.
+
+- 02db9cd: Add the prose typography set, `ResponsiveImage` resilience, `ShellHeader` action injection and small exports.
+
+  - Typography: `Blockquote`, `InlineCode`, `List` (`ordered`), `Lead`, `Muted`, `Small`, `Large` from the root and `@bridge/ui/typography`. Prose tables reuse `Table`.
+  - `ResponsiveImage` `fallbackSrc` (swaps once, no loop) and `placeholder={{ blurDataUrl }}`.
+  - `ShellHeaderActionProvider`, `useShellHeaderAction(node)` and `ShellHeaderActionSlot`.
+  - `DateRange` and `Matcher` types next to `Calendar`; `Crop`, `PercentCrop` and `PixelCrop` types next to `ImageCrop`; `MultiSelectSeparator`.
+
+- 896326f: Add Sonner imperative export and `Spinner` size.
+
+  - Root `sonnerToast` and `@bridge/ui/sonner` subpath (`Toaster`, `toast`) share the package Sonner instance with `SonnerToaster`. The Base UI `toast` export is unchanged; JSDoc on both names its paired toaster.
+  - `Spinner` accepts `size` (`SpinnerSize`: `sm`, `default`, `lg`); default render is unchanged. New `@bridge/ui/spinner` subpath.
+
+- 1b56777: Add composable upload validation and issue reporting to `UploadList`.
+
+  - `validate` with `uploadValidation.default/accept/extension` and `composeUploadValidation`; `UploadIssue` with `UploadIssueCode`.
+  - `onValueChange(value, change)` now receives `{ reason, attachment }` (`UploadChangeReason`: `append`, `replace`, `remove`, `clear`). Existing one-argument callbacks keep working.
+  - `onIssue(issue, { accepted, rejected })` reports every issue. Optional `issueDisplay="inline"` renders an accessible `role="alert"` list. Upload components never toast.
+  - `layout` (`UploadListLayout`: `list`, `grid`), `renderEmpty`, `renderItem`, and single-file replace through `multiple={false}`.
+  - `UploadPreview` `variant` (`UploadPreviewVariant`: `row`, `tile`).
+  - **Deprecated:** `UploadList` `onReject`. Use `onIssue`; `onReject` still fires unchanged.
+
+### Patch Changes
+
+- e916850: Size consumer icons without intrinsic dimensions in every icon slot.
+
+  An inline SVG with only a `viewBox` (e.g. a consumer brand mark) no longer fills its host box in `MetricTile` `icon` (now 18px), `DataStateMedia` (24px), `EmptyMedia variant="icon"` (16px) or `SettingsNavItem` (16px + 8px gap). Icons with an explicit size (lucide `size`, `size-*` class) are unchanged.
+
 ## 0.9.0-rc.2
 
 ### Minor Changes
