@@ -4,5 +4,7 @@
   "initialVersions": {
     "@bridge/ui": "0.8.1"
   },
-  "changesets": []
+  "changesets": [
+    "color-picker"
+  ]
 }
