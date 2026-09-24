@@ -1,5 +1,11 @@
 # @bridge/ui
 
+## 0.9.0-rc.2
+
+### Minor Changes
+
+- b6f7a59: Add `RateCard`, a compound presentation for priced offers with required `variants` (`row` for managed rate lists, `card` for bookable services, `plan` for comparable tiers, `inline` for a frameless phrasing summary inside a Select trigger or item) and optional `highlight`. Parts cover title, highlight ribbon, description, price with prefix and period, detail list, feature list and action slot. Available from the root and `@bridge/ui/rate-card`.
+
 ## 0.9.0-rc.1
 
 ### Patch Changes
