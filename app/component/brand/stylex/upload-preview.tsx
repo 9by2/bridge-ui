@@ -4,14 +4,34 @@ import type { ReactNode } from "react"
 
 import { Button } from "./button"
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "./item"
+import { token } from "./token.stylex"
 
 const style = stylex.create({
   icon: { width: 16, height: 16 },
   image: { width: "100%", height: "100%", objectFit: "cover" },
   content: { minWidth: 0 },
   title: { WebkitLineClamp: "unset", wordBreak: "break-all" },
-  progress: { width: "100%" }
+  progress: { width: "100%" },
+  tile: { flexDirection: "column", alignItems: "stretch", height: "100%" },
+  tileMedia: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    aspectRatio: "1",
+    overflow: "hidden",
+    borderRadius: 6,
+    color: token.mutedForeground,
+    backgroundColor: token.muted
+  },
+  tileIcon: { width: 24, height: 24 }
 })
+
+type ValueOf<T> = T[keyof T]
+
+/** `row` is the default list row; `tile` stacks square media above content for grid layout. */
+export const UploadPreviewVariant = { row: "row", tile: "tile" } as const
+export type UploadPreviewVariant = ValueOf<typeof UploadPreviewVariant>
 type UploadAction = { label: string; onClick: () => void }
 type UploadTransfer = {
   state: "queued" | "uploading" | "success" | "error" | "cancelled"
@@ -25,8 +45,26 @@ function fileTypeIcon(type: string) {
   if (type === "application/pdf") return FileTextIcon
   return FileIcon
 }
-function UploadPreviewMedia({ type, thumbnail }: { type: string; thumbnail?: { src: string; alt: string } }) {
+function UploadPreviewMedia({
+  type,
+  thumbnail,
+  variant
+}: {
+  type: string
+  thumbnail?: { src: string; alt: string }
+  variant: UploadPreviewVariant
+}) {
   const Icon = fileTypeIcon(type)
+  if (variant === UploadPreviewVariant.tile)
+    return (
+      <div data-slot="upload-preview-media" {...stylex.props(style.tileMedia)}>
+        {thumbnail ? (
+          <img src={thumbnail.src} alt={thumbnail.alt} {...stylex.props(style.image)} />
+        ) : (
+          <Icon aria-hidden="true" {...stylex.props(style.tileIcon)} />
+        )}
+      </div>
+    )
   return (
     <ItemMedia variant={thumbnail ? "image" : "icon"}>
       {thumbnail ? (
@@ -125,8 +163,10 @@ export function UploadPreview({
   cancelAction,
   transfer,
   disabled,
+  variant = UploadPreviewVariant.row,
   className
 }: {
+  variant?: UploadPreviewVariant
   name: string
   type?: string
   description?: ReactNode
@@ -140,8 +180,15 @@ export function UploadPreview({
   className?: string
 }) {
   return (
-    <Item variant="outline" data-slot="upload-preview" data-state={transfer?.state} className={className}>
-      <UploadPreviewMedia type={type} thumbnail={thumbnail} />
+    <Item
+      variant="outline"
+      data-slot="upload-preview"
+      data-state={transfer?.state}
+      data-variant={variant}
+      className={[variant === UploadPreviewVariant.tile && stylex.props(style.tile).className, className]
+        .filter(Boolean)
+        .join(" ")}>
+      <UploadPreviewMedia type={type} thumbnail={thumbnail} variant={variant} />
       <UploadPreviewContent name={name} description={description} transfer={transfer} />
       <UploadPreviewActions
         transfer={transfer}

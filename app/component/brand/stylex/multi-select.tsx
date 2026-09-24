@@ -16,7 +16,15 @@ import {
 
 import { Badge } from "./badge"
 import { Button } from "./button"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./command"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator
+} from "./command"
 import { Popover, PopoverContent, PopoverTrigger } from "./popover"
 import { token } from "./token.stylex"
 
@@ -354,4 +362,8 @@ export function MultiSelectItem({
 }
 export function MultiSelectGroup(props: ComponentPropsWithoutRef<typeof CommandGroup>) {
   return <CommandGroup {...props} />
+}
+/** Thin separator between `MultiSelectGroup` blocks. */
+export function MultiSelectSeparator(props: ComponentPropsWithoutRef<typeof CommandSeparator>) {
+  return <CommandSeparator {...props} />
 }

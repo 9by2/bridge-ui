@@ -167,6 +167,104 @@ import { RateCard, RateCardAction, RateCardFeature, RateCardFeatureList, RateCar
 </Button>
 ```
 
+## Which toaster?
+
+The package ships two toast engines. Pair each imperative function with its own toaster; mixing them renders nothing.
+
+| Engine  | Mount                                                   | Call                                                          |
+| ------- | ------------------------------------------------------- | ------------------------------------------------------------- |
+| Sonner  | `SonnerToaster` (or `Toaster` from `@bridge/ui/sonner`) | `sonnerToast.success()` (or `toast` from `@bridge/ui/sonner`) |
+| Base UI | `Toaster` / `ToastProvider`                             | `toast.add()` (root `toast`)                                  |
+
+```tsx
+import { SonnerToaster, sonnerToast } from "@bridge/ui"
+// or: import { Toaster, toast } from "@bridge/ui/sonner"
+
+export function Shell() {
+  return <SonnerToaster />
+}
+
+sonnerToast.success("Saved")
+```
+
+Import Sonner through the package, not `sonner` directly, so the call and the toaster share one Sonner instance.
+
+## Spinner
+
+`Spinner` accepts `size` (`SpinnerSize`: `sm` 12px, `default` 16px, `lg` 24px). It always renders `role="status"`; pass `aria-label` for context.
+
+```tsx
+import { Spinner, SpinnerSize } from "@bridge/ui/spinner"
+
+;<Spinner size={SpinnerSize.lg} aria-label="Loading report" />
+```
+
+## Icon slot
+
+Brand and third-party icons live in the consumer; pass them through icon slots. The package ships no brand, social, streaming or logo glyph.
+
+Every icon slot accepts any `ReactNode`. Author an icon as an SVG with a `viewBox`, `currentColor`, and no fixed `width`/`height`; the slot then sizes it and gives it the slot's text color.
+
+| Slot                                                                                           | Size for an unsized SVG |
+| ---------------------------------------------------------------------------------------------- | ----------------------- |
+| `Button` children                                                                              | 16px (sm 14, xs 12)     |
+| `ItemMedia`, `MarkerIcon`, `SidebarMenuButton`, `SettingsNavItem`, `EmptyMedia variant="icon"` | 16px                    |
+| `Badge` children                                                                               | 12px                    |
+| `MetricTile icon`                                                                              | 18px                    |
+| `DataStateMedia`                                                                               | 24px                    |
+
+```tsx
+// bridge-web brand-icon registry
+export function YoutubeMark(props: SVGProps<SVGSVGElement>) {
+  return <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>…fill="currentColor"…</svg>
+}
+
+<Button><YoutubeMark />Connect</Button>
+<MetricTile label="Subscribers" value="12.4k" icon={<YoutubeMark />} />
+```
+
+To override the slot size, pass a `size-*` class or an explicit `width`/`height` (lucide `size`).
+
+## Upload validation and issue
+
+`UploadList` validates, reports and renders. It never toasts or shows global feedback; the app decides how to surface issues.
+
+```tsx
+import {
+  UploadList,
+  UploadIssueDisplay,
+  UploadListLayout,
+  composeUploadValidation,
+  sonnerToast,
+  uploadValidation
+} from "@bridge/ui"
+
+const validate = composeUploadValidation(
+  uploadValidation.default({ accept: { "image/*": [] }, maxFiles: 4, maxSize: 2_000_000 }),
+  uploadValidation.extension([".png", ".jpg", ".webp"])
+)
+
+<UploadList
+  value={value}
+  onValueChange={(next, change) => setValue(next)} // change.reason: append | replace | remove | clear
+  validate={validate}
+  onIssue={(issue) => sonnerToast.error(issue[0]?.message)} // app-owned feedback
+  issueDisplay={UploadIssueDisplay.inline} // optional role="alert" list; default none
+  layout={UploadListLayout.grid}
+  renderEmpty={() => <p>{t("noImage")}</p>}
+  copy={copy}>
+  {t("chooseImage")}
+</UploadList>
+```
+
+- Builders: `uploadValidation.default({ accept, maxFiles, minFiles, maxSize, minSize, message })`, `.accept(map)` and `.extension(list)`. Combine them with `composeUploadValidation(...)`, or write your own `(file, { value }) => UploadIssue[]`.
+- `UploadIssue = { code, message, file? }`, where `code` is an `UploadIssueCode`. An issue with a `file` rejects that file. An issue without one (e.g. `too-few-files`) is advisory and never blocks; enforce minimums at submit.
+- Pass translated copy through `message` per `UploadIssueCode`. The built-in messages are English fallbacks.
+- `multiple={false}` turns on replace mode: a new selection replaces the value with reason `replace`.
+- `renderItem(attachment, { remove, clear, preview, layout })` replaces the default row. Its `remove` keeps the reason and focus behavior.
+- `thumbnail` stays caller-owned. For local image previews, create and revoke object URLs in the app, or render them through `renderItem`.
+- `onReject` is deprecated; use `onIssue`. It still fires with its old payload.
+
 ## Sheet
 
 Set `resizable` on `SheetContent` to show a centered pointer drag handle on the sheet edge facing the application. Supply `size` and `onSizeChange` from the consuming composition; the component neither stores nor persists dimensions. Left and right sheets resize horizontally and default to `maxWidth="80vw"`; top and bottom sheets resize vertically and default to `maxHeight="70vh"`. Pass the matching prop to override that maximum.
@@ -230,6 +328,29 @@ const labels: BridgeCalendarLabels = {
 ```
 
 Use `view` and `date` with `onViewChange` and `onDateChange` for controlled state; use `defaultView` and `defaultDate` otherwise. `period` formats the displayed period and receives the visible week range in week view. Events and holidays use generic `id`, `title`, `start`, and `end` fields. Set `allDay` for full-day events: these render in a separate week lane and as compact inverted month pills prefixed with `[ALL DAY]`, without a time prefix. Set `weekStartsOn` from `0` through `6` to select the first displayed weekday. Map queue status, location, translated event copy, fetching, mutations, and authorization in the application before rendering. Use `renderEvent` or `renderEmpty` when the default generic presentation is insufficient.
+
+### Event color, muted and holiday
+
+```tsx
+const events: BridgeCalendarEvent[] = [
+  { id: "a", title: "Launch", start, end, color: statusColor[queue.status] }, // any CSS color; overrides tone
+  { id: "b", title: "Cancelled", start, end, muted: true } // de-emphasised; still activatable
+]
+
+<BridgeCalendar
+  events={events}
+  holidays={[{ id: "h", title: t("harvest"), meta: t("officeClosed"), start, end }]}
+  renderHoliday={(holiday, { view, date }) => <HolidayBadge holiday={holiday} date={date} />}
+  onEventActivate={(event) => openEvent(event.id)}
+  onSlotDrop={(slot) => scheduleQueueItem(slot)}
+  labels={labels}
+/>
+```
+
+- `color` is applied through `--bridge-calendar-event-color`. `renderEvent` output can read the same property.
+- `renderHoliday` runs once per intersected day in week and month views. By default holidays show `title` and `meta`.
+- In month view, the day under an external HTML draggable gets `data-drop-target="true"` and a dashed highlight. The highlight clears on leave, drop or `dragend`, and `onSlotDrop` fires on drop.
+- `onEventActivate` covers pointer click and keyboard Enter/Space. Map both the old `onEventClick` and `onEventOpen` to it. Disabled events never activate.
 
 ### Supported P0 components
 
@@ -325,6 +446,74 @@ export function Report() {
 }
 ```
 
+### Density and width
+
+`density` sets padding and `width` sets max-width and centering. They are independent.
+
+| `density` (`PageDensity`) | Padding                        |
+| ------------------------- | ------------------------------ |
+| `default`                 | 24 top / 44 inline / 48 bottom |
+| `compact`                 | 16 all sides                   |
+| `comfortable`             | 24 all sides                   |
+| `none`                    | 0                              |
+
+| `width` (`PageWidth`) | Layout                                   |
+| --------------------- | ---------------------------------------- |
+| omitted / `full`      | 100% (unchanged default)                 |
+| `content`             | centered, max 80rem (list, dashboard)    |
+| `form`                | centered, max 48rem (settings, form)     |
+| `editor`              | full width, zero inline padding (canvas) |
+
+```tsx
+import { Page, PageDensity, PageWidth } from "@bridge/ui/page"
+
+;<Page width={PageWidth.content} density={PageDensity.compact}>
+  …
+</Page>
+```
+
+Add responsive gutters with `isDynamicPadding`, or with product layout CSS through `className`.
+
+#### Migration: `spacing` → `density`
+
+`spacing` is deprecated. It still works and takes the same values. `density` wins when both are passed, and `data-spacing` plus `data-density` both carry the resolved value. `spacing` will be removed in the next major.
+
+```diff
+- <Page spacing="compact">
++ <Page density="compact">
+```
+
+### Header slot and form action
+
+```tsx
+<PageHeader>
+  <PageHeading>
+    <PageEyebrow>Studio</PageEyebrow>
+    <PageTitle>Schedule</PageTitle>
+    <PageMeta>12 event · Updated 5 minutes ago</PageMeta>
+  </PageHeading>
+  <PageAction>…</PageAction>
+  <PageFilter role="search" aria-label="Schedule filter">…</PageFilter>
+</PageHeader>
+
+<PageFormAction sticky align={PageFormActionAlign.end}>
+  <Button variant="outline">Cancel</Button>
+  <Button type="submit">Save</Button>
+</PageFormAction>
+```
+
+`PageFilter` takes a full header row. `PageFormAction` `align` is `start` | `end` (default) | `between`. With `sticky`, the row pins to the bottom of the nearest scroll container.
+
+### DataState retry
+
+```tsx
+<DataState variant="error" onRetry={refetch} retryLabel={t("retry")}>
+  <DataStateTitle>{t("loadFailed")}</DataStateTitle>
+</DataState>
+```
+
+With `onRetry`, an outline `Button` renders inside `DataStateAction` after `children`. `retryLabel` defaults to `"Retry"`; pass translated copy from the app.
+
 ## Typography
 
 `Heading`, `Label`, and `Body` provide the Cue semantic typography baseline. Heading uses the package heading family and highlight color; `Body` preserves Cue's compact `1.3` line height. Pass `as` to choose a semantic heading level, or omit it for an `h4`.
@@ -347,6 +536,60 @@ export function AccountSummary() {
 Heading font stack is `"Plus Jakarta Sans Variable", aktiv-grotesk, Sarabun, sans-serif`. Plus Jakarta Sans has no Thai glyph, so mixed Thai/English headings render Latin in Plus Jakarta Sans and Thai in `aktiv-grotesk`. The package does not bundle `aktiv-grotesk` (Adobe Fonts); the consumer app must load its own Adobe Fonts kit, e.g. `<link rel="stylesheet" href="https://use.typekit.net/<kitId>.css" />`. Without it, Thai falls back to Sarabun.
 
 `TypographyLabel` renders an inline `span`; the direct `@bridge/ui/typography` module also exports Cue's `Label` name. All three primitives accept native element props and `className` for local layout.
+
+### Prose set
+
+`Lead`, `Muted`, `Small`, `Large`, `Blockquote`, `InlineCode` and `List` (`ordered` renders `ol`) cover long-form copy. Each renders a native semantic element and takes native props. They inherit the body font stack, so mixed Thai + English renders consistently. For prose tables, reuse `Table`.
+
+```tsx
+import { Blockquote, InlineCode, Lead, List } from "@bridge/ui/typography"
+
+<Lead>สรุป release ประจำสัปดาห์</Lead>
+<List ordered><li>Open a branch</li><li>Write the test first</li></List>
+<Blockquote>Ship small.</Blockquote>
+Run <InlineCode>bun test</InlineCode>
+```
+
+## ResponsiveImage fallback and placeholder
+
+```tsx
+<ResponsiveImage
+  src={cover}
+  alt={t("venueCover")}
+  fallbackSrc="/image/cover-fallback.png" // used once after the first error, never retried
+  placeholder={{ blurDataUrl }} // blurred background until load
+/>
+```
+
+A fallback drops `sourceSet`, so the browser actually loads it. A new `src` resets both states. `decorative` still forces `alt=""` and `aria-hidden`.
+
+## ShellHeader action injection
+
+Routes publish header actions without prop drilling:
+
+```tsx
+// shell
+;<ShellHeaderActionProvider>
+  <ShellHeader>
+    <ShellHeaderTitle>{title}</ShellHeaderTitle>
+    <ShellHeaderActionSlot />
+  </ShellHeader>
+  <Outlet />
+</ShellHeaderActionProvider>
+
+// any descendant route
+useShellHeaderAction(<Button size="sm">{t("newEvent")}</Button>)
+```
+
+The most recently mounted publisher wins. Unmounting clears its action, and the slot renders nothing when empty. Outside a provider the hook does nothing. Memoize the node (`useMemo`) if it is expensive to create.
+
+## Third-party type re-export
+
+Import these from `@bridge/ui` instead of depending on the third-party package directly:
+
+- `DateRange` and `Matcher` (react-day-picker), next to `Calendar`.
+- `Crop`, `PercentCrop` and `PixelCrop` (react-image-crop), next to `ImageCrop`.
+- `MultiSelectSeparator` separates `MultiSelectGroup` blocks.
 
 ## Input icons
 

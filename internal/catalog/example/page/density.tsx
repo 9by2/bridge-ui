@@ -1,67 +1,62 @@
 import * as UI from "@bridge/ui"
 
-const PageSpacing = {
-  DEFAULT: "default",
-  NONE: "none",
-  COMPACT: "compact",
-  COMFORTABLE: "comfortable"
-} as const
+const PageDensity = UI.PageDensity
 
 const PageVariant = { DEFAULT: "default", CONTAINER: "container" } as const
 
 const example = [
   {
     name: "Default",
-    spacing: PageSpacing.DEFAULT,
+    density: PageDensity.default,
     variant: PageVariant.DEFAULT,
     isDynamicPadding: false,
     description: "Default static page gutters."
   },
   {
     name: "None",
-    spacing: PageSpacing.NONE,
+    density: PageDensity.none,
     variant: PageVariant.DEFAULT,
     isDynamicPadding: false,
     description: "Zero padding for layouts that own their inner spacing."
   },
   {
     name: "Compact",
-    spacing: PageSpacing.COMPACT,
+    density: PageDensity.compact,
     variant: PageVariant.DEFAULT,
     isDynamicPadding: false,
     description: "16px padding for dense and dialog-adjacent layouts."
   },
   {
     name: "Comfortable",
-    spacing: PageSpacing.COMFORTABLE,
+    density: PageDensity.comfortable,
     variant: PageVariant.DEFAULT,
     isDynamicPadding: false,
     description: "24px padding for an intermediate page density."
   },
   {
     name: "Dynamic",
-    spacing: PageSpacing.DEFAULT,
+    density: PageDensity.default,
     variant: PageVariant.DEFAULT,
     isDynamicPadding: true,
     description: "Responsive desktop, tablet, and mobile gutters when explicitly requested."
   },
   {
     name: "Container",
-    spacing: PageSpacing.DEFAULT,
+    density: PageDensity.default,
     variant: PageVariant.CONTAINER,
     isDynamicPadding: false,
     description: "A 1480px centered layout when the page composition requires it."
   }
 ] as const
 
-function PageExample({ name, spacing, variant, isDynamicPadding, description }: (typeof example)[number]) {
+function PageExample({ name, density, variant, isDynamicPadding, description }: (typeof example)[number]) {
   return (
-    <UI.Page variant={variant} spacing={spacing} isDynamicPadding={isDynamicPadding} className="border">
+    <UI.Page variant={variant} density={density} isDynamicPadding={isDynamicPadding} className="border">
       <UI.PageBreadcrumb>
         <UI.Breadcrumb>
           <UI.BreadcrumbList>
             <UI.BreadcrumbItem>
-              <UI.BreadcrumbLink href="#page/spacing">Account</UI.BreadcrumbLink>
+              <UI.BreadcrumbLink href="#page/density">Account</UI.BreadcrumbLink>
             </UI.BreadcrumbItem>
             <UI.BreadcrumbSeparator />
             <UI.BreadcrumbItem>

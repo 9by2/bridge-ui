@@ -6,6 +6,8 @@ import { DayPicker, getDefaultClassNames, type DayButton, type Locale } from "re
 import { type Button, buttonVariants } from "./button"
 import { token } from "./token.stylex"
 
+export type { DateRange, Matcher } from "react-day-picker"
+
 const style = stylex.create({
   root: {
     width: "fit-content",

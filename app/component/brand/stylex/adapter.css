@@ -333,3 +333,24 @@
     box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
   }
 }
+/* DEC-003 / DEC-011: consumer icon slot contract. An SVG without an intrinsic size (brand/social mark
+   supplied by the application) fills its host box unless the slot sizes it. Mirror the existing
+   `size-*` opt-out so explicitly sized icons (lucide `size`, `size-*` class) keep their own size. */
+[data-pilot-theme] [data-slot="metric-tile-icon"] > svg:not([class*="size-"]):not([width]) {
+  width: 18px;
+  height: 18px;
+}
+[data-pilot-theme] [data-slot="empty-icon"][data-variant="icon"] > svg:not([class*="size-"]):not([width]),
+[data-pilot-theme] [data-slot="settings-nav-item"] > svg:not([class*="size-"]):not([width]) {
+  width: 16px;
+  height: 16px;
+}
+[data-pilot-theme] [data-slot="data-state-media"] > svg:not([class*="size-"]):not([width]) {
+  width: 24px;
+  height: 24px;
+}
+[data-pilot-theme] [data-slot="settings-nav-item"] > svg {
+  flex-shrink: 0;
+  margin-inline-end: 8px;
+  pointer-events: none;
+}

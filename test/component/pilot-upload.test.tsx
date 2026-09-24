@@ -169,7 +169,7 @@ test("upload list removal returns focus and emits controlled value", () => {
     </UploadList>
   )
   fireEvent.click(screen.getByRole("button", { name: "Remove File" }))
-  expect(change).toHaveBeenCalledWith([])
+  expect(change.mock.calls[0]?.[0]).toEqual([])
   expect(document.activeElement).toBe(screen.getByRole("button", { name: "Choose" }))
 })
 test("upload viewer rejects unsafe URL and handles failed media", async () => {

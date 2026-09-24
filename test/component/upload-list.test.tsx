@@ -29,7 +29,7 @@ test("remote metadata remains controlled and removal returns focus to drop targe
   fireEvent.click(screen.getByRole("button", { name: "Preview Saved.pdf" }))
   expect(preview.mock.calls[0]?.[0].url).toBe("/saved.pdf")
   fireEvent.click(screen.getByRole("button", { name: "Remove Saved.pdf" }))
-  expect(change).toHaveBeenCalledWith([])
+  expect(change.mock.calls[0]?.[0]).toEqual([])
   expect(document.activeElement).toBe(screen.getByRole("button", { name: "Choose" }))
   expect(screen.getByRole("status").textContent).toBe("Removed Saved.pdf")
 })

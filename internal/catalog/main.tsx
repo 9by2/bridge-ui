@@ -70,6 +70,29 @@ const description: Record<string, string> = {
     "Review the selected filename, then explicitly trigger a caller-owned upload callback. The demo reports the received file and size without sending a network request.",
   "drop-area/crop":
     "Preview a PNG or JPEG locally and adjust the center-square crop with zoom. Crop and upload creates a real 256x256 PNG File and passes it to the demo upload callback. No network request is made; preview resources are released on replacement or unmount.",
+  "page/density":
+    "Compare Page density: default, none, compact, comfortable, opt-in dynamic padding and the 1480px container variant.",
+  "page/width":
+    "Compare Page width presets: full, content (80rem), form (48rem) and editor (edge-to-edge). Width sets max-width only; density sets padding.",
+  "page/header-slot":
+    "Compose PageEyebrow, PageTitle, PageMeta and a full-row PageFilter inside PageHeader, with a DataState retry below.",
+  "page/form": "A form page (width form, density compact) ending in a sticky PageFormAction with Cancel and Save.",
+  "bridge-calendar/parity":
+    "Custom event color, muted cancelled event, renderHoliday with holiday meta, and month drag-hover: drag the chip over a day to highlight it, drop to report a slot. Enter on a focused event activates it.",
+  "item/custom-icon":
+    "A neutral inline-SVG placeholder mark (no intrinsic size, currentColor) passed into Button, ItemMedia, MetricTile, Marker, Badge, SidebarMenuButton, SettingsNavItem, DataStateMedia and EmptyMedia. Brand icons live in the consumer.",
+  "typography/prose":
+    "Prose set with mixed Thai and English: Lead, InlineCode, Blockquote, bullet and ordered List, Large, Small, Muted, and a prose table that reuses Table.",
+  "responsive-image/fallback":
+    "A broken src swaps once to fallbackSrc (no retry loop); a blur placeholder shows until the image loads.",
+  "shell-header/action":
+    "Routes publish their header action with useShellHeaderAction; ShellHeaderActionSlot renders the latest one and clears it on unmount.",
+  "multi-select/separator": "MultiSelectSeparator divides MultiSelectGroup blocks. Open the trigger to review it.",
+  "upload-list/validation":
+    "Composable validation (type, 2 MB, four files) with inline role=alert issues, grid thumbnail layout, empty slot and a change/issue event log. No toast is fired by the component.",
+  "upload-list/single":
+    "Single-file replace mode (multiple=false) with a custom renderItem row. Selecting another PDF reports change reason replace.",
+  "spinner/size": "Compare Spinner sm, default and lg; an explicit size keeps its dimension inside a Button.",
   "image-crop/selection":
     "Controlled ReactCrop selection with an aspect ratio, circular mask, rule-of-thirds guide, keyboard adjustment, and caller-owned crop state.",
   dot: "A dotted background with an icon and reset action.",

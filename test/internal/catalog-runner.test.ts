@@ -18,6 +18,7 @@ test("catalog commands split compact contracts from visual and memory diagnostic
   expect(runner).toContain('"./test/browser/accessibility.test.ts"')
   expect(runner).toContain('"./test/browser/render-pipeline.test.ts"')
   expect(runner).toContain('"./test/browser/responsive.test.ts"')
+  expect(runner).toContain('"./test/browser/bridge-calendar.test.ts"')
   expect(runner).not.toContain('"./test/browser"')
 })
 

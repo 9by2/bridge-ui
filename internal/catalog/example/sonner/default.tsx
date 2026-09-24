@@ -1,6 +1,6 @@
-import { toast } from "sonner"
-
 import * as UI from "@bridge/ui"
+
+const toast = UI.sonnerToast
 
 export default function Example() {
   return (

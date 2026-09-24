@@ -1,5 +1,14 @@
 import * as stylex from "@stylexjs/stylex"
-import type { ComponentProps } from "react"
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useId,
+  useMemo,
+  useState,
+  type ComponentProps,
+  type ReactNode
+} from "react"
 
 import { token } from "./token.stylex"
 
@@ -75,4 +84,53 @@ export function ShellHeaderAction({ className, ...props }: ComponentProps<"div">
       className={[stylex.props(style.action).className, className].filter(Boolean).join(" ")}
     />
   )
+}
+
+type ShellHeaderActionEntry = { id: string; node: ReactNode }
+type ShellHeaderActionControl = { set: (id: string, node: ReactNode) => void; clear: (id: string) => void }
+// State and stable control are split so publishers never re-subscribe when the action changes.
+const ShellHeaderActionState = createContext<readonly ShellHeaderActionEntry[] | null>(null)
+const ShellHeaderActionControlContext = createContext<ShellHeaderActionControl | null>(null)
+
+/** Owns the injected header action. Mount once around the shell and its routes. */
+export function ShellHeaderActionProvider({ children }: { children: ReactNode }) {
+  const [entry, setEntry] = useState<readonly ShellHeaderActionEntry[]>([])
+  const control = useMemo<ShellHeaderActionControl>(
+    () => ({
+      set: (id, node) =>
+        setEntry((current) =>
+          current.some((item) => item.id === id)
+            ? current.map((item) => (item.id === id ? { id, node } : item))
+            : [...current, { id, node }]
+        ),
+      clear: (id) => setEntry((current) => current.filter((item) => item.id !== id))
+    }),
+    []
+  )
+  return (
+    <ShellHeaderActionControlContext value={control}>
+      <ShellHeaderActionState value={entry}>{children}</ShellHeaderActionState>
+    </ShellHeaderActionControlContext>
+  )
+}
+
+/**
+ * Publish `node` as the shell header action while the calling component is mounted.
+ * The most recently mounted publisher wins; unmount clears it. No-op outside a provider.
+ */
+export function useShellHeaderAction(node: ReactNode) {
+  const control = useContext(ShellHeaderActionControlContext)
+  const id = useId()
+  useEffect(() => {
+    control?.set(id, node)
+  }, [control, id, node])
+  useEffect(() => () => control?.clear(id), [control, id])
+}
+
+/** Renders the injected action inside `ShellHeaderAction`; renders nothing when empty. */
+export function ShellHeaderActionSlot(props: ComponentProps<"div">) {
+  const entry = useContext(ShellHeaderActionState)
+  const node = entry?.at(-1)?.node
+  if (node === undefined || node === null) return null
+  return <ShellHeaderAction {...props}>{node}</ShellHeaderAction>
 }

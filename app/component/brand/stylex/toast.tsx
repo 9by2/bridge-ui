@@ -104,6 +104,13 @@ const style = stylex.create({
   },
   copy: { display: "flex", minWidth: 0, flex: 1, flexDirection: "column", gap: 4 }
 })
+/**
+ * Base UI toast manager (`toast.add`, `toast.close`, `toast.promise`, …).
+ *
+ * Engine: Base UI. Pair with this module's `Toaster` / `ToastProvider`.
+ * For Sonner (`toast.success`/`toast.error`) use `sonnerToast` + `SonnerToaster` instead;
+ * calls render nothing under the other engine's toaster.
+ */
 export const toast = Primitive.createToastManager()
 export const createToastManager = Primitive.createToastManager
 export const useToastManager = Primitive.useToastManager

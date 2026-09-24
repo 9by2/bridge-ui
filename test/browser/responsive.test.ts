@@ -9,7 +9,9 @@ test("responsive shell and owned composites remain contained on mobile", async (
     "image-crop/default",
     "metric-tile/variants",
     "rate-card/row",
-    "rate-card/plan"
+    "rate-card/plan",
+    "page/width",
+    "page/header-slot"
   ]) {
     await page.goto(`/?preview&theme=light#${route}`)
     const stage = page.locator(".example-stage")
@@ -17,4 +19,40 @@ test("responsive shell and owned composites remain contained on mobile", async (
     await expect(stage).toBeVisible()
     expect(await page.evaluate<boolean>(`() => document.documentElement.scrollWidth <= innerWidth`)).toBe(true)
   }
+})
+
+// Regression (0924): the `content` width style collided with the PageContent style key and silently
+// dropped max-width. Protects the documented PageWidth max-width contract.
+test("page width presets apply their documented max-width", async () => {
+  await using page = await openPage()
+  await page.setViewportSize({ width: 1600, height: 1000 })
+  await page.goto("/?preview&theme=light#page/width")
+  await pollUntil(() => page.locator('[data-slot="page"][data-width]').count())
+  expect(
+    await page.evaluate<Record<string, string>>(
+      `() => Object.fromEntries([...document.querySelectorAll('[data-slot="page"][data-width]')].map((node) => [node.getAttribute("data-width"), getComputedStyle(node).maxWidth]))`
+    )
+  ).toEqual({ full: "none", content: "1280px", form: "768px", editor: "none" })
+})
+
+// Protects icon-slot DEC-011: a consumer SVG without intrinsic size (brand/social mark) is sized by
+// its slot instead of filling the host box; regression found for MetricTile, DataStateMedia,
+// EmptyMedia and SettingsNavItem.
+test("consumer icon without intrinsic size is sized by every icon slot", async () => {
+  await using page = await openPage()
+  await page.setViewportSize({ width: 1280, height: 1100 })
+  await page.goto("/?preview&theme=light#item/custom-icon")
+  await pollUntil(() => page.locator('[data-testid="placeholder-mark"]').count())
+  const size = await page.evaluate<Record<string, number>>(
+    `() => Object.fromEntries([...document.querySelectorAll('[data-testid="placeholder-mark"]')].map((node) => [node.parentElement.closest("[data-slot]").getAttribute("data-slot"), Math.round(node.getBoundingClientRect().width)]))`
+  )
+  expect(size).toMatchObject({
+    "item-media": 16,
+    "metric-tile-icon": 18,
+    "marker-icon": 16,
+    "sidebar-menu-button": 16,
+    "settings-nav-item": 16,
+    "data-state-media": 24,
+    "empty-icon": 16
+  })
 })

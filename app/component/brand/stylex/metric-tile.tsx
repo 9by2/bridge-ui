@@ -100,7 +100,7 @@ export function MetricTile({
       <div {...stylex.props(style.header)}>
         <span {...stylex.props(style.label)}>{label}</span>
         {icon && (
-          <span {...stylex.props(style.icon)} aria-hidden="true">
+          <span data-slot="metric-tile-icon" {...stylex.props(style.icon)} aria-hidden="true">
             {icon}
           </span>
         )}
