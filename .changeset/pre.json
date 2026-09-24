@@ -5,8 +5,14 @@
     "@bridge/ui": "0.8.1"
   },
   "changesets": [
+    "calendar-parity",
     "color-picker",
+    "icon-slot",
+    "page-density",
+    "prose-and-misc",
     "rate-card",
-    "typography-thai-example"
+    "sonner-spinner",
+    "typography-thai-example",
+    "upload-validation"
   ]
 }
