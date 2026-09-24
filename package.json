@@ -92,6 +92,10 @@
       "types": "./dist/component/brand/stylex/metric-tile.d.ts",
       "import": "./dist/component/brand/stylex/metric-tile.js"
     },
+    "./rate-card": {
+      "types": "./dist/component/brand/stylex/rate-card.d.ts",
+      "import": "./dist/component/brand/stylex/rate-card.js"
+    },
     "./drop-area": {
       "types": "./dist/component/brand/stylex/drop-area.d.ts",
       "import": "./dist/component/brand/stylex/drop-area.js"

@@ -121,6 +121,35 @@ import { MetricTile } from "@bridge/ui/metric-tile"
 <MetricTile variants="compact" label="Staff" value="7" />
 ```
 
+## RateCard
+
+`RateCard` presents one priced offer. Select a required `variants` for the use case: `row` for managed rate lists (title, status, detail, price and edit action on one wrapping line), `card` for bookable or selectable services, and `plan` for comparable tiers with a larger price and feature list. There is no implicit variant. `highlight` marks the recommended option and exposes `data-highlight`; pair it with `RateCardHighlight` copy such as "Most popular".
+
+Compose only the parts you need: `RateCardHeader`, `RateCardTitle` (defaults to `h3`; use `render={<h2 />}` to match the outline), `RateCardHighlight`, `RateCardContent`, `RateCardDescription`, `RateCardPrice` (`prefix`, `amount`, `period`), `RateCardDetail` with `RateCardDetailItem label`, `RateCardFeatureList` with `RateCardFeature icon`, and `RateCardAction`. The article is named by its title unless `aria-label` or `aria-labelledby` is supplied. Feature icons are decorative.
+
+Pass already formatted amounts and translated copy. Status Badge, Button, DropdownMenu, Checkbox selection, grid layout, currency, rate status and editing remain application-owned.
+
+```tsx
+import { RateCard, RateCardAction, RateCardFeature, RateCardFeatureList, RateCardHeader, RateCardHighlight, RateCardPrice, RateCardTitle } from "@bridge/ui/rate-card"
+
+<RateCard variants="row">
+  <RateCardContent>
+    <RateCardHeader><RateCardTitle>Weekday rate</RateCardTitle><Badge variant="success">Active</Badge></RateCardHeader>
+    <RateCardDetail><RateCardDetailItem label="Valid">1 Oct – 31 Dec 2026</RateCardDetailItem></RateCardDetail>
+  </RateCardContent>
+  <RateCardPrice amount="฿1,500" period="/ hour" />
+  <RateCardAction><Button variant="outline" size="sm">Edit</Button></RateCardAction>
+</RateCard>
+
+<RateCard variants="plan" highlight>
+  <RateCardHighlight>Most popular</RateCardHighlight>
+  <RateCardHeader><RateCardTitle>Standard</RateCardTitle></RateCardHeader>
+  <RateCardPrice amount="฿8,000" period="/ project" />
+  <RateCardFeatureList aria-label="Standard includes"><RateCardFeature icon={<Check />}>2 revisions</RateCardFeature></RateCardFeatureList>
+  <RateCardAction><Button>Choose Standard</Button></RateCardAction>
+</RateCard>
+```
+
 ## Button
 
 `Button` uses Cue's complete control recipe in `mode="cue"`, including variants, sizes, focus treatment, disabled state, expanded outline and ghost states, icon spacing, and CTA gradient motion. Use `variant` and `size` to select that contract; use `className` only for product layout.
