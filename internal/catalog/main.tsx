@@ -77,6 +77,10 @@ const description: Record<string, string> = {
   "page/header-slot":
     "Compose PageEyebrow, PageTitle, PageMeta and a full-row PageFilter inside PageHeader, with a DataState retry below.",
   "page/form": "A form page (width form, density compact) ending in a sticky PageFormAction with Cancel and Save.",
+  "upload-list/validation":
+    "Composable validation (type, 2 MB, four files) with inline role=alert issues, grid thumbnail layout, empty slot and a change/issue event log. No toast is fired by the component.",
+  "upload-list/single":
+    "Single-file replace mode (multiple=false) with a custom renderItem row. Selecting another PDF reports change reason replace.",
   "spinner/size": "Compare Spinner sm, default and lg; an explicit size keeps its dimension inside a Button.",
   "image-crop/selection":
     "Controlled ReactCrop selection with an aspect ratio, circular mask, rule-of-thirds guide, keyboard adjustment, and caller-owned crop state.",

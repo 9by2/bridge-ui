@@ -199,6 +199,46 @@ import { Spinner, SpinnerSize } from "@bridge/ui/spinner"
 ;<Spinner size={SpinnerSize.lg} aria-label="Loading report" />
 ```
 
+## Upload validation and issue
+
+`UploadList` validates, reports and renders. It never toasts or shows global feedback; the app decides how to surface issues.
+
+```tsx
+import {
+  UploadList,
+  UploadIssueDisplay,
+  UploadListLayout,
+  composeUploadValidation,
+  sonnerToast,
+  uploadValidation
+} from "@bridge/ui"
+
+const validate = composeUploadValidation(
+  uploadValidation.default({ accept: { "image/*": [] }, maxFiles: 4, maxSize: 2_000_000 }),
+  uploadValidation.extension([".png", ".jpg", ".webp"])
+)
+
+<UploadList
+  value={value}
+  onValueChange={(next, change) => setValue(next)} // change.reason: append | replace | remove | clear
+  validate={validate}
+  onIssue={(issue) => sonnerToast.error(issue[0]?.message)} // app-owned feedback
+  issueDisplay={UploadIssueDisplay.inline} // optional role="alert" list; default none
+  layout={UploadListLayout.grid}
+  renderEmpty={() => <p>{t("noImage")}</p>}
+  copy={copy}>
+  {t("chooseImage")}
+</UploadList>
+```
+
+- Builders: `uploadValidation.default({ accept, maxFiles, minFiles, maxSize, minSize, message })`, `.accept(map)` and `.extension(list)`. Combine them with `composeUploadValidation(...)`, or write your own `(file, { value }) => UploadIssue[]`.
+- `UploadIssue = { code, message, file? }`, where `code` is an `UploadIssueCode`. An issue with a `file` rejects that file. An issue without one (e.g. `too-few-files`) is advisory and never blocks; enforce minimums at submit.
+- Pass translated copy through `message` per `UploadIssueCode`. The built-in messages are English fallbacks.
+- `multiple={false}` turns on replace mode: a new selection replaces the value with reason `replace`.
+- `renderItem(attachment, { remove, clear, preview, layout })` replaces the default row. Its `remove` keeps the reason and focus behavior.
+- `thumbnail` stays caller-owned. For local image previews, create and revoke object URLs in the app, or render them through `renderItem`.
+- `onReject` is deprecated; use `onIssue`. It still fires with its old payload.
+
 ## Sheet
 
 Set `resizable` on `SheetContent` to show a centered pointer drag handle on the sheet edge facing the application. Supply `size` and `onSizeChange` from the consuming composition; the component neither stores nor persists dimensions. Left and right sheets resize horizontally and default to `maxWidth="80vw"`; top and bottom sheets resize vertically and default to `maxHeight="70vh"`. Pass the matching prop to override that maximum.

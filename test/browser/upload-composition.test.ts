@@ -51,3 +51,28 @@ test("crop supports editing and apply remains separate from upload", async () =>
   await expect(page.getByRole("status").last()).toContainText("Upload callback received photo-cropped.png")
   expect(await page.evaluate<boolean>(`() => document.documentElement.scrollWidth <= innerWidth`)).toBe(true)
 })
+
+// Protects upload-validation REQ-003/REQ-005: validator issue renders an inline alert without a toast,
+// accepted image renders in the grid, and keyboard remove returns focus to the drop target.
+test("validated upload reports inline issue and keyboard remove restores focus", async () => {
+  await using page = await openPage()
+  await page.goto("/?preview#upload-list/validation")
+  const input = page.locator('input[type="file"]')
+  await pollUntil(() => input.count())
+  await page.evaluate(`() => {
+    const input = document.querySelector('input[type="file"]')
+    const transfer = new DataTransfer()
+    transfer.items.add(new File(["png"], "photo.png", { type: "image/png" }))
+    transfer.items.add(new File(["pdf"], "notes.pdf", { type: "application/pdf" }))
+    input.files = transfer.files
+    input.dispatchEvent(new Event("change", { bubbles: true }))
+  }`)
+  await expect(page.getByRole("alert")).toContainText("notes.pdf: choose a PNG, JPEG or WebP image")
+  expect(await page.locator("[data-sonner-toaster], [data-sonner-toast]").count()).toBe(0)
+  const remove = page.getByRole("button", { name: "Remove photo.png" })
+  await pollUntil(() => remove.count())
+  await remove.focus()
+  await page.pressKey("Enter")
+  await expect(page.getByRole("button", { name: "Choose image" })).toBeFocused()
+  await expect(page.getByRole("status").first()).toContainText("Removed photo.png")
+})

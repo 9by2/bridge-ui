@@ -28,10 +28,11 @@ Implementation order matters — complete top to bottom. Each group is one stack
 
 ## P1-3 — `feat/upload-validation`
 
-- [ ] failing tests: validation composition, change reason per path, replace mode, `onIssue` payload, inline alert, keyboard remove, no toast import
-- [ ] `UploadIssueCode`, `UploadChangeReason`, `UploadListLayout`, `UploadIssueDisplay`, `uploadValidation`, `composeUploadValidation`
-- [ ] `UploadList` `validate`, `onIssue`, `issueDisplay`, `layout`, `renderEmpty`, `renderItem`, `multiple`
-- [ ] catalog, `CUSTOMIZATION.md`, changeset, gates, commit
+- [x] failing tests: validation composition, change reason per path, replace mode, `onIssue` payload, inline alert, keyboard remove, no toast import
+- [x] `UploadIssueCode`, `UploadChangeReason`, `UploadListLayout`, `UploadIssueDisplay`, `uploadValidation`, `composeUploadValidation`
+- [x] `UploadList` `validate`, `onIssue`, `issueDisplay`, `layout`, `renderEmpty`, `renderItem`, `multiple`
+- [x] catalog, `CUSTOMIZATION.md`, changeset, gates, commit
+- [x] `UploadPreview` `variant` (`row`/`tile`) for grid; permanent browser test for inline issue + keyboard remove focus
 
 ## P1-2 — `feat/calendar-parity`
 

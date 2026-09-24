@@ -66,3 +66,9 @@
 **GIVEN** container adapter CSS sizes descendant SVGs unless they match `[class*="size-"]` (e.g. `.pilot-button svg`)
 **WHEN** a caller passes `Spinner size`
 **THEN** Spinner adds a `size-spinner-{size}` marker class so the explicit size wins; omitting `size` keeps container-driven icon sizing (unchanged default behavior).
+
+### DEC-010: File-less upload issue is advisory
+
+**GIVEN** a validator may return an issue without `file` (e.g. `minFiles`)
+**WHEN** files are selected one at a time toward a minimum
+**THEN** file-bound issues reject their file; file-less issues are reported through `onIssue` / inline display but never block accepted files. Blocking would make an incremental minimum unreachable. The consumer enforces minimums at submit.

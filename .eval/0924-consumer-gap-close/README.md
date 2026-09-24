@@ -5,6 +5,7 @@ Reproduce (builds catalog, serves it, runs runner):
 ```sh
 bun cmd/run-catalog-test.ts ./.eval/0924-consumer-gap-close/p0-runner.test.ts
 bun cmd/run-catalog-test.ts ./.eval/0924-consumer-gap-close/p1-page-runner.test.ts
+bun cmd/run-catalog-test.ts ./.eval/0924-consumer-gap-close/p1-upload-runner.test.ts
 ```
 
 ## P0
@@ -26,3 +27,12 @@ Finding: first run measured the in-Button `sm` spinner at 16px — `.pilot-butto
 | `#page/form` scroll container | sticky `PageFormAction` pinned at container bottom | `p1-page-form-sticky.png` |
 
 Finding: first run measured `content` max-width `none` — its StyleX key collided with `PageContent`'s `content` style. Renamed to `widthContent`; guarded by `test/browser/responsive.test.ts`.
+
+## P1-3 Upload
+
+| Step | Expected | Evidence |
+| --- | --- | --- |
+| `#upload-list/validation`: select red.png, blue.png, notes.pdf (light/dark) | 2 grid tiles, inline `role=alert` for notes.pdf, log `change: append …` + `issue: file-invalid-type`, no Sonner toaster | `p1-upload-grid-*-desktop.png` |
+| same at 390px | no document overflow | `p1-upload-grid-*-mobile.png` |
+| `#upload-list/single`: select contract-v2.pdf | reason `replace`, v1 gone | `p1-upload-single-replace.png` |
+| Keyboard remove (in `test/browser/upload-composition.test.ts`) | focus returns to "Choose image" | compact gate |

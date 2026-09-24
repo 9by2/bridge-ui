@@ -1,1 +1,1 @@
-export { UploadPreview } from "./stylex/upload-preview"
+export { UploadPreview, UploadPreviewVariant } from "./stylex/upload-preview"
