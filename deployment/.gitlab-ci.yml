@@ -83,6 +83,8 @@ release:
 promote:
   stage: deploy
   resource_group: package-release
+  variables:
+    GIT_DEPTH: "0"
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true"'
       when: manual

@@ -61,11 +61,14 @@ Run `bun dev` for catalog at http://127.0.0.1:6006. `bun catalog:build` compiles
 
 ## Release
 
-1. Implement on `main`, add a Changeset, and push.
-2. CI creates or updates **Release @bridge/ui**.
-3. Merge the release MR to verify, publish, and create the version tag.
+`main` is always in Changesets RC mode (`.changeset/pre.json`).
 
-Use `bun changeset pre enter rc` for RC release under `next`; use `bun changeset pre exit` before stable release under `latest`. Do not run `changeset version`, manually bump `package.json`, or create a release tag.
+1. Merge a feature MR with a Changeset into `main`.
+2. `main` CI opens or updates **Release @bridge/ui (rc)**. Merge it to publish `x.y.z-rc.N` under `next` and tag it. Skipping an RC is fine: leave the MR open, and later changesets are added to it.
+3. When ready for stable, run the manual **`promote`** job on the latest `main` pipeline. It releases every changeset pending on `main`, so skipped RCs (or no RC at all) are fine. It opens or updates **Release @bridge/ui x.y.z (stable)**.
+4. Merge the stable MR to publish `x.y.z` under `latest` and tag `vx.y.z`. `main` returns to RC mode with `x.y.z` as the new base. To skip a stable release, close the MR; the next `promote` rebuilds it from current `main`.
+
+Do not run `changeset version`, bump `package.json`, edit `.changeset/pre.json`, or create a release tag by hand.
 
 ## CI
 

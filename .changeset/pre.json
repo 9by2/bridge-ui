@@ -2,17 +2,7 @@
   "mode": "pre",
   "tag": "rc",
   "initialVersions": {
-    "@bridge/ui": "0.8.1"
+    "@bridge/ui": "0.9.0"
   },
-  "changesets": [
-    "calendar-parity",
-    "color-picker",
-    "icon-slot",
-    "page-density",
-    "prose-and-misc",
-    "rate-card",
-    "sonner-spinner",
-    "typography-thai-example",
-    "upload-validation"
-  ]
+  "changesets": []
 }
