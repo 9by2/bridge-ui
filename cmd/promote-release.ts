@@ -36,7 +36,10 @@ export async function promoteRelease(dependency: PromoteDependency = {}): Promis
   const manifest = await Bun.file(path.join(cwd, "package.json")).json()
   const match = /^(\d+\.\d+\.\d+)-rc\.\d+$/.exec(manifest.version)
   const stableVersion = match?.[1]
-  if (!stableVersion) throw new Error("No RC version to promote")
+  if (!stableVersion) {
+    log("No RC version to promote; skipping")
+    return
+  }
   const stableTag = `v${stableVersion}`
 
   const { CI_API_V4_URL, CI_PROJECT_ID, CI_JOB_TOKEN, GITLAB_TOKEN, CI_SERVER_HOST, CI_PROJECT_PATH } = env

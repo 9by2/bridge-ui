@@ -69,6 +69,46 @@ export function App() {
 
 `density` supports `bridgeDensity.compact`, `bridgeDensity.default`, and `bridgeDensity.comfortable`. It adjusts shared padding and layout gaps while retaining package control heights and focus behavior.
 
+## ColorPicker
+
+Circular swatch picker with radio semantics (arrow keys move selection). The composing layer declares **everything structural**; the component never infers it:
+
+- `mode` (required): `fill` | `gradient`.
+- `kind` (required when `mode="gradient"`): `linear` | `radial` | `conic`, i.e. the CSS gradient function this surface authors.
+
+The composition transforms its payload into that shape and injects it as `option` / `value`. Swatches and values of another mode or kind are not rendered, and the editor never switches kind.
+
+| Mode / kind       | Option                                             | Editor                                           | Emits                          |
+| ----------------- | -------------------------------------------------- | ------------------------------------------------ | ------------------------------ |
+| `fill`            | `{ type: "fill", value, label, color }`            | color wheel, hex                                 | `#rrggbb`                      |
+| `gradient` linear | `{ type: "gradient", value, label, stop, angle? }` | angle (default 135), repeating, stops            | `linear-gradient(45deg, …)`    |
+| `gradient` radial | `{ type: "gradient", value, label, stop, shape? }` | `circle` (default) / `ellipse`, repeating, stops | `radial-gradient(circle, …)`   |
+| `gradient` conic  | `{ type: "gradient", value, label, stop, angle? }` | from angle (default 0), repeating, stops         | `conic-gradient(from 0deg, …)` |
+
+`stop` is a color string or `{ color, position }` (percentage), with at least two. The stop editor edits color and position and adds or removes stops. `repeating: true` uses `repeating-*-gradient`. A gradient option without `kind` counts as `linear`.
+
+`onValueChange(value, option)` returns the swatch `value` for a preset, or the CSS string for a custom color or gradient, with the structured option. Persist the string; passing it back as `value` renders a selected extra swatch and reopens it in the editor (`colorPickerParse`). Without `option`, the system preset renders: `colorPickerPreset.fill`, or `colorPickerGradientPreset(kind)` for gradients.
+
+Variants: `size` = `sm` | `md` (default) | `lg`; `layout` = `grid` (default, `column` default 6) | `row` (single horizontally scrollable line). `custom={false}` hides the editor. Override copy with `label` (see `colorPickerDefaultLabel`; stop labels are functions of the 1-based index). Override the selected ring color with `--bridge-color-picker-ring`. `colorPickerBackground(option)` returns the CSS `background` for previews.
+
+```tsx
+import { ColorPicker, type ColorPickerGradientOption } from "@bridge/ui/color-picker"
+
+// Composition: this surface is a linear banner. Map the product payload into that shape.
+const option: ColorPickerGradientOption[] = theme.map((item) => ({
+  type: "gradient",
+  value: item.id,
+  label: t(item.nameKey),
+  kind: "linear",
+  angle: 135,
+  stop: [item.from, item.to]
+}))
+
+<ColorPicker mode="gradient" kind="linear" aria-label={t("banner")} option={option} value={value} onValueChange={save} />
+<ColorPicker mode="gradient" kind="conic" aria-label={t("ring")} />
+<ColorPicker mode="fill" aria-label={t("text")} size="sm" layout="row" custom={false} />
+```
+
 ## MetricTile
 
 Select a required `variants` on every tile: `featured` for prominent metrics, `standard` for regular cards, or `compact` for dense summaries. There is no implicit variant. `label`, `value`, `description`, and `icon` are caller-supplied; pass formatted numbers and translated copy. `loading` requires caller-supplied `loadingLabel` to announce progress without rendering a stale value. The icon is decorative. The application owns grid spans, responsive layout, data, and any navigation; the tile itself is not clickable.

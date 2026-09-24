@@ -17,12 +17,23 @@ const baseEnv = {
   CI_PROJECT_PATH: "group/project"
 }
 
-test("promotion refuses a commit whose version is not an RC", async () => {
+test("promotion skips without error when the current commit has no RC to promote", async () => {
   const directory = await mkdtemp(path.join(tmpdir(), "bridge-promote-"))
   try {
     await Bun.write(path.join(directory, "package.json"), JSON.stringify({ name: "@bridge/ui", version: "0.8.1" }))
-    const run = promoteRelease({ cwd: directory, env: baseEnv })
-    await expect(run).rejects.toThrow("No RC version to promote")
+    const output: string[] = []
+    const command: string[][] = []
+    await promoteRelease({
+      cwd: directory,
+      env: baseEnv,
+      log: (message) => output.push(message),
+      spawn: (args) => {
+        command.push(args)
+        return { exitCode: 0, stdout: Buffer.from(""), stderr: Buffer.from("") }
+      }
+    })
+    expect(output).toContain("No RC version to promote; skipping")
+    expect(command).toHaveLength(0)
   } finally {
     await rm(directory, { recursive: true, force: true })
   }

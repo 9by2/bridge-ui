@@ -1,0 +1,58 @@
+[
+  {
+    "viewport": {
+      "name": "desktop",
+      "width": 1024,
+      "height": 900
+    },
+    "initial": {
+      "radio": 23,
+      "checked": "White",
+      "more": 1,
+      "overflow": false
+    },
+    "keyboard": "Slate",
+    "custom": {
+      "output": "#3366cc",
+      "checked": "#3366cc"
+    },
+    "focusBack": "color-picker-custom",
+    "gradient": {
+      "output": "repeating-conic-gradient(from 90deg, #f97316 0%, #facc15 100%, #facc15 100%)",
+      "checked": "repeating-conic-gradient(from 90deg, #f97316 0%, #facc15 100%, #facc15 100%)",
+      "stop": 3,
+      "panelFits": true
+    },
+    "variants": {
+      "overflow": false
+    }
+  },
+  {
+    "viewport": {
+      "name": "mobile",
+      "width": 390,
+      "height": 900
+    },
+    "initial": {
+      "radio": 23,
+      "checked": "White",
+      "more": 1,
+      "overflow": false
+    },
+    "keyboard": "Slate",
+    "custom": {
+      "output": "#3366cc",
+      "checked": "#3366cc"
+    },
+    "focusBack": "color-picker-custom",
+    "gradient": {
+      "output": "repeating-conic-gradient(from 90deg, #f97316 0%, #facc15 100%, #facc15 100%)",
+      "checked": "repeating-conic-gradient(from 90deg, #f97316 0%, #facc15 100%, #facc15 100%)",
+      "stop": 3,
+      "panelFits": true
+    },
+    "variants": {
+      "overflow": false
+    }
+  }
+]
