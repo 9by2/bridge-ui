@@ -1,7 +1,7 @@
 # Effect Color Token
 
 **Proposal:** `effect-color-token`
-**Status:** in-progress
+**Status:** done
 **Phase:** [ADHD.md](../../ADHD.md) Foundation 3 — canonical token support light and dark mode
 
 ## Problem
@@ -30,10 +30,10 @@ The shared theme token proposal moved owned recipe colors to `--bridge-color-*`,
 
 ## Success Criteria
 
-- [ ] Zero literal `rgb(0 0 0 …)`, `black`, or `#fff` visual color in owned `app/component/brand/stylex/**` recipes except documented exceptions.
-- [ ] Host override of `--bridge-color-backdrop` and `--bridge-color-shadow` reaches a compiled Dialog backdrop and popup shadow in the browser.
-- [ ] Default rendering is unchanged (same default colors).
-- [ ] fmt, lint, typecheck, test, coverage, build, catalog build and browser gates pass.
+- [x] Zero literal `rgb(0 0 0 …)`, `black`, or `#fff` visual color in owned `app/component/brand/stylex/**` recipes except documented exceptions.
+- [x] Host override of `--bridge-color-backdrop` and `--bridge-color-shadow` reaches a compiled Dialog backdrop and popup shadow in the browser.
+- [x] Default rendering is unchanged (same default colors).
+- [x] fmt, lint, typecheck, test, coverage, build, catalog build and browser gates pass.
 
 ## Specs
 
