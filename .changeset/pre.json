@@ -2,10 +2,7 @@
   "mode": "pre",
   "tag": "rc",
   "initialVersions": {
-    "@bridge/ui": "0.10.0"
+    "@bridge/ui": "0.11.0"
   },
-  "changesets": [
-    "effect-color-token",
-    "nested-text-size"
-  ]
+  "changesets": []
 }
