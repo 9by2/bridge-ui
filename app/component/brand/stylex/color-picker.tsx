@@ -26,7 +26,7 @@ import { Label } from "./label"
 import { NativeSelect, NativeSelectOption } from "./native-select"
 import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from "./popover"
 import { Switch } from "./switch"
-import { themeToken, token } from "./token.stylex"
+import { effectToken, themeToken, token } from "./token.stylex"
 
 export * from "./color-picker-value"
 
@@ -87,7 +87,7 @@ export const colorPickerPreset = {
 } as const satisfies { fill: readonly ColorPickerFillOption[]; gradient: readonly ColorPickerGradientOption[] }
 
 const ring = `var(--bridge-color-picker-ring, ${themeToken.primary})`
-const depth = "0 6px 14px -6px rgb(0 0 0 / 28%)"
+const depth = effectToken.shadowDepth
 
 const style = stylex.create({
   root: { display: "grid", width: "fit-content", maxWidth: "100%", boxSizing: "border-box", padding: 6 },
@@ -118,8 +118,8 @@ const style = stylex.create({
     cursor: { default: "pointer", ":disabled": "not-allowed", ":is([data-disabled])": "not-allowed" },
     opacity: { default: 1, ":disabled": 0.5, ":is([data-disabled])": 0.5 },
     boxShadow: {
-      default: `inset 0 0 0 1px rgb(0 0 0 / 8%), ${depth}`,
-      ":focus-visible": `inset 0 0 0 1px rgb(0 0 0 / 8%), 0 0 0 2px ${themeToken.background}, 0 0 0 4px ${themeToken.ring}`
+      default: `${effectToken.shadowInsetEdge}, ${depth}`,
+      ":focus-visible": `${effectToken.shadowInsetEdge}, 0 0 0 2px ${themeToken.background}, 0 0 0 4px ${themeToken.ring}`
     },
     transitionProperty: "transform, box-shadow",
     transitionDuration: { default: "120ms", "@media (prefers-reduced-motion: reduce)": "0s" },
@@ -130,8 +130,8 @@ const style = stylex.create({
   lg: { width: 56, height: 56 },
   checked: {
     boxShadow: {
-      default: `inset 0 0 0 1px rgb(0 0 0 / 8%), 0 0 0 2px ${themeToken.background}, 0 0 0 4px ${ring}, ${depth}`,
-      ":focus-visible": `inset 0 0 0 1px rgb(0 0 0 / 8%), 0 0 0 2px ${themeToken.background}, 0 0 0 4px ${ring}, 0 0 0 7px ${themeToken.ring}`
+      default: `${effectToken.shadowInsetEdge}, 0 0 0 2px ${themeToken.background}, 0 0 0 4px ${ring}, ${depth}`,
+      ":focus-visible": `${effectToken.shadowInsetEdge}, 0 0 0 2px ${themeToken.background}, 0 0 0 4px ${ring}, 0 0 0 7px ${themeToken.ring}`
     }
   },
   more: { boxShadow: { default: `inset 0 0 0 1px ${themeToken.border}` } },

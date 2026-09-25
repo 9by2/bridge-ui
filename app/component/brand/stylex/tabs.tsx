@@ -1,7 +1,7 @@
 import { Tabs as Primitive } from "@base-ui/react/tabs"
 import * as stylex from "@stylexjs/stylex"
 
-import { token } from "./token.stylex"
+import { effectToken, token } from "./token.stylex"
 
 const style = stylex.create({
   relation: {
@@ -49,7 +49,7 @@ const style = stylex.create({
     boxShadow: {
       default: "none",
       ":is([data-active])": {
-        default: "0 1px 2px rgb(0 0 0 / 5%)",
+        default: effectToken.shadowXs,
         [stylex.when.ancestor('[data-variant="line"]')]: "none"
       }
     }

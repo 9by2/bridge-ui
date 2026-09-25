@@ -6,14 +6,14 @@ import type { ComponentProps, CSSProperties, PointerEvent } from "react"
 
 import { Button } from "./button"
 import { Theme } from "./theme"
-import { token } from "./token.stylex"
+import { effectToken, token } from "./token.stylex"
 
 const style = stylex.create({
   overlay: {
     position: "fixed",
     inset: 0,
     zIndex: 50,
-    backgroundColor: "rgb(0 0 0 / 10%)",
+    backgroundColor: effectToken.backdrop,
     transitionProperty: "opacity",
     transitionDuration: { default: "150ms", "@media (prefers-reduced-motion: reduce)": "0s" },
     opacity: { default: 1, ":is([data-starting-style], [data-ending-style])": 0 },
@@ -31,7 +31,7 @@ const style = stylex.create({
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     color: token.foreground,
-    boxShadow: "0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%)",
+    boxShadow: effectToken.shadowLg,
     transitionProperty: "opacity, translate",
     transitionDuration: { default: "200ms", "@media (prefers-reduced-motion: reduce)": "0s" },
     transitionTimingFunction: "ease-in-out",

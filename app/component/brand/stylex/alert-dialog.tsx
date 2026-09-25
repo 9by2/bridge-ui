@@ -4,7 +4,7 @@ import type { ComponentProps } from "react"
 
 import { Button } from "./button"
 import { Theme } from "./theme"
-import { token } from "./token.stylex"
+import { effectToken, token } from "./token.stylex"
 
 const enter = stylex.keyframes({ from: { opacity: 0, scale: "0.95" }, to: { opacity: 1, scale: "1" } })
 const exit = stylex.keyframes({ from: { opacity: 1, scale: "1" }, to: { opacity: 0, scale: "0.95" } })
@@ -58,7 +58,7 @@ const style = stylex.create({
     inset: 0,
     isolation: "isolate",
     zIndex: 50,
-    backgroundColor: "rgb(0 0 0 / 10%)",
+    backgroundColor: effectToken.backdrop,
     backdropFilter: "blur(4px)",
     animationName: fade,
     animationDuration: { default: "100ms", "@media (prefers-reduced-motion: reduce)": "0s" }

@@ -25,6 +25,8 @@ type BridgeThemeColor =
   | "muted"
   | "mutedForeground"
   | "ring"
+  | "backdrop"
+  | "shadow"
 type BridgeThemeRadius = "control" | "controlSmall" | "surface" | "overlay"
 type BridgeThemeSpace = 1 | 2 | 3 | 4 | 5
 
@@ -397,6 +399,8 @@ function themeVariables(
     if (color.muted) variables["--bridge-color-muted"] = color.muted
     if (color.mutedForeground) variables["--bridge-color-muted-foreground"] = color.mutedForeground
     if (color.ring) variables["--bridge-color-ring"] = color.ring
+    if (color.backdrop) variables["--bridge-color-backdrop"] = color.backdrop
+    if (color.shadow) variables["--bridge-color-shadow"] = color.shadow
   }
   return variables
 }

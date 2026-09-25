@@ -67,7 +67,7 @@
 
 [data-pilot-theme="cue"] {
   color-scheme: dark;
-  scrollbar-color: oklch(0.4 0 0) transparent;
+  scrollbar-color: var(--bridge-color-scrollbar, oklch(0.4 0 0)) transparent;
   scrollbar-width: thin;
 }
 
@@ -86,11 +86,11 @@
 [data-pilot-theme="cue"] *::-webkit-scrollbar-thumb {
   border: 2px solid transparent;
   border-radius: 4px;
-  background-color: oklch(0.4 0 0);
+  background-color: var(--bridge-color-scrollbar, oklch(0.4 0 0));
   background-clip: padding-box;
 }
 
 [data-pilot-theme="cue"]::-webkit-scrollbar-thumb:hover,
 [data-pilot-theme="cue"] *::-webkit-scrollbar-thumb:hover {
-  background-color: oklch(0.5 0 0);
+  background-color: var(--bridge-color-scrollbar-hover, oklch(0.5 0 0));
 }

@@ -57,6 +57,7 @@ html[data-motion="reduced"] *::after {
   --input: var(--border);
   --ring: oklch(0.708 0 0);
   --scrollbar-thumb: oklch(0.4 0 0);
+  --scrollbar-thumb-hover: oklch(0.5 0 0);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -107,6 +108,7 @@ html[data-motion="reduced"] *::after {
   --input: oklch(1 0 0 / 36%);
   --ring: oklch(0.556 0 0);
   --scrollbar-thumb: oklch(0.4 0 0);
+  --scrollbar-thumb-hover: oklch(0.5 0 0);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -201,7 +203,7 @@ html[data-motion="reduced"] *::after {
     background-clip: padding-box;
   }
   *::-webkit-scrollbar-thumb:hover {
-    background-color: oklch(0.5 0 0);
+    background-color: var(--scrollbar-thumb-hover);
   }
   .scrollbar-none {
     scrollbar-width: none;

@@ -330,7 +330,7 @@
   [data-pilot-theme] [data-slot="sidebar-wrapper"]:has([data-variant="inset"]) > [data-slot="sidebar-inset"] {
     margin: 12px;
     border: 1px solid var(--pilot-border);
-    box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+    box-shadow: 0 8px 24px color-mix(in oklab, var(--bridge-color-shadow, black) 12%, transparent);
   }
 }
 /* DEC-003 / DEC-011: consumer icon slot contract. An SVG without an intrinsic size (brand/social mark

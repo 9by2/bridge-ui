@@ -336,7 +336,8 @@ const style = stylex.create({
   monthEventColored: { borderLeftColor: "var(--bridge-calendar-event-color)" },
   monthEventAllDayColored: {
     backgroundColor: "var(--bridge-calendar-event-color)",
-    color: "#fff"
+    // DEC-003: black or white text from the consumer event color lightness.
+    color: "oklch(from var(--bridge-calendar-event-color) clamp(0, (0.62 - l) * 999, 1) 0 h)"
   },
   monthEventAllDay: {
     borderLeftWidth: 0,

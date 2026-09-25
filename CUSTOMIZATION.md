@@ -397,9 +397,25 @@ Other components retain their existing public props and default geometry until t
 }
 ```
 
-Supported color keys are `background`, `foreground`, `primary`, `primaryForeground`, `surface`, `surfaceForeground`, `dialog`, `dialogForeground`, `popover`, `popoverForeground`, `border`, `input`, `muted`, `mutedForeground`, and `ring`. Bridge UI supplies accessible defaults; a custom palette remains responsible for adequate text and focus contrast.
+Supported color keys are `background`, `foreground`, `primary`, `primaryForeground`, `surface`, `surfaceForeground`, `dialog`, `dialogForeground`, `popover`, `popoverForeground`, `border`, `input`, `muted`, `mutedForeground`, `ring`, `backdrop`, and `shadow`. Bridge UI supplies accessible defaults; a custom palette remains responsible for adequate text and focus contrast.
 
 Owned StyleX recipes use shared semantic CSS colors. In addition to the `Theme` color keys above, CSS hosts can set `--bridge-color-secondary`, `--bridge-color-secondary-foreground`, `--bridge-color-accent`, `--bridge-color-accent-foreground`, `--bridge-color-destructive`, `--bridge-color-destructive-foreground`, `--bridge-color-warning`, `--bridge-color-warning-foreground`, and the `--bridge-color-sidebar*` family. `--bridge-color-highlight*` and `--bridge-color-brand*` cover brand-specific states. Unset colors retain the selected light, dark, cue, or future mode fallback. Supply readable foreground pairs with each custom surface.
+
+Effect colors: `--bridge-color-backdrop` (default `rgb(0 0 0 / 10%)`) tints the Dialog, AlertDialog, Sheet, and Drawer backdrop. `--bridge-color-shadow` (default `black`) colors every owned elevation shadow (Popover, HoverCard, Select, DropdownMenu, ContextMenu, NavigationMenu, Toast, Tabs, Sidebar, Chart tooltip, Sheet, ColorPicker, SwimLaneBoard); each recipe keeps its own alpha and geometry. `Theme` accepts both as `theme.color.backdrop` and `theme.color.shadow`. The Cue scrollbar uses `--bridge-color-scrollbar` and `--bridge-color-scrollbar-hover`. A colored all-day `BridgeCalendar` event picks black or white text from its `color` lightness.
+
+```tsx
+<Theme theme={{ color: { backdrop: "rgb(15 23 42 / 40%)", shadow: "oklch(0.3 0.08 280)" } }}>
+  <App />
+</Theme>
+```
+
+Colors that remain literal by design:
+
+- Generated `@bridge/ui/component/shadcn/*` catalog source (Shadcn CLI-owned; `bg-black/10` backdrop, `bg-white` slider thumb). Use the owned StyleX entry, which consumes the variables above.
+- Recharts engine `stroke="#ccc"` / `stroke="#fff"` attributes. The package matches them by selector and repaints them with `--bridge-color-border`; the literal is the engine's own output.
+- ColorPicker preset swatches and its `#000000` value default. They are user-selectable data, not theme colors.
+- Bubble `tinted` lightness/chroma factors. The hue already derives from `--bridge-color-primary`.
+- Native `<select>` popup, drawn by the browser.
 
 Fonts use `--bridge-font-body`, `--bridge-font-heading`, `--bridge-font-number`, and `--bridge-font-size-{2xs,xs,sm,md,base,lg,xl,2xl,3xl,4xl,5xl,6xl}`. Shared shape variables include the semantic control/surface/overlay radii above, `--bridge-pill-radius`, and `--bridge-radius-{2,3,4,6,8,10,11,12,14,18,26,999,9999}` for recipe details. The default font and radius scales use `em` so they respond to font sizing; font-size `em` is relative to the parent, while radius `em` is relative to the component's own font size. The defaults are declared in `@bridge/ui/style.css`; override them on an ancestor of the target component. Intentionally square or circular shapes remain explicit.
 
