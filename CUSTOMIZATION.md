@@ -264,6 +264,70 @@ const validate = composeUploadValidation(
 - `renderItem(attachment, { remove, clear, preview, layout })` replaces the default row. Its `remove` keeps the reason and focus behavior.
 - `thumbnail` stays caller-owned. For local image previews, create and revoke object URLs in the app, or render them through `renderItem`.
 - `onReject` is deprecated; use `onIssue`. It still fires with its old payload.
+- `preview` picks the default item presentation: `UploadListPreview.row`, `.thumbnail` (square tile with the caller's `thumbnail`, always arranged in the grid track) or `.none`. `none` hides items, including `renderItem`, while selection, validation, `onValueChange`, `onIssue` and live announcements keep running. If you omit it, list layout renders rows and grid layout renders tiles, as before. `layout` sets the arrangement for rows; `row` inside `layout="grid"` keeps the grid track.
+
+### Custom upload surface
+
+Pick one recipe per surface. Never nest a `DropArea` inside an `UploadList`: that creates two file inputs and delivers every selection twice.
+
+```tsx
+// A. Raw files: CMS or media library. Your app validates, uploads and maps the files.
+<DropArea label={t("chooseMedia")} accept={{ "image/*": [] }} onDrop={(accepted, rejected) => upload(accepted, rejected)}>
+  <Empty>
+    <EmptyHeader>
+      <EmptyTitle>{t("dropImages")}</EmptyTitle>
+    </EmptyHeader>
+  </Empty>
+</DropArea>
+
+// B. Validated, controlled value. Children form the drop surface; renderEmpty and renderItem shape the list.
+<UploadList value={value} onValueChange={setValue} validate={validate} onIssue={notify} preview={UploadListPreview.none} copy={copy}>
+  <MediaSurface />
+</UploadList>
+```
+
+## UploadViewer status and action
+
+The caller fetches the file and passes the resolved URL. The viewer never fetches, and it only builds a download link for a safe URL (http, https, blob, or root-relative).
+
+```tsx
+import { Button, UploadViewer, UploadViewerStatus } from "@bridge/ui"
+
+;<UploadViewer
+  open={open}
+  onOpenChange={setOpen}
+  finalFocus={trigger}
+  status={blobUrl ? UploadViewerStatus.ready : UploadViewerStatus.loading} // or .error
+  statusLabel={t("loadingFile")}
+  source={{ name: file.name, type: file.type, url: blobUrl }} // url is optional until ready
+  closeLabel={t("close")}
+  downloadLabel={t("download")}
+  fallback={t("previewUnavailable")}
+  action={<Button onClick={() => window.open(blobUrl, "_blank", "noopener,noreferrer")}>{t("openInNewTab")}</Button>}
+/>
+```
+
+- `status` defaults to `ready`, so existing callers don't need to change.
+- `loading` announces `statusLabel` in `role="status"` and renders no media, no download and no action.
+- `error` shows `fallback` in `role="alert"`. A browser can't reliably report whether a PDF rendered, so the viewer never shows PDF failure copy on its own. Pass `status="error"` when your fetch or render fails.
+- `ready` renders the media, the download link and `action`. If media fails to load, or the URL is missing or unsafe, it shows `fallback` and hides the download and the action. A new URL or type, or reopening the dialog, clears a failure.
+- `action` is owned by the caller, and so is the safety of any URL it opens.
+
+## MultiSelect width
+
+`MultiSelectTrigger width="full"` fills its parent row, for example a form field, without a descendant selector. The default, `MultiSelectTriggerWidth.intrinsic`, keeps `fit-content`. It works with both the default trigger and `asChild`.
+
+## Combobox chip removal
+
+Pass a translated `removeLabel` to each `ComboboxChip` to name its remove button:
+
+```tsx
+<ComboboxChip key={tag} removeLabel={t("removeTag", { tag })}>
+  {tag}
+</ComboboxChip>
+```
+
+A chip without `removeLabel`, or with `showRemove={false}`, renders no remove button. Before this change the button rendered as an icon with no accessible name, so pass `removeLabel` wherever chips should stay removable.
 
 ## Sheet
 
@@ -718,7 +782,7 @@ Use the catalog for complete states and examples. All components accept their do
 | Kanban                                        | Controlled column-keyed item value; `getItemValue`; `KanbanBoard`, `KanbanColumn`, `KanbanColumnContent`, `KanbanItem`, optional handles and overlay. Use `onMove` for caller-owned persistence intent.                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | TicketCard, TicketCover, ProductItem, Receipt | Semantic content slots, image/media, metadata, and action children.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | TimelineStep                                  | State, icon, title, description, and connector composition.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| UploadList, UploadPreview, UploadViewer       | File state, preview renderer, item actions, and download/remove callbacks.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| UploadList, UploadPreview, UploadViewer       | File state, `preview` (none/row/thumbnail), item actions, viewer `status`/`action`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 ### Data, media, and utilities
 

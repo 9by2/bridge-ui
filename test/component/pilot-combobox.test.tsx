@@ -22,7 +22,11 @@ test("combobox chip anchor and callback composition", async () => {
           <UI.ComboboxValue>
             {(values: string[]) =>
               values.map((value) => (
-                <UI.ComboboxChip key={value} showRemove={callback} className={className}>
+                <UI.ComboboxChip
+                  key={value}
+                  showRemove={callback}
+                  removeLabel={`Remove ${value}`}
+                  className={className}>
                   {value}
                 </UI.ComboboxChip>
               ))

@@ -4,6 +4,7 @@ export {
   UploadIssueDisplay,
   UploadList,
   UploadListLayout,
+  UploadListPreview,
   composeUploadValidation,
   uploadValidation
 } from "./stylex/upload-list"
