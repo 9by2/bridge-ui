@@ -1,5 +1,28 @@
 # @bridge/ui
 
+## 0.11.0-rc.0
+
+### Minor Changes
+
+- ced4acb: Add effect color tokens so overlays and elevation follow the theme.
+
+  - `--bridge-color-backdrop` tints Dialog, AlertDialog, Sheet and Drawer backdrops; `Theme` accepts `theme.color.backdrop`.
+  - `--bridge-color-shadow` colors every owned elevation shadow; `Theme` accepts `theme.color.shadow`.
+  - `--bridge-color-scrollbar` / `--bridge-color-scrollbar-hover` color the Cue scrollbar.
+  - Colored all-day `BridgeCalendar` events pick black or white text from the event color instead of fixed white.
+
+  Defaults render unchanged.
+
+  - Generated Shadcn reference: backdrops use `bg-overlay` and the slider thumb uses `bg-background` (refreshed through the guarded Shadcn CLI script); catalog Tailwind shadows follow `--bridge-color-shadow`.
+
+### Patch Changes
+
+- 5c14613: Stop text sizes compounding inside containers and bound SwimLaneBoard lane width.
+
+  - New root-relative `--bridge-text-size-{xs,sm,md,base,lg}` tokens. `Body` (1rem), `Large`, `Muted`, `Small`, `Badge`, `StatusStamp`, `DetailItemLabel`, TimelineStep description/time, and WizardStep description/counter use them, so nested text never drops below 12px.
+  - `SwimLaneBoardItem` uses the 0.875rem body size instead of `0.75em`; nested children keep their own size. Count badges and the corner label render at 12px.
+  - `SwimLaneBoard` adds `columnMinWidth` / `columnMaxWidth` (default `min(18rem, 82vw)` / `20rem`). Expanded lanes no longer stretch to fill the board.
+
 ## 0.10.0
 
 ### Minor Changes
