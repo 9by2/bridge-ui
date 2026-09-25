@@ -20,5 +20,5 @@
 
 - [x] fmt, lint, typecheck, test, coverage, build, catalog build, browser gate.
 - [x] Bun.WebView evidence in `.eval/0925-effect-color-token/`.
-- [ ] Artifact published.
+- [x] Artifact published: https://artifact.9by2.workers.dev/artifact/01a0d782-6510-7a15-b9e9-f61235258c19/
 - [x] All specs in `spec/` reviewed against implementation
