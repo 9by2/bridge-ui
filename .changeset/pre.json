@@ -4,5 +4,8 @@
   "initialVersions": {
     "@bridge/ui": "0.10.0"
   },
-  "changesets": []
+  "changesets": [
+    "effect-color-token",
+    "nested-text-size"
+  ]
 }
