@@ -3,7 +3,7 @@ import * as stylex from "@stylexjs/stylex"
 import { ChevronDownIcon } from "lucide-react"
 
 import { Theme } from "./theme"
-import { token } from "./token.stylex"
+import { effectToken, token } from "./token.stylex"
 
 const style = stylex.create({
   root: {
@@ -103,7 +103,7 @@ const style = stylex.create({
     borderRadius: "var(--bridge-radius-10, 0.625em)",
     backgroundColor: token.background,
     color: token.foreground,
-    boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%), 0 1px 3px rgb(0 0 0 / 10%)`,
+    boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%), ${effectToken.shadowSm}`,
     transitionProperty: "opacity, transform, width, height, scale, translate",
     transitionDuration: {
       default: "350ms",
@@ -154,7 +154,7 @@ const style = stylex.create({
     rotate: "45deg",
     borderTopLeftRadius: 6,
     backgroundColor: token.border,
-    boxShadow: "0 4px 6px -1px rgb(0 0 0 / 10%)"
+    boxShadow: effectToken.shadowArrow
   }
 })
 export function NavigationMenu({

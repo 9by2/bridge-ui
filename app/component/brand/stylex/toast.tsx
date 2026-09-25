@@ -4,7 +4,7 @@ import { XIcon, CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Load
 
 import { Button } from "./button"
 import { Theme } from "./theme"
-import { geometryToken, themeToken, token } from "./token.stylex"
+import { effectToken, geometryToken, themeToken, token } from "./token.stylex"
 
 const spin = stylex.keyframes({ to: { rotate: "360deg" } })
 const height = "var(--toast-frontmost-height, var(--toast-height))"
@@ -38,7 +38,7 @@ const style = stylex.create({
     backgroundColor: themeToken.surface,
     color: themeToken.surfaceForeground,
     boxShadow: {
-      default: "0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%)",
+      default: effectToken.shadowLg,
       ":focus-visible": `0 0 0 3px color-mix(in oklch, ${themeToken.ring}, transparent 50%)`
     },
     willChange: "transform",

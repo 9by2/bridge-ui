@@ -5,11 +5,12 @@ import type { ComponentProps } from "react"
 
 import { menuStyle } from "./dropdown-menu"
 import { Theme } from "./theme"
+import { effectToken } from "./token.stylex"
 
 const style = stylex.create({
   trigger: { userSelect: "none" },
   popup: { width: "auto", minWidth: 144 },
-  sub: { boxShadow: "0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%)" },
+  sub: { boxShadow: effectToken.shadowLg },
   indicator: { position: "absolute", right: 8, pointerEvents: "none" }
 })
 export function ContextMenu(props: Primitive.Root.Props) {

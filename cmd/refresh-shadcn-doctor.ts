@@ -51,7 +51,13 @@ const replacement: Record<string, Array<[string, string]>> = {
       "        canScrollNext,\n      }), [carouselRef, api, opts, orientation, scrollPrev, scrollNext, canScrollPrev, canScrollNext])\n\n  return (\n    <CarouselContext.Provider value={context}>"
     ]
   ],
-  toggle: []
+  toggle: [],
+  // effect-color-token: backdrop and slider thumb consume semantic tokens instead of Tailwind palette literals.
+  dialog: [["z-50 bg-black/10 duration-100", "z-50 bg-overlay duration-100"]],
+  "alert-dialog": [["z-50 bg-black/10 duration-100", "z-50 bg-overlay duration-100"]],
+  sheet: [["z-50 bg-black/10 transition-opacity", "z-50 bg-overlay transition-opacity"]],
+  drawer: [["min-h-dvh bg-black/10 opacity-", "min-h-dvh bg-overlay opacity-"]],
+  slider: [["border border-ring bg-white ring-ring/50", "border border-ring bg-background ring-ring/50"]]
 }
 
 const directory = await mkdtemp(path.join(tmpdir(), "shadcn-doctor-"))
@@ -63,8 +69,10 @@ try {
       if (baseline.exitCode !== 0) throw new Error(baseline.stderr.toString())
       let content = baseline.stdout.toString()
       for (const [before, after] of replacements) {
+        // Idempotent: skip a replacement already applied to the committed baseline.
+        if (content.includes(after)) continue
         if (content.split(before).length === 2) content = content.replace(before, after)
-        else if (!content.includes(after)) throw new Error(`Generated source changed: ${target}`)
+        else throw new Error(`Generated source changed: ${target}`)
       }
       const file = path.join(directory, `${name}.json`)
       await Bun.write(

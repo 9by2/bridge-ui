@@ -21,7 +21,7 @@ import { Input } from "./input"
 import { Separator } from "./separator"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "./sheet"
 import { Skeleton } from "./skeleton"
-import { token } from "./token.stylex"
+import { effectToken, token } from "./token.stylex"
 import { Tooltip, TooltipTrigger, TooltipContent } from "./tooltip"
 
 type SidebarContext = {
@@ -88,7 +88,7 @@ const style = stylex.create({
   inner: { display: "flex", width: "100%", height: "100%", flexDirection: "column", backgroundColor: token.sidebar },
   floatingInner: {
     borderRadius: "var(--bridge-radius-10, 0.625em)",
-    boxShadow: `0 0 0 1px ${token.sidebarBorder}, 0 8px 24px rgb(0 0 0 / 12%)`
+    boxShadow: `0 0 0 1px ${token.sidebarBorder}, ${effectToken.shadowFloat}`
   },
   mobile: { width: 288, padding: 0 },
   hidden: {

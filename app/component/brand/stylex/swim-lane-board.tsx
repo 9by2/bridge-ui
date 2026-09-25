@@ -35,7 +35,7 @@ import {
   type ReactNode
 } from "react"
 
-import { token } from "./token.stylex"
+import { effectToken, token } from "./token.stylex"
 
 const autoCollapseMode = { empty: "empty", never: "never" } as const
 type ValueOf<T> = T[keyof T]
@@ -92,7 +92,7 @@ const style = stylex.create({
     borderStyle: "solid",
     borderColor: token.border,
     borderRadius: token.shapeSurface,
-    boxShadow: "0 12px 32px color-mix(in oklab, black 8%, transparent)"
+    boxShadow: effectToken.shadowBoard
   },
   matrix: { display: "grid", minWidth: 640, backgroundColor: token.muted },
   single: {
@@ -202,14 +202,14 @@ const style = stylex.create({
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: token.border,
-    boxShadow: "0 1px 2px color-mix(in oklab, black 6%, transparent)",
+    boxShadow: effectToken.shadowCard,
     color: token.cardForeground,
     cursor: "grab",
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: 1.4
   },
   itemDragging: { opacity: 0.35, cursor: "grabbing" },
-  itemOverlay: { cursor: "grabbing", boxShadow: "0 14px 32px color-mix(in oklab, black 20%, transparent)" },
+  itemOverlay: { cursor: "grabbing", boxShadow: effectToken.shadowDrag },
   dropTarget: {
     backgroundColor: `color-mix(in oklab, ${token.primary} 8%, ${token.card})`,
     boxShadow: `inset 0 0 0 2px color-mix(in oklab, ${token.primary} 45%, transparent)`

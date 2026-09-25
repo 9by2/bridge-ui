@@ -79,6 +79,23 @@ test("Dialog portal receives the nearest resolved customization", async () => {
   expect(portalTheme.style.getPropertyValue("--bridge-color-dialog-foreground")).toBe("white")
 })
 
+test("Dialog portal inherits backdrop and shadow effect colors", async () => {
+  render(
+    <Theme theme={{ color: { backdrop: "rgb(1 2 3 / 40%)", shadow: "navy" } }}>
+      <Dialog defaultOpen>
+        <DialogContent>
+          <DialogTitle>Effect</DialogTitle>
+        </DialogContent>
+      </Dialog>
+    </Theme>
+  )
+
+  const dialog = await screen.findByRole("dialog")
+  const portalTheme = dialog.closest("[data-bridge-theme]") as HTMLElement
+  expect(portalTheme.style.getPropertyValue("--bridge-color-backdrop")).toBe("rgb(1 2 3 / 40%)")
+  expect(portalTheme.style.getPropertyValue("--bridge-color-shadow")).toBe("navy")
+})
+
 test("density presets are finite public values", () => {
   expect(Object.values(bridgeDensity)).toEqual(["compact", "default", "comfortable"])
   render(
@@ -118,7 +135,9 @@ test("Theme supports every documented semantic color override", () => {
     input: "color-12",
     muted: "color-13",
     mutedForeground: "color-14",
-    ring: "color-15"
+    ring: "color-15",
+    backdrop: "color-16",
+    shadow: "color-17"
   } as const
   render(
     <Theme theme={{ color }} data-testid="theme">

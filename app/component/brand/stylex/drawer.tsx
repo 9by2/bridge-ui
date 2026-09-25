@@ -3,7 +3,7 @@ import * as stylex from "@stylexjs/stylex"
 import { createContext, useContext, useMemo, type ComponentProps } from "react"
 
 import { Theme } from "./theme"
-import { token } from "./token.stylex"
+import { effectToken, token } from "./token.stylex"
 
 type Option = {
   hasSnapPoints: boolean
@@ -91,7 +91,7 @@ const style = stylex.create({
     inset: 0,
     zIndex: 50,
     minHeight: "100dvh",
-    backgroundColor: "rgb(0 0 0 / 10%)",
+    backgroundColor: effectToken.backdrop,
     opacity: {
       default: "max(var(--drawer-overlay-min-opacity, 0), calc(1 - var(--drawer-swipe-progress)))",
       ":is([data-starting-style], [data-ending-style])": 0

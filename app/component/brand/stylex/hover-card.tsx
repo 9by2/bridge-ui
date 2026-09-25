@@ -2,7 +2,7 @@ import { PreviewCard as Primitive } from "@base-ui/react/preview-card"
 import * as stylex from "@stylexjs/stylex"
 
 import { Theme } from "./theme"
-import { token } from "./token.stylex"
+import { effectToken, token } from "./token.stylex"
 
 const enter = stylex.keyframes({ from: { opacity: 0, scale: "0.95" }, to: { opacity: 1, scale: "1" } })
 const exit = stylex.keyframes({ from: { opacity: 1, scale: "1" }, to: { opacity: 0, scale: "0.95" } })
@@ -19,7 +19,7 @@ const style = stylex.create({
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     color: token.foreground,
-    boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%), 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%)`,
+    boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%), ${effectToken.shadowMd}`,
     outline: "none",
     animationName: enter,
     animationDuration: { default: "100ms", "@media (prefers-reduced-motion: reduce)": "0s" }

@@ -11,7 +11,7 @@ import {
 import * as Recharts from "recharts"
 import type { TooltipValueType } from "recharts"
 
-import { token } from "./token.stylex"
+import { effectToken, token } from "./token.stylex"
 
 export type ChartConfig = Record<
   string,
@@ -45,7 +45,7 @@ const style = stylex.create({
     paddingBlock: 6,
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
-    boxShadow: "0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%)"
+    boxShadow: effectToken.shadowXl
   },
   label: { fontWeight: 500 },
   grid: { display: "grid", gap: 6 },

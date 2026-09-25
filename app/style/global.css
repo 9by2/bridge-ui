@@ -27,6 +27,17 @@ html[data-motion="reduced"] *::after {
   transition-duration: 0.01ms !important;
 }
 
+/* effect-color-token: re-resolve on every theme scope so a scoped --bridge-color-* override reaches generated utilities. */
+:root,
+.dark,
+[data-bridge-theme] {
+  --overlay: var(--bridge-color-backdrop, rgb(0 0 0 / 10%));
+  --shadow-color: var(--bridge-color-shadow, black);
+  --shadow-color-5: color-mix(in oklab, var(--shadow-color) 5%, transparent);
+  --shadow-color-10: color-mix(in oklab, var(--shadow-color) 10%, transparent);
+  --shadow-color-25: color-mix(in oklab, var(--shadow-color) 25%, transparent);
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -57,6 +68,7 @@ html[data-motion="reduced"] *::after {
   --input: var(--border);
   --ring: oklch(0.708 0 0);
   --scrollbar-thumb: oklch(0.4 0 0);
+  --scrollbar-thumb-hover: oklch(0.5 0 0);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -107,6 +119,7 @@ html[data-motion="reduced"] *::after {
   --input: oklch(1 0 0 / 36%);
   --ring: oklch(0.556 0 0);
   --scrollbar-thumb: oklch(0.4 0 0);
+  --scrollbar-thumb-hover: oklch(0.5 0 0);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -174,6 +187,14 @@ html[data-motion="reduced"] *::after {
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --color-overlay: var(--overlay);
+  --shadow-2xs: 0 1px var(--shadow-color-5);
+  --shadow-xs: 0 1px 2px 0 var(--shadow-color-5);
+  --shadow-sm: 0 1px 3px 0 var(--shadow-color-10), 0 1px 2px -1px var(--shadow-color-10);
+  --shadow-md: 0 4px 6px -1px var(--shadow-color-10), 0 2px 4px -2px var(--shadow-color-10);
+  --shadow-lg: 0 10px 15px -3px var(--shadow-color-10), 0 4px 6px -4px var(--shadow-color-10);
+  --shadow-xl: 0 20px 25px -5px var(--shadow-color-10), 0 8px 10px -6px var(--shadow-color-10);
+  --shadow-2xl: 0 25px 50px -12px var(--shadow-color-25);
 }
 
 @layer base {
@@ -201,7 +222,7 @@ html[data-motion="reduced"] *::after {
     background-clip: padding-box;
   }
   *::-webkit-scrollbar-thumb:hover {
-    background-color: oklch(0.5 0 0);
+    background-color: var(--scrollbar-thumb-hover);
   }
   .scrollbar-none {
     scrollbar-width: none;

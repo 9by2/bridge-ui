@@ -86,6 +86,25 @@ export const themeToken = stylex.defineConsts({
   ring: `var(--bridge-color-ring, ${token.ring})`
 })
 
+// Effect colors (effect-color-token DEC-001): one public shadow color; each recipe owns
+// its own alpha step and geometry. `color-mix(black N%, transparent)` equals the prior
+// `rgb(0 0 0 / N%)` output, so defaults render unchanged.
+export const effectToken = stylex.defineConsts({
+  backdrop: "var(--bridge-color-backdrop, rgb(0 0 0 / 10%))",
+  shadowXs: `0 1px 2px color-mix(in oklab, var(--bridge-color-shadow, black) 5%, transparent)`,
+  shadowSm: `0 1px 3px color-mix(in oklab, var(--bridge-color-shadow, black) 10%, transparent)`,
+  shadowMd: `0 4px 6px -1px color-mix(in oklab, var(--bridge-color-shadow, black) 10%, transparent), 0 2px 4px -2px color-mix(in oklab, var(--bridge-color-shadow, black) 10%, transparent)`,
+  shadowLg: `0 10px 15px -3px color-mix(in oklab, var(--bridge-color-shadow, black) 10%, transparent), 0 4px 6px -4px color-mix(in oklab, var(--bridge-color-shadow, black) 10%, transparent)`,
+  shadowXl: `0 20px 25px -5px color-mix(in oklab, var(--bridge-color-shadow, black) 10%, transparent), 0 8px 10px -6px color-mix(in oklab, var(--bridge-color-shadow, black) 10%, transparent)`,
+  shadowFloat: `0 8px 24px color-mix(in oklab, var(--bridge-color-shadow, black) 12%, transparent)`,
+  shadowArrow: `0 4px 6px -1px color-mix(in oklab, var(--bridge-color-shadow, black) 10%, transparent)`,
+  shadowDepth: `0 6px 14px -6px color-mix(in oklab, var(--bridge-color-shadow, black) 28%, transparent)`,
+  shadowInsetEdge: `inset 0 0 0 1px color-mix(in oklab, var(--bridge-color-shadow, black) 8%, transparent)`,
+  shadowCard: `0 1px 2px color-mix(in oklab, var(--bridge-color-shadow, black) 6%, transparent)`,
+  shadowBoard: `0 12px 32px color-mix(in oklab, var(--bridge-color-shadow, black) 8%, transparent)`,
+  shadowDrag: `0 14px 32px color-mix(in oklab, var(--bridge-color-shadow, black) 20%, transparent)`
+})
+
 // `defineConsts` (not a plain object) so StyleX's cross-file constant folding emits a
 // single shared `:root` custom-property definition instead of silently referencing an
 // undefined `var(--xHASH)` — a plain-object literal that repeats across files (e.g.
