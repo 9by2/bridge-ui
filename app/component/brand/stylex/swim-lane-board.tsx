@@ -73,8 +73,14 @@ const pointerActivationConstraint = { distance: 8 }
 const coordinateCollision: CollisionDetection = (argument) =>
   argument.pointerCoordinates ? pointerWithin(argument) : closestCorners(argument)
 
-function toCssLength(value: CSSProperties["maxHeight"]) {
-  return typeof value === "number" ? `${value}px` : (value ?? "66vh")
+const SwimLaneBoardDefault = {
+  ROW_MAX_HEIGHT: "66vh",
+  COLUMN_MIN_WIDTH: "min(18rem, 82vw)",
+  COLUMN_MAX_WIDTH: "20rem"
+} as const
+
+function toCssLength(value: string | number | undefined, fallback: string) {
+  return typeof value === "number" ? `${value}px` : (value ?? fallback)
 }
 
 function isCoordinate(value: unknown): value is SwimLaneBoardCoordinate {
@@ -94,12 +100,8 @@ const style = stylex.create({
     borderRadius: token.shapeSurface,
     boxShadow: effectToken.shadowBoard
   },
-  matrix: { display: "grid", minWidth: 640, backgroundColor: token.muted },
-  single: {
-    display: "grid",
-    minWidth: 640,
-    backgroundColor: token.muted
-  },
+  matrix: { display: "grid", width: "fit-content", minWidth: "100%", backgroundColor: token.muted },
+  single: { display: "grid", width: "fit-content", minWidth: "100%", backgroundColor: token.muted },
   corner: {
     position: "sticky",
     top: 0,
@@ -111,7 +113,7 @@ const style = stylex.create({
     paddingLeft: 14,
     color: token.mutedForeground,
     backgroundColor: token.card,
-    fontSize: "var(--bridge-font-size-2xs, 0.625em)",
+    fontSize: "var(--bridge-text-size-xs, 0.75rem)",
     fontWeight: 800,
     letterSpacing: "0.08em",
     textTransform: "uppercase",
@@ -141,7 +143,7 @@ const style = stylex.create({
   },
   firstColumn: { borderLeftWidth: 0 },
   laneColumn: { minHeight: 92 },
-  columnName: { color: token.cardForeground, fontSize: "var(--bridge-font-size-sm, 0.75em)", fontWeight: 700 },
+  columnName: { color: token.cardForeground, fontSize: "var(--bridge-text-size-sm, 0.75rem)", fontWeight: 700 },
   toggle: {
     float: "right",
     width: 24,
@@ -170,7 +172,7 @@ const style = stylex.create({
     backgroundColor: token.card
   },
   rowSeparator: { borderTopWidth: 1, borderTopStyle: "solid", borderTopColor: token.border },
-  laneName: { color: token.cardForeground, fontSize: "var(--bridge-font-size-sm, 0.75em)", fontWeight: 700 },
+  laneName: { color: token.cardForeground, fontSize: "var(--bridge-text-size-sm, 0.75rem)", fontWeight: 700 },
   cell: {
     display: "grid",
     alignContent: "start",
@@ -205,7 +207,7 @@ const style = stylex.create({
     boxShadow: effectToken.shadowCard,
     color: token.cardForeground,
     cursor: "grab",
-    fontSize: "var(--bridge-font-size-sm, 0.75em)",
+    fontSize: "var(--bridge-text-size-base, 0.875rem)",
     lineHeight: 1.4
   },
   itemDragging: { opacity: 0.35, cursor: "grabbing" },
@@ -261,13 +263,17 @@ const style = stylex.create({
     borderRadius: token.shapePill,
     backgroundColor: token.secondary,
     color: token.secondaryForeground,
-    fontSize: "var(--bridge-font-size-xs, 0.6875em)",
+    fontSize: "var(--bridge-text-size-sm, 0.75rem)",
     fontWeight: 700
   }
 })
 
 export type SwimLaneBoardProps = ComponentProps<"section"> & {
   autoCollapse?: SwimLaneBoardAutoCollapse
+  /** Maximum width of each expanded column track. Defaults to `20rem`. */
+  columnMaxWidth?: CSSProperties["maxWidth"]
+  /** Minimum width of each expanded column track. Defaults to `min(18rem, 82vw)`. */
+  columnMinWidth?: CSSProperties["minWidth"]
   collapsedColumnIds?: readonly string[]
   defaultCollapsedColumnIds?: readonly string[]
   label: string
@@ -448,12 +454,14 @@ export function SwimLaneBoard({
   autoCollapse = autoCollapseMode.empty,
   children,
   className,
+  columnMaxWidth,
+  columnMinWidth,
   collapsedColumnIds: controlledColumnIds,
   defaultCollapsedColumnIds,
   label,
   onCollapsedColumnIdsChange,
   onItemMove,
-  rowMaxHeight = "66vh",
+  rowMaxHeight = SwimLaneBoardDefault.ROW_MAX_HEIGHT,
   style: inlineStyle,
   ...prop
 }: SwimLaneBoardProps) {
@@ -478,7 +486,8 @@ export function SwimLaneBoard({
       }))
     : [{ id: undefined, label: "", count: 1, children: directCells }]
   const collapsedId = new Set(collapsedColumnIds)
-  const template = `${hasLane ? "184px " : ""}${columns.map((column) => (collapsedId.has(column.props.id) ? "48px" : "minmax(220px, 1fr)")).join(" ")}`
+  const expandedTrack = `minmax(${toCssLength(columnMinWidth, SwimLaneBoardDefault.COLUMN_MIN_WIDTH)}, ${toCssLength(columnMaxWidth, SwimLaneBoardDefault.COLUMN_MAX_WIDTH)})`
+  const template = `${hasLane ? "184px " : ""}${columns.map((column) => (collapsedId.has(column.props.id) ? "48px" : expandedTrack)).join(" ")}`
   const toggle = (
     id: string,
     value: readonly string[],

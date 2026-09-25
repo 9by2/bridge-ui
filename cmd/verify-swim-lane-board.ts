@@ -163,6 +163,8 @@ try {
     await defaultView.navigate("about:blank")
     await defaultView.cdp("Page.navigate", { url: `${baseUrl}?preview&theme=${theme}#swim-lane-board/default` })
     await ready(defaultView, '[data-slot="swim-lane-board"]')
+    // dnd-kit measures droppables asynchronously after keyboard pickup; one animation frame is not
+    // enough and intermittently dropped the move (flaked on main too), so each keyboard step settles.
     const defaultMove = await defaultView.evaluate<{
       column: unknown
       row: unknown
@@ -174,10 +176,10 @@ try {
         const item = document.querySelector('[data-item-id="' + itemId + '"]')
         item.focus()
         item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'Space' }))
-        await new Promise((resolve) => requestAnimationFrame(resolve))
+        await new Promise((resolve) => setTimeout(resolve, 150))
         const active = item.getAttribute('data-dragging')
         item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code }))
-        await new Promise((resolve) => requestAnimationFrame(resolve))
+        await new Promise((resolve) => setTimeout(resolve, 150))
         const over = [...document.querySelectorAll('[data-over="true"]')].map((element) => element.closest('[data-slot="swim-lane-board-cell"]')?.getAttribute('aria-label'))
         item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'Space' }))
         await new Promise((resolve) => setTimeout(resolve, 100))
@@ -203,10 +205,10 @@ try {
       const item = document.querySelector('[data-item-id="PLAT-176"]')
       item.focus()
       item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'Space' }))
-      await new Promise((resolve) => requestAnimationFrame(resolve))
+      await new Promise((resolve) => setTimeout(resolve, 150))
       const active = item.getAttribute('data-dragging')
       item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'ArrowDown' }))
-      await new Promise((resolve) => requestAnimationFrame(resolve))
+      await new Promise((resolve) => setTimeout(resolve, 150))
       const over = [...document.querySelectorAll('[data-over="true"]')].map((element) => element.closest('[data-slot="swim-lane-board-cell"]')?.getAttribute('aria-label'))
       item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'Space' }))
       await new Promise((resolve) => setTimeout(resolve, 100))
@@ -307,10 +309,10 @@ try {
       const before = read()
       item.focus()
       item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'Space' }))
-      await new Promise((resolve) => requestAnimationFrame(resolve))
+      await new Promise((resolve) => setTimeout(resolve, 150))
       const keyboard = item.getAttribute('data-dragging') === 'true'
       item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'ArrowRight' }))
-      await new Promise((resolve) => requestAnimationFrame(resolve))
+      await new Promise((resolve) => setTimeout(resolve, 150))
       item.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, code: 'Space' }))
       await new Promise((resolve) => setTimeout(resolve, 300))
       const doneItem = [...cells[1].querySelectorAll('[data-slot="swim-lane-board-item"]')]

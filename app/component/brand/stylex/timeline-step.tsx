@@ -105,11 +105,11 @@ const style = stylex.create({
   },
   description: {
     color: token.mutedForeground,
-    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    fontSize: "var(--bridge-text-size-base, 0.875rem)",
     lineHeight: 1.5,
     overflowWrap: "anywhere"
   },
-  time: { color: token.mutedForeground, fontSize: "var(--bridge-font-size-sm, 0.75em)", lineHeight: 1.5 }
+  time: { color: token.mutedForeground, fontSize: "var(--bridge-text-size-sm, 0.75rem)", lineHeight: 1.5 }
 })
 
 export type TimelineStepProps = ComponentProps<"div"> & {

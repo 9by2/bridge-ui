@@ -22,7 +22,7 @@ const style = stylex.create({
     paddingRight: { default: 8, ':has([data-icon="inline-end"])': 6 },
     paddingLeft: { default: 8, ':has([data-icon="inline-start"])': 6 },
     paddingBlock: 2,
-    fontSize: "var(--bridge-font-size-sm, 0.75em)",
+    fontSize: "var(--bridge-text-size-sm, 0.75rem)",
     lineHeight: "16px",
     fontWeight: 500,
     whiteSpace: "nowrap",
