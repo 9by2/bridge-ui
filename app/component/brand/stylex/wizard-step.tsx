@@ -132,11 +132,11 @@ const style = stylex.create({
   },
   description: {
     color: token.mutedForeground,
-    fontSize: "var(--bridge-font-size-md, 0.8125em)",
+    fontSize: "var(--bridge-text-size-md, 0.8125rem)",
     lineHeight: 1.5,
     overflowWrap: "anywhere"
   },
-  counter: { color: token.mutedForeground, fontSize: "var(--bridge-font-size-sm, 0.75em)", lineHeight: 1.5 }
+  counter: { color: token.mutedForeground, fontSize: "var(--bridge-text-size-sm, 0.75rem)", lineHeight: 1.5 }
 })
 
 export type WizardStepProps = ComponentProps<"div"> & {

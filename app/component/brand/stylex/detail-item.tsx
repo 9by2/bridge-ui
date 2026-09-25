@@ -13,7 +13,7 @@ const style = stylex.create({
     borderBottomStyle: "solid",
     borderBottomColor: token.border
   },
-  label: { color: token.mutedForeground, fontSize: "var(--bridge-font-size-base, 0.875em)" },
+  label: { color: token.mutedForeground, fontSize: "var(--bridge-text-size-base, 0.875rem)" },
   content: { minWidth: 0, color: token.foreground, overflowWrap: "anywhere" }
 })
 const classes = (own: string | undefined, value?: string) => [own, value].filter(Boolean).join(" ")

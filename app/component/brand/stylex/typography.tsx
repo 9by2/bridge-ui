@@ -23,7 +23,7 @@ const style = stylex.create({
   h2: { fontSize: "var(--bridge-font-size-3xl, 1.5em)" },
   h3: { fontSize: "var(--bridge-font-size-2xl, 1.25em)" },
   h4: { fontSize: "var(--bridge-font-size-xl, 1.125em)" },
-  body: { lineHeight: 1.3 },
+  body: { fontSize: "var(--bridge-text-size-lg, 1rem)", lineHeight: 1.3 },
   blockquote: {
     marginBlock: 16,
     marginInline: 0,
@@ -56,11 +56,11 @@ const style = stylex.create({
   muted: {
     marginBlock: 0,
     color: token.mutedForeground,
-    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    fontSize: "var(--bridge-text-size-base, 0.875rem)",
     lineHeight: 1.5
   },
-  small: { fontSize: "var(--bridge-font-size-sm, 0.75em)", fontWeight: 500, lineHeight: 1.2 },
-  large: { fontSize: "var(--bridge-font-size-lg, 1em)", fontWeight: 600, lineHeight: 1.5 }
+  small: { fontSize: "var(--bridge-text-size-sm, 0.75rem)", fontWeight: 500, lineHeight: 1.2 },
+  large: { fontSize: "var(--bridge-text-size-lg, 1rem)", fontWeight: 600, lineHeight: 1.5 }
 })
 
 const join = (...value: (string | undefined | false | null)[]) => value.filter(Boolean).join(" ")

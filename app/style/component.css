@@ -32,6 +32,12 @@
   --bridge-font-size-4xl: 1.75em;
   --bridge-font-size-5xl: 2.25em;
   --bridge-font-size-6xl: 3.25em;
+  /* Text-role sizes resolve against the root so nested containers never compound them below 12px. */
+  --bridge-text-size-xs: 0.75rem;
+  --bridge-text-size-sm: 0.75rem;
+  --bridge-text-size-md: 0.8125rem;
+  --bridge-text-size-base: 0.875rem;
+  --bridge-text-size-lg: 1rem;
   --bridge-pill-radius: 9999em;
   --bridge-radius-2: 0.125em;
   --bridge-radius-3: 0.1875em;

@@ -58,3 +58,17 @@ test("board presents collapsed columns and lane cells", () => {
     "task-1"
   )
 })
+
+// nested-text-size REQ-003: consumer column bounds replace the documented default track.
+test("board bounds expanded column tracks by default and by consumer props", () => {
+  const { rerender } = render(<Board collapsedColumnIds={[]} />)
+  const grid = () => screen.getByRole("region", { name: "Delivery board" }).firstElementChild as HTMLElement
+  expect(grid().style.gridTemplateColumns).toBe("minmax(min(18rem, 82vw), 20rem) minmax(min(18rem, 82vw), 20rem)")
+
+  rerender(
+    <SwimLaneBoard label="Delivery board" columnMinWidth={200} columnMaxWidth="24rem" autoCollapse="never">
+      <SwimLaneBoardColumn id="todo" label="To do" count={0} />
+    </SwimLaneBoard>
+  )
+  expect(grid().style.gridTemplateColumns).toBe("minmax(200px, 24rem)")
+})
