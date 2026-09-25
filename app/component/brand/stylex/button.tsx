@@ -152,7 +152,8 @@ const multiSelectStyle = stylex.create({
     borderRadius: 0,
     paddingInline: 12,
     paddingBlock: 6
-  }
+  },
+  full: { width: "100%" }
 })
 type Variant = "default" | "outline" | "secondary" | "ghost" | "destructive" | "warning" | "cta" | "link"
 type Size = keyof typeof sizeStyle
@@ -178,7 +179,7 @@ function buttonClass(
   variant: Variant | null,
   size: Size | null,
   inputGroupSize: "xs" | "sm" | "icon-xs" | "icon-sm" | null | undefined,
-  multiSelectTrigger: boolean | undefined,
+  multiSelectTrigger: boolean | "full" | undefined,
   invalid: boolean,
   popup: boolean
 ) {
@@ -193,7 +194,8 @@ function buttonClass(
     inputGroupSize === "xs" && groupStyle.xs,
     inputGroupSize === "icon-xs" && groupStyle.iconXs,
     inputGroupSize === "icon-sm" && groupStyle.iconSm,
-    multiSelectTrigger && multiSelectStyle.trigger
+    multiSelectTrigger && multiSelectStyle.trigger,
+    multiSelectTrigger === "full" && multiSelectStyle.full
   ).className
   return ["pilot-button", size && `pilot-button-${size}`, compiled].filter(Boolean).join(" ")
 }
@@ -209,7 +211,8 @@ export function Button({
   variant?: Variant | null
   size?: Size | null
   inputGroupSize?: "xs" | "sm" | "icon-xs" | "icon-sm" | null
-  multiSelectTrigger?: boolean
+  /** Internal MultiSelectTrigger styling; `"full"` fills the parent row. */
+  multiSelectTrigger?: boolean | "full"
 }) {
   const invalid = props["aria-invalid"] === true || props["aria-invalid"] === "true"
   const popup =

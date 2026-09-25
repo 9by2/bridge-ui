@@ -92,6 +92,16 @@ const description: Record<string, string> = {
     "Composable validation (type, 2 MB, four files) with inline role=alert issues, grid thumbnail layout, empty slot and a change/issue event log. No toast is fired by the component.",
   "upload-list/single":
     "Single-file replace mode (multiple=false) with a custom renderItem row. Selecting another PDF reports change reason replace.",
+  "upload-list/preview":
+    "Switch preview between row, thumbnail and none. None hides items while selection, validation and callbacks still run; the value stays caller-owned.",
+  "upload-viewer/status":
+    "Caller-controlled loading, ready and error. Loading needs no URL; error shows the fallback alert. Download and the caller action appear only when the file is viewable.",
+  "drop-area/surface":
+    "Raw CMS/media recipe: DropArea hands accepted and rejected files to your onDrop with your own compound surface. Do not nest it inside UploadList.",
+  "multi-select/full-width":
+    "width=full fills the form row without a descendant selector; the default trigger stays intrinsic width.",
+  "combobox/chip":
+    "Multiple selection with ComboboxChips. removeLabel names each chip's remove button; a chip without it renders no remove control.",
   "spinner/size": "Compare Spinner sm, default and lg; an explicit size keeps its dimension inside a Button.",
   "image-crop/selection":
     "Controlled ReactCrop selection with an aspect ratio, circular mask, rule-of-thirds guide, keyboard adjustment, and caller-owned crop state.",

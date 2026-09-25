@@ -53,6 +53,7 @@ const style = stylex.create({
     paddingInline: 12,
     paddingBlock: 6
   },
+  full: { width: "100%" },
   icon: { width: 16, height: 16, flexShrink: 0, opacity: 0.5 },
   placeholder: { minWidth: 0, overflow: "hidden", fontWeight: 400, color: token.mutedForeground },
   value: { display: "flex", width: "100%", gap: 6, overflow: "hidden" },
@@ -151,23 +152,42 @@ export function MultiSelect({
     </Context>
   )
 }
+type ValueOf<T> = T[keyof T]
+export const MultiSelectTriggerWidth = { intrinsic: "intrinsic", full: "full" } as const
+export type MultiSelectTriggerWidth = ValueOf<typeof MultiSelectTriggerWidth>
+
+/** `width="full"` fills the parent row (form field); default `intrinsic` keeps `fit-content`. */
 export function MultiSelectTrigger({
   className,
   children,
   asChild = false,
+  width = MultiSelectTriggerWidth.intrinsic,
   ...props
-}: ComponentPropsWithoutRef<typeof Button> & { asChild?: boolean; className?: string }) {
+}: ComponentPropsWithoutRef<typeof Button> & {
+  asChild?: boolean
+  className?: string
+  width?: MultiSelectTriggerWidth
+}) {
   const { open } = useMultiSelectContext()
+  const full = width === MultiSelectTriggerWidth.full
   if (
     asChild &&
-    isValidElement<{ role?: string; "aria-expanded"?: boolean | "true" | "false"; className?: string }>(children)
+    isValidElement<{
+      role?: string
+      "aria-expanded"?: boolean | "true" | "false"
+      "data-width"?: string
+      className?: string
+    }>(children)
   )
     return (
       <PopoverTrigger
         render={cloneElement(children, {
           role: children.props.role ?? props.role ?? "combobox",
           "aria-expanded": children.props["aria-expanded"] ?? open,
-          className: [children.props.className, className].filter(Boolean).join(" ")
+          "data-width": width,
+          className: [children.props.className, full && stylex.props(style.full).className, className]
+            .filter(Boolean)
+            .join(" ")
         })}
       />
     )
@@ -176,7 +196,8 @@ export function MultiSelectTrigger({
       render={
         <Button
           {...props}
-          multiSelectTrigger
+          data-width={width}
+          multiSelectTrigger={full ? "full" : true}
           variant={props.variant ?? "outline"}
           role={props.role ?? "combobox"}
           aria-expanded={props["aria-expanded"] ?? open}

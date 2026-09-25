@@ -143,7 +143,7 @@ test("multi select controlled selection and badge removal", async () => {
   expect(change).toHaveBeenCalledWith([])
   rerender(
     <MultiSelect values={[]} onValuesChange={change}>
-      <MultiSelectTrigger aria-label="Choose">
+      <MultiSelectTrigger aria-label="Choose" width="full">
         <MultiSelectValue placeholder="Choose" />
       </MultiSelectTrigger>
       <MultiSelectContent>
@@ -160,7 +160,7 @@ test("multi select retains missing provider diagnostic and server composition", 
   expect(
     renderToString(
       <MultiSelect>
-        <MultiSelectTrigger asChild role="button">
+        <MultiSelectTrigger asChild role="button" width="full">
           <button aria-expanded={false}>Custom</button>
         </MultiSelectTrigger>
       </MultiSelect>

@@ -28,6 +28,14 @@ export type UploadChangeReason = ValueOf<typeof UploadChangeReason>
 export const UploadListLayout = { list: "list", grid: "grid" } as const
 export type UploadListLayout = ValueOf<typeof UploadListLayout>
 
+/**
+ * Default item presentation. `none` hides items (and `renderItem`) while selection still runs;
+ * `row` forces rows; `thumbnail` forces square tiles, which always sit in the grid track because a
+ * full-width square tile is unusable. Omitted: row for list, tile for grid.
+ */
+export const UploadListPreview = { none: "none", row: "row", thumbnail: "thumbnail" } as const
+export type UploadListPreview = ValueOf<typeof UploadListPreview>
+
 /** `none` (default): report through callbacks only. `inline`: also render the latest issues in `role="alert"`. */
 export const UploadIssueDisplay = { none: "none", inline: "inline" } as const
 export type UploadIssueDisplay = ValueOf<typeof UploadIssueDisplay>
@@ -79,6 +87,7 @@ export type UploadListProps = {
   validate?: UploadValidator
   issueDisplay?: UploadIssueDisplay
   layout?: UploadListLayout
+  preview?: UploadListPreview
   /** `false` enables single-file replace mode: a new selection replaces the value (reason `replace`). */
   multiple?: boolean
   renderEmpty?: () => ReactNode
@@ -207,6 +216,7 @@ export function UploadList({
   validate,
   issueDisplay = UploadIssueDisplay.none,
   layout = UploadListLayout.list,
+  preview,
   multiple = true,
   renderEmpty,
   renderItem,
@@ -235,7 +245,10 @@ export function UploadList({
     onValueChange([], { reason: UploadChangeReason.clear, attachment: value })
     focusDropArea()
   }
-  const variant = layout === UploadListLayout.grid ? UploadPreviewVariant.tile : UploadPreviewVariant.row
+  const variant =
+    preview === UploadListPreview.thumbnail || (!preview && layout === UploadListLayout.grid)
+      ? UploadPreviewVariant.tile
+      : UploadPreviewVariant.row
   return (
     <div ref={root} data-slot="upload-list" data-layout={layout} {...stylex.props(style.root)}>
       <DropArea
@@ -271,38 +284,43 @@ export function UploadList({
       </DropArea>
       {issueDisplay === UploadIssueDisplay.inline ? <UploadIssueList issue={latestIssue} /> : null}
       {value.length === 0 && renderEmpty ? renderEmpty() : null}
-      <ul {...stylex.props(layout === UploadListLayout.grid ? style.grid : style.list)}>
-        {value.map((item) => (
-          <li key={item.id}>
-            {renderItem ? (
-              renderItem(item, {
-                remove: () => remove(item),
-                clear,
-                preview: onPreview ? () => onPreview(item) : undefined,
-                layout
-              })
-            ) : (
-              <UploadPreview
-                variant={variant}
-                name={item.name}
-                type={item.type}
-                description={item.description ?? copy.size(item.size)}
-                thumbnail={item.thumbnail}
-                transfer={item.transfer}
-                disabled={disabled}
-                previewAction={
-                  onPreview ? { label: copy.preview(item.name), onClick: () => onPreview(item) } : undefined
-                }
-                retryAction={onRetry && copy.retry ? { label: copy.retry, onClick: () => onRetry(item) } : undefined}
-                cancelAction={
-                  onCancel && copy.cancel ? { label: copy.cancel, onClick: () => onCancel(item) } : undefined
-                }
-                removeAction={{ label: copy.remove(item.name), onClick: () => remove(item) }}
-              />
-            )}
-          </li>
-        ))}
-      </ul>
+      {preview === UploadListPreview.none ? null : (
+        <ul
+          {...stylex.props(
+            layout === UploadListLayout.grid || variant === UploadPreviewVariant.tile ? style.grid : style.list
+          )}>
+          {value.map((item) => (
+            <li key={item.id}>
+              {renderItem ? (
+                renderItem(item, {
+                  remove: () => remove(item),
+                  clear,
+                  preview: onPreview ? () => onPreview(item) : undefined,
+                  layout
+                })
+              ) : (
+                <UploadPreview
+                  variant={variant}
+                  name={item.name}
+                  type={item.type}
+                  description={item.description ?? copy.size(item.size)}
+                  thumbnail={item.thumbnail}
+                  transfer={item.transfer}
+                  disabled={disabled}
+                  previewAction={
+                    onPreview ? { label: copy.preview(item.name), onClick: () => onPreview(item) } : undefined
+                  }
+                  retryAction={onRetry && copy.retry ? { label: copy.retry, onClick: () => onRetry(item) } : undefined}
+                  cancelAction={
+                    onCancel && copy.cancel ? { label: copy.cancel, onClick: () => onCancel(item) } : undefined
+                  }
+                  removeAction={{ label: copy.remove(item.name), onClick: () => remove(item) }}
+                />
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
       <p role="status" aria-atomic="true" {...stylex.props(style.message)}>
         {message}
       </p>

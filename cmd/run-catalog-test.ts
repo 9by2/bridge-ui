@@ -14,6 +14,7 @@ const BrowserContractFile = [
   "./test/browser/render-pipeline.test.ts",
   "./test/browser/menu-focus.test.ts",
   "./test/browser/upload-composition.test.ts",
+  "./test/browser/consumer-replacement.test.ts",
   "./test/browser/responsive.test.ts",
   "./test/browser/bridge-calendar.test.ts",
   "./test/browser/nested-text-size.test.ts"

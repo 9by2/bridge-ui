@@ -318,12 +318,18 @@ export function ComboboxChips({ className, ...props }: Primitive.Chips.Props) {
     />
   )
 }
+/**
+ * `removeLabel` names the remove button per chip, e.g. `removeLabel={copy.removeTag(tag)}`.
+ * The remove button renders only when `showRemove` is true and `removeLabel` is non-empty,
+ * so an icon-only control never ships without an accessible name.
+ */
 export function ComboboxChip({
   className,
   children,
   showRemove = true,
+  removeLabel,
   ...props
-}: Primitive.Chip.Props & { showRemove?: boolean }) {
+}: Primitive.Chip.Props & { showRemove?: boolean; removeLabel?: string }) {
   return (
     <Primitive.Chip
       data-slot="combobox-chip"
@@ -334,8 +340,9 @@ export function ComboboxChip({
           .join(" ")
       }>
       {children}
-      {showRemove && (
+      {showRemove && removeLabel && (
         <Primitive.ChipRemove
+          aria-label={removeLabel}
           render={<Button variant="ghost" size="icon-xs" />}
           className={stylex.props(style.remove).className}
           data-slot="combobox-chip-remove">
