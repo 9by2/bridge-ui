@@ -28,6 +28,15 @@ Owned modal backdrops, elevation shadows and the Cue scrollbar derive from publi
 
 Colored all-day BridgeCalendar events choose black or white text from the event color lightness.
 
+### REQ-004: Generated catalog reference
+
+Generated Shadcn backdrops use `bg-overlay` and the slider thumb uses `bg-background`, applied only through `cmd/refresh-shadcn-doctor.ts`. Catalog Tailwind `--overlay` and `--shadow-*` resolve from `--bridge-color-backdrop` / `--bridge-color-shadow` on every theme scope.
+
+**Acceptance:**
+
+- [x] Defaults match former `bg-black/10` and Tailwind black shadow.
+- [x] Scoped override reaches generated utilities.
+
 ## Non-Goals
 
-- Generated Shadcn source, Recharts engine attribute selectors, color picker preset data, Bubble tinted lightness factors.
+- Recharts engine attribute selectors, color picker preset data, Bubble tinted lightness factors.

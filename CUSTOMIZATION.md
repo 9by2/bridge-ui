@@ -411,7 +411,6 @@ Effect colors: `--bridge-color-backdrop` (default `rgb(0 0 0 / 10%)`) tints the 
 
 Colors that remain literal by design:
 
-- Generated `@bridge/ui/component/shadcn/*` catalog source (Shadcn CLI-owned; `bg-black/10` backdrop, `bg-white` slider thumb). Use the owned StyleX entry, which consumes the variables above.
 - Recharts engine `stroke="#ccc"` / `stroke="#fff"` attributes. The package matches them by selector and repaints them with `--bridge-color-border`; the literal is the engine's own output.
 - ColorPicker preset swatches and its `#000000` value default. They are user-selectable data, not theme colors.
 - Bubble `tinted` lightness/chroma factors. The hue already derives from `--bridge-color-primary`.

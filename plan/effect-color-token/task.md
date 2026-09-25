@@ -11,6 +11,8 @@
 - [x] Migrate adapter.css sidebar inset shadow and Cue scrollbar.
 - [x] Calendar colored all-day text contrast.
 
+- [x] Patch generated Shadcn backdrop/slider through the guarded CLI refresh; map catalog Tailwind overlay/shadow to effect tokens.
+
 ## Integration
 
 - [x] CUSTOMIZATION.md variables + exception list.

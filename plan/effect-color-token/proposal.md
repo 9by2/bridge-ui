@@ -19,9 +19,10 @@ The shared theme token proposal moved owned recipe colors to `--bridge-color-*`,
 - Theme `color.backdrop` and `color.shadow` typed overrides.
 - CUSTOMIZATION.md documents the new variables and the remaining non-token exceptions.
 
+- Generated Shadcn backdrop and slider thumb through the guarded CLI refresh (DEC-005).
+
 ### Out of scope
 
-- Generated `app/component/shadcn/**` (CLI-owned; catalog reference only).
 - Recharts engine-emitted `stroke="#ccc"` / `stroke="#fff"` attribute selectors.
 - Color picker preset palette and `#000000` value default (user data).
 - Bubble `tinted` relative-color lightness factors (recipe derivation from `primary`).
