@@ -2,9 +2,7 @@
   "mode": "pre",
   "tag": "rc",
   "initialVersions": {
-    "@bridge/ui": "0.11.0"
+    "@bridge/ui": "0.12.0"
   },
-  "changesets": [
-    "consumer-replacement"
-  ]
+  "changesets": []
 }
