@@ -1,5 +1,11 @@
 # @bridge/ui
 
+## 0.13.1-rc.0
+
+### Patch Changes
+
+- 25fee30: Make catalog examples render exactly as consumers see them. The catalog now uses the consumer cascade (Tailwind utilities before package StyleX), and examples no longer restyle package parts. Sidebar and DropdownMenu text use the root-relative `--bridge-text-size-*` scale (menu buttons were 12.25px when nested, now 14px), sidebar and group labels stay on one line with ellipsis, static `Sidebar collapsible="none"` fills its row height, and `DropdownMenuContent` fits long items up to 20rem instead of the trigger width. Add `PaginationLink activeVariant` (`PaginationActiveVariant`) and `Empty variant` (`EmptyVariant`).
+
 ## 0.13.0
 
 - b2151cf: Apply global Theme radius and spacing scales to owned component geometry while preserving intentional shape and layout variants.
