@@ -5,6 +5,6 @@
     "@bridge/ui": "0.13.0"
   },
   "changesets": [
-    "global-theme-geometry"
+    "sidebar-menu-consumer-parity"
   ]
 }
