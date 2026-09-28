@@ -4,5 +4,7 @@
   "initialVersions": {
     "@bridge/ui": "0.13.0"
   },
-  "changesets": []
+  "changesets": [
+    "global-theme-geometry"
+  ]
 }
