@@ -14,8 +14,10 @@ export const menuStyle = stylex.create({
     zIndex: 50,
     boxSizing: "border-box",
     maxHeight: "var(--available-height)",
-    width: "var(--anchor-width)",
-    minWidth: 128,
+    // Content-sized: never narrower than the trigger or 8rem, never wider than 20rem or the available viewport.
+    width: "max-content",
+    minWidth: "max(var(--anchor-width), 8rem)",
+    maxWidth: "min(20rem, var(--available-width))",
     transformOrigin: "var(--transform-origin)",
     overflowX: "hidden",
     overflowY: "auto",
@@ -30,14 +32,13 @@ export const menuStyle = stylex.create({
   },
   closed: { animationName: exit, overflow: "hidden" },
   sub: {
-    width: "auto",
-    minWidth: 96,
+    minWidth: "6rem",
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%), ${effectToken.shadowLg}`
   },
   label: {
     paddingInline: "var(--bridge-unit-6, 6px)",
     paddingBlock: "var(--bridge-unit-4, 4px)",
-    fontSize: "var(--bridge-font-size-sm, 0.75em)",
+    fontSize: "var(--bridge-text-size-sm, 0.75rem)",
     lineHeight: "16px",
     fontWeight: 500,
     color: token.mutedForeground
@@ -52,7 +53,7 @@ export const menuStyle = stylex.create({
     borderRadius: "var(--bridge-radius-8, 0.5em)",
     paddingInline: "var(--bridge-unit-6, 6px)",
     paddingBlock: "var(--bridge-unit-4, 4px)",
-    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    fontSize: "var(--bridge-text-size-base, 0.875rem)",
     lineHeight: "20px",
     outline: "2px solid transparent",
     outlineOffset: 2,
@@ -96,7 +97,7 @@ export const menuStyle = stylex.create({
   separator: { marginInline: -4, marginBlock: 4, height: 1, backgroundColor: token.border },
   shortcut: {
     marginLeft: "auto",
-    fontSize: "var(--bridge-font-size-sm, 0.75em)",
+    fontSize: "var(--bridge-text-size-sm, 0.75rem)",
     lineHeight: "16px",
     letterSpacing: "0.1em",
     color: { default: token.mutedForeground, [stylex.when.ancestor(":focus")]: token.accentForeground }

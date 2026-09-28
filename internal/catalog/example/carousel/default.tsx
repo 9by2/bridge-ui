@@ -6,12 +6,12 @@ export default function Example() {
       <UI.CarouselContent>
         <UI.CarouselItem>
           <UI.Card>
-            <UI.CardContent className="p-8">Slide one</UI.CardContent>
+            <UI.CardContent>Slide one</UI.CardContent>
           </UI.Card>
         </UI.CarouselItem>
         <UI.CarouselItem>
           <UI.Card>
-            <UI.CardContent className="p-8">Slide two</UI.CardContent>
+            <UI.CardContent>Slide two</UI.CardContent>
           </UI.Card>
         </UI.CarouselItem>
       </UI.CarouselContent>

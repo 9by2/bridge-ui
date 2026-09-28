@@ -199,6 +199,23 @@ import { Spinner, SpinnerSize } from "@bridge/ui/spinner"
 ;<Spinner size={SpinnerSize.lg} aria-label="Loading report" />
 ```
 
+## Sidebar and menu spacing
+
+Sidebar and DropdownMenu own their spacing and typography; consumers never add padding classes to reach the catalog look. What the catalog shows is what the same JSX renders in an application.
+
+| Part                                         | Default                                                                                                |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `SidebarHeader`, `SidebarFooter`             | `var(--bridge-unit-8)` padding and gap (0.5rem via `--bridge-space-2`)                                 |
+| `SidebarGroup`                               | `var(--bridge-unit-8)` padding                                                                         |
+| `SidebarGroupLabel`                          | 32px row, `--bridge-text-size-sm`, single line with ellipsis                                           |
+| `SidebarMenuButton` / `SidebarMenuSubButton` | 32px / 28px row (`size="lg"` 48px), `--bridge-text-size-base`, single line, last `span` truncates      |
+| `DropdownMenuContent`                        | `var(--bridge-unit-4)` padding; width fits content between max(trigger, 8rem) and min(20rem, viewport) |
+| `DropdownMenuItem`                           | `var(--bridge-unit-4) var(--bridge-unit-6)` padding, `--bridge-text-size-base`; long copy wraps        |
+
+Menu and sidebar text read the root-relative `--bridge-text-size-*` scale, so nesting never shrinks it. Spacing follows `Theme` `space`/`density`; radius follows `Theme` `radius` (for example `radius: { control: "0" }` squares every item). Put a header brand or user block inside `SidebarMenu > SidebarMenuItem > SidebarMenuButton` so it aligns with group items. Use `SidebarSeparator` for dividers.
+
+`className` on these parts is for layout only (width, placement). The package stylesheet is layered after Tailwind utilities in an application, so utility padding, gap, font, border, or color on a package part is not a supported override.
+
 ## Icon slot
 
 Brand and third-party icons live in the consumer; pass them through icon slots. The package ships no brand, social, streaming or logo glyph.
@@ -729,17 +746,19 @@ Use the catalog for complete states and examples. All components accept their do
 
 ### Actions and disclosure
 
-| Family                                             | Use supported customization for                                                                 |
-| -------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Accordion, Collapsible                             | Controlled `open` state; Trigger and Content composition; Collapsible `line` and `showChevron`. |
-| Alert, StickyAlert                                 | Semantic `variant`; action children.                                                            |
-| AlertDialog, Dialog, Drawer, Sheet                 | Controlled `open`; Trigger, Content, Header, Footer, Title, Description; `closeLabel`.          |
-| Button, ButtonGroup, Toggle, ToggleGroup           | `variant`, `size`, `disabled`; grouped selection state for ToggleGroup.                         |
-| DropdownMenu, ContextMenu, Menubar, NavigationMenu | Trigger, item, checkbox/radio, submenu composition; controlled open state where exposed.        |
-| Popover, HoverCard, Tooltip                        | Trigger and Content composition; side/alignment/offset placement props.                         |
-| Command, Kbd                                       | Command input/list/group/item composition; `Kbd` renders keyboard labels.                       |
-| Pagination                                         | Page, previous, next, and link composition; current-page semantics.                             |
-| WizardStep                                         | Step status and action children.                                                                |
+| Family                                             | Use supported customization for                                                                  |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Accordion, Collapsible                             | Controlled `open` state; Trigger and Content composition; Collapsible `line` and `showChevron`.  |
+| Alert, StickyAlert                                 | Semantic `variant`; action children.                                                             |
+| AlertDialog, Dialog, Drawer, Sheet                 | Controlled `open`; Trigger, Content, Header, Footer, Title, Description; `closeLabel`.           |
+| Button, ButtonGroup, Toggle, ToggleGroup           | `variant`, `size`, `disabled`; grouped selection state for ToggleGroup.                          |
+| DropdownMenu, ContextMenu, Menubar, NavigationMenu | Trigger, item, checkbox/radio, submenu composition; controlled open state where exposed.         |
+| Popover, HoverCard, Tooltip                        | Trigger and Content composition; side/alignment/offset placement props.                          |
+| Pagination                                         | `PaginationLink activeVariant` (`PaginationActiveVariant.outline` default, `.muted` borderless). |
+| Empty                                              | `variant` (`EmptyVariant.default` borderless, `.outline` dashed frame, `.muted` quiet fill).     |
+| Command, Kbd                                       | Command input/list/group/item composition; `Kbd` renders keyboard labels.                        |
+| Pagination                                         | Page, previous, next, and link composition; current-page semantics.                              |
+| WizardStep                                         | Step status and action children.                                                                 |
 
 ### Fields and selection
 
@@ -757,16 +776,16 @@ Use the catalog for complete states and examples. All components accept their do
 
 ### Layout and navigation
 
-| Family                                        | Use supported customization for                                                                                                                    |
-| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| AspectRatio, Resizable, ScrollArea, Separator | Ratio, pane direction/default sizes, viewport behavior, and orientation.                                                                           |
-| Card, Table                                   | Card `radius`/`size`/`ghost`; Table `variant="frame"`, density, hint, viewport, columns, rows, and empty content. `TableFrame` remains compatible. |
-| Carousel                                      | Controlled slide API, orientation, and previous/next controls.                                                                                     |
-| Page, ShellHeader, Sidebar                    | Page `variant`, spacing/layout props, header slots; Sidebar provider, rail, trigger, and collapsible state.                                        |
-| Tabs                                          | Controlled value; List, Trigger, and Content composition. Bridge `capsule` is additive to Cue defaults.                                            |
-| Breadcrumb                                    | Item/link/separator composition; custom separator children.                                                                                        |
-| Direction                                     | `dir="ltr"` or `dir="rtl"` subtree direction.                                                                                                      |
-| ResponsiveImage                               | Responsive source, alt text, loading, and aspect-ratio props.                                                                                      |
+| Family                                        | Use supported customization for                                                                                                                                        |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AspectRatio, Resizable, ScrollArea, Separator | Ratio, pane direction/default sizes, viewport behavior, and orientation.                                                                                               |
+| Card, Table                                   | Card `radius`/`size`/`ghost`; Table `variant="frame"`, density, hint, viewport, columns, rows, and empty content. `TableFrame` remains compatible.                     |
+| Carousel                                      | Controlled slide API, orientation, and previous/next controls.                                                                                                         |
+| Page, ShellHeader, Sidebar                    | Page `variant`, spacing/layout props, header slots; Sidebar provider, rail, trigger, and collapsible state. See [Sidebar and menu spacing](#sidebar-and-menu-spacing). |
+| Tabs                                          | Controlled value; List, Trigger, and Content composition. Bridge `capsule` is additive to Cue defaults.                                                                |
+| Breadcrumb                                    | Item/link/separator composition; custom separator children.                                                                                                            |
+| Direction                                     | `dir="ltr"` or `dir="rtl"` subtree direction.                                                                                                                          |
+| ResponsiveImage                               | Responsive source, alt text, loading, and aspect-ratio props.                                                                                                          |
 
 ### Status, feedback, and display
 

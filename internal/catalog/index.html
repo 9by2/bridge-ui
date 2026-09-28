@@ -7,7 +7,8 @@
     <link rel="preconnect" href="https://use.typekit.net" crossorigin />
     <link rel="stylesheet" href="https://use.typekit.net/qdm0xrk.css" />
     <style>
-      @layer theme, base, components, priority1, priority2, priority3, priority4, priority5, priority6, priority7, priority8, priority9, utilities;
+      /* Consumer cascade: an application imports Tailwind before @bridge/ui/style.css, so package StyleX layers follow utilities. */
+      @layer theme, base, components, utilities, priority1, priority2, priority3, priority4, priority5, priority6, priority7, priority8, priority9;
     </style>
   </head>
   <body>

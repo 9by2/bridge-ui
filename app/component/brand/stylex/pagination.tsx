@@ -4,6 +4,12 @@ import type { ComponentProps } from "react"
 
 import { Button } from "./button"
 
+type ValueOf<T> = T[keyof T]
+
+/** Active page treatment: `outline` (default) outlines the current page; `muted` is borderless with a muted fill. */
+export const PaginationActiveVariant = { outline: "outline", muted: "muted" } as const
+export type PaginationActiveVariant = ValueOf<typeof PaginationActiveVariant>
+
 const style = stylex.create({
   root: { marginInline: "auto", display: "flex", width: "100%", justifyContent: "center" },
   content: {
@@ -55,16 +61,26 @@ export function PaginationLink({
   className,
   isActive,
   size = "icon",
+  activeVariant = PaginationActiveVariant.outline,
   ...props
-}: ComponentProps<"a"> & Pick<ComponentProps<typeof Button>, "size"> & { isActive?: boolean }) {
+}: ComponentProps<"a"> &
+  Pick<ComponentProps<typeof Button>, "size"> & { isActive?: boolean; activeVariant?: PaginationActiveVariant }) {
+  const muted = isActive && activeVariant === PaginationActiveVariant.muted
   return (
     <Button
-      variant={isActive ? "outline" : "ghost"}
+      variant={isActive && !muted ? "outline" : "ghost"}
       size={size}
+      paginationMuted={muted}
       className={className}
       nativeButton={false}
       render={
-        <a aria-current={isActive ? "page" : undefined} data-slot="pagination-link" data-active={isActive} {...props} />
+        <a
+          aria-current={isActive ? "page" : undefined}
+          data-slot="pagination-link"
+          data-active={isActive}
+          data-active-variant={activeVariant}
+          {...props}
+        />
       }
     />
   )

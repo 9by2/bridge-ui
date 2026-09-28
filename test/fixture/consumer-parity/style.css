@@ -1,0 +1,38 @@
+/* Mirrors a consumer entry (bridge-web app/container/shell/globals.css): Tailwind first, then the package CSS,
+   then the application's own Tailwind color mapping. Only application-owned utilities (layout chrome) read it. */
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@bridge/ui/style.css";
+
+@source "./";
+
+@custom-variant dark (&:is(.dark *, [data-bridge-theme="dark"] *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+}
+
+.dark,
+[data-bridge-theme="dark"] {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --border: oklch(1 0 0 / 10%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

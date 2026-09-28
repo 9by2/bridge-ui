@@ -14,17 +14,23 @@ const ProductTheme = {
 export default function Example() {
   return (
     <div className="grid gap-4 md:grid-cols-3">
-      <UI.Theme className="rounded-xl border p-4 shadow-sm">
-        <p className="mb-3 text-sm font-medium">Default theme</p>
-        <UI.Button>Continue</UI.Button>
+      <UI.Theme>
+        <div className="border p-4 shadow-sm">
+          <p className="mb-3 text-sm font-medium">Default theme</p>
+          <UI.Button>Continue</UI.Button>
+        </div>
       </UI.Theme>
-      <UI.Theme density={UI.bridgeDensity.compact} className="rounded-xl border p-4 shadow-sm">
-        <p className="mb-3 text-sm font-medium">Compact density</p>
-        <UI.Button>Continue</UI.Button>
+      <UI.Theme density={UI.bridgeDensity.compact}>
+        <div className="border p-4 shadow-sm">
+          <p className="mb-3 text-sm font-medium">Compact density</p>
+          <UI.Button>Continue</UI.Button>
+        </div>
       </UI.Theme>
-      <UI.Theme theme={ProductTheme} className="rounded-xl border p-4 shadow-sm">
-        <p className="mb-3 text-sm font-medium">Custom product theme</p>
-        <UI.Button>Continue</UI.Button>
+      <UI.Theme theme={ProductTheme}>
+        <div className="border p-4 shadow-sm">
+          <p className="mb-3 text-sm font-medium">Custom product theme</p>
+          <UI.Button>Continue</UI.Button>
+        </div>
       </UI.Theme>
     </div>
   )

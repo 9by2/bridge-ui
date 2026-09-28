@@ -52,14 +52,14 @@ export default function Example() {
           <PlaceholderMark />
           Badge
         </UI.Badge>
-        <UI.SidebarProvider className="min-h-0 w-auto">
+        <UI.SidebarProvider style={{ minHeight: 0, width: "auto" }}>
           <UI.SidebarMenuButton>
             <PlaceholderMark />
             <span>Sidebar</span>
           </UI.SidebarMenuButton>
         </UI.SidebarProvider>
       </div>
-      <UI.Settings aria-label="Settings slot" className="min-h-0">
+      <UI.Settings aria-label="Settings slot">
         <UI.SettingsNavItem isActive>
           <PlaceholderMark />
           Linked account

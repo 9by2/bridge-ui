@@ -34,9 +34,7 @@ export default function Example() {
         <header className="flex h-16 items-center gap-3 border-b px-6">
           <UI.SidebarTrigger />
           <div>
-            <UI.Heading as={UI.WAIHeading.H3} className="text-sm font-semibold">
-              Left sidebar
-            </UI.Heading>
+            <UI.Heading as={UI.WAIHeading.H3}>Left sidebar</UI.Heading>
             <p className="text-xs text-muted-foreground">Flush navigation on the left edge.</p>
           </div>
         </header>

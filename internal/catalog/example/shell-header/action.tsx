@@ -28,15 +28,16 @@ export default function Example() {
           <UI.ShellHeaderTitle>Studio</UI.ShellHeaderTitle>
           <UI.ShellHeaderActionSlot />
         </UI.ShellHeader>
-        <UI.ToggleGroup
-          aria-label="Route"
-          value={[route]}
-          onValueChange={(value) => setRoute(Object.values(Route).find((item) => item === value[0]) ?? Route.none)}
-          className="p-4">
-          <UI.ToggleGroupItem value={Route.schedule}>Schedule</UI.ToggleGroupItem>
-          <UI.ToggleGroupItem value={Route.report}>Report</UI.ToggleGroupItem>
-          <UI.ToggleGroupItem value={Route.none}>No action</UI.ToggleGroupItem>
-        </UI.ToggleGroup>
+        <div className="p-4">
+          <UI.ToggleGroup
+            aria-label="Route"
+            value={[route]}
+            onValueChange={(value) => setRoute(Object.values(Route).find((item) => item === value[0]) ?? Route.none)}>
+            <UI.ToggleGroupItem value={Route.schedule}>Schedule</UI.ToggleGroupItem>
+            <UI.ToggleGroupItem value={Route.report}>Report</UI.ToggleGroupItem>
+            <UI.ToggleGroupItem value={Route.none}>No action</UI.ToggleGroupItem>
+          </UI.ToggleGroup>
+        </div>
         {route === Route.schedule ? <ScheduleRoute /> : route === Route.report ? <ReportRoute /> : null}
       </div>
     </UI.ShellHeaderActionProvider>

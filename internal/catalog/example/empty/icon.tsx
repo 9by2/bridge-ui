@@ -4,7 +4,7 @@ import * as UI from "@bridge/ui"
 
 export default function Example() {
   return (
-    <UI.Empty className="border">
+    <UI.Empty variant={UI.EmptyVariant.outline}>
       <UI.EmptyHeader>
         <UI.EmptyMedia variant="icon">
           <FolderIcon />
