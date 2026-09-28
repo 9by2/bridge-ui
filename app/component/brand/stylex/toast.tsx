@@ -102,7 +102,7 @@ const style = stylex.create({
     animationIterationCount: "infinite",
     animationPlayState: { default: "running", "@media (prefers-reduced-motion: reduce)": "paused" }
   },
-  copy: { display: "flex", minWidth: 0, flex: 1, flexDirection: "column", gap: 4 }
+  copy: { display: "flex", minWidth: 0, flex: 1, flexDirection: "column", gap: "var(--bridge-unit-4, 4px)" }
 })
 /**
  * Base UI toast manager (`toast.add`, `toast.close`, `toast.promise`, …).

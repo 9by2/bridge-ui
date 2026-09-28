@@ -111,33 +111,49 @@ const style = stylex.create({
   }
 })
 const sizeStyle = stylex.create({
-  default: { height: 32, gap: 6, paddingInline: geometryToken.controlPaddingInline },
+  default: { height: 32, gap: "var(--bridge-unit-6, 6px)", paddingInline: geometryToken.controlPaddingInline },
   xs: {
     height: 24,
-    gap: 4,
-    paddingInline: 8,
+    gap: "var(--bridge-unit-4, 4px)",
+    paddingInline: "var(--bridge-unit-8, 8px)",
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     borderRadius: geometryToken.controlRadiusSmall
   },
   sm: {
     height: 28,
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     paddingInline: geometryToken.controlPaddingInline,
     fontSize: "0.8rem",
     lineHeight: 1.5,
     borderRadius: geometryToken.controlRadiusSmall
   },
-  lg: { height: 36, gap: 6, paddingInline: geometryToken.controlPaddingInline },
-  xl: { height: 44, gap: 6, paddingInline: 12, fontSize: "var(--bridge-font-size-xl, 1.125em)", lineHeight: "28px" },
+  lg: { height: 36, gap: "var(--bridge-unit-6, 6px)", paddingInline: geometryToken.controlPaddingInline },
+  xl: {
+    height: 44,
+    gap: "var(--bridge-unit-6, 6px)",
+    paddingInline: "var(--bridge-unit-12, 12px)",
+    fontSize: "var(--bridge-font-size-xl, 1.125em)",
+    lineHeight: "28px"
+  },
   icon: { height: 32, width: 32, padding: 0 },
   "icon-xs": { height: 24, width: 24, padding: 0, borderRadius: "var(--bridge-radius-8, 0.5em)" },
   "icon-sm": { height: 28, width: 28, padding: 0, borderRadius: "var(--bridge-radius-8, 0.5em)" },
   "icon-lg": { height: 36, width: 36, padding: 0 }
 })
 const groupStyle = stylex.create({
-  base: { fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px", gap: 8, boxShadow: "none" },
-  xs: { height: 24, gap: 4, borderRadius: "var(--bridge-radius-11, 0.6875em)", paddingInline: 6 },
+  base: {
+    fontSize: "var(--bridge-font-size-base, 0.875em)",
+    lineHeight: "20px",
+    gap: "var(--bridge-unit-8, 8px)",
+    boxShadow: "none"
+  },
+  xs: {
+    height: 24,
+    gap: "var(--bridge-unit-4, 4px)",
+    borderRadius: "var(--bridge-radius-11, 0.6875em)",
+    paddingInline: "var(--bridge-unit-6, 6px)"
+  },
   iconXs: { height: 24, width: 24, borderRadius: "var(--bridge-radius-11, 0.6875em)", padding: 0 },
   iconSm: { height: 32, width: 32, padding: 0 }
 })
@@ -147,11 +163,11 @@ const multiSelectStyle = stylex.create({
     minHeight: 36,
     width: "fit-content",
     justifyContent: "space-between",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     overflow: "hidden",
     borderRadius: 0,
-    paddingInline: 12,
-    paddingBlock: 6
+    paddingInline: "var(--bridge-unit-12, 12px)",
+    paddingBlock: "var(--bridge-unit-6, 6px)"
   },
   full: { width: "100%" }
 })

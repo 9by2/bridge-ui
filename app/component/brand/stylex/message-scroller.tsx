@@ -34,7 +34,13 @@ const style = stylex.create({
     scrollbarColor: { default: "auto", ":is([data-autoscrolling])": "transparent transparent" },
     visibility: { default: "visible", ":is([data-pending-scroll])": "hidden" }
   },
-  content: { display: "flex", height: "max-content", minHeight: "100%", flexDirection: "column", gap: 24 },
+  content: {
+    display: "flex",
+    height: "max-content",
+    minHeight: "100%",
+    flexDirection: "column",
+    gap: "var(--bridge-unit-24, 24px)"
+  },
   item: { minWidth: 0, flexShrink: 0, containIntrinsicSize: "auto 10rem", contentVisibility: "auto" },
   button: {
     position: "absolute",

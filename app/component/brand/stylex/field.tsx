@@ -5,7 +5,7 @@ import { token } from "./token.stylex"
 
 const style = stylex.create({
   title: { lineHeight: "20px" },
-  root: { display: "flex", width: "100%", gap: 8 },
+  root: { display: "flex", width: "100%", gap: "var(--bridge-unit-8, 8px)" },
   vertical: { flexDirection: "column" },
   horizontal: { flexDirection: "row", alignItems: "center" },
   responsive: { flexDirection: { default: "column", "@container (min-width: 28rem)": "row" } },
@@ -13,7 +13,7 @@ const style = stylex.create({
     display: "flex",
     width: "fit-content",
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     fontWeight: 500,
     lineHeight: "1.375"
@@ -30,11 +30,17 @@ const style = stylex.create({
     padding: 0,
     display: "flex",
     flexDirection: "column",
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     listStyleType: "disc"
   },
-  group: { display: "flex", flexDirection: "column", width: "100%", gap: 20, containerType: "inline-size" },
-  content: { display: "flex", flexDirection: "column", flex: 1, gap: 2, lineHeight: "1.375" },
+  group: {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    gap: "var(--bridge-unit-20, 20px)",
+    containerType: "inline-size"
+  },
+  content: { display: "flex", flexDirection: "column", flex: 1, gap: "var(--bridge-unit-2, 2px)", lineHeight: "1.375" },
   description: {
     color: token.mutedForeground,
     fontSize: "var(--bridge-font-size-base, 0.875em)",
@@ -44,7 +50,7 @@ const style = stylex.create({
   set: {
     display: "flex",
     flexDirection: "column",
-    gap: 16,
+    gap: "var(--bridge-unit-16, 16px)",
     borderWidth: 0,
     borderStyle: "solid",
     margin: 0,
@@ -60,7 +66,7 @@ const style = stylex.create({
     display: "block",
     width: "fit-content",
     backgroundColor: token.background,
-    paddingInline: 8,
+    paddingInline: "var(--bridge-unit-8, 8px)",
     color: token.mutedForeground
   }
 })

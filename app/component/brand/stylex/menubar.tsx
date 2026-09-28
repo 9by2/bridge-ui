@@ -27,19 +27,19 @@ const style = stylex.create({
     display: "flex",
     height: 32,
     alignItems: "center",
-    gap: 2,
+    gap: "var(--bridge-unit-2, 2px)",
     borderRadius: "var(--bridge-radius-10, 0.625em)",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: token.border,
-    padding: 3
+    padding: "var(--bridge-unit-3, 3px)"
   },
   trigger: {
     display: "flex",
     alignItems: "center",
     borderRadius: "var(--bridge-radius-6, 0.375em)",
-    paddingInline: 6,
-    paddingBlock: 2,
+    paddingInline: "var(--bridge-unit-6, 6px)",
+    paddingBlock: "var(--bridge-unit-2, 2px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     fontFamily: "inherit",
@@ -52,7 +52,7 @@ const style = stylex.create({
     backgroundColor: { default: "transparent", ":hover": token.muted, ':is([aria-expanded="true"])': token.muted }
   },
   content: { minWidth: 144 },
-  selection: { paddingLeft: 28, paddingRight: 6 },
+  selection: { paddingLeft: "var(--bridge-unit-28, 28px)", paddingRight: "var(--bridge-unit-6, 6px)" },
   indicator: {
     pointerEvents: "none",
     position: "absolute",

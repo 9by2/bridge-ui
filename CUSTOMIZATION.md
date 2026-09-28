@@ -67,7 +67,7 @@ export function App() {
 }
 ```
 
-`density` supports `bridgeDensity.compact`, `bridgeDensity.default`, and `bridgeDensity.comfortable`. It adjusts shared padding and layout gaps while retaining package control heights and focus behavior.
+`density` supports `bridgeDensity.compact`, `bridgeDensity.default`, and `bridgeDensity.comfortable`. It adjusts shared padding and layout gaps while retaining package control heights and focus behavior. `theme.space[2]` is the base unit for owned recipe padding and gaps; detail sizes scale proportionally from it. `theme.radius.control` sets the base for rounded detail shapes; pill, circle, square and explicitly unstyled variants remain intentional exceptions. Scoped Themes and package portals inherit the nearest values.
 
 ## ColorPicker
 
@@ -430,7 +430,7 @@ The global theme contract currently applies to these owned components:
 | Toast           | surface, border, text                           | overlay | surface padding, layout gap |
 | Sonner          | normal toast surface/text/border                | overlay | Sonner radius               |
 
-Other components retain their existing public props and default geometry until they are added to this matrix. Generated Shadcn source is not a CSS override target and is never manually edited by Bridge UI consumers.
+The matrix lists the original P0 semantic surfaces. Owned component detail radius, padding and gap recipes also read the global Theme scales. Generated Shadcn source is not a CSS override target and is never manually edited by Bridge UI consumers.
 
 ### Public variables
 
@@ -480,7 +480,7 @@ Colors that remain literal by design:
 - Bubble `tinted` lightness/chroma factors. The hue already derives from `--bridge-color-primary`.
 - Native `<select>` popup, drawn by the browser.
 
-Fonts use `--bridge-font-body`, `--bridge-font-heading`, `--bridge-font-number`, and `--bridge-font-size-{2xs,xs,sm,md,base,lg,xl,2xl,3xl,4xl,5xl,6xl}`. Shared shape variables include the semantic control/surface/overlay radii above, `--bridge-pill-radius`, and `--bridge-radius-{2,3,4,6,8,10,11,12,14,18,26,999,9999}` for recipe details. The default font and radius scales use `em` so they respond to font sizing; font-size `em` is relative to the parent, while radius `em` is relative to the component's own font size. Text-role components (`Body`, `Large`, `Muted`, `Small`, `Badge`, `StatusStamp`, `DetailItemLabel`, TimelineStep description/time, WizardStep description/counter, SwimLaneBoard item/label/count) read the root-relative `--bridge-text-size-{xs,sm,md,base,lg}` scale (`0.75rem`, `0.75rem`, `0.8125rem`, `0.875rem`, `1rem`), so they keep the same size at any nesting depth and never compound below 12px. The defaults are declared in `@bridge/ui/style.css`; override them on an ancestor of the target component. Intentionally square or circular shapes remain explicit.
+Fonts use `--bridge-font-body`, `--bridge-font-heading`, `--bridge-font-number`, and `--bridge-font-size-{2xs,xs,sm,md,base,lg,xl,2xl,3xl,4xl,5xl,6xl}`. Shared shape variables include the semantic control/surface/overlay radii above, `--bridge-pill-radius`, and `--bridge-radius-{2,3,4,6,8,10,11,12,14,18,26,999,9999}` for recipe details. Detail radii derive from `--bridge-control-radius`; the `--bridge-unit-*` spacing detail scale derives from `--bridge-space-2` (8px by default). The default font scale uses `em` so it responds to font sizing; font-size `em` is relative to the parent. Text-role components (`Body`, `Large`, `Muted`, `Small`, `Badge`, `StatusStamp`, `DetailItemLabel`, TimelineStep description/time, WizardStep description/counter, SwimLaneBoard item/label/count) read the root-relative `--bridge-text-size-{xs,sm,md,base,lg}` scale (`0.75rem`, `0.75rem`, `0.8125rem`, `0.875rem`, `1rem`), so they keep the same size at any nesting depth and never compound below 12px. The defaults are declared in `@bridge/ui/style.css`; override them on an ancestor of the target component. Intentionally square or circular shapes remain explicit.
 
 Slider defaults to the shared primary, ring, and background colors; its `rangeColor` and `thumbColor` props remain available for intentional local exceptions. Do not set `--bridge-button-*` or `--bridge-slider-*`: those component-specific CSS override names are not part of the contract.
 

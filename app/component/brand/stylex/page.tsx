@@ -26,31 +26,49 @@ const style = stylex.create({
     boxSizing: "border-box",
     width: "100%",
     minWidth: 0,
-    paddingTop: 24,
-    paddingRight: 44,
-    paddingBottom: 48,
-    paddingLeft: 44,
+    paddingTop: "var(--bridge-unit-24, 24px)",
+    paddingRight: "var(--bridge-unit-44, 44px)",
+    paddingBottom: "var(--bridge-unit-48, 48px)",
+    paddingLeft: "var(--bridge-unit-44, 44px)",
     color: token.foreground
   },
   container: { maxWidth: 1480, marginInline: "auto" },
   none: { paddingTop: 0, paddingRight: 0, paddingBottom: 0, paddingLeft: 0 },
-  compact: { paddingTop: 16, paddingRight: 16, paddingBottom: 16, paddingLeft: 16 },
-  comfortable: { paddingTop: 24, paddingRight: 24, paddingBottom: 24, paddingLeft: 24 },
+  compact: {
+    paddingTop: "var(--bridge-unit-16, 16px)",
+    paddingRight: "var(--bridge-unit-16, 16px)",
+    paddingBottom: "var(--bridge-unit-16, 16px)",
+    paddingLeft: "var(--bridge-unit-16, 16px)"
+  },
+  comfortable: {
+    paddingTop: "var(--bridge-unit-24, 24px)",
+    paddingRight: "var(--bridge-unit-24, 24px)",
+    paddingBottom: "var(--bridge-unit-24, 24px)",
+    paddingLeft: "var(--bridge-unit-24, 24px)"
+  },
   widthFull: { maxWidth: "none" },
   widthContent: { maxWidth: "80rem", marginInline: "auto" },
   widthForm: { maxWidth: "48rem", marginInline: "auto" },
   widthEditor: { maxWidth: "none", paddingRight: 0, paddingLeft: 0 },
   dynamicPadding: {
-    paddingTop: { default: 24, "@media (max-width: 640px)": 20 },
-    paddingRight: { default: 44, "@media (max-width: 1024px)": 24, "@media (max-width: 640px)": 16 },
-    paddingLeft: { default: 44, "@media (max-width: 1024px)": 24, "@media (max-width: 640px)": 16 }
+    paddingTop: { default: "var(--bridge-unit-24, 24px)", "@media (max-width: 640px)": "var(--bridge-unit-20, 20px)" },
+    paddingRight: {
+      default: "var(--bridge-unit-44, 44px)",
+      "@media (max-width: 1024px)": "var(--bridge-unit-24, 24px)",
+      "@media (max-width: 640px)": "var(--bridge-unit-16, 16px)"
+    },
+    paddingLeft: {
+      default: "var(--bridge-unit-44, 44px)",
+      "@media (max-width: 1024px)": "var(--bridge-unit-24, 24px)",
+      "@media (max-width: 640px)": "var(--bridge-unit-16, 16px)"
+    }
   },
   breadcrumb: { marginBottom: 20, minWidth: 0 },
   header: {
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "space-between",
-    gap: 24,
+    gap: "var(--bridge-unit-24, 24px)",
     marginBottom: 28,
     minWidth: 0,
     flexDirection: { default: "row", "@media (max-width: 640px)": "column" }
@@ -79,7 +97,7 @@ const style = stylex.create({
   action: {
     display: "flex",
     flex: { default: "0 0 auto", "@media (max-width: 640px)": "1 1 auto" },
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     width: { default: "auto", "@media (max-width: 640px)": "100%" },
     alignItems: "center"
   },
@@ -90,12 +108,15 @@ const style = stylex.create({
     minWidth: 0,
     flexWrap: "wrap",
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
     borderBottomColor: token.border,
-    paddingBlock: 8,
-    paddingInline: { default: 24, "@media (max-width: 640px)": 16 }
+    paddingBlock: "var(--bridge-unit-8, 8px)",
+    paddingInline: {
+      default: "var(--bridge-unit-24, 24px)",
+      "@media (max-width: 640px)": "var(--bridge-unit-16, 16px)"
+    }
   },
   content: { minWidth: 0 },
   eyebrow: {
@@ -114,7 +135,7 @@ const style = stylex.create({
     display: "flex",
     flexWrap: "wrap",
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     minWidth: 0,
     marginTop: 10,
     color: token.mutedForeground,
@@ -125,7 +146,7 @@ const style = stylex.create({
     display: "flex",
     flexWrap: "wrap",
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     flexBasis: "100%",
     width: "100%",
     minWidth: 0
@@ -136,9 +157,9 @@ const style = stylex.create({
     display: "flex",
     flexWrap: "wrap",
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     minWidth: 0,
-    paddingBlock: 16
+    paddingBlock: "var(--bridge-unit-16, 16px)"
   },
   alignStart: { justifyContent: "flex-start" },
   alignEnd: { justifyContent: "flex-end" },

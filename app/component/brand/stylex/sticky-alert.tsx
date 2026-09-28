@@ -12,9 +12,9 @@ const style = stylex.create({
     zIndex: 20,
     display: "flex",
     alignItems: "center",
-    gap: 12,
+    gap: "var(--bridge-unit-12, 12px)",
     borderRadius: token.shapeSurface,
-    padding: 12,
+    padding: "var(--bridge-unit-12, 12px)",
     borderWidth: 1,
     borderStyle: "solid",
     backgroundColor: token.background

@@ -90,7 +90,13 @@ const ring = `var(--bridge-color-picker-ring, ${themeToken.primary})`
 const depth = effectToken.shadowDepth
 
 const style = stylex.create({
-  root: { display: "grid", width: "fit-content", maxWidth: "100%", boxSizing: "border-box", padding: 6 },
+  root: {
+    display: "grid",
+    width: "fit-content",
+    maxWidth: "100%",
+    boxSizing: "border-box",
+    padding: "var(--bridge-unit-6, 6px)"
+  },
   row: {
     display: "flex",
     flexWrap: "nowrap",
@@ -99,9 +105,9 @@ const style = stylex.create({
     scrollbarWidth: "thin",
     overscrollBehaviorX: "contain"
   },
-  gapSm: { gap: 8 },
-  gapMd: { gap: 12 },
-  gapLg: { gap: 16 },
+  gapSm: { gap: "var(--bridge-unit-8, 8px)" },
+  gapMd: { gap: "var(--bridge-unit-12, 12px)" },
+  gapLg: { gap: "var(--bridge-unit-16, 16px)" },
   swatch: {
     position: "relative",
     boxSizing: "border-box",
@@ -111,7 +117,7 @@ const style = stylex.create({
     padding: 0,
     margin: 0,
     borderWidth: 0,
-    borderRadius: "9999px",
+    borderRadius: "var(--bridge-pill-radius, 9999px)",
     color: themeToken.mutedForeground,
     backgroundColor: themeToken.muted,
     outline: "none",
@@ -139,17 +145,22 @@ const style = stylex.create({
   moreIconMd: { width: 20, height: 20 },
   moreIconLg: { width: 24, height: 24 },
   panel: { width: 288, maxWidth: "calc(100vw - 32px)" },
-  grid2: { display: "grid", gridTemplateColumns: "1fr auto", gap: 12, alignItems: "end" },
-  inline: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 },
+  grid2: { display: "grid", gridTemplateColumns: "1fr auto", gap: "var(--bridge-unit-12, 12px)", alignItems: "end" },
+  inline: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--bridge-unit-8, 8px)" },
   preview: {
     height: 32,
     borderRadius: "var(--bridge-control-radius, 0.625em)",
     boxShadow: `inset 0 0 0 1px ${themeToken.border}`
   },
-  stopList: { display: "grid", gap: 6, margin: 0, padding: 0, listStyle: "none" },
-  stop: { display: "grid", gridTemplateColumns: "40px 1fr auto", gap: 6, alignItems: "center" },
+  stopList: { display: "grid", gap: "var(--bridge-unit-6, 6px)", margin: 0, padding: 0, listStyle: "none" },
+  stop: {
+    display: "grid",
+    gridTemplateColumns: "40px 1fr auto",
+    gap: "var(--bridge-unit-6, 6px)",
+    alignItems: "center"
+  },
   stopColor: { height: 32 },
-  field: { display: "grid", gap: 6 },
+  field: { display: "grid", gap: "var(--bridge-unit-6, 6px)" },
   wheel: {
     boxSizing: "border-box",
     width: "100%",

@@ -26,12 +26,15 @@ const style = stylex.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    gap: 12,
+    gap: "var(--bridge-unit-12, 12px)",
     borderWidth: 1,
     borderStyle: "dashed",
     borderColor: token.border,
-    paddingBlock: 40,
-    paddingInline: { default: 24, "@media (max-width: 640px)": 16 },
+    paddingBlock: "var(--bridge-unit-40, 40px)",
+    paddingInline: {
+      default: "var(--bridge-unit-24, 24px)",
+      "@media (max-width: 640px)": "var(--bridge-unit-16, 16px)"
+    },
     color: token.foreground,
     textAlign: "center"
   },
@@ -69,7 +72,7 @@ const style = stylex.create({
     flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "center",
-    gap: 8
+    gap: "var(--bridge-unit-8, 8px)"
   }
 })
 

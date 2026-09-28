@@ -4,13 +4,13 @@ import type { ComponentProps } from "react"
 import { token } from "./token.stylex"
 
 const style = stylex.create({
-  root: { display: "flex", flexDirection: "column", gap: 12, color: token.foreground },
+  root: { display: "flex", flexDirection: "column", gap: "var(--bridge-unit-12, 12px)", color: token.foreground },
   row: {
     display: "grid",
     gridTemplateColumns: "minmax(0, 1fr) auto",
-    gap: 16,
+    gap: "var(--bridge-unit-16, 16px)",
     alignItems: "baseline",
-    paddingBlock: 8
+    paddingBlock: "var(--bridge-unit-8, 8px)"
   },
   separator: { borderBottomWidth: 1, borderBottomStyle: "dashed", borderBottomColor: token.border },
   detail: { color: token.mutedForeground, fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: 1.5 }

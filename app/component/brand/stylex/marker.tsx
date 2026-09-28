@@ -12,7 +12,7 @@ const style = stylex.create({
     minHeight: 16,
     width: "100%",
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     textAlign: "left",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
@@ -29,7 +29,12 @@ const style = stylex.create({
     marginRight: { "::before": 4 },
     marginLeft: { "::after": 4 }
   },
-  border: { borderBottomWidth: 1, borderBottomStyle: "solid", borderBottomColor: token.border, paddingBottom: 8 },
+  border: {
+    borderBottomWidth: 1,
+    borderBottomStyle: "solid",
+    borderBottomColor: token.border,
+    paddingBottom: "var(--bridge-unit-8, 8px)"
+  },
   icon: { width: 16, height: 16, flexShrink: 0 },
   content: {
     minWidth: 0,

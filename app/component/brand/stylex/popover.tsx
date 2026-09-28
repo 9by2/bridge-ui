@@ -32,7 +32,7 @@ const style = stylex.create({
   header: {
     display: "flex",
     flexDirection: "column",
-    gap: 2,
+    gap: "var(--bridge-unit-2, 2px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px"
   },

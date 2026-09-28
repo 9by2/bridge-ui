@@ -11,19 +11,19 @@ const style = stylex.create({
     display: "flex",
     width: "fit-content",
     alignItems: "stretch",
-    gap: { default: 0, ':has(> [data-slot="button-group"])': 8 }
+    gap: { default: 0, ':has(> [data-slot="button-group"])': "var(--bridge-unit-8, 8px)" }
   },
   vertical: { flexDirection: "column" },
   text: {
     display: "flex",
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     borderRadius: "var(--bridge-radius-10, 0.625em)",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: token.border,
     backgroundColor: token.muted,
-    paddingInline: 10,
+    paddingInline: "var(--bridge-unit-10, 10px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     fontWeight: 500

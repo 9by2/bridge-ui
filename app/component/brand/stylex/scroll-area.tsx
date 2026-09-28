@@ -18,7 +18,7 @@ const style = stylex.create({
     boxSizing: "border-box",
     display: "flex",
     touchAction: "none",
-    padding: 1,
+    padding: "var(--bridge-unit-1, 1px)",
     transitionProperty: "color, background-color, border-color",
     transitionDuration: "150ms",
     userSelect: "none"

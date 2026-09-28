@@ -19,15 +19,21 @@ const style = stylex.create({
       default: token.background,
       ':is([data-slot="card-content"] *, [data-slot="popover-content"] *)': "transparent"
     },
-    padding: 16
+    padding: "var(--bridge-unit-16, 16px)"
   },
   months: {
     position: "relative",
     display: "flex",
     flexDirection: { default: "column", "@media (min-width: 768px)": "row" },
-    gap: "2.5em"
+    gap: "calc(2.5em * var(--bridge-space-2) / 0.5rem)"
   },
-  month: { display: "flex", width: 252, flex: "0 0 252px", flexDirection: "column", gap: 12 },
+  month: {
+    display: "flex",
+    width: 252,
+    flex: "0 0 252px",
+    flexDirection: "column",
+    gap: "var(--bridge-unit-12, 12px)"
+  },
   nav: {
     position: "absolute",
     left: 0,
@@ -37,12 +43,12 @@ const style = stylex.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 4
+    gap: "var(--bridge-unit-4, 4px)"
   },
   navButton: {
     width: 28,
     height: 28,
-    padding: 4,
+    padding: "var(--bridge-unit-4, 4px)",
     userSelect: "none",
     opacity: { default: 1, ':is([aria-disabled="true"])': 0.5 }
   },
@@ -52,7 +58,7 @@ const style = stylex.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    paddingInline: 28,
+    paddingInline: "var(--bridge-unit-28, 28px)",
     boxSizing: "border-box"
   },
   dropdowns: {
@@ -61,7 +67,7 @@ const style = stylex.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    gap: 6,
+    gap: "var(--bridge-unit-6, 6px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     fontWeight: 500
@@ -74,7 +80,12 @@ const style = stylex.create({
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px"
   },
-  captionDropdown: { display: "flex", alignItems: "center", gap: 4, borderRadius: "var(--bridge-radius-8, 0.5em)" },
+  captionDropdown: {
+    display: "flex",
+    alignItems: "center",
+    gap: "var(--bridge-unit-4, 4px)",
+    borderRadius: "var(--bridge-radius-8, 0.5em)"
+  },
   grid: { width: 252, borderCollapse: "collapse", tableLayout: "fixed" },
   weekdays: { display: "flex" },
   weekday: {
@@ -138,11 +149,11 @@ const style = stylex.create({
     height: "2.5em",
     width: "2.5em",
     flexDirection: "column",
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     borderWidth: 0,
     borderRadius: "var(--bridge-radius-6, 0.375em)",
     margin: "auto",
-    padding: 4,
+    padding: "var(--bridge-unit-4, 4px)",
     lineHeight: 1,
     fontFamily: "inherit",
     fontSize: "var(--bridge-font-size-base, 0.875em)",

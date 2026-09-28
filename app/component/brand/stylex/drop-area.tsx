@@ -14,8 +14,8 @@ const style = stylex.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    gap: 12,
-    padding: 24,
+    gap: "var(--bridge-unit-12, 12px)",
+    padding: "var(--bridge-unit-24, 24px)",
     textAlign: "center",
     cursor: { default: "pointer", ':is([aria-disabled="true"])': "not-allowed" },
     borderRadius: "var(--bridge-radius-14, 0.875em)",
@@ -31,8 +31,13 @@ const style = stylex.create({
     backgroundColor: { default: "transparent", ':is([data-active="true"])': token.accent },
     opacity: { default: 1, ':is([aria-disabled="true"])': 0.5 }
   },
-  inline: { minHeight: "5rem", flexDirection: "row", textAlign: "start", padding: 16 },
-  compact: { minHeight: "2.5rem", flexDirection: "row", padding: 8, gap: 8 }
+  inline: { minHeight: "5rem", flexDirection: "row", textAlign: "start", padding: "var(--bridge-unit-16, 16px)" },
+  compact: {
+    minHeight: "2.5rem",
+    flexDirection: "row",
+    padding: "var(--bridge-unit-8, 8px)",
+    gap: "var(--bridge-unit-8, 8px)"
+  }
 })
 export function DropArea({
   children,

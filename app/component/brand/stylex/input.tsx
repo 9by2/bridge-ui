@@ -64,7 +64,7 @@ export const inputStyle = stylex.create({
     color: token.mutedForeground,
     pointerEvents: "none"
   },
-  withIcon: { paddingLeft: 34 }
+  withIcon: { paddingLeft: "var(--bridge-unit-34, 34px)" }
 })
 
 export function Input({ className, icon, ...props }: ComponentProps<"input"> & { icon?: ReactNode }) {

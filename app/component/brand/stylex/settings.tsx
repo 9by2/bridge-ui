@@ -30,31 +30,31 @@ const style = stylex.create({
   sidebar: {
     display: "flex",
     flexDirection: "column",
-    gap: 4,
-    padding: 12,
+    gap: "var(--bridge-unit-4, 4px)",
+    padding: "var(--bridge-unit-12, 12px)",
     borderRightWidth: 1,
     borderRightStyle: "solid",
     borderRightColor: token.border
   },
-  picker: { paddingBottom: 16 },
+  picker: { paddingBottom: "var(--bridge-unit-16, 16px)" },
   pickerContent: {
     width: "min(100%, 22rem)",
     maxWidth: "calc(100% - 2rem)",
-    gap: 12,
-    padding: 12
+    gap: "var(--bridge-unit-12, 12px)",
+    padding: "var(--bridge-unit-12, 12px)"
   },
   pickerTitle: { marginInline: 4, marginTop: 4 },
   sidebarHeader: {
     display: "flex",
     alignItems: "center",
-    gap: 10,
-    padding: 8,
+    gap: "var(--bridge-unit-10, 10px)",
+    padding: "var(--bridge-unit-8, 8px)",
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
     borderBottomColor: token.border,
     marginBottom: 8
   },
-  nav: { display: "flex", flexDirection: "column", gap: 4 },
+  nav: { display: "flex", flexDirection: "column", gap: "var(--bridge-unit-4, 4px)" },
   navItem: {
     display: "flex",
     width: "100%",
@@ -69,7 +69,7 @@ const style = stylex.create({
       ':is([aria-current="page"])': token.accent
     },
     color: token.foreground,
-    paddingInline: 10,
+    paddingInline: "var(--bridge-unit-10, 10px)",
     fontFamily: "inherit",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     fontWeight: { default: 400, ':is([aria-current="page"])': 600 },
@@ -77,7 +77,10 @@ const style = stylex.create({
     outline: "none",
     cursor: "pointer"
   },
-  content: { minWidth: 0, padding: { default: 28, "@media (max-width: 767px)": 16 } }
+  content: {
+    minWidth: 0,
+    padding: { default: "var(--bridge-unit-28, 28px)", "@media (max-width: 767px)": "var(--bridge-unit-16, 16px)" }
+  }
 })
 
 const classes = (own: string | undefined, value?: string) => [own, value].filter(Boolean).join(" ")

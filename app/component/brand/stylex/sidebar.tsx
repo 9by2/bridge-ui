@@ -83,7 +83,7 @@ const style = stylex.create({
   right: { right: 0, borderLeftWidth: 1 },
   leftOff: { left: "calc(var(--sidebar-width) * -1)" },
   rightOff: { right: "calc(var(--sidebar-width) * -1)" },
-  floating: { padding: 8, borderWidth: 0 },
+  floating: { padding: "var(--bridge-unit-8, 8px)", borderWidth: 0 },
   iconFloating: { width: "calc(var(--sidebar-width-icon) + 18px)" },
   inner: { display: "flex", width: "100%", height: "100%", flexDirection: "column", backgroundColor: token.sidebar },
   floatingInner: {
@@ -112,7 +112,12 @@ const style = stylex.create({
     flexDirection: "column",
     backgroundColor: token.background
   },
-  edge: { display: "flex", flexDirection: "column", gap: 8, padding: 8 },
+  edge: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--bridge-unit-8, 8px)",
+    padding: "var(--bridge-unit-8, 8px)"
+  },
   input: { height: 32, width: "100%", backgroundColor: token.sidebar, boxShadow: "none" },
   separator: { marginInline: 8, width: "auto", backgroundColor: token.sidebarBorder },
   content: {
@@ -131,7 +136,7 @@ const style = stylex.create({
     width: "100%",
     minWidth: 0,
     flexDirection: "column",
-    padding: 8
+    padding: "var(--bridge-unit-8, 8px)"
   },
   groupContent: { width: "100%", fontSize: "var(--bridge-font-size-base, 0.875em)", lineHeight: "20px" },
   label: {
@@ -140,7 +145,7 @@ const style = stylex.create({
     flexShrink: 0,
     alignItems: "center",
     borderRadius: "var(--bridge-radius-8, 0.5em)",
-    paddingInline: 8,
+    paddingInline: "var(--bridge-unit-8, 8px)",
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     fontWeight: 500,
@@ -168,10 +173,10 @@ const style = stylex.create({
     width: { default: "100%", [stylex.when.ancestor('[data-collapsible="icon"]')]: 32 },
     height: 32,
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     overflow: "hidden",
     borderRadius: "var(--bridge-radius-8, 0.5em)",
-    padding: 8,
+    padding: "var(--bridge-unit-8, 8px)",
     textAlign: "left",
     fontFamily: "inherit",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
@@ -231,7 +236,7 @@ const style = stylex.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: "var(--bridge-radius-8, 0.5em)",
-    paddingInline: 4,
+    paddingInline: "var(--bridge-unit-4, 4px)",
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     fontWeight: 500,
     fontVariantNumeric: "tabular-nums"
@@ -240,9 +245,9 @@ const style = stylex.create({
     display: "flex",
     height: 32,
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     borderRadius: "var(--bridge-radius-8, 0.5em)",
-    paddingInline: 8
+    paddingInline: "var(--bridge-unit-8, 8px)"
   },
   skeletonText: { height: 16, flex: 1 },
   sub: {
@@ -252,12 +257,12 @@ const style = stylex.create({
     minWidth: 0,
     translate: "1px 0",
     flexDirection: "column",
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     borderLeftWidth: 1,
     borderLeftStyle: "solid",
     borderLeftColor: token.sidebarBorder,
-    paddingInline: 10,
-    paddingBlock: 2,
+    paddingInline: "var(--bridge-unit-10, 10px)",
+    paddingBlock: "var(--bridge-unit-2, 2px)",
     listStyleType: "none"
   },
   subButton: {

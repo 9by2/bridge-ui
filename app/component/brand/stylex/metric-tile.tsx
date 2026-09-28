@@ -26,8 +26,8 @@ const style = stylex.create({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    gap: 24,
-    padding: 16,
+    gap: "var(--bridge-unit-24, 24px)",
+    padding: "var(--bridge-unit-16, 16px)",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: themeToken.border,
@@ -35,9 +35,14 @@ const style = stylex.create({
     backgroundColor: themeToken.surface,
     color: themeToken.surfaceForeground
   },
-  featured: { padding: 24, gap: 48 },
-  compact: { padding: 12, gap: 16 },
-  header: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 },
+  featured: { padding: "var(--bridge-unit-24, 24px)", gap: "var(--bridge-unit-48, 48px)" },
+  compact: { padding: "var(--bridge-unit-12, 12px)", gap: "var(--bridge-unit-16, 16px)" },
+  header: {
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: "var(--bridge-unit-12, 12px)"
+  },
   label: {
     fontFamily: token.fontHeading,
     fontSize: "var(--bridge-font-size-sm, 0.75em)",

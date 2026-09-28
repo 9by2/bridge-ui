@@ -16,7 +16,7 @@ const style = stylex.create({
   audio: { width: "100%" },
   pdf: { height: "55dvh", width: "100%", borderWidth: 0 },
   link: { textDecorationLine: "underline" },
-  footer: { display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }
+  footer: { display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--bridge-unit-8, 8px)" }
 })
 
 type ValueOf<T> = T[keyof T]

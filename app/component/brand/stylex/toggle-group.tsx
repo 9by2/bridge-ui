@@ -25,9 +25,15 @@ const style = stylex.create({
   item: { flexShrink: 0, zIndex: { default: "auto", ":focus": 10, ":focus-visible": 10 } },
   joined: {
     borderRadius: 0,
-    paddingInline: 8,
-    paddingRight: { default: 8, ':has([data-icon="inline-end"])': 6 },
-    paddingLeft: { default: 8, ':has([data-icon="inline-start"])': 6 }
+    paddingInline: "var(--bridge-unit-8, 8px)",
+    paddingRight: {
+      default: "var(--bridge-unit-8, 8px)",
+      ':has([data-icon="inline-end"])': "var(--bridge-unit-6, 6px)"
+    },
+    paddingLeft: {
+      default: "var(--bridge-unit-8, 8px)",
+      ':has([data-icon="inline-start"])': "var(--bridge-unit-6, 6px)"
+    }
   },
   horizontalEdge: {
     borderTopLeftRadius: { default: 0, ":first-child": 10 },
@@ -67,7 +73,7 @@ export function ToggleGroup({
       orientation={orientation}
       {...props}
       style={(state) => ({
-        gap: spacing * 4,
+        gap: `calc(var(--bridge-unit-4, 4px) * ${spacing})`,
         ...(typeof callerStyle === "function" ? callerStyle(state) : callerStyle)
       })}
       className={(state) =>

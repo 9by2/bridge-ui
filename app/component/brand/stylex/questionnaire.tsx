@@ -8,7 +8,7 @@ import { inputStyle } from "./input"
 import { token } from "./token.stylex"
 
 const style = stylex.create({
-  root: { display: "flex", width: "100%", minWidth: 0, flexDirection: "column", gap: 16 },
+  root: { display: "flex", width: "100%", minWidth: 0, flexDirection: "column", gap: "var(--bridge-unit-16, 16px)" },
   progress: {
     minHeight: "1lh",
     width: "fit-content",
@@ -23,7 +23,7 @@ const style = stylex.create({
     display: "flex",
     minWidth: 0,
     flexDirection: "column",
-    gap: 16,
+    gap: "var(--bridge-unit-16, 16px)",
     borderWidth: 0,
     padding: 0,
     margin: 0,
@@ -45,7 +45,7 @@ const style = stylex.create({
     textWrap: "pretty",
     color: token.mutedForeground
   },
-  choices: { display: "grid", minWidth: 0, gap: 8 },
+  choices: { display: "grid", minWidth: 0, gap: "var(--bridge-unit-8, 8px)" },
   choice: {
     position: "relative",
     boxSizing: "border-box",
@@ -53,7 +53,7 @@ const style = stylex.create({
     minHeight: 44,
     cursor: { default: "pointer", ":is([data-disabled])": "not-allowed" },
     alignItems: "start",
-    gap: 10,
+    gap: "var(--bridge-unit-10, 10px)",
     borderRadius: "var(--bridge-radius-10, 0.625em)",
     borderWidth: 1,
     borderStyle: "solid",
@@ -68,8 +68,8 @@ const style = stylex.create({
       ":hover": `color-mix(in oklch, ${token.muted}, transparent 50%)`,
       ":is([data-checked])": token.muted
     },
-    paddingInline: 12,
-    paddingBlock: 10,
+    paddingInline: "var(--bridge-unit-12, 12px)",
+    paddingBlock: "var(--bridge-unit-10, 10px)",
     textAlign: "start",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
@@ -105,7 +105,7 @@ const style = stylex.create({
     translate: "0 1.8px",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: { default: 4, [stylex.when.ancestor('[data-type="radio"]')]: 9999 },
+    borderRadius: { default: "var(--bridge-radius-4, 4px)", [stylex.when.ancestor('[data-type="radio"]')]: 9999 },
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: { default: token.input, [stylex.when.ancestor("[data-checked]")]: token.primary },
@@ -124,7 +124,14 @@ const style = stylex.create({
     width: 14,
     height: 14
   },
-  choiceLabel: { display: "flex", minWidth: 0, flex: 1, flexDirection: "column", gap: 2, lineHeight: 1.375 },
+  choiceLabel: {
+    display: "flex",
+    minWidth: 0,
+    flex: 1,
+    flexDirection: "column",
+    gap: "var(--bridge-unit-2, 2px)",
+    lineHeight: 1.375
+  },
   shortcut: {
     pointerEvents: "none",
     marginInlineStart: "auto",
@@ -161,7 +168,7 @@ const style = stylex.create({
     width: "100%",
     gridTemplateColumns: "minmax(0, 1fr) auto auto",
     alignItems: "center",
-    gap: 8
+    gap: "var(--bridge-unit-8, 8px)"
   },
   action: { gridRowStart: 1, minHeight: { default: 44, "@media (min-width: 640px)": 0 }, justifySelf: "end" },
   previous: { gridColumnStart: 1, justifySelf: "start" },

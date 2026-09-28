@@ -66,13 +66,13 @@ const style = stylex.create({
     justifyContent: "center",
     color: token.highlight
   },
-  header: { display: "flex", flexDirection: "column", gap: 8 },
+  header: { display: "flex", flexDirection: "column", gap: "var(--bridge-unit-8, 8px)" },
   footer: {
     boxSizing: "border-box",
     display: "flex",
     flexDirection: { default: "column-reverse", "@media (min-width: 640px)": "row" },
     justifyContent: "flex-end",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     marginInline: `calc(var(--bridge-surface-padding, 16px) * -1)`,
     marginBottom: `calc(var(--bridge-surface-padding, 16px) * -1)`,
     borderBottomLeftRadius: geometryToken.overlayRadius,

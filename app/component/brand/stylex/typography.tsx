@@ -27,7 +27,7 @@ const style = stylex.create({
   blockquote: {
     marginBlock: 16,
     marginInline: 0,
-    paddingInlineStart: 16,
+    paddingInlineStart: "var(--bridge-unit-16, 16px)",
     borderInlineStartWidth: 2,
     borderInlineStartStyle: "solid",
     borderInlineStartColor: token.border,
@@ -44,7 +44,7 @@ const style = stylex.create({
     fontSize: "0.875em",
     fontWeight: 500
   },
-  list: { marginBlock: 12, paddingInlineStart: 24, lineHeight: 1.6 },
+  list: { marginBlock: 12, paddingInlineStart: "var(--bridge-unit-24, 24px)", lineHeight: 1.6 },
   bullet: { listStyleType: "disc" },
   ordered: { listStyleType: "decimal" },
   lead: {

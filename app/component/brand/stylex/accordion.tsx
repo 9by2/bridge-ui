@@ -24,7 +24,7 @@ const style = stylex.create({
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: { default: "transparent", ":focus-visible": token.ring },
-    paddingBlock: 10,
+    paddingBlock: "var(--bridge-unit-10, 10px)",
     paddingInline: 0,
     textAlign: "left",
     fontFamily: "inherit",
@@ -60,7 +60,7 @@ const style = stylex.create({
     animationTimingFunction: "ease-out"
   },
   closed: { animationName: up },
-  content: { paddingTop: 0, paddingBottom: 10 }
+  content: { paddingTop: 0, paddingBottom: "var(--bridge-unit-10, 10px)" }
 })
 export function Accordion({ className, ...props }: Primitive.Root.Props) {
   return (

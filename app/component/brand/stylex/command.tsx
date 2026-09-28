@@ -17,7 +17,7 @@ const style = stylex.create({
     overflow: "hidden",
     borderRadius: "var(--bridge-radius-14, 0.875em)",
     backgroundColor: token.background,
-    padding: 4,
+    padding: "var(--bridge-unit-4, 4px)",
     color: token.foreground
   },
   hidden: {
@@ -38,7 +38,7 @@ const style = stylex.create({
     borderRadius: "var(--bridge-radius-14, 0.875em)",
     padding: 0
   },
-  wrapper: { padding: 4, paddingBottom: 0 },
+  wrapper: { padding: "var(--bridge-unit-4, 4px)", paddingBottom: 0 },
   input: {
     width: "100%",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
@@ -62,16 +62,16 @@ const style = stylex.create({
     scrollbarWidth: "none"
   },
   empty: {
-    paddingBlock: 24,
+    paddingBlock: "var(--bridge-unit-24, 24px)",
     textAlign: "center",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px"
   },
-  group: { overflow: "hidden", padding: 4, color: token.foreground },
+  group: { overflow: "hidden", padding: "var(--bridge-unit-4, 4px)", color: token.foreground },
   heading: {
     display: "block",
-    paddingInline: 8,
-    paddingBlock: 6,
+    paddingInline: "var(--bridge-unit-8, 8px)",
+    paddingBlock: "var(--bridge-unit-6, 6px)",
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     fontWeight: 500,
@@ -83,10 +83,13 @@ const style = stylex.create({
     display: "flex",
     cursor: "default",
     alignItems: "center",
-    gap: 8,
-    borderRadius: { default: 6, ':is([data-slot="dialog-content"] *)': 10 },
-    paddingInline: 8,
-    paddingBlock: 6,
+    gap: "var(--bridge-unit-8, 8px)",
+    borderRadius: {
+      default: "var(--bridge-radius-6, 6px)",
+      ':is([data-slot="dialog-content"] *)': "var(--bridge-radius-10, 10px)"
+    },
+    paddingInline: "var(--bridge-unit-8, 8px)",
+    paddingBlock: "var(--bridge-unit-6, 6px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     outline: "2px solid transparent",

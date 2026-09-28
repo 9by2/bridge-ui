@@ -43,8 +43,8 @@ const style = stylex.create({
     cursor: "text",
     alignItems: "center",
     justifyContent: "center",
-    gap: 8,
-    paddingBlock: 6,
+    gap: "var(--bridge-unit-8, 8px)",
+    paddingBlock: "var(--bridge-unit-6, 6px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     fontWeight: 500,
@@ -54,34 +54,34 @@ const style = stylex.create({
   },
   start: {
     order: -9999,
-    paddingLeft: 8,
+    paddingLeft: "var(--bridge-unit-8, 8px)",
     marginLeft: { default: 0, ":has(> button)": "-0.3rem", ":has(> kbd)": "-0.15rem" }
   },
   end: {
     order: 9999,
-    paddingRight: 8,
+    paddingRight: "var(--bridge-unit-8, 8px)",
     marginRight: { default: 0, ":has(> button)": "-0.3rem", ":has(> kbd)": "-0.15rem" }
   },
   blockStart: {
     order: -9999,
     width: "100%",
     justifyContent: "start",
-    paddingInline: 10,
-    paddingTop: 8,
-    paddingBottom: { default: 6, ":is(.border-b)": 8 }
+    paddingInline: "var(--bridge-unit-10, 10px)",
+    paddingTop: "var(--bridge-unit-8, 8px)",
+    paddingBottom: { default: "var(--bridge-unit-6, 6px)", ":is(.border-b)": "var(--bridge-unit-8, 8px)" }
   },
   blockEnd: {
     order: 9999,
     width: "100%",
     justifyContent: "start",
-    paddingInline: 10,
-    paddingBottom: 8,
-    paddingTop: { default: 6, ":is(.border-t)": 8 }
+    paddingInline: "var(--bridge-unit-10, 10px)",
+    paddingBottom: "var(--bridge-unit-8, 8px)",
+    paddingTop: { default: "var(--bridge-unit-6, 6px)", ":is(.border-t)": "var(--bridge-unit-8, 8px)" }
   },
   text: {
     display: "flex",
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     color: token.mutedForeground
@@ -94,12 +94,24 @@ const style = stylex.create({
     boxShadow: { default: "none", ":focus-visible": "none" }
   },
   input: {
-    paddingTop: { default: 4, [stylex.when.ancestor(':has(> [data-align="block-end"])')]: 12 },
-    paddingBottom: { default: 4, [stylex.when.ancestor(':has(> [data-align="block-start"])')]: 12 },
-    paddingRight: { default: 10, [stylex.when.ancestor(':has(> [data-align="inline-end"])')]: 6 },
-    paddingLeft: { default: 10, [stylex.when.ancestor(':has(> [data-align="inline-start"])')]: 6 }
+    paddingTop: {
+      default: "var(--bridge-unit-4, 4px)",
+      [stylex.when.ancestor(':has(> [data-align="block-end"])')]: "var(--bridge-unit-12, 12px)"
+    },
+    paddingBottom: {
+      default: "var(--bridge-unit-4, 4px)",
+      [stylex.when.ancestor(':has(> [data-align="block-start"])')]: "var(--bridge-unit-12, 12px)"
+    },
+    paddingRight: {
+      default: "var(--bridge-unit-10, 10px)",
+      [stylex.when.ancestor(':has(> [data-align="inline-end"])')]: "var(--bridge-unit-6, 6px)"
+    },
+    paddingLeft: {
+      default: "var(--bridge-unit-10, 10px)",
+      [stylex.when.ancestor(':has(> [data-align="inline-start"])')]: "var(--bridge-unit-6, 6px)"
+    }
   },
-  textarea: { resize: "none", paddingBlock: 8 }
+  textarea: { resize: "none", paddingBlock: "var(--bridge-unit-8, 8px)" }
 })
 
 export function InputGroup({ className, ...props }: ComponentProps<"div">) {

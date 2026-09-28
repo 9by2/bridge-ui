@@ -34,7 +34,7 @@ const style = stylex.create({
     scrollSnapAlign: "start"
   },
   default: {
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     paddingInline: {
@@ -42,10 +42,13 @@ const style = stylex.create({
       ':has([data-slot="attachment-content"])': 10,
       ':has([data-slot="attachment-media"])': 8
     },
-    paddingBlock: { default: 0, ':has([data-slot="attachment-content"], [data-slot="attachment-media"])': 8 }
+    paddingBlock: {
+      default: 0,
+      ':has([data-slot="attachment-content"], [data-slot="attachment-media"])': "var(--bridge-unit-8, 8px)"
+    }
   },
   sm: {
-    gap: 10,
+    gap: "var(--bridge-unit-10, 10px)",
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     paddingInline: {
@@ -53,10 +56,13 @@ const style = stylex.create({
       ':has([data-slot="attachment-content"])': 8,
       ':has([data-slot="attachment-media"])': 6
     },
-    paddingBlock: { default: 0, ':has([data-slot="attachment-content"], [data-slot="attachment-media"])': 6 }
+    paddingBlock: {
+      default: 0,
+      ':has([data-slot="attachment-content"], [data-slot="attachment-media"])': "var(--bridge-unit-6, 6px)"
+    }
   },
   xs: {
-    gap: 6,
+    gap: "var(--bridge-unit-6, 6px)",
     borderRadius: "var(--bridge-radius-10, 0.625em)",
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
@@ -65,7 +71,10 @@ const style = stylex.create({
       ':has([data-slot="attachment-content"])': 6,
       ':has([data-slot="attachment-media"])': 4
     },
-    paddingBlock: { default: 0, ':has([data-slot="attachment-content"], [data-slot="attachment-media"])': 4 }
+    paddingBlock: {
+      default: 0,
+      ':has([data-slot="attachment-content"], [data-slot="attachment-media"])': "var(--bridge-unit-4, 4px)"
+    }
   },
   horizontal: { minWidth: 160, alignItems: "center" },
   vertical: { width: { default: 96, ':has([data-slot="attachment-content"])': 120 }, flexDirection: "column" },
@@ -83,7 +92,10 @@ const style = stylex.create({
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
-    borderRadius: { default: 10, [stylex.when.ancestor('[data-size="xs"]')]: 8 },
+    borderRadius: {
+      default: "var(--bridge-radius-10, 10px)",
+      [stylex.when.ancestor('[data-size="xs"]')]: "var(--bridge-radius-8, 8px)"
+    },
     backgroundColor: {
       default: token.muted,
       [stylex.when.ancestor('[data-state="error"]')]: `color-mix(in oklch, ${token.destructive}, transparent 90%)`
@@ -96,7 +108,7 @@ const style = stylex.create({
     minWidth: 0,
     flex: 1,
     lineHeight: 1.25,
-    paddingInline: { default: 0, [stylex.when.ancestor('[data-orientation="vertical"]')]: 4 }
+    paddingInline: { default: 0, [stylex.when.ancestor('[data-orientation="vertical"]')]: "var(--bridge-unit-4, 4px)" }
   },
   title: {
     display: "block",
@@ -130,7 +142,7 @@ const style = stylex.create({
     alignItems: "center",
     top: { default: "auto", [stylex.when.ancestor('[data-orientation="vertical"]')]: 12 },
     right: { default: "auto", [stylex.when.ancestor('[data-orientation="vertical"]')]: 12 },
-    gap: { default: 0, [stylex.when.ancestor('[data-orientation="vertical"]')]: 4 }
+    gap: { default: 0, [stylex.when.ancestor('[data-orientation="vertical"]')]: "var(--bridge-unit-4, 4px)" }
   },
   trigger: {
     position: "absolute",
@@ -146,10 +158,10 @@ const style = stylex.create({
     scrollSnapType: "x mandatory",
     scrollPaddingInline: 4,
     scrollbarWidth: "none",
-    gap: 12,
+    gap: "var(--bridge-unit-12, 12px)",
     overflowX: "auto",
     overscrollBehaviorX: "contain",
-    paddingBlock: 4
+    paddingBlock: "var(--bridge-unit-4, 4px)"
   }
 })
 export function Attachment({

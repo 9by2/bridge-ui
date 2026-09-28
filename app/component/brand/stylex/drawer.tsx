@@ -247,8 +247,8 @@ const style = stylex.create({
     display: "flex",
     flexShrink: 0,
     flexDirection: "column",
-    gap: 2,
-    padding: 16,
+    gap: "var(--bridge-unit-2, 2px)",
+    padding: "var(--bridge-unit-16, 16px)",
     paddingBottom: 0,
     textAlign: {
       default: "left",
@@ -260,8 +260,8 @@ const style = stylex.create({
     display: "flex",
     flexShrink: 0,
     flexDirection: "column",
-    gap: 8,
-    padding: 16,
+    gap: "var(--bridge-unit-8, 8px)",
+    padding: "var(--bridge-unit-16, 16px)",
     paddingTop: 0
   },
   title: {

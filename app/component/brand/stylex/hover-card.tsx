@@ -15,7 +15,7 @@ const style = stylex.create({
     transformOrigin: "var(--transform-origin)",
     borderRadius: "var(--bridge-radius-10, 0.625em)",
     backgroundColor: token.background,
-    padding: 10,
+    padding: "var(--bridge-unit-10, 10px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     color: token.foreground,

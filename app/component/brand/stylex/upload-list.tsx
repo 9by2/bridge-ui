@@ -102,12 +102,19 @@ export type UploadListProps = {
 }
 
 const style = stylex.create({
-  root: { display: "flex", flexDirection: "column", gap: 12 },
-  list: { display: "flex", flexDirection: "column", gap: 8, listStyleType: "none", padding: 0, margin: 0 },
+  root: { display: "flex", flexDirection: "column", gap: "var(--bridge-unit-12, 12px)" },
+  list: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--bridge-unit-8, 8px)",
+    listStyleType: "none",
+    padding: 0,
+    margin: 0
+  },
   grid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(9rem, 1fr))",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     listStyleType: "none",
     padding: 0,
     margin: 0
@@ -116,9 +123,9 @@ const style = stylex.create({
   issue: {
     display: "flex",
     flexDirection: "column",
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     margin: 0,
-    paddingInlineStart: 16,
+    paddingInlineStart: "var(--bridge-unit-16, 16px)",
     color: token.destructive,
     fontSize: "var(--bridge-font-size-sm, 0.75em)"
   }

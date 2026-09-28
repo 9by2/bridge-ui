@@ -37,7 +37,7 @@ test("promoted package output is precompiled and includes scoped adapter", async
   expect(css).toContain("var(--bridge-font-heading,")
   expect(css).toContain("var(--bridge-font-size-base,")
   expect(css).toMatch(/--bridge-font-size-base: 0?\.875em/)
-  expect(css).toMatch(/--bridge-radius-10: 0?\.625em/)
+  expect(css).toMatch(/--bridge-radius-10: var\(--bridge-control-radius\)/)
   expect(css).toMatch(/var\(--bridge-font-size-base, 0?\.875em\)/)
   expect(css).toMatch(/var\(--bridge-radius-10, 0?\.625em\)/)
   expect(css).not.toMatch(/--bridge-(?:button|slider)-[a-z-]+/)

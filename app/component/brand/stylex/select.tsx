@@ -8,13 +8,13 @@ import { effectToken, token } from "./token.stylex"
 const enter = stylex.keyframes({ from: { opacity: 0, scale: "0.95" }, to: { opacity: 1, scale: "1" } })
 const exit = stylex.keyframes({ from: { opacity: 1, scale: "1" }, to: { opacity: 0, scale: "0.95" } })
 const style = stylex.create({
-  group: { scrollMarginBlock: 4, padding: 4 },
+  group: { scrollMarginBlock: 4, padding: "var(--bridge-unit-4, 4px)" },
   value: {
     display: "flex",
     flex: 1,
     textAlign: "left",
     alignItems: "center",
-    gap: 6,
+    gap: "var(--bridge-unit-6, 6px)",
     overflow: "hidden",
     WebkitLineClamp: 1,
     WebkitBoxOrient: "vertical"
@@ -25,7 +25,7 @@ const style = stylex.create({
     width: "fit-content",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 6,
+    gap: "var(--bridge-unit-6, 6px)",
     borderRadius: "var(--bridge-radius-10, 0.625em)",
     borderWidth: 1,
     borderStyle: "solid",
@@ -36,9 +36,9 @@ const style = stylex.create({
         [stylex.when.ancestor('[data-pilot-theme="cue"]')]: `color-mix(in oklch, ${token.input}, transparent 50%)`
       }
     },
-    paddingBlock: 8,
-    paddingRight: 8,
-    paddingLeft: 10,
+    paddingBlock: "var(--bridge-unit-8, 8px)",
+    paddingRight: "var(--bridge-unit-8, 8px)",
+    paddingLeft: "var(--bridge-unit-10, 10px)",
     fontFamily: "inherit",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
@@ -57,7 +57,7 @@ const style = stylex.create({
   unstyled: {
     width: "fit-content",
     height: "auto",
-    gap: 6,
+    gap: "var(--bridge-unit-6, 6px)",
     borderWidth: 0,
     borderRadius: 0,
     backgroundColor: "transparent",
@@ -91,8 +91,8 @@ const style = stylex.create({
   closed: { animationName: exit },
   aligned: { animationName: "none" },
   label: {
-    paddingInline: 6,
-    paddingBlock: 4,
+    paddingInline: "var(--bridge-unit-6, 6px)",
+    paddingBlock: "var(--bridge-unit-4, 4px)",
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     color: token.mutedForeground
@@ -104,11 +104,11 @@ const style = stylex.create({
     width: "100%",
     cursor: "default",
     alignItems: "center",
-    gap: 6,
+    gap: "var(--bridge-unit-6, 6px)",
     borderRadius: "var(--bridge-radius-8, 0.5em)",
-    paddingBlock: 4,
-    paddingRight: 32,
-    paddingLeft: 6,
+    paddingBlock: "var(--bridge-unit-4, 4px)",
+    paddingRight: "var(--bridge-unit-32, 32px)",
+    paddingLeft: "var(--bridge-unit-6, 6px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     outline: "2px solid transparent",
@@ -119,7 +119,7 @@ const style = stylex.create({
     pointerEvents: { default: "auto", ":is([data-disabled])": "none" },
     opacity: { default: 1, ":is([data-disabled])": 0.5 }
   },
-  text: { display: "flex", flex: 1, flexShrink: 0, gap: 8, whiteSpace: "nowrap" },
+  text: { display: "flex", flex: 1, flexShrink: 0, gap: "var(--bridge-unit-8, 8px)", whiteSpace: "nowrap" },
   indicator: {
     position: "absolute",
     right: 8,
@@ -139,7 +139,7 @@ const style = stylex.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: token.background,
-    paddingBlock: 4
+    paddingBlock: "var(--bridge-unit-4, 4px)"
   },
   top: { top: 0 },
   bottom: { bottom: 0 }
