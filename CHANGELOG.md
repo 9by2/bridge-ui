@@ -1,5 +1,11 @@
 # @bridge/ui
 
+## 0.13.0-rc.0
+
+### Minor Changes
+
+- b2151cf: Apply global Theme radius and spacing scales to owned component geometry while preserving intentional shape and layout variants.
+
 ## 0.12.0
 
 ### Minor Changes
