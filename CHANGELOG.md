@@ -1,6 +1,6 @@
 # @bridge/ui
 
-## 0.13.1-rc.0
+## 0.13.1
 
 ### Patch Changes
 
