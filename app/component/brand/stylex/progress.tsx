@@ -4,7 +4,7 @@ import * as stylex from "@stylexjs/stylex"
 import { token } from "./token.stylex"
 
 const style = stylex.create({
-  root: { display: "flex", flexWrap: "wrap", gap: 12 },
+  root: { display: "flex", flexWrap: "wrap", gap: "var(--bridge-unit-12, 12px)" },
   track: {
     position: "relative",
     display: "flex",

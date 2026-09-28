@@ -5,7 +5,7 @@ const style = stylex.create({
   root: {
     display: "flex",
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: 1,
     fontWeight: 500,

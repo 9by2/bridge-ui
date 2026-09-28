@@ -22,14 +22,14 @@ const style = stylex.create({
   cardBack: { transform: "rotateY(180deg)" },
   front: {
     gridArea: "stack",
-    padding: 24,
+    padding: "var(--bridge-unit-24, 24px)",
     borderRadius: token.shapeSurface,
     backgroundColor: token.card,
     boxShadow: `0 0 0 1px ${token.border}`
   },
   back: {
     gridArea: "stack",
-    padding: 24,
+    padding: "var(--bridge-unit-24, 24px)",
     borderRadius: token.shapeSurface,
     backgroundColor: token.primary,
     color: token.primaryForeground,

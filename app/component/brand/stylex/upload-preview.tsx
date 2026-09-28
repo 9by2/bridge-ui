@@ -20,7 +20,7 @@ const style = stylex.create({
     width: "100%",
     aspectRatio: "1",
     overflow: "hidden",
-    borderRadius: 6,
+    borderRadius: "var(--bridge-radius-6, 6px)",
     color: token.mutedForeground,
     backgroundColor: token.muted
   },

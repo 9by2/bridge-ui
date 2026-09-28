@@ -35,7 +35,7 @@ const style = stylex.create({
   vertical: { flexDirection: "column" },
   horizontal: { flexDirection: "row", overflowX: "auto", overscrollBehaviorInline: "contain" },
   item: { position: "relative", display: "flex", minWidth: 0, flexDirection: "column" },
-  itemVertical: { paddingBottom: 32 },
+  itemVertical: { paddingBottom: "var(--bridge-unit-32, 32px)" },
   itemHorizontal: { minWidth: 160, flex: "1 0 160px", alignItems: "center" },
   upcoming: { outlineWidth: 1, outlineStyle: "dashed", outlineColor: token.border, outlineOffset: 4 },
   connector: { position: "absolute", boxSizing: "border-box" },
@@ -60,7 +60,7 @@ const style = stylex.create({
   completedConnector: { backgroundColor: token.primary, borderColor: token.primary },
   currentConnector: { backgroundImage: `linear-gradient(${token.primary}, ${token.border})` },
   upcomingConnector: { backgroundColor: token.muted, borderColor: token.muted },
-  header: { display: "flex", alignItems: "center", gap: 12, minWidth: 0 },
+  header: { display: "flex", alignItems: "center", gap: "var(--bridge-unit-12, 12px)", minWidth: 0 },
   indicator: {
     position: "relative",
     zIndex: 1,
@@ -90,9 +90,9 @@ const style = stylex.create({
     display: "flex",
     minWidth: 0,
     flexDirection: "column",
-    gap: 4,
-    paddingTop: 2,
-    paddingBottom: 8,
+    gap: "var(--bridge-unit-4, 4px)",
+    paddingTop: "var(--bridge-unit-2, 2px)",
+    paddingBottom: "var(--bridge-unit-8, 8px)",
     marginInlineStart: 52
   },
   title: {

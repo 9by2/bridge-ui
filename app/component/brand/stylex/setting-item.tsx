@@ -16,14 +16,14 @@ const style = stylex.create({
     display: "grid",
     width: "100%",
     gridTemplateColumns: "minmax(0, 1fr) auto",
-    gap: 12,
+    gap: "var(--bridge-unit-12, 12px)",
     alignItems: "center",
-    paddingBlock: 16,
+    paddingBlock: "var(--bridge-unit-16, 16px)",
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
     borderBottomColor: token.border
   },
-  inline: { gap: 16, paddingBlock: 14 },
+  inline: { gap: "var(--bridge-unit-16, 16px)", paddingBlock: "var(--bridge-unit-14, 14px)" },
   title: {
     margin: 0,
     color: token.foreground,

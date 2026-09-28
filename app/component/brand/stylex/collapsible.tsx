@@ -15,8 +15,8 @@ const style = stylex.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 8,
-    paddingBlock: 12,
+    gap: "var(--bridge-unit-8, 8px)",
+    paddingBlock: "var(--bridge-unit-12, 12px)",
     textAlign: "left"
   },
   icon: {
@@ -27,7 +27,7 @@ const style = stylex.create({
     transitionDuration: "150ms",
     rotate: { default: "0deg", ":is([data-panel-open])": "180deg" }
   },
-  content: { paddingBottom: 12 }
+  content: { paddingBottom: "var(--bridge-unit-12, 12px)" }
 })
 
 export function Collapsible({

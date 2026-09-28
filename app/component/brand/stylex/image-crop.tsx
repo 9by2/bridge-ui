@@ -16,7 +16,7 @@ const style = stylex.create({
     "--rc-focus-color": token.ring
   },
   cropRoot: { maxWidth: "100%" },
-  root: { width: "100%", display: "flex", flexDirection: "column", gap: 12 },
+  root: { width: "100%", display: "flex", flexDirection: "column", gap: "var(--bridge-unit-12, 12px)" },
   canvas: { maxHeight: "50dvh", width: "100%", touchAction: "none", objectFit: "contain" },
   label: { display: "block" },
   input: { display: "block", width: "100%" },
@@ -28,9 +28,9 @@ const style = stylex.create({
     borderColor: token.border,
     backgroundColor: token.background,
     color: token.foreground,
-    padding: 8
+    padding: "var(--bridge-unit-8, 8px)"
   },
-  actions: { display: "flex", gap: 8 },
+  actions: { display: "flex", gap: "var(--bridge-unit-8, 8px)" },
   status: { margin: 0 }
 })
 export type ImageCropProps = ReactCropProps

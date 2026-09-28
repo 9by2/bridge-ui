@@ -26,8 +26,8 @@ const style = stylex.create({
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
     borderBottomColor: token.border,
-    paddingBlock: 8,
-    paddingInline: 12,
+    paddingBlock: "var(--bridge-unit-8, 8px)",
+    paddingInline: "var(--bridge-unit-12, 12px)",
     color: token.mutedForeground,
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: 1.5,
@@ -64,19 +64,19 @@ const style = stylex.create({
   },
   head: {
     height: 40,
-    paddingInline: 8,
+    paddingInline: "var(--bridge-unit-8, 8px)",
     textAlign: "left",
     verticalAlign: "middle",
     fontWeight: 500,
     whiteSpace: "nowrap",
     color: token.foreground,
-    paddingRight: { default: 8, ':has([role="checkbox"])': 0 }
+    paddingRight: { default: "var(--bridge-unit-8, 8px)", ':has([role="checkbox"])': 0 }
   },
   cell: {
-    padding: 8,
+    padding: "var(--bridge-unit-8, 8px)",
     verticalAlign: "middle",
     whiteSpace: "nowrap",
-    paddingRight: { default: 8, ':has([role="checkbox"])': 0 }
+    paddingRight: { default: "var(--bridge-unit-8, 8px)", ':has([role="checkbox"])': 0 }
   },
   caption: {
     marginTop: 16,

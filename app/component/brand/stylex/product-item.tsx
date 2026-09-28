@@ -7,9 +7,9 @@ const style = stylex.create({
   root: {
     display: "grid",
     gridTemplateColumns: "minmax(0, 1fr) auto",
-    gap: 16,
+    gap: "var(--bridge-unit-16, 16px)",
     alignItems: "center",
-    padding: 16,
+    padding: "var(--bridge-unit-16, 16px)",
     borderRadius: token.shapeSurface,
     backgroundColor: token.card,
     color: token.cardForeground,
@@ -18,7 +18,7 @@ const style = stylex.create({
   media: { display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" },
   content: { minWidth: 0 },
   action: { display: "flex", alignItems: "center" },
-  stepper: { display: "inline-flex", alignItems: "center", gap: 8 },
+  stepper: { display: "inline-flex", alignItems: "center", gap: "var(--bridge-unit-8, 8px)" },
   button: {
     width: 36,
     height: 36,

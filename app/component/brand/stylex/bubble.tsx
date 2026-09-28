@@ -8,7 +8,7 @@ import { token } from "./token.stylex"
 type Variant = "default" | "secondary" | "muted" | "tinted" | "outline" | "ghost" | "destructive"
 const Context = createContext<Variant | null>(null)
 const style = stylex.create({
-  group: { display: "flex", minWidth: 0, flexDirection: "column", gap: 8 },
+  group: { display: "flex", minWidth: 0, flexDirection: "column", gap: "var(--bridge-unit-8, 8px)" },
   root: {
     position: "relative",
     display: "flex",
@@ -16,7 +16,7 @@ const style = stylex.create({
     maxWidth: "80%",
     minWidth: 0,
     flexDirection: "column",
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     alignSelf: { default: "auto", [stylex.when.ancestor('[data-align="end"]')]: "end" }
   },
   end: { alignSelf: "end" },
@@ -31,8 +31,8 @@ const style = stylex.create({
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: { default: "transparent", ":is(button, a):focus-visible": token.ring },
-    paddingInline: 12,
-    paddingBlock: 8,
+    paddingInline: "var(--bridge-unit-12, 12px)",
+    paddingBlock: "var(--bridge-unit-8, 8px)",
     fontFamily: "inherit",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: 1.625,
@@ -102,11 +102,11 @@ const style = stylex.create({
     flexShrink: 0,
     alignItems: "center",
     justifyContent: "center",
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     borderRadius: "var(--bridge-radius-9999, 9999em)",
     backgroundColor: token.muted,
-    paddingInline: { default: 6, ":has(button)": 0 },
-    paddingBlock: { default: 2, ":has(button)": 0 },
+    paddingInline: { default: "var(--bridge-unit-6, 6px)", ":has(button)": 0 },
+    paddingBlock: { default: "var(--bridge-unit-2, 2px)", ":has(button)": 0 },
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     boxShadow: `0 0 0 3px ${token.background}`

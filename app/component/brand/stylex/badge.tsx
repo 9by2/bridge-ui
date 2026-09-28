@@ -13,15 +13,21 @@ const style = stylex.create({
     flexShrink: 0,
     alignItems: "center",
     justifyContent: "center",
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     overflow: "hidden",
     borderRadius: "var(--bridge-radius-26, 1.625em)",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: { default: "transparent", ":focus-visible": token.ring },
-    paddingRight: { default: 8, ':has([data-icon="inline-end"])': 6 },
-    paddingLeft: { default: 8, ':has([data-icon="inline-start"])': 6 },
-    paddingBlock: 2,
+    paddingRight: {
+      default: "var(--bridge-unit-8, 8px)",
+      ':has([data-icon="inline-end"])': "var(--bridge-unit-6, 6px)"
+    },
+    paddingLeft: {
+      default: "var(--bridge-unit-8, 8px)",
+      ':has([data-icon="inline-start"])': "var(--bridge-unit-6, 6px)"
+    },
+    paddingBlock: "var(--bridge-unit-2, 2px)",
     fontSize: "var(--bridge-text-size-sm, 0.75rem)",
     lineHeight: "16px",
     fontWeight: 500,

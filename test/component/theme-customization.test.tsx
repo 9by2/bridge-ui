@@ -59,6 +59,20 @@ test("nested Theme inherits omitted customization and only replaces explicit val
   expect(screen.getByTestId("theme-value").textContent).toBe("light:default:3px")
 })
 
+test("nested Theme scopes the shared geometry base for owned recipes", () => {
+  render(
+    <Theme theme={{ radius: { control: "3px" }, space: { 2: "14px" } }} data-testid="outer-theme">
+      <Theme theme={{ space: { 2: "6px" } }} data-testid="inner-theme">
+        <Button>Continue</Button>
+      </Theme>
+    </Theme>
+  )
+
+  const inner = screen.getByTestId("inner-theme")
+  expect(inner.style.getPropertyValue("--bridge-control-radius")).toBe("3px")
+  expect(inner.style.getPropertyValue("--bridge-space-2")).toBe("6px")
+})
+
 test("Dialog portal receives the nearest resolved customization", async () => {
   const dialogTheme = { color: { ...productTheme.color, dialog: "midnightblue", dialogForeground: "white" } } as const
   render(
@@ -75,6 +89,8 @@ test("Dialog portal receives the nearest resolved customization", async () => {
   const portalTheme = dialog.closest("[data-bridge-theme]") as HTMLElement
   expect(portalTheme.style.getPropertyValue("--bridge-color-primary")).toBe("rebeccapurple")
   expect(portalTheme.style.getPropertyValue("--bridge-surface-radius")).toBe("11px")
+  expect(portalTheme.style.getPropertyValue("--bridge-space-2")).toBe("0.625rem")
+  expect(portalTheme.style.getPropertyValue("--bridge-control-radius")).toBe("3px")
   expect(portalTheme.style.getPropertyValue("--bridge-color-dialog")).toBe("midnightblue")
   expect(portalTheme.style.getPropertyValue("--bridge-color-dialog-foreground")).toBe("white")
 })

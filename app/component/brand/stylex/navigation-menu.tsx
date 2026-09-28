@@ -33,8 +33,8 @@ const style = stylex.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: "var(--bridge-radius-10, 0.625em)",
-    paddingInline: 10,
-    paddingBlock: 6,
+    paddingInline: "var(--bridge-unit-10, 10px)",
+    paddingBlock: "var(--bridge-unit-6, 6px)",
     fontFamily: "inherit",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
@@ -67,7 +67,7 @@ const style = stylex.create({
   content: {
     height: "100%",
     width: "auto",
-    padding: 4,
+    padding: "var(--bridge-unit-4, 4px)",
     boxSizing: "border-box",
     transitionProperty: "opacity, transform, translate",
     transitionDuration: { default: "350ms", "@media (prefers-reduced-motion: reduce)": "0s" },
@@ -119,9 +119,12 @@ const style = stylex.create({
   link: {
     display: "flex",
     alignItems: "center",
-    gap: 8,
-    borderRadius: { default: 10, ':is([data-slot="navigation-menu-content"] *)': 8 },
-    padding: 8,
+    gap: "var(--bridge-unit-8, 8px)",
+    borderRadius: {
+      default: "var(--bridge-radius-10, 10px)",
+      ':is([data-slot="navigation-menu-content"] *)': "var(--bridge-radius-8, 8px)"
+    },
+    padding: "var(--bridge-unit-8, 8px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     color: "inherit",

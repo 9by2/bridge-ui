@@ -7,8 +7,8 @@ const style = stylex.create({
   root: {
     display: "grid",
     gridTemplateColumns: { default: "minmax(8rem, 1fr) minmax(0, 2fr)", "@media (max-width: 640px)": "1fr" },
-    gap: 8,
-    paddingBlock: 12,
+    gap: "var(--bridge-unit-8, 8px)",
+    paddingBlock: "var(--bridge-unit-12, 12px)",
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
     borderBottomColor: token.border

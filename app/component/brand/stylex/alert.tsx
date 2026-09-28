@@ -9,19 +9,22 @@ const style = stylex.create({
     position: "relative",
     display: "grid",
     width: "100%",
-    gap: 2,
+    gap: "var(--bridge-unit-2, 2px)",
     borderRadius: "var(--bridge-radius-10, 0.625em)",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: token.border,
-    paddingInline: 10,
-    paddingBlock: 8,
+    paddingInline: "var(--bridge-unit-10, 10px)",
+    paddingBlock: "var(--bridge-unit-8, 8px)",
     textAlign: "left",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     gridTemplateColumns: { default: null, ":has(> svg)": "auto 1fr" },
-    columnGap: { default: 2, ":has(> svg)": 8 },
-    paddingRight: { default: 10, ':has([data-slot="alert-action"])': 72 }
+    columnGap: { default: "var(--bridge-unit-2, 2px)", ":has(> svg)": "var(--bridge-unit-8, 8px)" },
+    paddingRight: {
+      default: "var(--bridge-unit-10, 10px)",
+      ':has([data-slot="alert-action"])': "var(--bridge-unit-72, 72px)"
+    }
   },
   default: { backgroundColor: token.background, color: token.foreground },
   destructive: { backgroundColor: token.background, color: token.errorText },

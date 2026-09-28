@@ -6,7 +6,14 @@ import { Button } from "./button"
 
 const style = stylex.create({
   root: { marginInline: "auto", display: "flex", width: "100%", justifyContent: "center" },
-  content: { display: "flex", alignItems: "center", gap: 2, padding: 0, margin: 0, listStyleType: "none" },
+  content: {
+    display: "flex",
+    alignItems: "center",
+    gap: "var(--bridge-unit-2, 2px)",
+    padding: 0,
+    margin: 0,
+    listStyleType: "none"
+  },
   text: { display: { default: "none", "@media (min-width: 640px)": "block" } },
   ellipsis: { display: "flex", width: 32, height: 32, alignItems: "center", justifyContent: "center" },
   icon: { width: 16, height: 16 },

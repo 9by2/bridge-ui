@@ -94,9 +94,22 @@ export type BridgeCalendarProps = {
 }
 
 const style = stylex.create({
-  root: { display: "flex", width: "100%", minWidth: 0, flexDirection: "column", gap: 16, color: token.foreground },
-  header: { display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 12 },
-  control: { display: "flex", alignItems: "center", gap: 4 },
+  root: {
+    display: "flex",
+    width: "100%",
+    minWidth: 0,
+    flexDirection: "column",
+    gap: "var(--bridge-unit-16, 16px)",
+    color: token.foreground
+  },
+  header: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "var(--bridge-unit-12, 12px)"
+  },
+  control: { display: "flex", alignItems: "center", gap: "var(--bridge-unit-4, 4px)" },
   button: {
     display: "inline-flex",
     minHeight: 32,
@@ -106,7 +119,7 @@ const style = stylex.create({
     borderStyle: "solid",
     borderColor: token.border,
     borderRadius: "var(--bridge-radius-8, 0.5em)",
-    paddingInline: 10,
+    paddingInline: "var(--bridge-unit-10, 10px)",
     backgroundColor: token.background,
     color: token.foreground,
     ":hover": { backgroundColor: token.muted },
@@ -117,8 +130,8 @@ const style = stylex.create({
     borderBottomWidth: 2,
     borderBottomStyle: "solid",
     borderBottomColor: "transparent",
-    paddingBlock: 6,
-    paddingInline: 8,
+    paddingBlock: "var(--bridge-unit-6, 6px)",
+    paddingInline: "var(--bridge-unit-8, 8px)",
     backgroundColor: "transparent",
     color: token.mutedForeground
   },
@@ -131,21 +144,26 @@ const style = stylex.create({
     borderRadius: "var(--bridge-radius-10, 0.625em)",
     overflow: "auto"
   },
-  scheduled: { display: "flex", flexDirection: "column", gap: 16, padding: 16 },
-  group: { display: "flex", flexDirection: "column", gap: 8 },
+  scheduled: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--bridge-unit-16, 16px)",
+    padding: "var(--bridge-unit-16, 16px)"
+  },
+  group: { display: "flex", flexDirection: "column", gap: "var(--bridge-unit-8, 8px)" },
   date: { margin: 0, fontSize: "var(--bridge-font-size-base, 0.875em)", fontWeight: 600 },
   event: {
     display: "flex",
     width: "100%",
     flexDirection: "column",
     alignItems: "flex-start",
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     borderWidth: 0,
     borderLeftWidth: 4,
     borderLeftStyle: "solid",
     borderLeftColor: token.border,
     borderRadius: "var(--bridge-radius-4, 0.25em)",
-    padding: 10,
+    padding: "var(--bridge-unit-10, 10px)",
     backgroundColor: token.muted,
     color: token.foreground,
     textAlign: "start"
@@ -166,7 +184,7 @@ const style = stylex.create({
   meta: { color: token.foreground, fontSize: "var(--bridge-font-size-sm, 0.75em)" },
   grid: { display: "grid", gridTemplateColumns: "repeat(7, minmax(7rem, 1fr))", minWidth: 700 },
   weekday: {
-    padding: 8,
+    padding: "var(--bridge-unit-8, 8px)",
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
     borderBottomColor: token.border,
@@ -178,13 +196,13 @@ const style = stylex.create({
     display: "flex",
     minHeight: 104,
     flexDirection: "column",
-    gap: 2,
+    gap: "var(--bridge-unit-2, 2px)",
     borderRightWidth: 1,
     borderBottomWidth: 1,
     borderRightStyle: "solid",
     borderBottomStyle: "solid",
     borderColor: token.border,
-    padding: 6,
+    padding: "var(--bridge-unit-6, 6px)",
     backgroundColor: token.background,
     color: token.foreground,
     textAlign: "start"
@@ -252,7 +270,7 @@ const style = stylex.create({
     borderRightWidth: 1,
     borderRightStyle: "solid",
     borderRightColor: themeToken.border,
-    padding: 2
+    padding: "var(--bridge-unit-2, 2px)"
   },
   timeRuler: { position: "relative", borderRightWidth: 1, borderRightStyle: "solid", borderColor: themeToken.border },
   timeLabel: {
@@ -261,8 +279,8 @@ const style = stylex.create({
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
     borderBottomColor: themeToken.border,
-    paddingTop: 4,
-    paddingRight: 8,
+    paddingTop: "var(--bridge-unit-4, 4px)",
+    paddingRight: "var(--bridge-unit-8, 8px)",
     color: token.mutedForeground,
     fontSize: "var(--bridge-font-size-xs, 0.6875em)",
     textAlign: "end"
@@ -314,14 +332,14 @@ const style = stylex.create({
     width: "100%",
     minWidth: 0,
     alignItems: "center",
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     borderWidth: 0,
     borderLeftWidth: 2,
     borderLeftStyle: "solid",
     borderLeftColor: token.border,
     borderRadius: "var(--bridge-radius-3, 0.1875em)",
-    paddingBlock: 2,
-    paddingInline: 4,
+    paddingBlock: "var(--bridge-unit-2, 2px)",
+    paddingInline: "var(--bridge-unit-4, 4px)",
     backgroundColor: token.muted,
     color: token.foreground,
     fontSize: "var(--bridge-font-size-xs, 0.6875em)",
@@ -357,7 +375,7 @@ const style = stylex.create({
     minHeight: 320,
     alignItems: "center",
     justifyContent: "center",
-    padding: 24,
+    padding: "var(--bridge-unit-24, 24px)",
     color: token.mutedForeground
   }
 })

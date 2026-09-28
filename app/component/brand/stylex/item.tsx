@@ -11,7 +11,11 @@ const style = stylex.create({
     display: "flex",
     width: "100%",
     flexDirection: "column",
-    gap: { default: 16, ':has([data-size="sm"])': 10, ':has([data-size="xs"])': 8 }
+    gap: {
+      default: "var(--bridge-unit-16, 16px)",
+      ':has([data-size="sm"])': "var(--bridge-unit-10, 10px)",
+      ':has([data-size="xs"])': "var(--bridge-unit-8, 8px)"
+    }
   },
   separator: { marginBlock: 8 },
   root: {
@@ -38,18 +42,22 @@ const style = stylex.create({
   muted: {
     backgroundColor: { default: `color-mix(in oklch, ${token.muted}, transparent 50%)`, ":is(a):hover": token.muted }
   },
-  normal: { gap: 10, paddingInline: 12, paddingBlock: 10 },
+  normal: {
+    gap: "var(--bridge-unit-10, 10px)",
+    paddingInline: "var(--bridge-unit-12, 12px)",
+    paddingBlock: "var(--bridge-unit-10, 10px)"
+  },
   xs: {
-    gap: 8,
-    paddingInline: { default: 10, ':is([data-slot="dropdown-menu-content"] *)': 0 },
-    paddingBlock: { default: 8, ':is([data-slot="dropdown-menu-content"] *)': 0 }
+    gap: "var(--bridge-unit-8, 8px)",
+    paddingInline: { default: "var(--bridge-unit-10, 10px)", ':is([data-slot="dropdown-menu-content"] *)': 0 },
+    paddingBlock: { default: "var(--bridge-unit-8, 8px)", ':is([data-slot="dropdown-menu-content"] *)': 0 }
   },
   media: {
     display: "flex",
     flexShrink: 0,
     alignItems: "center",
     justifyContent: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     translate: { default: "none", [stylex.when.ancestor(':has([data-slot="item-description"])')]: "0 2px" },
     alignSelf: { default: "auto", [stylex.when.ancestor(':has([data-slot="item-description"])')]: "start" }
   },
@@ -65,13 +73,13 @@ const style = stylex.create({
       [stylex.when.ancestor('[data-size="xs"]')]: 24
     },
     overflow: "hidden",
-    borderRadius: 6
+    borderRadius: "var(--bridge-radius-6, 6px)"
   },
   content: {
     display: "flex",
     flex: { default: 1, ':is([data-slot="item-content"] + *)': "none" },
     flexDirection: "column",
-    gap: { default: 4, [stylex.when.ancestor('[data-size="xs"]')]: 0 }
+    gap: { default: "var(--bridge-unit-4, 4px)", [stylex.when.ancestor('[data-size="xs"]')]: 0 }
   },
   title: {
     display: "flex",
@@ -80,7 +88,7 @@ const style = stylex.create({
     WebkitBoxOrient: "vertical",
     width: "fit-content",
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: 1.375,
     fontWeight: 500,
@@ -98,8 +106,14 @@ const style = stylex.create({
     fontWeight: 400,
     color: token.mutedForeground
   },
-  action: { display: "flex", alignItems: "center", gap: 8 },
-  edge: { display: "flex", flexBasis: "100%", alignItems: "center", justifyContent: "space-between", gap: 8 }
+  action: { display: "flex", alignItems: "center", gap: "var(--bridge-unit-8, 8px)" },
+  edge: {
+    display: "flex",
+    flexBasis: "100%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "var(--bridge-unit-8, 8px)"
+  }
 })
 
 export function ItemGroup({ className, ...props }: ComponentProps<"div">) {

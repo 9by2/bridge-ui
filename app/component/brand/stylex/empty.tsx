@@ -13,15 +13,21 @@ const style = stylex.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    gap: 16,
+    gap: "var(--bridge-unit-16, 16px)",
     borderRadius: "var(--bridge-radius-14, 0.875em)",
     borderStyle: "dashed",
     borderWidth: 0,
-    padding: 24,
+    padding: "var(--bridge-unit-24, 24px)",
     textAlign: "center",
     textWrap: "balance"
   },
-  header: { display: "flex", maxWidth: 384, flexDirection: "column", alignItems: "center", gap: 8 },
+  header: {
+    display: "flex",
+    maxWidth: 384,
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "var(--bridge-unit-8, 8px)"
+  },
   media: { marginBottom: 8, display: "flex", flexShrink: 0, alignItems: "center", justifyContent: "center" },
   default: { backgroundColor: "transparent" },
   icon: {
@@ -46,7 +52,7 @@ const style = stylex.create({
     minWidth: 0,
     flexDirection: "column",
     alignItems: "center",
-    gap: 10,
+    gap: "var(--bridge-unit-10, 10px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     textWrap: "balance"

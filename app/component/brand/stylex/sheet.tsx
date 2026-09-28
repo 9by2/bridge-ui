@@ -25,7 +25,7 @@ const style = stylex.create({
     zIndex: 50,
     display: "flex",
     flexDirection: "column",
-    gap: 16,
+    gap: "var(--bridge-unit-16, 16px)",
     backgroundColor: token.background,
     backgroundClip: "padding-box",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
@@ -99,11 +99,17 @@ const style = stylex.create({
     zIndex: 1,
     display: "flex",
     flexDirection: "column",
-    gap: 2,
+    gap: "var(--bridge-unit-2, 2px)",
     backgroundColor: token.background,
-    padding: 16
+    padding: "var(--bridge-unit-16, 16px)"
   },
-  footer: { marginTop: "auto", display: "flex", flexDirection: "column", gap: 8, padding: 16 },
+  footer: {
+    marginTop: "auto",
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--bridge-unit-8, 8px)",
+    padding: "var(--bridge-unit-16, 16px)"
+  },
   title: {
     margin: 0,
     fontFamily: "inherit",

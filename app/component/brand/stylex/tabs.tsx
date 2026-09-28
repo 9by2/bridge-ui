@@ -23,19 +23,19 @@ const style = stylex.create({
       }
     },
     borderRadius: {
-      default: 8,
+      default: "var(--bridge-radius-8, 8px)",
       [stylex.when.ancestor('[data-variant="line"]')]: 0,
       [stylex.when.ancestor('[data-variant="capsule"]')]: 999,
       [stylex.when.ancestor('[data-variant="link"]')]: 0
     },
     paddingInline: {
-      default: 6,
-      [stylex.when.ancestor('[data-variant="capsule"]')]: 10,
+      default: "var(--bridge-unit-6, 6px)",
+      [stylex.when.ancestor('[data-variant="capsule"]')]: "var(--bridge-unit-10, 10px)",
       [stylex.when.ancestor('[data-variant="link"]')]: 0
     },
     paddingBlock: {
-      default: 2,
-      [stylex.when.ancestor('[data-variant="capsule"]')]: 4,
+      default: "var(--bridge-unit-2, 2px)",
+      [stylex.when.ancestor('[data-variant="capsule"]')]: "var(--bridge-unit-4, 4px)",
       [stylex.when.ancestor('[data-variant="link"]')]: 0
     },
     borderBottomWidth: { default: 0, [stylex.when.ancestor('[data-variant="line"]')]: 1 },
@@ -56,7 +56,7 @@ const style = stylex.create({
   },
   root: {
     display: "flex",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     flexDirection: { default: "row", ':is([data-orientation="horizontal"])': "column" }
   },
   list: {
@@ -66,14 +66,14 @@ const style = stylex.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: "var(--bridge-radius-10, 0.625em)",
-    padding: 3,
+    padding: "var(--bridge-unit-3, 3px)",
     color: token.mutedForeground,
     height: { default: 32, [stylex.when.ancestor('[data-orientation="vertical"]')]: "fit-content" },
     flexDirection: { default: "row", [stylex.when.ancestor('[data-orientation="vertical"]')]: "column" }
   },
   default: { backgroundColor: token.muted },
   line: {
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     width: "100%",
     justifyContent: "start",
     backgroundColor: token.background,
@@ -83,9 +83,9 @@ const style = stylex.create({
     borderBottomColor: token.border,
     padding: 0
   },
-  capsule: { gap: 4, backgroundColor: token.background, padding: 0 },
+  capsule: { gap: "var(--bridge-unit-4, 4px)", backgroundColor: token.background, padding: 0 },
   link: {
-    gap: 16,
+    gap: "var(--bridge-unit-16, 16px)",
     width: "100%",
     height: 56,
     justifyContent: "start",
@@ -106,7 +106,7 @@ const style = stylex.create({
     },
     alignItems: "center",
     justifyContent: "center",
-    gap: 6,
+    gap: "var(--bridge-unit-6, 6px)",
     borderWidth: 0,
     borderStyle: "solid",
     fontFamily: { default: "inherit", [stylex.when.ancestor('[data-variant="link"]')]: token.fontHeading },

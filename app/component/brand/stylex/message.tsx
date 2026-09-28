@@ -4,13 +4,13 @@ import type { ComponentProps } from "react"
 import { token } from "./token.stylex"
 
 const style = stylex.create({
-  group: { display: "flex", minWidth: 0, flexDirection: "column", gap: 8 },
+  group: { display: "flex", minWidth: 0, flexDirection: "column", gap: "var(--bridge-unit-8, 8px)" },
   root: {
     position: "relative",
     display: "flex",
     width: "100%",
     minWidth: 0,
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px"
   },
@@ -33,7 +33,7 @@ const style = stylex.create({
     width: "100%",
     minWidth: 0,
     flexDirection: "column",
-    gap: 10,
+    gap: "var(--bridge-unit-10, 10px)",
     overflowWrap: "break-word"
   },
   edge: {
@@ -41,7 +41,10 @@ const style = stylex.create({
     maxWidth: "100%",
     minWidth: 0,
     alignItems: "center",
-    paddingInline: { default: 12, [stylex.when.ancestor(':has([data-variant="ghost"])')]: 0 },
+    paddingInline: {
+      default: "var(--bridge-unit-12, 12px)",
+      [stylex.when.ancestor(':has([data-variant="ghost"])')]: 0
+    },
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     fontWeight: 500,

@@ -9,7 +9,7 @@ export const toggleStyle = stylex.create({
     boxSizing: "border-box",
     alignItems: "center",
     justifyContent: "center",
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     borderRadius: "var(--bridge-radius-10, 0.625em)",
     borderWidth: 0,
     fontFamily: "inherit",
@@ -31,15 +31,15 @@ export const toggleStyle = stylex.create({
     borderStyle: "solid",
     borderColor: { default: token.input, ":focus-visible": token.ring }
   },
-  defaultSize: { height: 32, minWidth: 32, paddingInline: 10 },
+  defaultSize: { height: 32, minWidth: 32, paddingInline: "var(--bridge-unit-10, 10px)" },
   sm: {
     height: 28,
     minWidth: 28,
     borderRadius: "var(--bridge-radius-8, 0.5em)",
-    paddingInline: 10,
+    paddingInline: "var(--bridge-unit-10, 10px)",
     fontSize: "0.8rem"
   },
-  lg: { height: 36, minWidth: 36, paddingInline: 10 },
+  lg: { height: 36, minWidth: 36, paddingInline: "var(--bridge-unit-10, 10px)" },
   invalid: {
     borderColor: token.invalidBorder,
     boxShadow: `0 0 0 3px color-mix(in oklch, ${token.destructive} ${token.errorRingOpacity}, transparent)`

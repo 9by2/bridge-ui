@@ -44,7 +44,7 @@ const style = stylex.create({
     minWidth: 0,
     display: "flex",
     flexDirection: "column",
-    gap: 12,
+    gap: "var(--bridge-unit-12, 12px)",
     padding: geometryToken.surfacePadding,
     borderWidth: 1,
     borderStyle: "solid",
@@ -57,13 +57,13 @@ const style = stylex.create({
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "center",
-    columnGap: 24,
-    rowGap: 12
+    columnGap: "var(--bridge-unit-24, 24px)",
+    rowGap: "var(--bridge-unit-12, 12px)"
   },
-  plan: { gap: 20, padding: 24 },
+  plan: { gap: "var(--bridge-unit-20, 20px)", padding: "var(--bridge-unit-24, 24px)" },
   inline: {
     flexGrow: 1,
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     alignItems: "flex-start",
     padding: 0,
     borderWidth: 0,
@@ -76,7 +76,7 @@ const style = stylex.create({
     borderColor: themeToken.primary,
     boxShadow: `0 0 0 1px ${themeToken.primary}`
   },
-  header: { display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, minWidth: 0 },
+  header: { display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--bridge-unit-8, 8px)", minWidth: 0 },
   title: {
     margin: 0,
     minWidth: 0,
@@ -87,7 +87,7 @@ const style = stylex.create({
     overflowWrap: "anywhere"
   },
   planTitle: { fontSize: "var(--bridge-font-size-xl, 1.125em)" },
-  inlineHeader: { flexWrap: "nowrap", gap: 6, maxWidth: "100%" },
+  inlineHeader: { flexWrap: "nowrap", gap: "var(--bridge-unit-6, 6px)", maxWidth: "100%" },
   inlineTitle: {
     fontFamily: "inherit",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
@@ -100,9 +100,9 @@ const style = stylex.create({
     alignSelf: "flex-start",
     display: "inline-flex",
     alignItems: "center",
-    gap: 4,
-    paddingInline: 8,
-    paddingBlock: 2,
+    gap: "var(--bridge-unit-4, 4px)",
+    paddingInline: "var(--bridge-unit-8, 8px)",
+    paddingBlock: "var(--bridge-unit-2, 2px)",
     borderRadius: token.shapePill,
     backgroundColor: themeToken.primary,
     color: themeToken.primaryForeground,
@@ -113,7 +113,7 @@ const style = stylex.create({
     textTransform: "uppercase",
     whiteSpace: "nowrap"
   },
-  content: { display: "flex", flexDirection: "column", gap: 8, minWidth: 0 },
+  content: { display: "flex", flexDirection: "column", gap: "var(--bridge-unit-8, 8px)", minWidth: 0 },
   rowContent: { flexGrow: 1, flexShrink: 1, flexBasis: "16rem" },
   description: {
     margin: 0,
@@ -126,7 +126,7 @@ const style = stylex.create({
     display: "flex",
     flexWrap: "wrap",
     alignItems: "baseline",
-    columnGap: 4,
+    columnGap: "var(--bridge-unit-4, 4px)",
     minWidth: 0
   },
   rowPrice: { flexShrink: 0, justifyContent: "flex-end" },
@@ -139,7 +139,7 @@ const style = stylex.create({
     fontVariantNumeric: "tabular-nums",
     overflowWrap: "anywhere"
   },
-  inlinePrice: { flexWrap: "nowrap", columnGap: 8, color: themeToken.mutedForeground },
+  inlinePrice: { flexWrap: "nowrap", columnGap: "var(--bridge-unit-8, 8px)", color: themeToken.mutedForeground },
   inlinePriceAmount: {
     fontSize: "var(--bridge-font-size-4xl, 1.875em)",
     fontWeight: 300,
@@ -149,22 +149,27 @@ const style = stylex.create({
   inlinePricePeriod: { fontSize: "var(--bridge-font-size-sm, 0.75em)" },
   planPriceAmount: { fontSize: "var(--bridge-font-size-5xl, 2.25em)", fontWeight: 700 },
   pricePeriod: { fontSize: "var(--bridge-font-size-base, 0.875em)", color: themeToken.mutedForeground },
-  detail: { display: "flex", flexDirection: "column", gap: 6, margin: 0 },
-  rowDetail: { flexDirection: "row", flexWrap: "wrap", columnGap: 16, rowGap: 4 },
+  detail: { display: "flex", flexDirection: "column", gap: "var(--bridge-unit-6, 6px)", margin: 0 },
+  rowDetail: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    columnGap: "var(--bridge-unit-16, 16px)",
+    rowGap: "var(--bridge-unit-4, 4px)"
+  },
   detailItem: {
     display: "flex",
     justifyContent: "space-between",
-    gap: 12,
+    gap: "var(--bridge-unit-12, 12px)",
     minWidth: 0,
     fontSize: "var(--bridge-font-size-base, 0.875em)"
   },
-  rowDetailItem: { justifyContent: "flex-start", gap: 6 },
+  rowDetailItem: { justifyContent: "flex-start", gap: "var(--bridge-unit-6, 6px)" },
   detailLabel: { color: themeToken.mutedForeground },
   detailValue: { margin: 0, fontWeight: 500, textAlign: "end", overflowWrap: "anywhere" },
   featureList: {
     display: "flex",
     flexDirection: "column",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     margin: 0,
     padding: 0,
     listStyle: "none"
@@ -172,7 +177,7 @@ const style = stylex.create({
   feature: {
     display: "flex",
     alignItems: "flex-start",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: 1.5,
     overflowWrap: "anywhere"
@@ -184,8 +189,8 @@ const style = stylex.create({
     height: "1.5em",
     color: themeToken.mutedForeground
   },
-  action: { display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 },
-  stackAction: { marginTop: "auto", paddingTop: 4 },
+  action: { display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--bridge-unit-8, 8px)" },
+  stackAction: { marginTop: "auto", paddingTop: "var(--bridge-unit-4, 4px)" },
   rowAction: { flexShrink: 0, marginInlineStart: "auto" }
 })
 

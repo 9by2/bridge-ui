@@ -28,17 +28,17 @@ const style = stylex.create({
   radiusSm: { borderRadius: "var(--bridge-radius-8, 0.5em)" },
   radiusLg: { borderRadius: "var(--bridge-radius-18, 1.125em)" },
   ghost: { backgroundColor: "transparent", boxShadow: "none" },
-  top: { paddingTop: { default: 16, ":has(> img:first-child)": 0 } },
+  top: { paddingTop: { default: "var(--bridge-unit-16, 16px)", ":has(> img:first-child)": 0 } },
   small: {
-    gap: 12,
-    paddingTop: { default: 12, ":has(> img:first-child)": 0 },
-    paddingBottom: { default: 12, ':has([data-slot="card-footer"])': 0 }
+    gap: "var(--bridge-unit-12, 12px)",
+    paddingTop: { default: "var(--bridge-unit-12, 12px)", ":has(> img:first-child)": 0 },
+    paddingBottom: { default: "var(--bridge-unit-12, 12px)", ':has([data-slot="card-footer"])': 0 }
   },
   header: {
     display: "grid",
     gridAutoRows: "min-content",
     alignItems: "start",
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     borderTopLeftRadius: {
       default: geometryToken.surfaceRadius,
       [stylex.when.ancestor('[data-radius="none"]')]: 0,
@@ -55,7 +55,12 @@ const style = stylex.create({
     containerType: "inline-size",
     gridTemplateColumns: { default: null, ':has([data-slot="card-action"])': "1fr auto" }
   },
-  spacing: { paddingInline: { default: geometryToken.surfacePadding, [stylex.when.ancestor('[data-size="sm"]')]: 12 } },
+  spacing: {
+    paddingInline: {
+      default: geometryToken.surfacePadding,
+      [stylex.when.ancestor('[data-size="sm"]')]: "var(--bridge-unit-12, 12px)"
+    }
+  },
   title: {
     fontFamily: token.fontHeading,
     fontSize: { default: 16, [stylex.when.ancestor('[data-size="sm"]')]: 14 },
@@ -83,7 +88,10 @@ const style = stylex.create({
     borderTopStyle: "solid",
     borderTopColor: themeToken.border,
     backgroundColor: `color-mix(in oklch, ${themeToken.muted}, transparent 50%)`,
-    paddingBlock: { default: geometryToken.surfacePadding, [stylex.when.ancestor('[data-size="sm"]')]: 12 }
+    paddingBlock: {
+      default: geometryToken.surfacePadding,
+      [stylex.when.ancestor('[data-size="sm"]')]: "var(--bridge-unit-12, 12px)"
+    }
   }
 })
 export function Card({

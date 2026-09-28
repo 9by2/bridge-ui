@@ -13,10 +13,10 @@ const style = stylex.create({
     minWidth: 20,
     alignItems: "center",
     justifyContent: "center",
-    gap: 4,
+    gap: "var(--bridge-unit-4, 4px)",
     borderRadius: "var(--bridge-radius-6, 0.375em)",
     backgroundColor: token.muted,
-    paddingInline: 4,
+    paddingInline: "var(--bridge-unit-4, 4px)",
     fontFamily: "inherit",
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
@@ -24,7 +24,7 @@ const style = stylex.create({
     color: token.mutedForeground,
     userSelect: "none"
   },
-  group: { display: "inline-flex", alignItems: "center", gap: 4 }
+  group: { display: "inline-flex", alignItems: "center", gap: "var(--bridge-unit-4, 4px)" }
 })
 export function Kbd({ className, ...props }: ComponentProps<"kbd">) {
   return (

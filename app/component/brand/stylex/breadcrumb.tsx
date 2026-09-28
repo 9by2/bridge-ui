@@ -11,7 +11,7 @@ const style = stylex.create({
     display: "flex",
     flexWrap: "wrap",
     alignItems: "center",
-    gap: 6,
+    gap: "var(--bridge-unit-6, 6px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     overflowWrap: "break-word",
@@ -20,7 +20,7 @@ const style = stylex.create({
     padding: 0,
     margin: 0
   },
-  item: { display: "inline-flex", alignItems: "center", gap: 4 },
+  item: { display: "inline-flex", alignItems: "center", gap: "var(--bridge-unit-4, 4px)" },
   link: {
     transitionProperty: "color",
     transitionDuration: "150ms",

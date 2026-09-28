@@ -21,7 +21,7 @@ export const menuStyle = stylex.create({
     overflowY: "auto",
     borderRadius: "var(--bridge-radius-10, 0.625em)",
     backgroundColor: token.background,
-    padding: 4,
+    padding: "var(--bridge-unit-4, 4px)",
     color: token.foreground,
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%), ${effectToken.shadowMd}`,
     outline: "none",
@@ -35,23 +35,23 @@ export const menuStyle = stylex.create({
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%), ${effectToken.shadowLg}`
   },
   label: {
-    paddingInline: 6,
-    paddingBlock: 4,
+    paddingInline: "var(--bridge-unit-6, 6px)",
+    paddingBlock: "var(--bridge-unit-4, 4px)",
     fontSize: "var(--bridge-font-size-sm, 0.75em)",
     lineHeight: "16px",
     fontWeight: 500,
     color: token.mutedForeground
   },
-  inset: { paddingLeft: 28 },
+  inset: { paddingLeft: "var(--bridge-unit-28, 28px)" },
   item: {
     position: "relative",
     display: "flex",
     cursor: "default",
     alignItems: "center",
-    gap: 6,
+    gap: "var(--bridge-unit-6, 6px)",
     borderRadius: "var(--bridge-radius-8, 0.5em)",
-    paddingInline: 6,
-    paddingBlock: 4,
+    paddingInline: "var(--bridge-unit-6, 6px)",
+    paddingBlock: "var(--bridge-unit-4, 4px)",
     fontSize: "var(--bridge-font-size-base, 0.875em)",
     lineHeight: "20px",
     outline: "2px solid transparent",
@@ -82,7 +82,7 @@ export const menuStyle = stylex.create({
       ":is([data-popup-open], [data-open])": token.accentForeground
     }
   },
-  selection: { paddingRight: 32 },
+  selection: { paddingRight: "var(--bridge-unit-32, 32px)" },
   indicator: {
     pointerEvents: "none",
     position: "absolute",

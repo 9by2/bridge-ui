@@ -24,8 +24,11 @@ const style = stylex.create({
     height: 64,
     flexShrink: 0,
     alignItems: "center",
-    gap: 12,
-    paddingInline: { default: 24, "@media (max-width: 640px)": 16 },
+    gap: "var(--bridge-unit-12, 12px)",
+    paddingInline: {
+      default: "var(--bridge-unit-24, 24px)",
+      "@media (max-width: 640px)": "var(--bridge-unit-16, 16px)"
+    },
     backgroundColor: token.background,
     borderBottomColor: token.border,
     borderBottomStyle: "solid",
@@ -51,7 +54,7 @@ const style = stylex.create({
     maxWidth: "50%",
     flex: "0 1 auto",
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     marginInlineStart: "auto"
   }
 })

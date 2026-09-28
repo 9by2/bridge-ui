@@ -73,11 +73,11 @@ const style = stylex.create({
     boxSizing: "border-box",
     width: "100%",
     translate: "-50% -50%",
-    gap: 16,
+    gap: "var(--bridge-unit-16, 16px)",
     borderRadius: "var(--bridge-radius-14, 0.875em)",
     backgroundColor: token.background,
     color: token.foreground,
-    padding: 16,
+    padding: "var(--bridge-unit-16, 16px)",
     boxShadow: `0 0 0 1px color-mix(in oklch, ${token.foreground}, transparent 90%)`,
     outline: "none",
     maxWidth: 320,
@@ -90,9 +90,12 @@ const style = stylex.create({
     display: "grid",
     gridTemplateRows: { default: "auto 1fr", ':has([data-slot="alert-dialog-media"])': "auto auto 1fr" },
     placeItems: "center",
-    gap: 6,
+    gap: "var(--bridge-unit-6, 6px)",
     textAlign: "center",
-    columnGap: { default: 6, ':has([data-slot="alert-dialog-media"])': 16 }
+    columnGap: {
+      default: "var(--bridge-unit-6, 6px)",
+      ':has([data-slot="alert-dialog-media"])': "var(--bridge-unit-16, 16px)"
+    }
   },
   desktopHeader: {
     placeItems: { default: "center", "@media (min-width: 640px)": "start" },
@@ -109,14 +112,14 @@ const style = stylex.create({
     display: "flex",
     flexDirection: { default: "column-reverse", "@media (min-width: 640px)": "row" },
     justifyContent: { default: "normal", "@media (min-width: 640px)": "flex-end" },
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     borderBottomLeftRadius: 14,
     borderBottomRightRadius: 14,
     borderTopWidth: 1,
     borderTopStyle: "solid",
     borderTopColor: token.footerBorder,
     backgroundColor: `color-mix(in oklch, ${token.muted}, transparent 50%)`,
-    padding: 16
+    padding: "var(--bridge-unit-16, 16px)"
   },
   smallFooter: { display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))" },
   media: {

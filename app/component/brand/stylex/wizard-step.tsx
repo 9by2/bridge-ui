@@ -38,16 +38,27 @@ const style = stylex.create({
     overscrollBehaviorInline: "contain"
   },
   vertical: { flexDirection: "column", alignItems: "stretch" },
-  lineHorizontal: { gap: 8 },
-  itemNumberHorizontal: { flex: "1 1 0", flexDirection: "column", alignItems: "center", gap: 8, textAlign: "center" },
-  itemLineHorizontal: { flex: "1 1 0", flexDirection: "column", alignItems: "stretch", gap: 12 },
+  lineHorizontal: { gap: "var(--bridge-unit-8, 8px)" },
+  itemNumberHorizontal: {
+    flex: "1 1 0",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "var(--bridge-unit-8, 8px)",
+    textAlign: "center"
+  },
+  itemLineHorizontal: {
+    flex: "1 1 0",
+    flexDirection: "column",
+    alignItems: "stretch",
+    gap: "var(--bridge-unit-12, 12px)"
+  },
   item: {
     position: "relative",
     display: "flex",
     flexShrink: 0,
     minWidth: 0,
     alignItems: "center",
-    gap: 8,
+    gap: "var(--bridge-unit-8, 8px)",
     borderWidth: 0,
     borderStyle: "none",
     padding: 0,
@@ -120,7 +131,7 @@ const style = stylex.create({
   indicatorLineCompleted: { backgroundColor: token.primary },
   indicatorLineError: { backgroundColor: token.destructive },
   indicatorIcon: { width: 14, height: 14 },
-  label: { display: "flex", minWidth: 0, minHeight: 40, flexDirection: "column", gap: 2 },
+  label: { display: "flex", minWidth: 0, minHeight: 40, flexDirection: "column", gap: "var(--bridge-unit-2, 2px)" },
   labelNumberHorizontal: { alignItems: "center", textAlign: "center" },
   title: {
     minWidth: 0,

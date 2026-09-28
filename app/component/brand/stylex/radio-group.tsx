@@ -5,7 +5,7 @@ import * as stylex from "@stylexjs/stylex"
 import { token } from "./token.stylex"
 
 const style = stylex.create({
-  group: { display: "grid", width: "100%", gap: 8 },
+  group: { display: "grid", width: "100%", gap: "var(--bridge-unit-8, 8px)" },
   root: {
     position: "relative",
     display: "flex",
