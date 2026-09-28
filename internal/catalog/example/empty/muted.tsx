@@ -4,7 +4,7 @@ import * as UI from "@bridge/ui"
 
 export default function Example() {
   return (
-    <UI.Empty className="bg-muted/50">
+    <UI.Empty variant={UI.EmptyVariant.muted}>
       <UI.EmptyHeader>
         <UI.EmptyMedia>
           <BellOffIcon className="size-10" />

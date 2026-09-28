@@ -4,7 +4,9 @@ export default function Example() {
   return (
     <div className="w-80">
       Above
-      <UI.Separator className="my-3" />
+      <div className="my-3">
+        <UI.Separator />
+      </div>
       Below
     </div>
   )

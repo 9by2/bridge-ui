@@ -17,7 +17,8 @@ import {
   PaginationLink,
   PaginationPrevious,
   PaginationNext,
-  PaginationEllipsis
+  PaginationEllipsis,
+  PaginationActiveVariant
 } from "../../app/component/brand/stylex/pagination"
 import { PaginationLink as BaselineLink } from "../../app/component/shadcn/pagination"
 
@@ -75,4 +76,26 @@ test("pagination retains baseline anchor role and active state", () => {
   expect(screen.getByText("1").getAttribute("aria-current")).toBe("page")
   expect(screen.getByText("1").getAttribute("role")).toBe(role)
   expect(screen.getByLabelText("Go to next page").getAttribute("href")).toBe("#next")
+})
+// Public contract: activeVariant is exposed to consumers and keeps aria-current on the active page only.
+test("pagination activeVariant keeps the current page semantics", () => {
+  render(
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationLink href="#one" isActive activeVariant={PaginationActiveVariant.muted}>
+            1
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#two" activeVariant={PaginationActiveVariant.muted}>
+            2
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  )
+  expect(screen.getByText("1").getAttribute("aria-current")).toBe("page")
+  expect(screen.getByText("1").getAttribute("data-active-variant")).toBe("muted")
+  expect(screen.getByText("2").getAttribute("aria-current")).toBeNull()
 })

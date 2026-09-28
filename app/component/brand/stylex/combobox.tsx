@@ -18,6 +18,7 @@ const style = stylex.create({
   },
   popup: {
     position: "relative",
+    width: "var(--anchor-width)",
     maxWidth: "var(--available-width)",
     minWidth: "calc(var(--anchor-width) + 28px)",
     overflow: "hidden",

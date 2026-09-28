@@ -5,9 +5,7 @@ export default function Example() {
     <div className="w-full max-w-lg space-y-6">
       {(["default", "outline", "muted"] as const).map((variant) => (
         <section key={variant} className="space-y-2">
-          <UI.Heading as={UI.WAIHeading.H3} className="text-sm font-semibold capitalize">
-            {variant}
-          </UI.Heading>
+          <UI.Heading as={UI.WAIHeading.H3}>{variant}</UI.Heading>
           <UI.Item variant={variant}>
             <UI.ItemContent>
               <UI.ItemTitle>Design review</UI.ItemTitle>

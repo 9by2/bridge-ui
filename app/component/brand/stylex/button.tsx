@@ -171,6 +171,10 @@ const multiSelectStyle = stylex.create({
   },
   full: { width: "100%" }
 })
+// Internal PaginationLink active treatment; merged in the same stylex.props call so it deterministically replaces ghost.
+const paginationStyle = stylex.create({
+  muted: { backgroundColor: { default: token.muted, ":hover": token.muted }, color: token.foreground }
+})
 type Variant = "default" | "outline" | "secondary" | "ghost" | "destructive" | "warning" | "cta" | "link"
 type Size = keyof typeof sizeStyle
 
@@ -197,7 +201,8 @@ function buttonClass(
   inputGroupSize: "xs" | "sm" | "icon-xs" | "icon-sm" | null | undefined,
   multiSelectTrigger: boolean | "full" | undefined,
   invalid: boolean,
-  popup: boolean
+  popup: boolean,
+  paginationMuted = false
 ) {
   const compiled = stylex.props(
     style.root,
@@ -211,7 +216,8 @@ function buttonClass(
     inputGroupSize === "icon-xs" && groupStyle.iconXs,
     inputGroupSize === "icon-sm" && groupStyle.iconSm,
     multiSelectTrigger && multiSelectStyle.trigger,
-    multiSelectTrigger === "full" && multiSelectStyle.full
+    multiSelectTrigger === "full" && multiSelectStyle.full,
+    paginationMuted && paginationStyle.muted
   ).className
   return ["pilot-button", size && `pilot-button-${size}`, compiled].filter(Boolean).join(" ")
 }
@@ -222,6 +228,7 @@ export function Button({
   className,
   inputGroupSize,
   multiSelectTrigger,
+  paginationMuted,
   ...props
 }: Primitive.Props & {
   variant?: Variant | null
@@ -229,11 +236,13 @@ export function Button({
   inputGroupSize?: "xs" | "sm" | "icon-xs" | "icon-sm" | null
   /** Internal MultiSelectTrigger styling; `"full"` fills the parent row. */
   multiSelectTrigger?: boolean | "full"
+  /** Internal PaginationLink `activeVariant="muted"` styling. */
+  paginationMuted?: boolean
 }) {
   const invalid = props["aria-invalid"] === true || props["aria-invalid"] === "true"
   const popup =
     props["aria-haspopup"] !== undefined && props["aria-haspopup"] !== false && props["aria-haspopup"] !== "false"
-  const classes = buttonClass(variant, size, inputGroupSize, multiSelectTrigger, invalid, popup)
+  const classes = buttonClass(variant, size, inputGroupSize, multiSelectTrigger, invalid, popup, paginationMuted)
   return (
     <Primitive
       data-slot="button"

@@ -21,7 +21,7 @@ export default function Example() {
             <UI.PaginationLink
               href="#"
               isActive={page === value}
-              className="border-0 shadow-none data-[active=true]:bg-muted"
+              activeVariant={UI.PaginationActiveVariant.muted}
               onClick={(event) => {
                 event.preventDefault()
                 setPage(value)

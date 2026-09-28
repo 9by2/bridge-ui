@@ -20,7 +20,8 @@ import {
   EmptyTitle,
   EmptyDescription,
   EmptyContent,
-  EmptyMedia
+  EmptyMedia,
+  EmptyVariant
 } from "../../app/component/brand/stylex/empty"
 import { Kbd, KbdGroup } from "../../app/component/brand/stylex/kbd"
 import { Marker, MarkerIcon, MarkerContent, markerVariants } from "../../app/component/brand/stylex/marker"
@@ -165,6 +166,12 @@ test("alert and empty retain slot and content contract", () => {
     )
     expect(screen.getByText("Nothing here").tagName).toBe("DIV")
     expect(screen.getByText("Icon").getAttribute("data-slot")).toBe("empty-icon")
+    unmount()
+  }
+  // Public contract: the surface variant is exposed for consumer composition.
+  for (const variant of [undefined, EmptyVariant.outline, EmptyVariant.muted] as const) {
+    const { container, unmount } = render(<Empty variant={variant}>Content</Empty>)
+    expect(container.querySelector('[data-slot="empty"]')?.getAttribute("data-variant")).toBe(variant ?? "default")
     unmount()
   }
 })

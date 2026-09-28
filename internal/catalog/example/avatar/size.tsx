@@ -5,9 +5,7 @@ import * as UI from "@bridge/ui"
 function Axis({ children, label }: { readonly children: ReactNode; readonly label: string }) {
   return (
     <section className="space-y-2">
-      <UI.Heading as={UI.WAIHeading.H3} className="text-sm font-semibold">
-        {label}
-      </UI.Heading>
+      <UI.Heading as={UI.WAIHeading.H3}>{label}</UI.Heading>
       <div className="flex flex-wrap items-start gap-3">{children}</div>
     </section>
   )
@@ -28,7 +26,7 @@ export default function Example() {
       {(["sm", "default", "lg"] as const).map((size) => (
         <Sample key={size} label={size}>
           <UI.Avatar size={size}>
-            <UI.AvatarFallback className="text-foreground">BU</UI.AvatarFallback>
+            <UI.AvatarFallback>BU</UI.AvatarFallback>
           </UI.Avatar>
         </Sample>
       ))}
