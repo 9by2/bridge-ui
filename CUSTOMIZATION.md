@@ -222,13 +222,13 @@ Brand and third-party icons live in the consumer; pass them through icon slots. 
 
 Every icon slot accepts any `ReactNode`. Author an icon as an SVG with a `viewBox`, `currentColor`, and no fixed `width`/`height`; the slot then sizes it and gives it the slot's text color.
 
-| Slot                                                                                           | Size for an unsized SVG |
-| ---------------------------------------------------------------------------------------------- | ----------------------- |
-| `Button` children                                                                              | 16px (sm 14, xs 12)     |
-| `ItemMedia`, `MarkerIcon`, `SidebarMenuButton`, `SettingsNavItem`, `EmptyMedia variant="icon"` | 16px                    |
-| `Badge` children                                                                               | 12px                    |
-| `MetricTile icon`                                                                              | 18px                    |
-| `DataStateMedia`                                                                               | 24px                    |
+| Slot                                                                        | Size for an unsized SVG |
+| --------------------------------------------------------------------------- | ----------------------- |
+| `Button` children                                                           | 16px (sm 14, xs 12)     |
+| `ItemMedia`, `MarkerIcon`, `SidebarMenuButton`, `EmptyMedia variant="icon"` | 16px                    |
+| `Badge` children                                                            | 12px                    |
+| `MetricTile icon`                                                           | 18px                    |
+| `DataStateMedia`, `SettingsNavItem`                                         | 24px                    |
 
 ```tsx
 // bridge-web brand-icon registry

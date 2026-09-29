@@ -340,12 +340,12 @@
   width: 18px;
   height: 18px;
 }
-[data-pilot-theme] [data-slot="empty-icon"][data-variant="icon"] > svg:not([class*="size-"]):not([width]),
-[data-pilot-theme] [data-slot="settings-nav-item"] > svg:not([class*="size-"]):not([width]) {
+[data-pilot-theme] [data-slot="empty-icon"][data-variant="icon"] > svg:not([class*="size-"]):not([width]) {
   width: 16px;
   height: 16px;
 }
-[data-pilot-theme] [data-slot="data-state-media"] > svg:not([class*="size-"]):not([width]) {
+[data-pilot-theme] [data-slot="data-state-media"] > svg:not([class*="size-"]):not([width]),
+[data-pilot-theme] [data-slot="settings-nav-item"] > svg:not([class*="size-"]):not([width]) {
   width: 24px;
   height: 24px;
 }
