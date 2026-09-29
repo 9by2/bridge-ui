@@ -10,6 +10,8 @@ Inline: `text` (`bold`, `italic`, `strike`, `underline`, `code`, `copyable`, `hr
 
 Rules:
 
+- Composition: renders through existing Typography (`Heading`, `Body`, `Blockquote`, `List`, `InlineCode`), `Button`, `Separator`, `ResponsiveImage`, `VideoPlayer`, `VideoThumbnail`; no new rendering component. `compact` tightens block spacing only.
+
 - No HTML rendering. Unknown/malformed nodes dropped; >24 nesting levels dropped; empty result renders `emptyFallback`.
 - Links: http(s), mailto, root-relative (`//` rejected). `external` → `target="_blank" rel="noopener noreferrer"`.
 - Images and sourceSet: http(s), root-relative. `displayWidth` accepts positive number (px) or `<n>(px|%|rem|em|vw|cm|mm|in|pt|pc)`. Blur: base64 image data URL or safe URL without quote/paren/space.

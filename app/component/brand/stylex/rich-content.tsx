@@ -2,8 +2,11 @@ import * as stylex from "@stylexjs/stylex"
 import { CheckIcon, CopyIcon } from "lucide-react"
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react"
 
+import { Button } from "./button"
 import { ResponsiveImage } from "./responsive-image"
+import { Separator } from "./separator"
 import { token } from "./token.stylex"
+import { Blockquote, Body, Heading, InlineCode, List, WAIHeading } from "./typography"
 import { VideoPlayer } from "./video-player"
 import { VideoThumbnail } from "./video-thumbnail"
 
@@ -135,49 +138,25 @@ const cssLengthPattern = /^\d+(?:\.\d+)?(?:px|%|rem|em|vw|cm|mm|in|pt|pc)$/
 const blurDataPattern = /^data:image\/(?:png|jpe?g|webp|gif|avif);base64,[A-Za-z0-9+/=]+$/
 const youtubeHost = ["youtube.com", "www.youtube.com", "youtube-nocookie.com", "www.youtube-nocookie.com"]
 
+// Typography owns font, size, colour and list/quote/code appearance; these add only layout it does not set.
 const style = stylex.create({
-  root: { color: token.foreground, lineHeight: 1.65, overflowWrap: "anywhere", minWidth: 0 },
-  compact: { lineHeight: 1.45 },
+  root: { color: token.foreground, overflowWrap: "anywhere", minWidth: 0 },
   block: { marginBlock: "0.75em" },
   tight: { marginBlock: "0.25em" },
-  heading: { fontFamily: token.fontHeading, fontWeight: 700, lineHeight: 1.2, marginBlock: "1em 0.5em" },
-  h1: { fontSize: "2em" },
-  h2: { fontSize: "1.6em" },
-  h3: { fontSize: "1.3em" },
-  h4: { fontSize: "1.15em" },
-  h5: { fontSize: "1em" },
-  h6: { fontSize: "0.9em" },
-  list: { paddingInlineStart: "1.5em", marginBlock: "0.75em" },
-  bullet: { listStyleType: "disc" },
-  ordered: { listStyleType: "decimal" },
+  heading: { fontWeight: 700, lineHeight: 1.2, marginBlock: "1em 0.5em" },
   listItem: { marginBlock: "0.25em", paddingInlineStart: "0.25em" },
   link: { color: token.primary, textDecoration: "underline", textUnderlineOffset: "0.2em" },
-  quote: {
-    borderInlineStartWidth: "3px",
-    borderInlineStartStyle: "solid",
-    borderInlineStartColor: token.border,
-    paddingInlineStart: "1em",
-    color: token.mutedForeground
-  },
   left: { textAlign: "left" },
   center: { textAlign: "center" },
   right: { textAlign: "right" },
   justify: { textAlign: "justify" },
   mono: { fontFamily: "var(--bridge-font-mono, ui-monospace, SFMono-Regular, Menlo, monospace)" },
-  inlineCode: {
-    fontSize: "0.9em",
-    paddingBlock: "0.1em",
-    paddingInline: "0.35em",
-    borderRadius: "0.35em",
-    backgroundColor: token.muted
-  },
   inlineCopy: {
     display: "inline-flex",
     alignItems: "center",
+    gap: "0.125em",
     maxWidth: "100%",
-    verticalAlign: "baseline",
-    borderRadius: "0.35em",
-    backgroundColor: token.muted
+    verticalAlign: "baseline"
   },
   codeBlock: {
     marginBlock: "1em",
@@ -205,23 +184,6 @@ const style = stylex.create({
     minHeight: "2.25em"
   },
   pre: { margin: 0, padding: "1em", overflowX: "auto", fontSize: "0.875em", lineHeight: 1.6, whiteSpace: "pre" },
-  copyButton: {
-    display: "inline-flex",
-    flexShrink: 0,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "1.75em",
-    height: "1.75em",
-    padding: 0,
-    border: 0,
-    borderRadius: "0.35em",
-    cursor: "pointer",
-    color: { default: token.mutedForeground, ":hover": token.foreground },
-    backgroundColor: { default: "transparent", ":hover": token.accent },
-    outline: { default: "none", ":focus-visible": `2px solid ${token.ring}` },
-    fontSize: "1em"
-  },
-  copyIcon: { width: "1em", height: "1em" },
   visuallyHidden: {
     position: "absolute",
     width: 1,
@@ -251,20 +213,10 @@ const style = stylex.create({
     verticalAlign: "top"
   },
   headerCell: { fontWeight: 600, backgroundColor: token.muted },
-  rule: {
-    marginBlock: "2em",
-    borderWidth: 0,
-    borderBlockStartWidth: "1px",
-    borderBlockStartStyle: "solid",
-    borderBlockStartColor: token.border
-  },
+  rule: { marginBlock: "2em" },
   pageBreak: {
-    height: 0,
-    borderWidth: 0,
     marginBlock: "1.5em",
-    borderBlockStartWidth: "1px",
-    borderBlockStartStyle: "dashed",
-    borderBlockStartColor: token.mutedForeground,
+    backgroundImage: `repeating-linear-gradient(to right, transparent 0 6px, ${token.background} 6px 10px)`,
     breakBefore: "page"
   },
   figure: { display: "flex", width: "100%", marginBlock: "1.5em", marginInline: 0 },
@@ -281,7 +233,6 @@ const textAlignStyle = {
   right: style.right,
   justify: style.justify
 } as const
-const headingSizeStyle = [style.h1, style.h2, style.h3, style.h4, style.h5, style.h6] as const
 const figureAlignStyle = { left: style.figureLeft, center: style.figureCenter, right: style.figureRight } as const
 
 type RenderContext = {
@@ -331,7 +282,7 @@ const span = (value: unknown) => {
 }
 const oneOf = <T extends Record<string, string>>(option: T, value: unknown): ValueOf<T> | undefined =>
   Object.values(option).find((item): item is ValueOf<T> => item === value)
-const HeadingTag = ["h1", "h2", "h3", "h4", "h5", "h6"] as const
+const HeadingTag = Object.values(WAIHeading)
 
 async function defaultCopyText(text: string) {
   try {
@@ -364,15 +315,16 @@ function CopyButton({ value, context }: { value: string; context: RenderContext 
   const Icon = copied ? CheckIcon : CopyIcon
   return (
     <>
-      <button
+      <Button
         type="button"
+        variant="ghost"
+        size="icon-xs"
         data-slot="rich-content-copy"
         aria-label={label}
         title={label}
-        className={stylex.props(style.copyButton).className}
         onClick={async () => setCopied(await context.copyText(value))}>
-        <Icon aria-hidden="true" className={stylex.props(style.copyIcon).className} />
-      </button>
+        <Icon aria-hidden="true" />
+      </Button>
       <span role="status" className={stylex.props(style.visuallyHidden).className}>
         {copied ? context.labels.copiedCode : ""}
       </span>
@@ -390,12 +342,7 @@ function hasText(value: unknown) {
 
 function markText(item: RichContentText, context: RenderContext, href: string | undefined): ReactNode {
   let content: ReactNode = item.text
-  if (item.code)
-    content = (
-      <code className={stylex.props(style.mono, !item.copyable || href ? style.inlineCode : null).className}>
-        {content}
-      </code>
-    )
+  if (item.code) content = <InlineCode>{content}</InlineCode>
   if (item.bold) content = <strong>{content}</strong>
   if (item.italic) content = <em>{content}</em>
   if (item.strike) content = <s>{content}</s>
@@ -458,30 +405,23 @@ function renderText(node: Record<string, unknown>, key: number, context: RenderC
   const alignStyle = align ? textAlignStyle[align] : null
   if (node.type === "paragraph")
     return (
-      <p key={key} data-align={align} className={stylex.props(blockStyle(context), alignStyle).className}>
+      <Body key={key} data-align={align} className={stylex.props(blockStyle(context), alignStyle).className}>
         {content}
-      </p>
+      </Body>
     )
   const level = integer(node.level)
   const Tag = level !== undefined && level >= 1 ? HeadingTag[level - 1] : undefined
-  if (!Tag || level === undefined) return null
+  if (!Tag) return null
   return (
-    <Tag
-      key={key}
-      data-align={align}
-      className={stylex.props(style.heading, headingSizeStyle[level - 1], alignStyle).className}>
+    <Heading key={key} as={Tag} data-align={align} className={stylex.props(style.heading, alignStyle).className}>
       {content}
-    </Tag>
+    </Heading>
   )
 }
 
 function renderQuote(node: Record<string, unknown>, key: number, context: RenderContext) {
   const content = mixedContent(node.children, node.blocks, context)
-  return content ? (
-    <blockquote key={key} className={stylex.props(blockStyle(context), style.quote).className}>
-      {content}
-    </blockquote>
-  ) : null
+  return content ? <Blockquote key={key}>{content}</Blockquote> : null
 }
 
 function renderListItem(item: unknown, key: number, context: RenderContext) {
@@ -501,17 +441,12 @@ function renderList(node: Record<string, unknown>, key: number, context: RenderC
   if (!Array.isArray(node.items)) return null
   const items = node.items.map((item, index) => renderListItem(item, index, context)).filter((item) => item !== null)
   if (!items.length) return null
-  const Tag = node.ordered ? "ol" : "ul"
-  const start = node.ordered ? integer(node.start) : undefined
-  return (
-    <Tag
-      key={key}
-      start={start}
-      className={
-        stylex.props(style.list, context.tight && style.tight, node.ordered ? style.ordered : style.bullet).className
-      }>
+  return node.ordered ? (
+    <List key={key} ordered start={integer(node.start)}>
       {items}
-    </Tag>
+    </List>
+  ) : (
+    <List key={key}>{items}</List>
   )
 }
 
@@ -678,14 +613,14 @@ function renderVideo(node: Record<string, unknown>, key: number, context: Render
 function renderSeparator(node: Record<string, unknown>, key: number, context: RenderContext) {
   if (node.type === "pageBreak")
     return (
-      <hr
+      <Separator
         key={key}
         aria-label={context.labels.pageBreak}
         data-slot="rich-content-page-break"
         className={stylex.props(style.pageBreak).className}
       />
     )
-  return <hr key={key} className={stylex.props(style.rule).className} />
+  return <Separator key={key} className={stylex.props(style.rule).className} />
 }
 
 type NodeRenderer = (node: Record<string, unknown>, key: number, context: RenderContext) => ReactNode
@@ -720,7 +655,7 @@ export function RichContent({
 }: RichContentProps) {
   const context: RenderContext = {
     depth: 0,
-    tight: false,
+    tight: variant === RichContentVariant.Compact,
     labels: { ...DefaultLabel, ...labels },
     renderImage: imageSlot,
     copyText
@@ -729,14 +664,7 @@ export function RichContent({
     ? content.map((node, index) => renderNode(node, index, context)).filter((node) => node !== null)
     : []
   return (
-    <div
-      data-slot="rich-content"
-      className={[
-        stylex.props(style.root, variant === RichContentVariant.Compact && style.compact).className,
-        className
-      ]
-        .filter(Boolean)
-        .join(" ")}>
+    <div data-slot="rich-content" className={[stylex.props(style.root).className, className].filter(Boolean).join(" ")}>
       {nodes.length ? nodes : emptyFallback}
     </div>
   )

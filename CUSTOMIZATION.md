@@ -850,7 +850,7 @@ Import `RichContent` from `@bridge/ui/rich-content` for read-only typed nodes. T
 <RichContent
   content={nodes}
   emptyFallback={t("empty")}
-  variant="default" // or "compact" for tight containers
+  variant="default" // or "compact": tighter block spacing for small containers
   labels={{
     code: t("code"),
     copyCode: t("copy"),
@@ -875,6 +875,8 @@ Import `RichContent` from `@bridge/ui/rich-content` for read-only typed nodes. T
 | `image`                       | `src`, `alt`, `width?`, `height?`, `align?: "left" \| "center" \| "right"` (default center), `displayWidth?` (px number or CSS length: px, %, rem, em, vw, cm, mm, in, pt, pc), `sourceSet?: { url, width }[]`, `sizes?`, `blurDataUrl?` |
 | `video`                       | `embedUrl` (HTTPS youtube.com / youtube-nocookie.com `/embed/<id>`), `title` (required; renders via `VideoPlayer`)                                                                                                                       |
 | `horizontalRule`, `pageBreak` | `pageBreak` is a labelled `role="separator"` with print `break-before: page`; `break` is a deprecated rule alias                                                                                                                         |
+
+RichContent composes the Typography primitives (`Heading`, `Body`, `Blockquote`, `List`, `InlineCode`), `Button` (copy action), `Separator` (rule and page break), `ResponsiveImage`, `VideoPlayer` and `VideoThumbnail`, so Typography theme tokens (`--bridge-font-size-*`, `--bridge-text-size-*`, `--bridge-font-heading`, `--bridge-font-mono`) style CMS content too. Their `data-slot` values (`heading`, `body`, `blockquote`, `list`, `inline-code`, `separator`) appear inside `rich-content`.
 
 Inline runs: `{ type: "text", text, bold?, italic?, strike?, underline?, code?, copyable?, href?, external? }` and `{ type: "lineBreak" }`. Marks combine. `external` adds `target="_blank" rel="noopener noreferrer"`. Inline `copyable` code shows a copy button (never inside a link). Link href: http(s), mailto, root-relative. Image src/sourceSet: http(s), root-relative. `blurDataUrl`: base64 image data URL or safe image URL. Invalid or empty nodes are dropped; nesting deeper than 24 levels is dropped; if nothing remains, `emptyFallback` renders. Header cells in a row with data cells get `scope="row"`, otherwise `scope="col"`. Tables scroll inside a focusable labelled region. `data-align` on paragraph/heading/figure exposes resolved alignment.
 

@@ -374,6 +374,31 @@ describe("RichContent video", () => {
   })
 })
 
+describe("RichContent Typography composition", () => {
+  // Protects: CMS content renders through the shared Typography primitives, so their theme contract applies to it.
+  it("renders prose through Typography, Button and Separator slots", () => {
+    const { container } = render(
+      <RichContent
+        content={[
+          { type: "heading", level: 2, children: [text("Title")] },
+          { type: "paragraph", children: [text("Body"), text("x", { code: true, copyable: true })] },
+          { type: "quote", children: [text("Quote")] },
+          { type: "list", ordered: true, items: [[text("One")]] },
+          { type: "horizontalRule" }
+        ]}
+      />
+    )
+    const slot = (name: string) => container.querySelector(`[data-slot="${name}"]`)
+    expect(slot("heading")?.getAttribute("data-heading-level")).toBe("h2")
+    expect(slot("body")?.textContent).toContain("Body")
+    expect(slot("inline-code")?.textContent).toBe("x")
+    expect(slot("blockquote")?.textContent).toBe("Quote")
+    expect(slot("list")?.getAttribute("data-ordered")).toBe("true")
+    expect(slot("rich-content-copy")?.getAttribute("data-size")).toBe("icon-xs")
+    expect(slot("separator")).toBeTruthy()
+  })
+})
+
 describe("RichContent malformed content", () => {
   // Protects: malformed nodes from an app mapper cannot crash rendering or leak partial structure.
   it("ignores malformed nodes and inline runs", () => {

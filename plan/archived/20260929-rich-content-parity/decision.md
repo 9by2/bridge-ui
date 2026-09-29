@@ -52,3 +52,9 @@
 **GIVEN** browser verification showed StyleX border shorthands with `var()` colors computing to 0 width (table, rule, page break, and the 0.14.0 quote border)
 **WHEN** declaring borders
 **THEN** use longhand width/style/color properties.
+
+### DEC-008: Compose Typography
+
+**GIVEN** the package already owns prose primitives in `typography.tsx`
+**WHEN** rendering headings, paragraphs, quotes, lists, inline code, rules and the copy button
+**THEN** compose `Heading`, `Body`, `Blockquote`, `List`, `InlineCode`, `Separator` and `Button`; RichContent adds only layout (spacing, alignment) and CMS-only structures (code block, table, figure). `compact` becomes tighter block spacing because Typography owns size and line height.
