@@ -1,5 +1,15 @@
 # @bridge/ui
 
+## 0.14.1
+
+### Patch Changes
+
+- a1d68d4: Extend `RichContent` with typed nodes for CMS parity: strike/underline marks, external links, inline line breaks, nested list items and block quotes, copyable code blocks and inline code, tables with header cells, spans and column widths, horizontal rule and labelled page break, image alignment/display width/responsive sources/blur placeholder with a `renderImage` slot, YouTube video via `VideoPlayer`, and paragraph/heading alignment. Add translatable `labels` and a `copyText` override. Fix quote border and add a heading size scale. Existing node shapes are unchanged.
+- 4f5b241: `RichContent` now renders through the Typography primitives (`Heading`, `Body`, `Blockquote`, `List`, `InlineCode`), `Button` and `Separator`, so Typography theme tokens apply to CMS content. `variant="compact"` now tightens block spacing.
+- d7b1e59: `SettingsNavItem` sizes an icon without an intrinsic size at 24px (`size-6`) by default instead of 16px. A `size-*` class or `width` attribute still overrides it.
+- 1ae41ff: Soften the `SettingsSidebar` divider and `SettingsSidebarHeader` bottom border to 50% of the border token.
+- 6a813a7: Add provider-agnostic `VideoThumbnail` (`@bridge/ui/video-thumbnail`): one poster URL or ordered fallback candidates, with an optional `placeholderMaxSize` for providers that return tiny placeholders. The RichContent `video` node accepts `poster` URLs from the application. `YouTubeThumbnail` is deprecated and now wraps `VideoThumbnail`; its `data-slot` changes from `youtube-thumbnail` to `video-thumbnail`.
+
 ## 0.14.0
 
 ### Minor Changes
