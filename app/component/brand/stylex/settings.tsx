@@ -20,6 +20,9 @@ type SettingsContext = { closePicker: () => void; isMobile: boolean }
 
 const Context = createContext<SettingsContext | null>(null)
 
+// Sidebar dividers sit at half the border token strength so they read as structure, not emphasis.
+const subtleBorder = `color-mix(in oklch, ${token.border}, transparent 50%)`
+
 const style = stylex.create({
   root: {
     display: "grid",
@@ -34,7 +37,7 @@ const style = stylex.create({
     padding: "var(--bridge-unit-12, 12px)",
     borderRightWidth: 1,
     borderRightStyle: "solid",
-    borderRightColor: token.border
+    borderRightColor: subtleBorder
   },
   picker: { paddingBottom: "var(--bridge-unit-16, 16px)" },
   pickerContent: {
@@ -51,7 +54,7 @@ const style = stylex.create({
     padding: "var(--bridge-unit-8, 8px)",
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
-    borderBottomColor: token.border,
+    borderBottomColor: subtleBorder,
     marginBottom: 8
   },
   nav: { display: "flex", flexDirection: "column", gap: "var(--bridge-unit-4, 4px)" },

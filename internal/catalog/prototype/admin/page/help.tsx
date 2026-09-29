@@ -130,6 +130,36 @@ export function HelpPage() {
               <UI.Button onClick={() => notify.success("Ticket T-1043 created")}>Submit</UI.Button>
             </UI.CardFooter>
           </UI.Card>
+          <UI.Card>
+            <UI.CardHeader>
+              <UI.CardTitle>Getting started</UI.CardTitle>
+            </UI.CardHeader>
+            <UI.CardContent>
+              <div className="grid grid-cols-1 gap-4">
+                <UI.VideoPlayer
+                  embedUrl="https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ"
+                  title="Workspace tour"
+                  playLabel="Play Workspace tour"
+                  poster={<UI.VideoThumbnail src="https://i.ytimg.com/vi/aqz-KE-bpKQ/hqdefault.jpg" alt="" />}
+                />
+                <UI.RichContent
+                  variant="compact"
+                  emptyFallback="No notes yet."
+                  content={[
+                    { type: "paragraph", children: [{ type: "text", text: "Watch the tour, then invite your team." }] },
+                    {
+                      type: "list",
+                      ordered: false,
+                      items: [
+                        [{ type: "text", text: "Create a workspace" }],
+                        [{ type: "text", text: "bun add @bridge/ui", code: true, copyable: true }]
+                      ]
+                    }
+                  ]}
+                />
+              </div>
+            </UI.CardContent>
+          </UI.Card>
         </div>
       </UI.PageContent>
     </UI.Page>

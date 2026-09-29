@@ -19,7 +19,8 @@ const BrowserContractFile = [
   "./test/browser/bridge-calendar.test.ts",
   "./test/browser/nested-text-size.test.ts",
   "./test/browser/consumer-parity.test.ts",
-  "./test/browser/prototype.test.ts"
+  "./test/browser/prototype.test.ts",
+  "./test/browser/rich-content-parity.test.ts"
 ] as const
 
 // Catalog, packed package output, and the independent consumer fixture that renders from dist/.

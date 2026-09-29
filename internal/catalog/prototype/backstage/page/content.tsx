@@ -206,6 +206,39 @@ export function ContentPage() {
                 <AudienceSurvey />
               </UI.CardContent>
             </UI.Card>
+            <UI.Card>
+              <UI.CardHeader>
+                <UI.CardTitle>Teaser</UI.CardTitle>
+              </UI.CardHeader>
+              <UI.CardContent>
+                <div className="grid grid-cols-1 gap-4">
+                  <UI.VideoPlayer
+                    embedUrl="https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ"
+                    title="Polycat teaser"
+                    playLabel="Play Polycat teaser"
+                    poster={<UI.VideoThumbnail src="https://i.ytimg.com/vi/aqz-KE-bpKQ/hqdefault.jpg" alt="" />}
+                  />
+                  <UI.RichContent
+                    variant="compact"
+                    emptyFallback="No notes yet."
+                    content={[
+                      {
+                        type: "paragraph",
+                        children: [{ type: "text", text: "Pin the teaser under the hero on the event page." }]
+                      },
+                      {
+                        type: "list",
+                        ordered: false,
+                        items: [
+                          [{ type: "text", text: "Autoplay stays off" }],
+                          [{ type: "text", text: "polycat-2026-teaser", code: true, copyable: true }]
+                        ]
+                      }
+                    ]}
+                  />
+                </div>
+              </UI.CardContent>
+            </UI.Card>
             <div className="grid grid-cols-1 gap-2">
               <UI.Lead>Guideline</UI.Lead>
               <UI.Body>Keep headline under 40 character. ใช้ภาษาไทยเป็นหลัก และใส่ภาษาอังกฤษเฉพาะชื่อศิลปินหรือชื่องาน</UI.Body>

@@ -51,7 +51,7 @@ test("consumer icon without intrinsic size is sized by every icon slot", async (
     "metric-tile-icon": 18,
     "marker-icon": 16,
     "sidebar-menu-button": 16,
-    "settings-nav-item": 16,
+    "settings-nav-item": 24,
     "data-state-media": 24,
     "empty-icon": 16
   })

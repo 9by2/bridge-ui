@@ -1,4 +1,4 @@
-import { VideoPlayer, YouTubeThumbnail } from "@bridge/ui"
+import { VideoPlayer, VideoThumbnail } from "@bridge/ui"
 
 export default function Example() {
   return (
@@ -6,7 +6,18 @@ export default function Example() {
       title="Sample video"
       playLabel="Play sample video"
       embedUrl="https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ"
-      poster={<YouTubeThumbnail videoId="aqz-KE-bpKQ" alt="" width={1280} height={720} />}
+      poster={
+        <VideoThumbnail
+          src={[
+            "https://i.ytimg.com/vi/aqz-KE-bpKQ/maxresdefault.jpg",
+            "https://i.ytimg.com/vi/aqz-KE-bpKQ/hqdefault.jpg"
+          ]}
+          placeholderMaxSize={{ width: 120, height: 90 }}
+          alt=""
+          width={1280}
+          height={720}
+        />
+      }
     />
   )
 }

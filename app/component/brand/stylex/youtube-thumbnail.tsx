@@ -1,29 +1,23 @@
-import { useState, type ComponentProps } from "react"
+import type { ComponentProps } from "react"
 
-export type YouTubeThumbnailProps = Omit<ComponentProps<"img">, "src" | "onLoad" | "onError"> & {
+import { VideoThumbnail } from "./video-thumbnail"
+
+export type YouTubeThumbnailProps = Omit<ComponentProps<"img">, "src" | "srcSet" | "onLoad" | "onError"> & {
   videoId: string
   alt: string
 }
 
-export function YouTubeThumbnail({ videoId, alt, loading = "lazy", ...props }: YouTubeThumbnailProps) {
-  const [state, setState] = useState({ videoId, fallback: false })
-  const current = state.videoId === videoId ? state : { videoId, fallback: false }
-  if (current !== state) setState(current)
+/**
+ * @deprecated Use `VideoThumbnail` and build provider URLs in the application, e.g.
+ * `src={[".../maxresdefault.jpg", ".../hqdefault.jpg"]} placeholderMaxSize={{ width: 120, height: 90 }}`.
+ */
+export function YouTubeThumbnail({ videoId, ...props }: YouTubeThumbnailProps) {
   const prefix = `https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/`
-  const fallback = () => {
-    if (!current.fallback) setState({ videoId, fallback: true })
-  }
   return (
-    <img
+    <VideoThumbnail
       {...props}
-      data-slot="youtube-thumbnail"
-      alt={alt}
-      loading={loading}
-      src={`${prefix}${current.fallback ? "hqdefault" : "maxresdefault"}.jpg`}
-      onError={fallback}
-      onLoad={(event) => {
-        if (event.currentTarget.naturalWidth <= 120 && event.currentTarget.naturalHeight <= 90) fallback()
-      }}
+      src={[`${prefix}maxresdefault.jpg`, `${prefix}hqdefault.jpg`]}
+      placeholderMaxSize={{ width: 120, height: 90 }}
     />
   )
 }

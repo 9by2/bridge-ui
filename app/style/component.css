@@ -8,7 +8,7 @@
 @import "@fontsource/sarabun/700.css";
 @import "react-image-crop/dist/ReactCrop.css";
 
-[data-slot="video-player"] [data-slot="youtube-thumbnail"] {
+[data-slot="video-player"] [data-slot="video-thumbnail"] {
   width: 100%;
   height: 100%;
   object-fit: cover;

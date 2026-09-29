@@ -52,7 +52,7 @@ export default function Example() {
                 key={item.value}
                 isActive={section === item.value}
                 onClick={() => setSection(item.value)}>
-                <Icon className="mr-2 size-4" />
+                <Icon aria-hidden="true" />
                 {item.label}
               </UI.SettingsNavItem>
             )
