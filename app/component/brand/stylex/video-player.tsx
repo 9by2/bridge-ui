@@ -33,7 +33,6 @@ const style = stylex.create({
     border: 0,
     cursor: "pointer",
     backgroundColor: "transparent",
-    color: "white",
     boxShadow: { default: "none", ":focus-visible": `inset 0 0 0 3px ${token.ring}` }
   },
   icon: {
@@ -41,8 +40,16 @@ const style = stylex.create({
     placeItems: "center",
     width: 64,
     height: 64,
+    boxSizing: "border-box",
     borderRadius: "50%",
+    // Token pair keeps the glyph readable in every theme; the foreground ring keeps the circle visible on posters
+    // that match the primary fill (e.g. a white poster in dark theme).
+    borderWidth: 2,
+    borderStyle: "solid",
+    borderColor: token.primaryForeground,
     backgroundColor: token.primary,
+    color: token.primaryForeground,
+    boxShadow: "0 1px 6px rgb(0 0 0 / 0.35)",
     fontSize: 32
   },
   minimal: { width: 48, height: 48, fontSize: 24 },
