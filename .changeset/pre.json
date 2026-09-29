@@ -4,5 +4,7 @@
   "initialVersions": {
     "@bridge/ui": "0.13.1"
   },
-  "changesets": []
+  "changesets": [
+    "content-video-media"
+  ]
 }
