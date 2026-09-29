@@ -24,9 +24,8 @@ test("release automation runs after verification on protected default branch onl
   expect(ci).toContain("INPUT_VERSION: bun release:version")
   expect(ci).toContain("INPUT_PUBLISH: bun release:publish")
   expect(ci).toContain('INPUT_COMMIT: "chore: version package"')
-  const releaseJobEnd = ci.indexOf("\n\npromote:")
-  expect(releaseJobEnd).toBeGreaterThan(0)
-  expect(ci.slice(0, releaseJobEnd)).not.toContain("when: manual")
+  expect(ci).not.toContain("when: manual")
+  expect(ci).not.toContain("\npromote:")
   const root = await Bun.file(".gitlab-ci.yml").text()
   expect(root).toContain('".changeset/**/*"')
 })
@@ -43,7 +42,7 @@ test("child verification explicitly accepts an MR parent pipeline", async () => 
 test("source and coverage skip the version-only release-automation merge commit on protected main", async () => {
   const ci = await Bun.file("deployment/.gitlab-ci.yml").text()
   const skipRule =
-    '$CI_PIPELINE_SOURCE == "parent_pipeline" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_TITLE =~ /^chore: version package( \\(rc\\))?$/'
+    '$CI_PIPELINE_SOURCE == "parent_pipeline" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_TITLE == "chore: version package"'
   for (const job of ["source", "coverage"]) {
     expect(ci).toContain(`${job}:\n  stage: verify\n  rules:\n    - if: '${skipRule}'\n      when: never`)
   }
@@ -55,18 +54,12 @@ test("source and coverage skip the version-only release-automation merge commit 
   expect(ci).toContain("release:\n  stage: deploy\n  resource_group: package-release\n  variables:\n    GIT_DEPTH:")
 })
 
-test("main carries permanent RC pre-release mode", async () => {
-  const pre = await Bun.file(".changeset/pre.json").json()
-  expect(pre.mode).toBe("pre")
-  expect(pre.tag).toBe("rc")
-})
-
-test("promote is a manual job gated identically to release, and prepares a stable release MR", async () => {
+test("merged changesets prepare a stable version MR without pre-release or manual promotion", async () => {
   const ci = await Bun.file("deployment/.gitlab-ci.yml").text()
-  expect(ci).toContain(
-    'promote:\n  stage: deploy\n  resource_group: package-release\n  variables:\n    GIT_DEPTH: "0"\n  rules:\n    - if: \'$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true"\'\n      when: manual'
-  )
-  expect(ci).toContain("- bun run release:promote")
+  expect(ci).toContain('INPUT_TITLE: "Release @bridge/ui"')
+  expect(ci).not.toContain("(rc)")
+  expect(await Bun.file(".changeset/pre.json").exists()).toBe(false)
   const manifest = await Bun.file("package.json").json()
-  expect(manifest.scripts["release:promote"]).toBe("bun cmd/promote-release.ts")
+  expect(manifest.scripts["release:version"]).toContain("bun changeset version")
+  expect(manifest.scripts["release:promote"]).toBeUndefined()
 })

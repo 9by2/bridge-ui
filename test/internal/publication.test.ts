@@ -5,11 +5,11 @@ import path from "node:path"
 
 import { publishPackage } from "../../cmd/publish-package"
 
-test("publication routes stable/RC and safely resumes an existing version", async () => {
+test("publication uses latest for stable and safely resumes an existing version", async () => {
   const directory = await mkdtemp(path.join(tmpdir(), "bridge-publication-"))
   try {
     await Bun.write(path.join(directory, "dist/index.js"), "export const Button = {}; export const UploadList = {}")
-    for (const version of ["0.2.0", "0.2.0-rc.0"]) {
+    for (const version of ["0.2.0"]) {
       await Bun.write(path.join(directory, "package.json"), JSON.stringify({ name: "@bridge/ui", version }))
       await Bun.write(path.join(directory, "CHANGELOG.md"), `# Changelog\n\n## ${version}\n`)
       for (const scenario of ["new", "retry", "denied", "verify-failure", "tag-conflict", "already-released"]) {
@@ -62,7 +62,7 @@ test("publication routes stable/RC and safely resumes an existing version", asyn
               "bun",
               "publish",
               "--tag",
-              version.includes("rc") ? "next" : "latest",
+              "latest",
               "--registry",
               "https://registry.example/api/v4/projects/872/packages/npm/"
             ])
@@ -71,6 +71,27 @@ test("publication routes stable/RC and safely resumes an existing version", asyn
         }
       }
     }
+  } finally {
+    await rm(directory, { recursive: true, force: true })
+  }
+})
+
+test("publication rejects RC versions before contacting the registry", async () => {
+  const directory = await mkdtemp(path.join(tmpdir(), "bridge-publication-"))
+  try {
+    await Bun.write(path.join(directory, "package.json"), JSON.stringify({ name: "@bridge/ui", version: "0.2.0-rc.0" }))
+    await expect(
+      publishPackage({
+        cwd: directory,
+        env: { CI_COMMIT_REF_PROTECTED: "true", CI_DEFAULT_BRANCH: "main", CI_COMMIT_BRANCH: "main" },
+        fetch: Object.assign(
+          () => {
+            throw new Error("Registry must not be contacted")
+          },
+          { preconnect() {} }
+        )
+      })
+    ).rejects.toThrow("Stable version required")
   } finally {
     await rm(directory, { recursive: true, force: true })
   }

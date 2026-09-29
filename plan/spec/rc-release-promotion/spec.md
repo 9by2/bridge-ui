@@ -3,7 +3,7 @@
 **Spec ID:** `rc-release-promotion`
 **Proposal:** `rc-release-promotion`
 **Status:** accepted
-**Amended by:** `release-promote-fix` (REQ-002 superseded by REQ-004, REQ-005)
+**Superseded by:** [Stable release](../stable-release/spec.md). Historical RC/promotion contract only.
 
 ## Summary
 
