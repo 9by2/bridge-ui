@@ -35,9 +35,9 @@ export async function publishPackage(dependency: PublishDependency = {}): Promis
     throw new Error("Protected default branch required")
   }
   const manifest = await Bun.file(path.join(cwd, "package.json")).json()
-  if (!/^\d+\.\d+\.\d+(?:-rc\.\d+)?$/.test(manifest.version)) throw new Error("Stable or RC version required")
+  if (!/^\d+\.\d+\.\d+$/.test(manifest.version)) throw new Error("Stable version required")
   const tag = `v${manifest.version}`
-  const channel = manifest.version.includes("-rc.") ? "next" : "latest"
+  const channel = "latest"
   const changelog = Bun.file(path.join(cwd, "CHANGELOG.md"))
   if (!(await changelog.exists()) || !(await changelog.text()).split("\n").includes(`## ${manifest.version}`)) {
     log("No Changesets release entry; nothing to publish")

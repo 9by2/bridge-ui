@@ -105,7 +105,7 @@ Do not implement consumer migration in this repository.
 - root and stable subpath export resolve;
 - packed tarball install pass;
 - private GitLab publish and install pass with current Bun;
-- prerelease prove integration before `latest`.
+- packed client/SSR and registry installation prove integration before tagging `latest`.
 
 ### 5. Quality
 
@@ -120,7 +120,7 @@ Do not implement consumer migration in this repository.
 2. Build stable package export, declaration, CSS, and fixture.
 3. Add component catalog for every Shadcn component.
 4. Integrate StyleX and prove static package output.
-5. Publish and install a private GitLab prerelease.
+5. Publish and install a private GitLab stable release after the release MR merges.
 6. Pass every foundation gate.
 7. Stabilize the package.
 8. Require every future company application to consume `@bridge/ui`.

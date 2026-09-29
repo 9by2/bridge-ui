@@ -21,7 +21,7 @@ stages:
 source:
   stage: verify
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_TITLE =~ /^chore: version package( \(rc\))?$/'
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_TITLE == "chore: version package"'
       when: never
     - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
   script:
@@ -38,7 +38,7 @@ source:
 coverage:
   stage: verify
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_TITLE =~ /^chore: version package( \(rc\))?$/'
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_TITLE == "chore: version package"'
       when: never
     - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
   script:
@@ -79,15 +79,3 @@ release:
     - test "$(git ls-remote origin "refs/heads/$CI_DEFAULT_BRANCH" | cut -f1)" = "$CI_COMMIT_SHA" || { echo "Superseded pipeline; skip release"; exit 0; }
     - export GITLAB_HOST="$CI_SERVER_URL"
     - bunx changesets-gitlab
-
-promote:
-  stage: deploy
-  resource_group: package-release
-  variables:
-    GIT_DEPTH: "0"
-  rules:
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_REF_PROTECTED == "true"'
-      when: manual
-  script:
-    - test -n "$GITLAB_TOKEN"
-    - bun run release:promote
