@@ -2,6 +2,26 @@ import * as stylex from "@stylexjs/stylex"
 import { CheckIcon, CopyIcon } from "lucide-react"
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react"
 
+import {
+  RichContentImageAlign,
+  RichContentLimit,
+  RichContentTextAlign,
+  columnWidths,
+  hasText,
+  imageAlign,
+  imageProps,
+  integer,
+  isRecord,
+  isTextRun,
+  oneOf,
+  safeUrl,
+  span,
+  type RichContentImageRenderProps,
+  type RichContentNode,
+  type RichContentText,
+  type ValueOf
+} from "../stylex-support/rich-content-node"
+
 import { Button } from "./button"
 import { ResponsiveImage } from "./responsive-image"
 import { Separator } from "./separator"
@@ -10,98 +30,22 @@ import { Blockquote, Body, Heading, InlineCode, List, WAIHeading } from "./typog
 import { VideoPlayer } from "./video-player"
 import { VideoThumbnail } from "./video-thumbnail"
 
-type ValueOf<T> = T[keyof T]
+export {
+  RichContentImageAlign,
+  RichContentTextAlign,
+  type RichContentImageRenderProps,
+  type RichContentImageSource,
+  type RichContentInline,
+  type RichContentLineBreak,
+  type RichContentListItem,
+  type RichContentNode,
+  type RichContentTableCell,
+  type RichContentTableRow,
+  type RichContentText
+} from "../stylex-support/rich-content-node"
 
 export const RichContentVariant = { Default: "default", Compact: "compact" } as const
 export type RichContentVariant = ValueOf<typeof RichContentVariant>
-
-export const RichContentTextAlign = { Left: "left", Center: "center", Right: "right", Justify: "justify" } as const
-export type RichContentTextAlign = ValueOf<typeof RichContentTextAlign>
-
-export const RichContentImageAlign = { Left: "left", Center: "center", Right: "right" } as const
-export type RichContentImageAlign = ValueOf<typeof RichContentImageAlign>
-
-export type RichContentText = {
-  type: "text"
-  text: string
-  bold?: boolean
-  italic?: boolean
-  strike?: boolean
-  underline?: boolean
-  code?: boolean
-  /** Inline code only: show a copy action. Ignored inside links. */
-  copyable?: boolean
-  href?: string
-  /** Open the link in a new tab with `rel="noopener noreferrer"`. */
-  external?: boolean
-}
-export type RichContentLineBreak = { type: "lineBreak" }
-export type RichContentInline = RichContentText | RichContentLineBreak
-
-/** Legacy flat text runs, or an item holding inline runs and/or nested blocks (paragraphs, lists). */
-export type RichContentListItem =
-  | readonly RichContentInline[]
-  | { children?: readonly RichContentInline[]; blocks?: readonly RichContentNode[] }
-
-export type RichContentTableCell = {
-  header?: boolean
-  colSpan?: number
-  rowSpan?: number
-  children?: readonly RichContentInline[]
-  blocks?: readonly RichContentNode[]
-}
-export type RichContentTableRow = { cells: readonly RichContentTableCell[] }
-
-export type RichContentImageSource = { url: string; width: number }
-
-export type RichContentNode =
-  | { type: "paragraph"; align?: RichContentTextAlign; children: readonly RichContentInline[] }
-  | {
-      type: "heading"
-      level: 1 | 2 | 3 | 4 | 5 | 6
-      align?: RichContentTextAlign
-      children: readonly RichContentInline[]
-    }
-  | { type: "quote"; children?: readonly RichContentInline[]; blocks?: readonly RichContentNode[] }
-  | { type: "list"; ordered: boolean; start?: number; items: readonly RichContentListItem[] }
-  | { type: "codeBlock"; code: string; language?: string; copyable?: boolean }
-  | { type: "table"; rows: readonly RichContentTableRow[]; columnWidths?: readonly number[] }
-  | {
-      type: "image"
-      src: string
-      alt: string
-      width?: number
-      height?: number
-      align?: RichContentImageAlign
-      /** Rendered width: a number (px) or a CSS length such as `"30%"`, `"240px"`, `"12rem"`. */
-      displayWidth?: number | string
-      sourceSet?: readonly RichContentImageSource[]
-      sizes?: string
-      blurDataUrl?: string
-    }
-  | {
-      type: "video"
-      embedUrl: string
-      title: string
-      /** Poster image URL or ordered fallback candidates (http(s) / root-relative); built by the application. */
-      poster?: string | readonly string[]
-    }
-  | { type: "horizontalRule" }
-  /** @deprecated Renders a horizontal rule; use `horizontalRule`, or inline `lineBreak` for a line break. */
-  | { type: "break" }
-  | { type: "pageBreak" }
-
-/** Sanitized image data passed to `renderImage`; unsafe images never reach the slot. */
-export type RichContentImageRenderProps = {
-  src: string
-  alt: string
-  width?: number
-  height?: number
-  displayWidth?: string
-  sourceSet: readonly RichContentImageSource[]
-  sizes?: string
-  blurDataUrl?: string
-}
 
 export type RichContentLabels = {
   code: string
@@ -133,9 +77,7 @@ const DefaultLabel: RichContentLabels = {
   pageBreak: "Page break",
   playVideo: "Play video"
 }
-const RichContentLimit = { Depth: 24, CopiedResetMs: 1500 } as const
-const cssLengthPattern = /^\d+(?:\.\d+)?(?:px|%|rem|em|vw|cm|mm|in|pt|pc)$/
-const blurDataPattern = /^data:image\/(?:png|jpe?g|webp|gif|avif);base64,[A-Za-z0-9+/=]+$/
+const CopiedResetMs = 1500
 const youtubeHost = ["youtube.com", "www.youtube.com", "youtube-nocookie.com", "www.youtube-nocookie.com"]
 
 // Typography owns font, size, colour and list/quote/code appearance; these add only layout it does not set.
@@ -243,45 +185,6 @@ type RenderContext = {
   copyText: (text: string) => Promise<boolean> | boolean
 }
 
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === "object" && value !== null && !Array.isArray(value)
-
-function safeUrl(value: unknown, image = false) {
-  if (typeof value !== "string" || !value.trim()) return undefined
-  const url = value.trim()
-  if (url.startsWith("/") && !url.startsWith("//") && !url.includes("\\")) return url
-  try {
-    const parsed = new URL(url)
-    if (["http:", "https:"].includes(parsed.protocol) || (!image && parsed.protocol === "mailto:")) return url
-  } catch {
-    /* relative URLs without a root are not accepted */
-  }
-  return undefined
-}
-
-function safeBlur(value: unknown) {
-  if (typeof value !== "string") return undefined
-  if (blurDataPattern.test(value)) return value
-  const url = safeUrl(value, true)
-  return url && !/["'()\\\s]/.test(url) ? url : undefined
-}
-
-function cssLength(value: unknown) {
-  if (typeof value === "number") return Number.isFinite(value) && value > 0 ? `${value}px` : undefined
-  if (typeof value !== "string") return undefined
-  const trimmed = value.trim()
-  return cssLengthPattern.test(trimmed) ? trimmed : undefined
-}
-
-const positive = (value: unknown) =>
-  typeof value === "number" && Number.isFinite(value) && value > 0 ? value : undefined
-const integer = (value: unknown) => (typeof value === "number" && Number.isInteger(value) ? value : undefined)
-const span = (value: unknown) => {
-  const count = integer(value)
-  return count !== undefined && count > 1 ? count : undefined
-}
-const oneOf = <T extends Record<string, string>>(option: T, value: unknown): ValueOf<T> | undefined =>
-  Object.values(option).find((item): item is ValueOf<T> => item === value)
 const HeadingTag = Object.values(WAIHeading)
 
 async function defaultCopyText(text: string) {
@@ -308,7 +211,7 @@ function CopyButton({ value, context }: { value: string; context: RenderContext 
   const [copied, setCopied] = useState(false)
   useEffect(() => {
     if (!copied) return
-    const timer = setTimeout(() => setCopied(false), RichContentLimit.CopiedResetMs)
+    const timer = setTimeout(() => setCopied(false), CopiedResetMs)
     return () => clearTimeout(timer)
   }, [copied])
   const label = copied ? context.labels.copiedCode : context.labels.copyCode
@@ -330,14 +233,6 @@ function CopyButton({ value, context }: { value: string; context: RenderContext 
       </span>
     </>
   )
-}
-
-function isTextRun(item: unknown): item is RichContentText {
-  return isRecord(item) && item.type === "text" && typeof item.text === "string"
-}
-
-function hasText(value: unknown) {
-  return Array.isArray(value) && value.some((item) => isTextRun(item) && item.text.trim())
 }
 
 function markText(item: RichContentText, context: RenderContext, href: string | undefined): ReactNode {
@@ -500,12 +395,7 @@ function renderTable(node: Record<string, unknown>, key: number, context: Render
   if (!Array.isArray(node.rows)) return null
   const rows = node.rows.map((row, index) => renderRow(row, index, context)).filter((row) => row !== null)
   if (!rows.length) return null
-  const widths = Array.isArray(node.columnWidths)
-    ? node.columnWidths.flatMap((width) => {
-        const value = positive(width)
-        return value ? [Math.round(value * 100) / 100] : []
-      })
-    : []
+  const widths = columnWidths(node.columnWidths)
   return (
     // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable region must be keyboard reachable
     <div
@@ -528,17 +418,6 @@ function renderTable(node: Record<string, unknown>, key: number, context: Render
       </table>
     </div>
   )
-}
-
-function imageSources(value: unknown) {
-  if (!Array.isArray(value)) return []
-  return value
-    .flatMap((source): RichContentImageSource[] => {
-      const url = isRecord(source) ? safeUrl(source.url, true) : undefined
-      const width = isRecord(source) ? positive(source.width) : undefined
-      return url && width && !/[\s,]/.test(url) ? [{ url, width }] : []
-    })
-    .sort((left, right) => left.width - right.width)
 }
 
 function DefaultImage({ image }: { image: RichContentImageRenderProps }) {
@@ -565,19 +444,9 @@ function DefaultImage({ image }: { image: RichContentImageRenderProps }) {
 }
 
 function renderImage(node: Record<string, unknown>, key: number, context: RenderContext) {
-  const src = safeUrl(node.src, true)
-  if (!src || typeof node.alt !== "string") return null
-  const image: RichContentImageRenderProps = {
-    src,
-    alt: node.alt,
-    width: positive(node.width),
-    height: positive(node.height),
-    displayWidth: cssLength(node.displayWidth),
-    sourceSet: imageSources(node.sourceSet),
-    sizes: typeof node.sizes === "string" ? node.sizes : undefined,
-    blurDataUrl: safeBlur(node.blurDataUrl)
-  }
-  const align = oneOf(RichContentImageAlign, node.align) ?? "center"
+  const image = imageProps(node)
+  if (!image) return null
+  const align = imageAlign(node.align)
   return (
     <figure
       key={key}

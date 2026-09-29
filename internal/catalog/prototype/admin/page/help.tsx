@@ -160,6 +160,40 @@ export function HelpPage() {
               </div>
             </UI.CardContent>
           </UI.Card>
+          <UI.Card>
+            <UI.CardHeader>
+              <UI.CardTitle>Acceptable use policy</UI.CardTitle>
+            </UI.CardHeader>
+            <UI.CardContent>
+              <div className="overflow-auto bg-muted p-4">
+                <UI.DocumentPage
+                  size={UI.DocumentPageSize.A4}
+                  zoom={0.4}
+                  margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
+                  aria-label="Policy preview">
+                  <UI.DocumentContent
+                    content={[
+                      { type: "heading", level: 1, children: [{ type: "text", text: "Acceptable use policy" }] },
+                      {
+                        type: "paragraph",
+                        children: [
+                          { type: "text", text: "Workspace members must keep customer data inside approved tools." }
+                        ]
+                      },
+                      {
+                        type: "list",
+                        ordered: true,
+                        items: [
+                          [{ type: "text", text: "Use SSO" }],
+                          [{ type: "text", text: "Report incidents within 24 hours" }]
+                        ]
+                      }
+                    ]}
+                  />
+                </UI.DocumentPage>
+              </div>
+            </UI.CardContent>
+          </UI.Card>
         </div>
       </UI.PageContent>
     </UI.Page>
