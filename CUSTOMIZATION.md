@@ -844,6 +844,38 @@ Use the catalog for complete states and examples. All components accept their do
 
 # Content And Video
 
-Import `RichContent` from `@bridge/ui/rich-content` for read-only semantic nodes (text, paragraph, heading, list, quote, image, break). Pass `content` and an explicit `emptyFallback`; choose `variant="compact"` for tight containers. The package renders text, never HTML. Map CMS/Tiptap data in the application; validate image and link provenance there. Supported href schemes: http(s), mailto, and root-relative; image src: http(s) and root-relative.
+Import `RichContent` from `@bridge/ui/rich-content` for read-only typed nodes. The package renders text, never HTML. Map CMS/Tiptap JSON to nodes in the application (the package never imports Tiptap) and validate link/image provenance there.
+
+```tsx
+<RichContent
+  content={nodes}
+  emptyFallback={t("empty")}
+  variant="default" // or "compact" for tight containers
+  labels={{
+    code: t("code"),
+    copyCode: t("copy"),
+    copiedCode: t("copied"),
+    table: t("table"),
+    pageBreak: t("pageBreak"),
+    playVideo: t("play")
+  }}
+  renderImage={(image) => <CdnImage {...image} />} // optional; receives sanitized src/sourceSet/blurDataUrl
+  copyText={copyTextToClipboard} // optional; defaults to navigator.clipboard, must resolve true on success
+/>
+```
+
+| Node                          | Fields                                                                                                                                                                                                                                   |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `paragraph`                   | `children: RichContentInline[]`, `align?: "left" \| "center" \| "right" \| "justify"`                                                                                                                                                    |
+| `heading`                     | `level: 1-6`, `children`, `align?`                                                                                                                                                                                                       |
+| `quote`                       | `children?` inline and/or `blocks?` nested nodes                                                                                                                                                                                         |
+| `list`                        | `ordered`, `start?`, `items`: legacy `RichContentInline[]` or `{ children?, blocks? }` for nested paragraphs/lists                                                                                                                       |
+| `codeBlock`                   | `code`, `language?` (header label, default `labels.code`), `copyable?` (default true)                                                                                                                                                    |
+| `table`                       | `rows: { cells: { header?, colSpan?, rowSpan?, children?, blocks? }[] }[]`, `columnWidths?: number[]` (percent)                                                                                                                          |
+| `image`                       | `src`, `alt`, `width?`, `height?`, `align?: "left" \| "center" \| "right"` (default center), `displayWidth?` (px number or CSS length: px, %, rem, em, vw, cm, mm, in, pt, pc), `sourceSet?: { url, width }[]`, `sizes?`, `blurDataUrl?` |
+| `video`                       | `embedUrl` (HTTPS youtube.com / youtube-nocookie.com `/embed/<id>`), `title` (required; renders via `VideoPlayer`)                                                                                                                       |
+| `horizontalRule`, `pageBreak` | `pageBreak` is a labelled `role="separator"` with print `break-before: page`; `break` is a deprecated rule alias                                                                                                                         |
+
+Inline runs: `{ type: "text", text, bold?, italic?, strike?, underline?, code?, copyable?, href?, external? }` and `{ type: "lineBreak" }`. Marks combine. `external` adds `target="_blank" rel="noopener noreferrer"`. Inline `copyable` code shows a copy button (never inside a link). Link href: http(s), mailto, root-relative. Image src/sourceSet: http(s), root-relative. `blurDataUrl`: base64 image data URL or safe image URL. Invalid or empty nodes are dropped; nesting deeper than 24 levels is dropped; if nothing remains, `emptyFallback` renders. Header cells in a row with data cells get `scope="row"`, otherwise `scope="col"`. Tables scroll inside a focusable labelled region. `data-align` on paragraph/heading/figure exposes resolved alignment.
 
 Use `VideoPlayer` from `@bridge/ui/video-player` with `title`, translated `playLabel`, an approved `embedUrl`, and optional `poster` (such as `<YouTubeThumbnail videoId={id} alt="" />`). `variant="minimal"` shrinks the play icon. The iframe is deferred until play; HTTPS YouTube and YouTube-nocookie `/embed/<id>` URLs only, sandboxed with scripts, same-origin and presentation, autoplay/fullscreen permission. The application must validate video IDs, choose embedding hosts, and manage consent/CSP. Use `YouTubeThumbnail` from `@bridge/ui/youtube-thumbnail` independently for media lists. It accepts image `alt`, `width`, `height`, `loading`, and other native img attributes; it retries maxres once with hq on load error or a 120x90 placeholder.
