@@ -1,5 +1,12 @@
 # @bridge/ui
 
+## 0.14.2
+
+### Patch Changes
+
+- 6bc27fb: Add `DocumentContent`, `DocumentPage`, `DocumentPageSize`, `splitDocumentPages` and `documentStyleSheet` (`@bridge/ui/document-content`): a theme-independent print presentation of `RichContent` nodes with caller font size and line height, real print page breaks, break-avoiding tables and images, fixed-layout tables with column widths, PDF-matching image alignment, and A4/Letter/Legal page frames with zoom. Hook-free and `renderToStaticMarkup`-safe so the preview and PDF HTML share one renderer.
+- 72eada6: Fix the `VideoPlayer` play icon disappearing in dark theme (white glyph on white `primary`). The icon now uses the `primary` / `primaryForeground` token pair with a `primaryForeground` ring, so it stays visible over bright and dark posters in every theme. RichContent `video` nodes inherit the fix.
+
 ## 0.14.1
 
 ### Patch Changes
