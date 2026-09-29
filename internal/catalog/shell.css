@@ -303,6 +303,15 @@
   height: 420px;
   border: 0;
 }
+.preview-tall iframe {
+  height: 860px;
+}
+.preview-open {
+  display: inline-block;
+  padding: 8px 12px;
+  color: var(--shell-muted);
+  font-size: 12px;
+}
 .example-stage {
   min-height: 100vh;
   padding: 32px;
@@ -455,6 +464,9 @@
   }
   .example-stage {
     padding: 20px;
+  }
+  .shell-example-stage {
+    padding: 0;
   }
 }
 @media (prefers-reduced-motion: reduce) {

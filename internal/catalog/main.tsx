@@ -70,6 +70,10 @@ const description: Record<string, string> = {
     "Review the selected filename, then explicitly trigger a caller-owned upload callback. The demo reports the received file and size without sending a network request.",
   "drop-area/crop":
     "Preview a PNG or JPEG locally and adjust the center-square crop with zoom. Crop and upload creates a real 256x256 PNG File and passes it to the demo upload callback. No network request is made; preview resources are released on replacement or unmount.",
+  "prototype/default":
+    "Bridge studio Backstage Console. Every public component family composed into nine pages with package defaults. Switch page from the sidebar or ⌘K; open a new tab for full screen.",
+  "prototype/admin":
+    "Generic SaaS Admin Console. Every public component family composed into ten pages with package defaults. Switch page from the sidebar or ⌘K; open a new tab for full screen.",
   "page/density":
     "Compare Page density: default, none, compact, comfortable, opt-in dynamic padding and the 1480px container variant.",
   "page/width":
@@ -186,10 +190,10 @@ function EmbeddedExample({
   selectedTheme: string | null
 }) {
   const Example = entry ? components[entry.path] : undefined
-  const fullPage = name === "shell-header" || (name === "sidebar" && example !== "menu-button")
+  const fullPage = name === "shell-header" || name === "prototype" || (name === "sidebar" && example !== "menu-button")
   const Stage = fullPage ? "div" : "main"
   return (
-    <Stage className={`example-stage ${name === "shell-header" ? "shell-example-stage" : ""}`}>
+    <Stage className={`example-stage ${name === "shell-header" || name === "prototype" ? "shell-example-stage" : ""}`}>
       {fullPage ? (
         <header>
           <h1 className="preview-heading">{title(name)}</h1>
@@ -493,14 +497,21 @@ function App() {
         selectedTheme={selectedTheme}
       />
     )
-  const preview = (selected: string, label: string) => (
-    <div className="preview-wrap" style={{ maxWidth: mobile ? 390 : undefined }}>
-      <Preview
-        title={label}
-        src={`/?preview&theme=${dark ? "dark" : "light"}&lang=${locale}&motion=${motion ? "reduced" : "normal"}#${name}/${selected}`}
-      />
-    </div>
-  )
+  const preview = (selected: string, label: string) => {
+    const src = `/?preview&theme=${dark ? "dark" : "light"}&lang=${locale}&motion=${motion ? "reduced" : "normal"}#${name}/${selected}`
+    return (
+      <div
+        className={`preview-wrap ${name === "prototype" ? "preview-tall" : ""}`}
+        style={{ maxWidth: mobile ? 390 : undefined }}>
+        <Preview title={label} src={src} />
+        {name === "prototype" && (
+          <a className="preview-open" href={src} target="_blank" rel="noreferrer">
+            Open full screen ↗
+          </a>
+        )}
+      </div>
+    )
+  }
   return (
     <div className="catalog-shell">
       <header className="catalog-header">

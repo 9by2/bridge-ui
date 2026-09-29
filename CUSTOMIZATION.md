@@ -740,6 +740,25 @@ import { Avatar, AvatarFallback, AvatarImage } from "@bridge/ui"
 </Avatar>
 ```
 
+## Console prototype
+
+Catalog family `prototype` shows every public component composed into a multi-page back-office with package defaults:
+
+- `prototype/default`: Bridge studio **Backstage Console** (dashboard, event, queue, musician, release, box office,
+  message, web banner, setting).
+- `prototype/admin`: generic **Admin Console** (overview, user, project, billing, file, inbox, calendar, conference,
+  workspace, help).
+
+Switch page from the sidebar or `⌘K`. Source lives in `internal/catalog/prototype/`. Use it as a composition reference:
+
+- Compose `SidebarProvider` → `Sidebar` + `SidebarInset` → `ShellHeader` → `Page`; publish a page action with
+  `useShellHeaderAction` and render it through `ShellHeaderActionSlot`.
+- Leave package components unstyled. Caller layout belongs on plain wrapper elements.
+- Give a caller layout grid an explicit shrinkable track (`grid-cols-1`, `minmax(0, 1fr)`). An implicit `auto` track
+  grows to the widest child (for example a featured `MetricTile` value) and overflows a 390px viewport.
+
+`test/internal/catalog-prototype.test.ts` fails when either prototype stops using a public component family.
+
 ## Component reference
 
 Use the catalog for complete states and examples. All components accept their documented native/primitive props and `className` for local layout. Use semantic props and compound children below; do not override private classes, `data-slot`, or generated source.
