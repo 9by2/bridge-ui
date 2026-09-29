@@ -8,6 +8,12 @@
 @import "@fontsource/sarabun/700.css";
 @import "react-image-crop/dist/ReactCrop.css";
 
+[data-slot="video-player"] [data-slot="youtube-thumbnail"] {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* Base UI focus guards redirect keyboard focus and are never pointer targets. */
 [data-base-ui-focus-guard][aria-hidden="true"] {
   width: 0 !important;

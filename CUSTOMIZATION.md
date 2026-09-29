@@ -822,3 +822,9 @@ Use the catalog for complete states and examples. All components accept their do
 | Typography               | `Heading as`, semantic `Body`/`Label`, and `className` for local layout.                                                            |
 | TypographyLabel          | Inline label primitive; use `Label` for form-label semantics.                                                                       |
 | Accessibility primitives | `Label`, `Kbd`, `Separator`, and `Direction` preserve package semantics; provide labels and text alternatives from the application. |
+
+# Content And Video
+
+Import `RichContent` from `@bridge/ui/rich-content` for read-only semantic nodes (text, paragraph, heading, list, quote, image, break). Pass `content` and an explicit `emptyFallback`; choose `variant="compact"` for tight containers. The package renders text, never HTML. Map CMS/Tiptap data in the application; validate image and link provenance there. Supported href schemes: http(s), mailto, and root-relative; image src: http(s) and root-relative.
+
+Use `VideoPlayer` from `@bridge/ui/video-player` with `title`, translated `playLabel`, an approved `embedUrl`, and optional `poster` (such as `<YouTubeThumbnail videoId={id} alt="" />`). `variant="minimal"` shrinks the play icon. The iframe is deferred until play; HTTPS YouTube and YouTube-nocookie `/embed/<id>` URLs only, sandboxed with scripts, same-origin and presentation, autoplay/fullscreen permission. The application must validate video IDs, choose embedding hosts, and manage consent/CSP. Use `YouTubeThumbnail` from `@bridge/ui/youtube-thumbnail` independently for media lists. It accepts image `alt`, `width`, `height`, `loading`, and other native img attributes; it retries maxres once with hq on load error or a 120x90 placeholder.
