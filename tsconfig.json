@@ -25,6 +25,7 @@
 
     "paths": {
       "@catalog-upload": ["./internal/catalog/upload.tsx"],
+      "@catalog-prototype/*": ["./internal/catalog/prototype/*"],
       "@catalog-vendor/*": ["./internal/catalog/vendor/tanstack/*"],
       "@bridge-owned/*": ["./app/component/brand/stylex/*"],
       "@bridge/ui": ["./app/index.ts"],

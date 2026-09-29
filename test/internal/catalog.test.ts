@@ -3,6 +3,8 @@ import path from "node:path"
 
 const root = path.resolve(import.meta.dir, "../..")
 const catalogOnlyStylexName = ["shell-header"]
+// Composition families: not a component, they compose every public family (spec console-prototype).
+const catalogCompositionName = ["prototype"]
 const catalogExcludedStylexName: string[] = []
 
 const directoryName = (file: string) => path.basename(path.dirname(file))
@@ -22,7 +24,7 @@ test("catalog exposes a default example for every public component family", asyn
     )
     .filter((name) => !catalogExcludedStylexName.includes(name))
   const publicFamilyName = [
-    ...new Set([...generatedName, ...directStylexName, ...catalogOnlyStylexName, "ts-chart"])
+    ...new Set([...generatedName, ...directStylexName, ...catalogOnlyStylexName, ...catalogCompositionName, "ts-chart"])
   ].sort()
   const examples = [...new Bun.Glob("internal/catalog/example/*/default.tsx").scanSync()]
 

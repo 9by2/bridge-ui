@@ -14,6 +14,7 @@ export default defineConfig({
     alias: [
       { find: /^@bridge-owned\/(.*)$/, replacement: path.resolve("app/component/brand/stylex/$1") },
       { find: "@catalog-upload", replacement: path.resolve("internal/catalog/upload.tsx") },
+      { find: /^@catalog-prototype\/(.*)$/, replacement: path.resolve("internal/catalog/prototype/$1") },
       { find: "@catalog-media", replacement: path.resolve("example") },
       { find: "@catalog-vendor", replacement: path.resolve("internal/catalog/vendor/tanstack") },
       { find: "@bridge/ui/style.css", replacement: path.resolve("app/style/global.css") },

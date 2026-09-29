@@ -28,7 +28,7 @@ const classNameValue = /className=("[^"]*"|\{(?:[^{}]|\{[^{}]*\})*\})/
 
 test("catalog examples never restyle appearance owned by a package component", async () => {
   const violation: string[] = []
-  for await (const file of new Bun.Glob("internal/catalog/example/**/*.tsx").scan(root)) {
+  for await (const file of new Bun.Glob("internal/catalog/{example,prototype}/**/*.tsx").scan(root)) {
     const source = await Bun.file(path.join(root, file)).text()
     for (const match of source.matchAll(openingTag)) {
       if (UnstyledComponent.has(match[1] ?? "")) continue
