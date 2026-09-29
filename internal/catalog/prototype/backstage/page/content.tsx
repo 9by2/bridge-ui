@@ -239,6 +239,53 @@ export function ContentPage() {
                 </div>
               </UI.CardContent>
             </UI.Card>
+            <UI.Card>
+              <UI.CardHeader>
+                <UI.CardTitle>Artist contract</UI.CardTitle>
+              </UI.CardHeader>
+              <UI.CardContent>
+                <div className="overflow-auto bg-muted p-4">
+                  <UI.DocumentPage
+                    size={UI.DocumentPageSize.A4}
+                    zoom={0.4}
+                    margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
+                    aria-label="Contract preview">
+                    <UI.DocumentContent
+                      content={[
+                        {
+                          type: "heading",
+                          level: 1,
+                          align: "center",
+                          children: [{ type: "text", text: "Performance agreement" }]
+                        },
+                        {
+                          type: "paragraph",
+                          children: [{ type: "text", text: "Polycat will perform a 60 minute set on the main stage." }]
+                        },
+                        {
+                          type: "table",
+                          columnWidths: [60, 40],
+                          rows: [
+                            {
+                              cells: [
+                                { header: true, children: [{ type: "text", text: "Item" }] },
+                                { header: true, children: [{ type: "text", text: "Fee" }] }
+                              ]
+                            },
+                            {
+                              cells: [
+                                { children: [{ type: "text", text: "Performance" }] },
+                                { children: [{ type: "text", text: "฿250,000" }] }
+                              ]
+                            }
+                          ]
+                        }
+                      ]}
+                    />
+                  </UI.DocumentPage>
+                </div>
+              </UI.CardContent>
+            </UI.Card>
             <div className="grid grid-cols-1 gap-2">
               <UI.Lead>Guideline</UI.Lead>
               <UI.Body>Keep headline under 40 character. ใช้ภาษาไทยเป็นหลัก และใส่ภาษาอังกฤษเฉพาะชื่อศิลปินหรือชื่องาน</UI.Body>

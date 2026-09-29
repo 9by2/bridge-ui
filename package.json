@@ -8,6 +8,10 @@
     "dist"
   ],
   "exports": {
+    "./document-content": {
+      "types": "./dist/component/brand/stylex/document-content.d.ts",
+      "import": "./dist/component/brand/stylex/document-content.js"
+    },
     "./rich-content": {
       "types": "./dist/component/brand/stylex/rich-content.d.ts",
       "import": "./dist/component/brand/stylex/rich-content.js"

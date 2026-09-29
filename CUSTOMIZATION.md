@@ -880,7 +880,49 @@ RichContent composes the Typography primitives (`Heading`, `Body`, `Blockquote`,
 
 Inline runs: `{ type: "text", text, bold?, italic?, strike?, underline?, code?, copyable?, href?, external? }` and `{ type: "lineBreak" }`. Marks combine. `external` adds `target="_blank" rel="noopener noreferrer"`. Inline `copyable` code shows a copy button (never inside a link). Link href: http(s), mailto, root-relative. Image src/sourceSet: http(s), root-relative. `blurDataUrl`: base64 image data URL or safe image URL. Invalid or empty nodes are dropped; nesting deeper than 24 levels is dropped; if nothing remains, `emptyFallback` renders. Header cells in a row with data cells get `scope="row"`, otherwise `scope="col"`. Tables scroll inside a focusable labelled region. `data-align` on paragraph/heading/figure exposes resolved alignment.
 
-Use `VideoPlayer` from `@bridge/ui/video-player` with `title`, translated `playLabel`, an approved `embedUrl`, and optional `poster` (such as `<VideoThumbnail src={urls} alt="" />`). `variant="minimal"` shrinks the play icon. The iframe is deferred until play; HTTPS YouTube and YouTube-nocookie `/embed/<id>` URLs only, sandboxed with scripts, same-origin and presentation, autoplay/fullscreen permission. The application must validate video IDs, choose embedding hosts, and manage consent/CSP.
+Use `VideoPlayer` from `@bridge/ui/video-player` with `title`, translated `playLabel`, an approved `embedUrl`, and optional `poster` (such as `<VideoThumbnail src={urls} alt="" />`). `variant="minimal"` shrinks the play icon. The icon uses `primary` fill, `primaryForeground` glyph and a `primaryForeground` ring, so it stays visible over any poster in every theme. The iframe is deferred until play; HTTPS YouTube and YouTube-nocookie `/embed/<id>` URLs only, sandboxed with scripts, same-origin and presentation, autoplay/fullscreen permission. The application must validate video IDs, choose embedding hosts, and manage consent/CSP.
+
+Use `DocumentContent` and `DocumentPage` from `@bridge/ui/document-content` for print documents (contracts, templates, PDF). They take the same `RichContentNode` contract as `RichContent`, but ignore the app theme: black on white, no `--bridge` tokens, plain semantic elements. Sizes scale from the caller `fontSize` (12 reproduces the legacy CMS print sizes), so preview and PDF match when both pass the same values. `DocumentContent` has no hooks, so `renderToStaticMarkup` produces the same markup as the preview. It emits one hoisted `<style>`; for standalone PDF HTML without React hoisting, embed `documentStyleSheet` yourself.
+
+```tsx
+import { DocumentContent, DocumentPage, DocumentPageSize, splitDocumentPages } from "@bridge/ui/document-content"
+
+// Preview
+;<DocumentPage
+  size={DocumentPageSize.A4}
+  zoom={0.75}
+  margin={{ top: 48, right: 48, bottom: 48, left: 48 }}
+  header={header}
+  footer={footer}>
+  <DocumentContent
+    content={nodes}
+    fontSize={12}
+    lineHeight={1.3}
+    fontFamily="Inter, sans-serif"
+    labels={{ pageBreak: t("pageBreak") }}
+  />
+</DocumentPage>
+
+// PDF HTML (server): one page frame per page break
+const body = splitDocumentPages(nodes)
+  .map((page) =>
+    renderToStaticMarkup(
+      <DocumentPage size={DocumentPageSize.A4} footer={footer}>
+        <DocumentContent content={page} fontSize={12} />
+      </DocumentPage>
+    )
+  )
+  .join("")
+```
+
+| Prop / export               | Contract                                                                                                                                                                                                                                                                                           |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DocumentContent`           | `content`, `emptyFallback`, `fontSize` (px, default 12), `lineHeight` (default 1.3), `fontFamily`, `monoFontFamily`, `labels.pageBreak`, `renderImage` (must be pure for SSR), `className`                                                                                                         |
+| `DocumentPage`              | `size` (`DocumentPageSize.A4` 794×1123, `Letter` 816×1056, `Legal` 816×1344, or `{ width, height }` in px), `margin` (px, default 48 each), `contentMargin`, `zoom` (frame reserves the scaled size; print ignores it), `header`, `footer`, `headerHeight`, `footerHeight`, native `article` props |
+| `splitDocumentPages(nodes)` | Top-level split at `pageBreak`; consecutive breaks keep an empty page                                                                                                                                                                                                                              |
+| `documentStyleSheet`        | The scoped stylesheet string (`.bridge-document`, `.bridge-document-page`)                                                                                                                                                                                                                         |
+
+Print rules: `pageBreak` renders `<hr data-slot="document-page-break" aria-label>` with `break-after: page` (dashed in the preview, invisible in print). Tables, rows, images, quotes and code blocks use `break-inside: avoid`; headings use `break-after: avoid`. Consecutive `DocumentPage` frames break before each page in print, which drops zoom, shadow and frame margins. Tables always use `table-layout: fixed` with `columnWidths` as `<col>` percentages and 1px black borders. Images render eager inside a full-width frame, aligned by `align` (default center) and sized by `displayWidth`. Video nodes and copy actions are omitted. Selectors use `:where()`, so application CSS can override any rule. The application still owns `@page` size/margins, fonts (`<link>`) and the PDF service.
 
 Use `VideoThumbnail` from `@bridge/ui/video-thumbnail` for posters and media lists. It knows no provider: pass `src` as one URL or ordered candidates (http(s) or root-relative). It tries the next candidate once on load error, never looping, and resets when `src` changes. Set `placeholderMaxSize` when a provider returns a tiny placeholder instead of an error, e.g. YouTube:
 
