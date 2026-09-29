@@ -1,5 +1,17 @@
 # @bridge/ui
 
+## 0.14.0
+
+### Minor Changes
+
+- Add safe structured read-only content, poster-to-iframe video player, and standalone YouTube thumbnail with resolution fallback.
+
+## 0.14.0-rc.0
+
+### Minor Changes
+
+- 9e0be9f: Add safe structured read-only content, poster-to-iframe video player, and standalone YouTube thumbnail with resolution fallback.
+
 ## 0.13.1
 
 ### Patch Changes

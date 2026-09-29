@@ -1,6 +1,6 @@
 {
   "name": "@bridge/ui",
-  "version": "0.13.1",
+  "version": "0.14.0",
   "type": "module",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -8,6 +8,18 @@
     "dist"
   ],
   "exports": {
+    "./rich-content": {
+      "types": "./dist/component/brand/stylex/rich-content.d.ts",
+      "import": "./dist/component/brand/stylex/rich-content.js"
+    },
+    "./video-player": {
+      "types": "./dist/component/brand/stylex/video-player.d.ts",
+      "import": "./dist/component/brand/stylex/video-player.js"
+    },
+    "./youtube-thumbnail": {
+      "types": "./dist/component/brand/stylex/youtube-thumbnail.d.ts",
+      "import": "./dist/component/brand/stylex/youtube-thumbnail.js"
+    },
     "./upload-viewer": {
       "types": "./dist/component/brand/stylex/upload-viewer.d.ts",
       "import": "./dist/component/brand/stylex/upload-viewer.js"
