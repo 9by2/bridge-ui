@@ -5,7 +5,8 @@ const root = path.resolve(import.meta.dir, "../..")
 const catalogOnlyStylexName = ["shell-header"]
 // Composition families: not a component, they compose every public family (spec console-prototype).
 const catalogCompositionName = ["prototype"]
-const catalogExcludedStylexName: string[] = []
+// Deprecated alias kept for compatibility; its replacement (video-thumbnail) is catalogued.
+const catalogExcludedStylexName: string[] = ["youtube-thumbnail"]
 
 const directoryName = (file: string) => path.basename(path.dirname(file))
 const hasImport = (value: unknown): value is { import: string } =>

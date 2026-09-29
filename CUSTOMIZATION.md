@@ -878,4 +878,18 @@ Import `RichContent` from `@bridge/ui/rich-content` for read-only typed nodes. T
 
 Inline runs: `{ type: "text", text, bold?, italic?, strike?, underline?, code?, copyable?, href?, external? }` and `{ type: "lineBreak" }`. Marks combine. `external` adds `target="_blank" rel="noopener noreferrer"`. Inline `copyable` code shows a copy button (never inside a link). Link href: http(s), mailto, root-relative. Image src/sourceSet: http(s), root-relative. `blurDataUrl`: base64 image data URL or safe image URL. Invalid or empty nodes are dropped; nesting deeper than 24 levels is dropped; if nothing remains, `emptyFallback` renders. Header cells in a row with data cells get `scope="row"`, otherwise `scope="col"`. Tables scroll inside a focusable labelled region. `data-align` on paragraph/heading/figure exposes resolved alignment.
 
-Use `VideoPlayer` from `@bridge/ui/video-player` with `title`, translated `playLabel`, an approved `embedUrl`, and optional `poster` (such as `<YouTubeThumbnail videoId={id} alt="" />`). `variant="minimal"` shrinks the play icon. The iframe is deferred until play; HTTPS YouTube and YouTube-nocookie `/embed/<id>` URLs only, sandboxed with scripts, same-origin and presentation, autoplay/fullscreen permission. The application must validate video IDs, choose embedding hosts, and manage consent/CSP. Use `YouTubeThumbnail` from `@bridge/ui/youtube-thumbnail` independently for media lists. It accepts image `alt`, `width`, `height`, `loading`, and other native img attributes; it retries maxres once with hq on load error or a 120x90 placeholder.
+Use `VideoPlayer` from `@bridge/ui/video-player` with `title`, translated `playLabel`, an approved `embedUrl`, and optional `poster` (such as `<VideoThumbnail src={urls} alt="" />`). `variant="minimal"` shrinks the play icon. The iframe is deferred until play; HTTPS YouTube and YouTube-nocookie `/embed/<id>` URLs only, sandboxed with scripts, same-origin and presentation, autoplay/fullscreen permission. The application must validate video IDs, choose embedding hosts, and manage consent/CSP.
+
+Use `VideoThumbnail` from `@bridge/ui/video-thumbnail` for posters and media lists. It knows no provider: pass `src` as one URL or ordered candidates (http(s) or root-relative). It tries the next candidate once on load error, never looping, and resets when `src` changes. Set `placeholderMaxSize` when a provider returns a tiny placeholder instead of an error, e.g. YouTube:
+
+```tsx
+<VideoThumbnail
+  src={[`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`, `https://i.ytimg.com/vi/${id}/hqdefault.jpg`]}
+  placeholderMaxSize={{ width: 120, height: 90 }}
+  alt=""
+  width={1280}
+  height={720}
+/>
+```
+
+It accepts native img attributes and is lazy by default. `YouTubeThumbnail` (`@bridge/ui/youtube-thumbnail`) is deprecated: it wraps `VideoThumbnail` with the URLs above and will be removed in a future minor release.

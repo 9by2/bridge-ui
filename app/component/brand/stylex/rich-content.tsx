@@ -5,7 +5,7 @@ import { useEffect, useState, type CSSProperties, type ReactNode } from "react"
 import { ResponsiveImage } from "./responsive-image"
 import { token } from "./token.stylex"
 import { VideoPlayer } from "./video-player"
-import { YouTubeThumbnail } from "./youtube-thumbnail"
+import { VideoThumbnail } from "./video-thumbnail"
 
 type ValueOf<T> = T[keyof T]
 
@@ -76,7 +76,13 @@ export type RichContentNode =
       sizes?: string
       blurDataUrl?: string
     }
-  | { type: "video"; embedUrl: string; title: string }
+  | {
+      type: "video"
+      embedUrl: string
+      title: string
+      /** Poster image URL or ordered fallback candidates (http(s) / root-relative); built by the application. */
+      poster?: string | readonly string[]
+    }
   | { type: "horizontalRule" }
   /** @deprecated Renders a horizontal rule; use `horizontalRule`, or inline `lineBreak` for a line break. */
   | { type: "break" }
@@ -337,15 +343,13 @@ async function defaultCopyText(text: string) {
   }
 }
 
-function youtubeVideoId(value: unknown) {
-  if (typeof value !== "string") return undefined
+function isYouTubeEmbed(value: string) {
   try {
     const parsed = new URL(value)
-    const match = /^\/embed\/([a-zA-Z0-9_-]+)$/.exec(parsed.pathname)
     const safe = parsed.protocol === "https:" && youtubeHost.includes(parsed.hostname) && !parsed.port
-    return safe && !parsed.username && !parsed.password ? match?.[1] : undefined
+    return safe && !parsed.username && !parsed.password && /^\/embed\/[a-zA-Z0-9_-]+$/.test(parsed.pathname)
   } catch {
-    return undefined
+    return false
   }
 }
 
@@ -652,15 +656,20 @@ function renderImage(node: Record<string, unknown>, key: number, context: Render
 
 function renderVideo(node: Record<string, unknown>, key: number, context: RenderContext) {
   const embedUrl = typeof node.embedUrl === "string" ? node.embedUrl : ""
-  const videoId = youtubeVideoId(embedUrl)
-  if (!videoId || typeof node.title !== "string" || !node.title.trim()) return null
+  if (!isYouTubeEmbed(embedUrl) || typeof node.title !== "string" || !node.title.trim()) return null
+  const poster = (
+    typeof node.poster === "string" ? [node.poster] : Array.isArray(node.poster) ? node.poster : []
+  ).flatMap((item: unknown) => {
+    const url = safeUrl(item, true)
+    return url ? [url] : []
+  })
   return (
     <div key={key} data-slot="rich-content-video" className={stylex.props(style.video).className}>
       <VideoPlayer
         embedUrl={embedUrl}
         title={node.title}
         playLabel={`${context.labels.playVideo}: ${node.title}`}
-        poster={<YouTubeThumbnail videoId={videoId} alt="" />}
+        poster={poster.length ? <VideoThumbnail src={poster} alt="" /> : undefined}
       />
     </div>
   )

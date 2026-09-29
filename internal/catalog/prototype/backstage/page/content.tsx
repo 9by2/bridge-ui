@@ -216,7 +216,7 @@ export function ContentPage() {
                     embedUrl="https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ"
                     title="Polycat teaser"
                     playLabel="Play Polycat teaser"
-                    poster={<UI.YouTubeThumbnail videoId="aqz-KE-bpKQ" alt="" />}
+                    poster={<UI.VideoThumbnail src="https://i.ytimg.com/vi/aqz-KE-bpKQ/hqdefault.jpg" alt="" />}
                   />
                   <UI.RichContent
                     variant="compact"

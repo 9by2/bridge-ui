@@ -140,7 +140,7 @@ export function HelpPage() {
                   embedUrl="https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ"
                   title="Workspace tour"
                   playLabel="Play Workspace tour"
-                  poster={<UI.YouTubeThumbnail videoId="aqz-KE-bpKQ" alt="" />}
+                  poster={<UI.VideoThumbnail src="https://i.ytimg.com/vi/aqz-KE-bpKQ/hqdefault.jpg" alt="" />}
                 />
                 <UI.RichContent
                   variant="compact"

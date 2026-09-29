@@ -16,6 +16,10 @@
       "types": "./dist/component/brand/stylex/video-player.d.ts",
       "import": "./dist/component/brand/stylex/video-player.js"
     },
+    "./video-thumbnail": {
+      "types": "./dist/component/brand/stylex/video-thumbnail.d.ts",
+      "import": "./dist/component/brand/stylex/video-thumbnail.js"
+    },
     "./youtube-thumbnail": {
       "types": "./dist/component/brand/stylex/youtube-thumbnail.d.ts",
       "import": "./dist/component/brand/stylex/youtube-thumbnail.js"

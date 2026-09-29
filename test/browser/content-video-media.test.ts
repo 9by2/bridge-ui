@@ -13,6 +13,11 @@ test("short and long content stays readable on desktop and mobile", async () => 
       await expect(page.locator(".example-stage")).toBeVisible()
       expect(await page.evaluate<boolean>(`() => document.documentElement.scrollWidth <= innerWidth`)).toBe(true)
       if (route === "rich-content/long" || route === "video-player/default") {
+        await pollUntil(() =>
+          page.evaluate<boolean>(
+            `() => [...document.images].every((image) => image.complete && image.naturalWidth > 0)`
+          )
+        )
         await Bun.write(
           `${evidence}/${route.replace("/", "-")}-${width}.png`,
           await page.view.screenshot({ encoding: "buffer", format: "png" })
@@ -21,6 +26,23 @@ test("short and long content stays readable on desktop and mobile", async () => 
     }
   }
   expect(page.errors).toEqual([])
+})
+
+// Protects: a real failed network image advances to the next poster candidate (browser-only load/error lifecycle).
+test("video thumbnail falls back to the next candidate after a failed load", async () => {
+  await using page = await openPage()
+  await page.goto("/?preview&theme=light#video-thumbnail/fallback")
+  const image = page.locator('[data-slot="video-thumbnail"]')
+  await pollUntil(() => image.count())
+  await pollUntil(() =>
+    page.evaluate<boolean>(
+      `() => { const image = document.querySelector('[data-slot="video-thumbnail"]'); return image.src.includes("Fallback") && image.complete && image.naturalWidth > 0 }`
+    )
+  )
+  await Bun.write(
+    `${evidence}/video-thumbnail-fallback.png`,
+    await page.view.screenshot({ encoding: "buffer", format: "png" })
+  )
 })
 
 test("video play button supports keyboard activation before iframe request", async () => {
