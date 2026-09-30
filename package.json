@@ -72,6 +72,10 @@
       "types": "./dist/component/brand/stylex/data-state.d.ts",
       "import": "./dist/component/brand/stylex/data-state.js"
     },
+    "./data-list": {
+      "types": "./dist/component/brand/stylex/data-list.d.ts",
+      "import": "./dist/component/brand/stylex/data-list.js"
+    },
     "./page": {
       "types": "./dist/component/brand/stylex/page.d.ts",
       "import": "./dist/component/brand/stylex/page.js"

@@ -211,6 +211,14 @@ export function EventPage() {
       </UI.PageHeader>
       <UI.PageContent>
         <div className="grid grid-cols-1 gap-6">
+          <UI.DataList
+            status={UI.DataListStatus.ready}
+            variants={UI.DataListVariant.card}
+            framed={false}
+            columns={[{ id: "name", label: "Featured event", render: (item: (typeof venue)[number]) => item.name }]}
+            rows={venue.slice(0, 1)}
+            rowKey={(item) => item.id}
+          />
           <EventTable onOpen={setOpen} />
           <UI.Pagination>
             <UI.PaginationContent>

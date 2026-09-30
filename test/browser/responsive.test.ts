@@ -21,6 +21,29 @@ test("responsive shell and owned composites remain contained on mobile", async (
   }
 })
 
+test("DataList auto layout changes from a table to one labelled mobile row without overflow", async () => {
+  await using page = await openPage()
+  await page.setViewportSize({ width: 1280, height: 844 })
+  await page.goto("/?preview&theme=light#data-list/default")
+  await pollUntil(() => page.locator('[data-slot="data-list"]').count())
+  expect(await page.locator('[data-slot="data-list"] table').count()).toBe(1)
+  expect(await page.locator('[data-slot="data-list"] button').count()).toBe(1)
+  await Bun.write(".eval/0930-data-list/desktop.png", await page.view.screenshot({ encoding: "buffer", format: "png" }))
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  await pollUntil(() => page.locator('[data-slot="data-list"] article').count())
+  expect(await page.locator('[data-slot="data-list"] table').count()).toBe(0)
+  expect(await page.locator('[data-slot="data-list"] button').count()).toBe(1)
+  expect(
+    await page.evaluate<boolean>(
+      `() => document.querySelector('[data-slot="data-list"]')?.textContent?.includes("Proposal") ?? false`
+    )
+  ).toBe(true)
+  expect(await page.evaluate<boolean>(`() => document.documentElement.scrollWidth <= innerWidth`)).toBe(true)
+  await Bun.write(".eval/0930-data-list/mobile.png", await page.view.screenshot({ encoding: "buffer", format: "png" }))
+  expect(page.errors).toEqual([])
+})
+
 // Regression (0924): the `content` width style collided with the PageContent style key and silently
 // dropped max-width. Protects the documented PageWidth max-width contract.
 test("page width presets apply their documented max-width", async () => {
