@@ -1,5 +1,11 @@
 # @bridge/ui
 
+## 0.15.0
+
+### Minor Changes
+
+- a597af8: Add responsive DataList states and generic table cell presentation components.
+
 ## 0.14.2
 
 ### Patch Changes
