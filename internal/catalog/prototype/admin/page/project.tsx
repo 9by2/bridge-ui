@@ -211,6 +211,14 @@ export function ProjectPage() {
           </UI.TabsList>
         </UI.PageToolbar>
         <UI.PageContent>
+          <UI.DataList
+            status={UI.DataListStatus.ready}
+            variants={UI.DataListVariant.card}
+            framed={false}
+            columns={[{ id: "task", label: "Featured task", render: (task: Task) => task.title }]}
+            rows={initialTask[Column.TODO]?.slice(0, 1) ?? []}
+            rowKey={(task) => task.id}
+          />
           <UI.TabsContent value="board">
             <SprintBoard />
           </UI.TabsContent>

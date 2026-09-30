@@ -610,6 +610,42 @@ Add responsive gutters with `isDynamicPadding`, or with product layout CSS throu
 
 With `onRetry`, an outline `Button` renders inside `DataStateAction` after `children`. `retryLabel` defaults to `"Retry"`; pass translated copy from the app.
 
+## DataList
+
+`DataList` owns reusable list framing and presentation states, not fetching or domain behavior. Pass controlled `status` (`DataListStatus.loading`, `.error`, `.empty`, `.ready`), already formatted/translated copy, a retry callback, and column renderers. `variants` selects `table`, `card`, or `auto` (table on desktop, labelled cards at widths up to 640px). Use `framed={false}` when embedding inside an existing Card or dialog; `density="compact"` for a dense Sheet/Dialog. `rowKey` should return a stable key. Each column label is exposed beside its value in card layout. Pagination, sorting, filtering, selection, permissions and navigation remain consumer-owned.
+
+```tsx
+import { DataList, DataListStatus, DataListVariant, TableCellAction, TableCellStack, TableCellValue } from "@bridge/ui/data-list"
+
+const columns = [
+  { id: "talent", label: "Talent", render: (row: Proposal) => <TableCellStack primary={row.title} secondary={row.eventType ?? "No event type"} /> },
+  { id: "date", label: "Date", render: (row: Proposal) => <TableCellValue>{row.date}</TableCellValue> },
+  { id: "actions", label: "Actions", render: (row: Proposal) => <TableCellAction><Button nativeButton={false} render={<Link to={proposalPath(row.id)} />}>View</Button></TableCellAction> }
+] as const
+
+<DataList
+  title="Inform decision status"
+  description="Status is translated into the next action this event organizer should understand."
+  status={isLoading ? DataListStatus.loading : isError ? DataListStatus.error : total === 0 ? DataListStatus.empty : DataListStatus.ready}
+  variants={DataListVariant.auto}
+  columns={columns}
+  rows={items}
+  rowKey={(row) => row.id}
+  skeletonRow={3}
+  onRetry={refetch}
+  retryLabel="Retry loading proposals"
+  errorTitle="Unable to load proposals"
+  errorDescription="Please retry loading this event organizer proposal list."
+  emptyTitle="No proposals yet"
+  emptyDescription="Create a proposal or wait for proposal activity to appear here."
+  emptyAction={<Button>Create proposal</Button>}
+/>
+```
+
+### Migration: hand-built proposal list
+
+Keep query state, retry implementation, proposal status component, date/venue formatting, translated copy and router `Link` in the application. Replace the `Card` + conditional states + table markup with a single `DataList`, map `EventProposalColumns` to `columns`, and map proposal items to `rows`. The component does not accept router targets or infer whether an empty result is valid; the consumer selects `status` from its query result.
+
 ## Typography
 
 `Heading`, `Label`, and `Body` provide the Cue semantic typography baseline. Heading uses the package heading family and highlight color; `Body` preserves Cue's compact `1.3` line height. Pass `as` to choose a semantic heading level, or omit it for an `h4`.
