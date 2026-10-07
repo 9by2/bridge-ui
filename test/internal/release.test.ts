@@ -54,6 +54,21 @@ test("source and coverage skip the version-only release-automation merge commit 
   expect(ci).toContain("release:\n  stage: deploy\n  resource_group: package-release\n  variables:\n    GIT_DEPTH:")
 })
 
+// Protects: GitHub mirror publishes only from verified main pushes, with provenance-capable permissions.
+test("GitHub workflow publishes npm only after verification on main push", async () => {
+  const workflow = await Bun.file(".github/workflows/release.yml").text()
+  const manifest = await Bun.file("package.json").json()
+  expect(workflow).toContain(
+    "release:\n    needs: verify\n    if: github.event_name == 'push' && github.ref == 'refs/heads/main'"
+  )
+  expect(workflow).toContain("id-token: write")
+  expect(workflow).toContain("run: bun release:npm")
+  expect(workflow).toContain("NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}")
+  expect(workflow).toContain('BUN_VERSION: "1.4.1"')
+  expect(workflow).not.toContain("changeset version")
+  expect(manifest.scripts["release:npm"]).toBe("bun cmd/publish-npm.ts")
+})
+
 test("merged changesets prepare a stable version MR without pre-release or manual promotion", async () => {
   const ci = await Bun.file("deployment/.gitlab-ci.yml").text()
   expect(ci).toContain('INPUT_TITLE: "Release @bridge/ui"')
