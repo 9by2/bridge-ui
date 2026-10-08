@@ -1,0 +1,82 @@
+# GitLab owns versioning (Changesets). This workflow verifies the GitHub mirror and
+# publishes the mirrored stable version publicly as @9by2/bridge-ui on npmjs.org.
+name: release
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  BUN_VERSION: "1.4.1"
+  NODE_VERSION: "22.22.0"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bun cmd/verify-ci-runtime.ts
+      - run: bun fmt --check
+      - run: bun lint
+      - run: bun typecheck
+      - run: bun boundary
+      - run: bun run build
+      - run: bun test
+      - run: bun coverage:brand
+      - run: bun coverage:runtime
+      - run: bun verify:package
+      - run: bun verify:tree-shaking
+
+  release:
+    needs: verify
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: npm-release
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - id: npm
+        run: bun release:npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - if: steps.npm.outputs.release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v${{ steps.npm.outputs.version }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists"
+          else
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "$TAG" --notes-file release-note.md --latest
+          fi

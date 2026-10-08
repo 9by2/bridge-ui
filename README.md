@@ -69,6 +69,21 @@ Run `bun dev` for catalog at http://127.0.0.1:6006. `bun catalog:build` compiles
 
 Do not run `changeset version`, bump `package.json`, or create a release tag by hand.
 
+### Public npm mirror
+
+GitLab stays the version authority. When the release MR merge is mirrored to GitHub `9by2/bridge-ui`, `.github/workflows/release.yml` verifies it. It then publishes the same version publicly as `@9by2/bridge-ui` on npmjs.org with provenance and creates GitHub Release `vX.Y.Z`. Already-published versions are skipped. Pull requests to GitHub `main` run verification only.
+
+```sh
+npm install @9by2/bridge-ui
+```
+
+```tsx
+import { Button } from "@9by2/bridge-ui/button"
+import "@9by2/bridge-ui/style.css"
+```
+
+Setup: create the `@9by2` npm organization and add an npm automation (or granular publish) token as the GitHub repository secret `NPM_TOKEN`.
+
 ## CI
 
 Root CI triggers `deployment/.gitlab-ci.yml`. Child CI runs source, coverage, static catalog build, and packed-package verification; compact Bun.WebView contracts run locally before push. Release runs only on protected default-branch CI. `CI_JOB_TOKEN` accesses the registry. Protected `GITLAB_TOKEN` maintains the release branch, merge request, and version tag.
