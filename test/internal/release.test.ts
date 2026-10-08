@@ -54,18 +54,24 @@ test("source and coverage skip the version-only release-automation merge commit 
   expect(ci).toContain("release:\n  stage: deploy\n  resource_group: package-release\n  variables:\n    GIT_DEPTH:")
 })
 
-// Protects: GitHub mirror publishes only from verified main pushes, with provenance-capable permissions.
+// Protects: GitHub mirror publishes to GitHub Packages only from verified main pushes on the Blacksmith runner.
 test("GitHub workflow publishes npm only after verification on main push", async () => {
   const workflow = await Bun.file(".github/workflows/release.yml").text()
   const manifest = await Bun.file("package.json").json()
   expect(workflow).toContain(
     "release:\n    needs: verify\n    if: github.event_name == 'push' && github.ref == 'refs/heads/main'"
   )
-  expect(workflow).toContain("id-token: write")
+  expect(workflow).toContain("packages: write")
+  expect(workflow).toContain("registry-url: https://npm.pkg.github.com")
   expect(workflow).toContain("run: bun release:npm")
-  expect(workflow).toContain("NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}")
+  expect(workflow).toContain("NODE_AUTH_TOKEN: ${{ github.token }}")
   expect(workflow).toContain('BUN_VERSION: "1.4.1"')
   expect(workflow).not.toContain("changeset version")
+  expect(workflow).not.toContain("NPM_TOKEN")
+  expect(workflow.match(/runs-on: (.+)/g)).toEqual([
+    "runs-on: blacksmith-2vcpu-ubuntu-2404",
+    "runs-on: blacksmith-2vcpu-ubuntu-2404"
+  ])
   expect(manifest.scripts["release:npm"]).toBe("bun cmd/publish-npm.ts")
 })
 

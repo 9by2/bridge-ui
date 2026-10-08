@@ -78,7 +78,12 @@ test("npm publication rejects RC and skips versions without changelog entry", as
   }
 })
 
-// Protects: public manifest rename, idempotent publish, verified install, and release outputs.
+test("public package targets the GitHub Packages registry for the 9by2 organization", () => {
+  expect(PublicPackage.REGISTRY).toBe("https://npm.pkg.github.com/")
+  expect(PublicPackage.NAME.startsWith("@9by2/")).toBe(true)
+})
+
+// Protects: GitHub Packages manifest rename, idempotent publish, verified install, and release outputs.
 test("npm publication publishes the renamed public manifest once and emits release output", async () => {
   for (const scenario of ["new", "already-published", "install-failure"] as const) {
     const directory = await fixture("0.2.0")
@@ -92,8 +97,9 @@ test("npm publication publishes the renamed public manifest once and emits relea
         env: { ...MainPush, GITHUB_OUTPUT: outputFile },
         retryDelayMs: 0,
         fetch: Object.assign(
-          async (url: string | URL | Request) => {
+          async (url: string | URL | Request, init?: RequestInit) => {
             expect(String(url)).toBe(`${PublicPackage.REGISTRY}${encodeURIComponent(PublicPackage.NAME)}`)
+            expect(new Headers(init?.headers).get("authorization")).toBe("Bearer test-token")
             return published
               ? new Response(JSON.stringify({ versions: { "0.2.0": {} } }), { status: 200 })
               : new Response("{}", { status: 404 })
@@ -121,7 +127,6 @@ test("npm publication publishes the renamed public manifest once and emits relea
         expect(commands).toContainEqual([
           "npm",
           "publish",
-          "--provenance",
           "--access",
           "public",
           "--tag",
@@ -145,6 +150,7 @@ test("npm publication publishes the renamed public manifest once and emits relea
       expect(note).toContain("- Add list.")
       expect(note).not.toContain("Old.")
       expect(note).toContain(`npm install ${PublicPackage.NAME}@0.2.0`)
+      expect(note).toContain(`@9by2:registry=${PublicPackage.REGISTRY}`)
     } finally {
       await rm(directory, { recursive: true, force: true })
     }

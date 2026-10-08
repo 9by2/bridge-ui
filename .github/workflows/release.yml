@@ -1,5 +1,6 @@
 # GitLab owns versioning (Changesets). This workflow verifies the GitHub mirror and
-# publishes the mirrored stable version publicly as @9by2/bridge-ui on npmjs.org.
+# publishes the mirrored stable version as @9by2/bridge-ui to GitHub Packages.
+# The package is linked to this public repository, so it inherits public visibility.
 name: release
 
 on:
@@ -21,7 +22,7 @@ env:
 
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
@@ -47,20 +48,21 @@ jobs:
   release:
     needs: verify
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 20
     concurrency:
       group: npm-release
       cancel-in-progress: false
     permissions:
       contents: write
-      id-token: write
+      packages: write
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
-          registry-url: https://registry.npmjs.org
+          registry-url: https://npm.pkg.github.com
+          scope: "@9by2"
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: ${{ env.BUN_VERSION }}
@@ -69,7 +71,7 @@ jobs:
       - id: npm
         run: bun release:npm
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ github.token }}
       - if: steps.npm.outputs.release == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
