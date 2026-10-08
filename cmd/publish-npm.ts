@@ -4,8 +4,9 @@ import path from "node:path"
 
 export const PublicPackage = {
   NAME: "@9by2/bridge-ui",
-  REGISTRY: "https://registry.npmjs.org/",
-  REPOSITORY: "git+https://github.com/9by2/bridge-ui.git",
+  SCOPE: "@9by2",
+  REGISTRY: "https://npm.pkg.github.com/",
+  REPOSITORY: "https://github.com/9by2/bridge-ui.git",
   NOTE_FILE: "release-note.md",
   CHANNEL: "latest"
 } as const
@@ -55,13 +56,15 @@ export async function publishNpm(dependency: PublishNpmDependency = {}): Promise
   if (!env.NODE_AUTH_TOKEN) throw new Error("NODE_AUTH_TOKEN required")
 
   const isPublished = async () => {
-    const response = await fetchRegistry(`${PublicPackage.REGISTRY}${encodeURIComponent(PublicPackage.NAME)}`)
+    const response = await fetchRegistry(`${PublicPackage.REGISTRY}${encodeURIComponent(PublicPackage.NAME)}`, {
+      headers: { Authorization: `Bearer ${env.NODE_AUTH_TOKEN}` }
+    })
     if (!response.ok && response.status !== 404) throw new Error(`Registry lookup failed: ${response.status}`)
     const metadata = response.ok ? await response.json() : {}
     return Boolean(metadata.versions?.[version])
   }
 
-  const npmrc = `${PublicPackage.REGISTRY.replace(/^https:/, "")}:_authToken=\${NODE_AUTH_TOKEN}\n`
+  const npmrc = `${PublicPackage.SCOPE}:registry=${PublicPackage.REGISTRY}\n${PublicPackage.REGISTRY.replace(/^https:/, "")}:_authToken=\${NODE_AUTH_TOKEN}\n`
   const directory = await mkdtemp(path.join(tmpdir(), "bridge-npm-release-"))
   try {
     if (await isPublished()) {
@@ -87,17 +90,7 @@ export async function publishNpm(dependency: PublishNpmDependency = {}): Promise
       )
       await Bun.write(path.join(stage, ".npmrc"), npmrc)
       const publication = spawn(
-        [
-          "npm",
-          "publish",
-          "--provenance",
-          "--access",
-          "public",
-          "--tag",
-          PublicPackage.CHANNEL,
-          "--registry",
-          PublicPackage.REGISTRY
-        ],
+        ["npm", "publish", "--access", "public", "--tag", PublicPackage.CHANNEL, "--registry", PublicPackage.REGISTRY],
         { cwd: stage, stdout: "inherit", stderr: "inherit" }
       )
       if (publication.exitCode !== 0) throw new Error("Package publication failed")
@@ -110,6 +103,7 @@ export async function publishNpm(dependency: PublishNpmDependency = {}): Promise
     }
 
     const fixture = path.join(directory, "fixture")
+    await Bun.write(path.join(fixture, ".npmrc"), npmrc)
     await Bun.write(
       path.join(fixture, "package.json"),
       JSON.stringify({
@@ -117,7 +111,7 @@ export async function publishNpm(dependency: PublishNpmDependency = {}): Promise
         dependencies: { [PublicPackage.NAME]: version, react: "^19", "react-dom": "^19" }
       })
     )
-    const install = spawn(["bun", "install", "--ignore-scripts", "--registry", PublicPackage.REGISTRY], {
+    const install = spawn(["bun", "install", "--ignore-scripts"], {
       cwd: fixture,
       stdout: "inherit",
       stderr: "inherit"
@@ -135,7 +129,7 @@ export async function publishNpm(dependency: PublishNpmDependency = {}): Promise
 
     await Bun.write(
       path.join(cwd, PublicPackage.NOTE_FILE),
-      `${note}\n\n---\n\n\`\`\`sh\nnpm install ${PublicPackage.NAME}@${version}\n\`\`\`\n`
+      `${note}\n\n---\n\nAdd to \`.npmrc\` (any GitHub token with \`read:packages\`):\n\n\`\`\`ini\n${PublicPackage.SCOPE}:registry=${PublicPackage.REGISTRY}\n//npm.pkg.github.com/:_authToken=\${GITHUB_TOKEN}\n\`\`\`\n\n\`\`\`sh\nnpm install ${PublicPackage.NAME}@${version}\n\`\`\`\n`
     )
     if (env.GITHUB_OUTPUT) await appendFile(env.GITHUB_OUTPUT, `version=${version}\nrelease=true\n`)
     log(`Verified ${PublicPackage.NAME}@${version}`)

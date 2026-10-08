@@ -12,7 +12,7 @@ flowchart LR
   GH --> V[verify job]
   V --> R[release job]
   R --> P[cmd/publish-npm.ts]
-  P --> N[npmjs @9by2/bridge-ui]
+  P --> N[GitHub Packages @9by2/bridge-ui]
   R --> GR[GitHub Release vX.Y.Z]
 ```
 
@@ -29,7 +29,7 @@ flowchart LR
 1. A push to `main` runs `verify` (fmt, lint, typecheck, boundary, build, test, coverage, package, tree-shaking).
 2. `release` builds, then runs `bun release:npm`.
 3. The script exits early when there is no CHANGELOG entry. If npm already has the version, it skips publishing and still emits the outputs.
-4. Otherwise it stages `dist` and `README.md` with the manifest renamed to `@9by2/bridge-ui`, sets public access, and adds `repository` (provenance needs it), then runs `npm publish --provenance --access public --tag latest`.
+4. Otherwise it stages `dist` and `README.md` with the manifest renamed to `@9by2/bridge-ui`, sets public access, and adds `repository` to link the package to the public repo. It then runs `npm publish --access public --tag latest` against `npm.pkg.github.com` with `GITHUB_TOKEN`.
 5. It polls the registry until the version resolves, installs it into a fixture, and imports `Button`.
 6. It writes `version` and `release=true` to `GITHUB_OUTPUT` and writes the release notes file. The workflow creates `vX.Y.Z` with `gh release create` if the release doesn't exist yet.
 
@@ -38,7 +38,8 @@ flowchart LR
 ```ts
 const PublicPackage = {
   NAME: "@9by2/bridge-ui",
-  REGISTRY: "https://registry.npmjs.org/",
-  REPOSITORY: "git+https://github.com/9by2/bridge-ui.git"
+  SCOPE: "@9by2",
+  REGISTRY: "https://npm.pkg.github.com/",
+  REPOSITORY: "https://github.com/9by2/bridge-ui.git"
 } as const
 ```

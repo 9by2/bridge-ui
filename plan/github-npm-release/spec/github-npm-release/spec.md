@@ -6,7 +6,7 @@
 
 ## Summary
 
-GitHub Actions verifies the mirrored repository and publishes each GitLab-versioned stable release publicly as `@9by2/bridge-ui` on npmjs.org, with a matching GitHub Release.
+GitHub Actions verifies the mirrored repository and publishes each GitLab-versioned stable release as public `@9by2/bridge-ui` on GitHub Packages (`npm.pkg.github.com`), with a matching GitHub Release. Jobs run on `blacksmith-2vcpu-ubuntu-2404`.
 
 ## Requirements
 

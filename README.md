@@ -71,7 +71,15 @@ Do not run `changeset version`, bump `package.json`, or create a release tag by 
 
 ### Public npm mirror
 
-GitLab stays the version authority. When the release MR merge is mirrored to GitHub `9by2/bridge-ui`, `.github/workflows/release.yml` verifies it. It then publishes the same version publicly as `@9by2/bridge-ui` on npmjs.org with provenance and creates GitHub Release `vX.Y.Z`. Already-published versions are skipped. Pull requests to GitHub `main` run verification only.
+GitLab stays the version authority. When the release MR merge is mirrored to GitHub `9by2/bridge-ui`, `.github/workflows/release.yml` verifies it. It then publishes the same version as `@9by2/bridge-ui` to GitHub Packages and creates GitHub Release `vX.Y.Z`. The package is linked to the public repository, so it is public. Already-published versions are skipped. Pull requests to GitHub `main` run verification only.
+
+GitHub Packages requires a token even for public packages. Any GitHub account works if its classic token has `read:packages`:
+
+```ini
+# .npmrc
+@9by2:registry=https://npm.pkg.github.com/
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
 
 ```sh
 npm install @9by2/bridge-ui
@@ -82,7 +90,7 @@ import { Button } from "@9by2/bridge-ui/button"
 import "@9by2/bridge-ui/style.css"
 ```
 
-Setup: create the `@9by2` npm organization and add an npm automation (or granular publish) token as the GitHub repository secret `NPM_TOKEN`.
+No secret is needed: the workflow publishes with the built-in `GITHUB_TOKEN` (`packages: write`). Jobs run on `blacksmith-2vcpu-ubuntu-2404`. If the package page ever shows Private, set Package settings → Change visibility → Public.
 
 ## CI
 

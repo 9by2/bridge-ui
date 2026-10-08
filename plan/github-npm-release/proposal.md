@@ -13,7 +13,7 @@ The repository is now mirrored to the public GitHub repository `9by2/bridge-ui`.
 ### In scope
 
 - A GitHub Actions workflow that verifies every pull request and every push to `main`.
-- Publish the GitLab-versioned release publicly to npmjs.org as `@9by2/bridge-ui`, with provenance.
+- Publish the GitLab-versioned release to GitHub Packages as `@9by2/bridge-ui`, public through the linked public repository.
 - Create a `vX.Y.Z` GitHub Release using the matching CHANGELOG section.
 - Make retries idempotent: an already published version or an existing release is never duplicated.
 
@@ -39,4 +39,4 @@ The repository is now mirrored to the public GitHub repository `9by2/bridge-ui`.
 ## References
 
 - [plan/spec/stable-release/spec.md](../spec/stable-release/spec.md)
-- [npm provenance](https://docs.npmjs.com/generating-provenance-statements)
+- [GitHub Packages npm registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry)
